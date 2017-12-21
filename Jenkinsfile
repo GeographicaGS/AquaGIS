@@ -1,4 +1,7 @@
 pipeline {
+  environment {
+    CRED = credentials("aquagis_www")
+  }
   agent {
     node {
       label 'docker'
@@ -20,7 +23,7 @@ pipeline {
       }
       steps {
        sh "docker build -t geographica/aquagis_www:prod -f deploy/www/Dockerfile ."
-       sh "docker run --rm --name aquagis_www_deploy geographica/aquagis_www:prod npm run-script deploy"
+       sh "docker run --rm --name aquagis_www_deploy -e "S3_WEBSITE_ID=${CRED_USR}" -e "S3_WEBSITE_SECRET=${CRED_PSW}" geographica/aquagis_www:prod npm run-script deploy"
       }
     }
   }
