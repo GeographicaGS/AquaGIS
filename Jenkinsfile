@@ -1,4 +1,6 @@
 pipeline {
+  triggers { upstream(upstreamProjects: 'UrboCore-www/master', threshold: hudson.model.Result.SUCCESS) }
+
   environment {
     CRED = credentials("aquagis_www")
   }
@@ -9,7 +11,6 @@ pipeline {
   }
 
   stages {
-
     stage('Building') {
       steps {
         script {
@@ -48,6 +49,4 @@ pipeline {
      }
     }
   }
-
-
 }
