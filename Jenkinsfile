@@ -19,7 +19,7 @@ pipeline {
         branch "alberto/testjenkins"
       }
       steps {
-       sh "docker build -t geographica/aquagis_www:prod -f deploy/www/Dockerfile"
+       sh "docker build -t geographica/aquagis_www:prod -f deploy/www/Dockerfile ."
        sh "docker run --rm --name aquagis_www_deploy geographica/aquagis_www:prod npm run-script deploy"
       }
     }
