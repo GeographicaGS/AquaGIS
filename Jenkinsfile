@@ -7,7 +7,9 @@ pipeline {
       label 'docker'
     }
   }
+
   stages {
+
     stage('Building') {
       steps {
         script {
@@ -16,15 +18,34 @@ pipeline {
         echo "Building aquagis/${shortCommit}"
       }
     }
+
     stage("Deploy") {
       when {
-        // skip this stage unless on Master branch
-        branch "alberto/testjenkins"
+          anyOf {
+              branch 'master';
+              branch 'staging';
+          }
       }
       steps {
-       sh "docker build -t geographica/aquagis_www:prod -f deploy/www/Dockerfile ."
-       sh "docker run --rm --name aquagis_www_deploy -e \"S3_WEBSITE_ID=${CRED_USR}\" -e \"S3_WEBSITE_SECRET=${CRED_PSW}\" geographica/aquagis_www:prod npm run-script deploy"
+        script {
+          if (env.BRANCH_NAME == 'master') {
+            DEPLOY_TO = "prod"
+          } else if (env.BRANCH_NAME == 'staging') {
+            DEPLOY_TO = "staging"
+          }
+        }
+        sh "docker build -t geographica/aquagis_www:${DEPLOY_TO} -f deploy/www/Dockerfile ."
+        sh "docker run --rm --name aquagis_www_${DEPLOY_TO} -e \"S3_WEBSITE_ID=${CRED_USR}\" -e \"S3_WEBSITE_SECRET=${CRED_PSW}\" geographica/aquagis_www:${DEPLOY_TO} npm run-script deploy"
       }
     }
   }
+
+  post {
+   failure {
+     // notify users when the Pipeline fails
+     mail to: 'build@geographica.gs',
+     subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+     body: "Something is wrong with ${env.BUILD_URL}"
+   }
+ }
 }
