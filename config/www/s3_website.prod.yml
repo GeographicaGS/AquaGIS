@@ -1,0 +1,36 @@
+s3_id: <%= ENV['S3_WEBSITE_ID'] %>
+s3_secret: <%= ENV['S3_WEBSITE_SECRET'] %>
+s3_bucket: aquagis.geographica.io
+cloudfront_distribution_id: EM1LU4RQ7CY2M
+
+site: public
+
+max_age: 300
+
+s3_endpoint: eu-west-1
+
+exclude_from_upload:
+  - .DS_Store
+  - .htaccess
+
+gzip:
+  - .html
+  - .css
+  - .js
+
+cloudfront_distribution_config:
+  default_cache_behavior:
+    min_ttl: <%= 60 * 60 * 24 %>
+  aliases:
+    quantity: 1
+    items:
+      - aquagis.geographica.io
+
+routing_rules:
+  - condition:
+      http_error_code_returned_equals: "404"
+    redirect:
+      #protocol: https
+      host_name: aquagis.geographica.io
+      replace_key_prefix_with: "#"
+      http_redirect_code: "301"

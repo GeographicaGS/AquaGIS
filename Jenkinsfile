@@ -2,6 +2,8 @@ node("docker") {
 
     currentBuild.result = "SUCCESS"
 
+    failure_email = "build@geographica.gs"
+
     try {
 
         stage "Building"
@@ -17,51 +19,40 @@ node("docker") {
             job_name = "${env.JOB_NAME}".replaceAll("%2F", "/")
             committer_email = readFile(".git/git_committer_email").replaceAll("\n", "").replaceAll("\r", "")
 
-            echo "Building urbo-telefonica/${build_name} (not today)"
+            echo "Building aquagis/${build_name} (not today)"
 
         stage "Testing"
 
-            echo "Testing urbo-telefonica/${build_name} (not today)"
+            echo "Testing aquagis/${build_name} (not today)"
 
-    } catch (error) {
 
-        currentBuild.result = "FAILURE"
-
-        echo "Sending failure mail :("
-        emailext subject: "${job_name} - Failure in build #${env.BUILD_NUMBER}", to: "${committer_email}, \$DEFAULT_RECIPIENTS", body: "Check console output at ${env.BUILD_URL} to view the results."
-
-        echo "urbo-telefonica/${build_name} failed: ${error}"
-        throw error
-
-    } finally {
-
-        stage "Cleaning"
-
-            echo "Cleaning urbo-telefonica/${build_name}"
-
-        if (currentBuild.result == "SUCCESS" && ["master", "dev"].contains(branch_name)) {
+        if (currentBuild.result == "SUCCESS" && ["master"].contains(branch_name)) {
 
             stage "Deploying"
 
                 if (branch_name == "master") {
                     echo "Deploying master ... (not today)"
-                    sh "ansible urbo-frontend-production -a '/data/app/UrboCore-www/deploy.sh ${branch_name}'"
-                    sh "ansible urbo-production -a 'sh /data/app/urbo/urbocore-api/deploy.sh'"
-                    sh "ansible urbo-production -a 'sh /data/app/urbo/urbocore-processing/deploy.sh'"
-
-                } else if (branch_name == "dev") {
-                    echo "Deploying dev ..."
-                    sh "ansible urbo-frontend-dev -a '/data/app/UrboCore-www/deploy.sh ${branch_name}'"
-                    sh "ansible urbo-dev -a 'sh /data/app/urbo/urbocore-api/deploy.sh'"
-                    sh "ansible urbo-dev -a 'sh /data/app/urbo/urbocore-processing/deploy.sh'"
-
-                } else {
-                    currentBuild.result = "FAILURE"
-                    error_message = "Jenkinsfile error, deploying neither master nor dev"
-
-                    echo "${error_message}"
-                    error(error_message)
+                    sh "/data/app/aquagis_www/deploy.sh ${branch_name}'"
+                    //sh "ansible aquagis-production -a 'sh /data/app/urbo/urbocore-api/deploy.sh'"
+                    //sh "ansible aquagis-production -a 'sh /data/app/urbo/urbocore-processing/deploy.sh'"
+                }  else {
+                  currentBuild.result = "FAILURE"
+                  error_message = "Jenkinsfile error, deploying wrong branch"
+                  error(error_message)
                 }
         }
+    }
+    catch (error) {
+
+      currentBuild.result = "FAILURE"
+
+      if (["master"].contains(branch_name)) {
+        echo "Sending failure mail :("
+        emailext subject: "${ job_name } - Failure #${ env.BUILD_NUMBER }", to: "${ committer_email }, ${ failure_email }", body: "Check console output at ${ env.BUILD_URL } to view the results."
+
+        echo "aquagis/${ build_name } failed: ${ error }"
+      }
+      throw error
+
     }
 }
