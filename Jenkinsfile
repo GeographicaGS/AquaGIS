@@ -32,7 +32,7 @@ node("docker") {
 
                 if (branch_name == "master") {
                     echo "Deploying master ... (not today)"
-                    sh "/data/app/aquagis/deploy_www.sh ${branch_name}'"
+                    sh "/data/app/aquagis/deploy_www.sh ${branch_name}"
                     //sh "ansible aquagis-production -a 'sh /data/app/urbo/urbocore-api/deploy.sh'"
                     //sh "ansible aquagis-production -a 'sh /data/app/urbo/urbocore-processing/deploy.sh'"
                 }  else {
