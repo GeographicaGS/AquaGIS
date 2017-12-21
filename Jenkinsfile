@@ -10,7 +10,7 @@ pipeline {
       stage('Building') {
           steps {
 
-            echo "Building aquagis/${env.BRANCH_NAME}"
+            echo "Building aquagis/${env}"
           }
       }
     }
