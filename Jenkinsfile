@@ -1,5 +1,4 @@
 pipeline {
-
   environment {
     CRED = credentials("aquagis_www")
   }
