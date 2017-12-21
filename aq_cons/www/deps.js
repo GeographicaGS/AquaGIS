@@ -8,7 +8,7 @@ deps.templateFolder = [srcJS + 'template'];
 deps.JS = [
   srcJS + 'Namespace.js',
   srcJS + 'Metadata.js',
-  srcJS + 'Collection/AQCons.js',
+  srcJS + 'Collection/AQConsCollection.js',
   srcJS + 'Model/AQConsModel.js',
   srcJS + 'View/Panels/AQCons/AQConsPrevPanelView.js',
   srcJS + 'View/Panels/AQCons/AQConsMasterPanelView.js',
