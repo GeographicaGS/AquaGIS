@@ -2,8 +2,10 @@ pipeline {
     parameters {
         string(email: 'build@geographica.gs')
     }
-    node {
-      label 'docker'
+    agent {
+      node {
+        label 'docker'
+      }
     }
     stages {
 
