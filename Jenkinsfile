@@ -1,4 +1,5 @@
 pipeline {
+  triggers { upstream(upstreamProjects: 'UrboCore-www/master', threshold: hudson.model.Result.SUCCESS) }
 
   environment {
     CRED = credentials("aquagis_www")
