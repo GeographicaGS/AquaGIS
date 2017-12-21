@@ -1,7 +1,7 @@
 
 var App = App || {};
 
-var baseURL = 'urbo-aquagis-backend.geographica.gs/api/'
+var baseURL = 'urbo-aquagis-backend.geographica.gs/api'
 
 App.config = {
   'api_url' : 'https://' + baseURL,
@@ -9,5 +9,6 @@ App.config = {
   'map_position':[36.7196718,4.4167761],
   'layout' : 'basetheme',
   'map_zoom':17,
-  'maps_prefix':  'production_'
+  'maps_prefix':  'production_',
+  'log': false
 };
