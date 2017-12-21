@@ -34,7 +34,7 @@ pipeline {
             DEPLOY_TO = "staging"
           }
         }
-        sh "docker build -t geographica/aquagis_www:${DEPLOY_TO} -f deploy/www/Dockerfile ."
+        sh "docker build -t geographica/aquagis_www:${DEPLOY_TO}  --build-arg DEPLOY_TO=${DEPLOY_TO}-f deploy/www/Dockerfile ."
         sh "docker run --rm --name aquagis_www_${DEPLOY_TO} -e \"S3_WEBSITE_ID=${CRED_USR}\" -e \"S3_WEBSITE_SECRET=${CRED_PSW}\" geographica/aquagis_www:${DEPLOY_TO} npm run-script deploy"
       }
     }
