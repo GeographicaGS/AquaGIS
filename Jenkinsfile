@@ -20,9 +20,7 @@ pipeline {
       }
       steps {
        sh "docker build -t geographica/aquagis_www:prod "
-       sh "docker run --rm aquagis_www_deploy geographica/aquagis_www:prod npm run-script deploy"
-       // sh "./deploy/www/deploy.sh ${branch_name}"
-       // echo "Heal it"
+       sh "docker run --rm --name aquagis_www_deploy geographica/aquagis_www:prod npm run-script deploy"
       }
     }
   }
