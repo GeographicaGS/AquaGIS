@@ -1,4 +1,4 @@
-ARG ENV=prod
+ARG VERSION=latest
 FROM geographica/urbo_core_www:$ENV
 ARG ENV
 
