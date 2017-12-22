@@ -1,5 +1,5 @@
 ARG VERSION=latest
-FROM geographica/urbo_core_www:$ENV
+FROM geographica/urbo_core_www:$VERSION
 ARG ENV
 
 ADD deploy/www/Config.${ENV}.js /usr/src/app/src/Config.js
