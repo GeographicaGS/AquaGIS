@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------------
 -- HOW TO USE:
--- SELECT urbo_createtables_aq_cons('my_scope', TRUE, TRUE, 'my_carto_user');
+-- SELECT urbo_createtables_aq_cons('my_scope', FALSE, FALSE, 'my_carto_user');
 --------------------------------------------------------------------------------
 
 DROP FUNCTION IF EXISTS urbo_createtables_aq_cons(text, boolean, boolean, text);
@@ -21,7 +21,8 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_catalogue_sector text;
     _tb_lastdata_sector text;
     _tb_measurand_sector text;
-    _tb_forecast_sector text;
+    _tb_agg_cons_sector text;
+    _tb_agg_forecast_sector text;
     _tb_arr_ld text[];
     _tb_arr_bsc text[];
     _tb_arr_vars text[];
@@ -153,7 +154,6 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         );
       ELSE
         _ddl_qry = format('
-          %s
           %s
           %s
           %s
