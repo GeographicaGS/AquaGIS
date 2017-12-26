@@ -1,0 +1,4 @@
+notebooks/
+migrations/*
+!migrations/.gitkeep
+.DS_Store
