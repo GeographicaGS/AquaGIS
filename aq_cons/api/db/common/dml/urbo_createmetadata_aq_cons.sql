@@ -30,7 +30,7 @@ CREATE OR REPLACE FUNCTION urbo_createmetadata_aq_cons(
       INSERT INTO %s
           (id_category, category_name, nodata, config)
         VALUES
-          (''aq_cons'', ''Patrones de conusmo'', FALSE, ''{"carto": {"account": "urbo-default"}}'');
+          (''aq_cons'', ''Patrones de consumo'', FALSE, ''{"carto": {"account": "urbo-default"}}'');
 
       -- ENTITIES
       INSERT INTO %s
