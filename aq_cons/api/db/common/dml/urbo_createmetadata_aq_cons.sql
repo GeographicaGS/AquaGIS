@@ -46,8 +46,8 @@ CREATE OR REPLACE FUNCTION urbo_createmetadata_aq_cons(
           (''aq_cons.sector.usage'', ''aq_cons.sector'', ''usage'', ''Uso del agua'', NULL, NULL, ''{"NOAGG"}'', FALSE, NULL, NULL, ''catalogue'', TRUE, FALSE),
           (''aq_cons.sector.flow'', ''aq_cons.sector'', ''flow'', ''Caudal'', ''m³/h'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": false, "default": false}'', ''aq_cons_measurand'', ''variable'', TRUE, FALSE),
           (''aq_cons.sector.pressure'', ''aq_cons.sector'', ''pressure'', ''Presión'', ''kgf/cm²'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": false, "default": false}'', ''aq_cons_measurand'', ''variable'', TRUE, FALSE),
-          (''aq_cons.sector.consumption_agg_hour'', ''aq_cons.sector'', ''consumption'', ''Consumo'', ''m³'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_agg_hour'', ''aggregated'', TRUE, FALSE),
-          (''aq_cons.sector.forecast_agg_hour'', ''aq_cons.sector'', ''forecast'', ''Previsión de consumo'', ''m³'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_agg_hour'', ''aggregated'', TRUE, FALSE);
+          (''aq_cons.sector.consumption'', ''aq_cons.sector'', ''consumption'', ''Consumo'', ''m³'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_agg_hour'', ''aggregated'', TRUE, FALSE),
+          (''aq_cons.sector.forecast'', ''aq_cons.sector'', ''forecast'', ''Previsión de consumo'', ''m³'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_agg_hour'', ''aggregated'', TRUE, FALSE);
       ',
       _tb_categories, _tb_entities, _tb_variables
     );
