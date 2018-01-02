@@ -10,9 +10,9 @@ App.Collection.AQCons.PanelList = Backbone.Collection.extend({
         url:base + '/dashboard',
       },
       {
-        id : 'prev',
+        id : 'forecast',
         title: __('Previsión semanal'),
-        url:base + '/dashboard/prev',
+        url:base + '/dashboard/forecast',
       },
 
     ];

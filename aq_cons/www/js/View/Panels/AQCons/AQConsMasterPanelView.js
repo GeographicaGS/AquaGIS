@@ -1,6 +1,6 @@
 'use strict';
 
-App.View.Panels.Dumps.Master = App.View.Panels.Base.extend({
+App.View.Panels.AQCons.Master = App.View.Panels.Base.extend({
   initialize: function(options) {
 
     options = _.defaults(options, {
