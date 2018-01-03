@@ -1,6 +1,7 @@
 'use strict';
 
 App.View.Panels.AQCons.Master = App.View.Panels.Base.extend({
+  _mapInstance: null,
   initialize: function(options) {
 
     options = _.defaults(options, {
@@ -13,18 +14,12 @@ App.View.Panels.AQCons.Master = App.View.Panels.Base.extend({
     });
 
     App.View.Panels.Base.prototype.initialize.call(this,options);
+    this._mapInstance = new App.View.Map.AQCons.MapView({});
     this.render();
   },
 
-  customRender: function(){
-    //this._widgets = [];
-    //
-    //
-    // //CONTENEDORES EN PELIGRO DE DESBORDAMIENTO
-    // this._widgets.push(new App.View.Widgets.Dumps.ContainerOverflow({
-    //   id_scope: this.scopeModel.get('id'),
-    //   link: '/' + this.scopeModel.get('id') + '/dumps/dashboard/dumps',
-    // }));
-
-  }
+  render: function() {
+    this.subviews.push(this._mapInstance);
+    App.View.Panels.Base.prototype.render.call(this);    
+  },
 });
