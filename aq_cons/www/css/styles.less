@@ -1,6 +1,7 @@
+@aquaGisColor: #6EBAFF;
+
 body[layout='aquagis'] {
 
-  @aquaGisColor: #6EBAFF;
   header {
     background-color: @aquaGisColor;
 
@@ -14,6 +15,17 @@ body[layout='aquagis'] {
         }
         .sep {
           display: none;
+        }
+      }
+    }
+    & > .tool {
+      > a {
+        color: #FFFFFF;
+        &.admin {
+          &:before {
+            // TODO: make img/SC_ic_menu-admin.svg white and place it in aquagis/public/img/icons folder
+            background-image: url('/verticals/aq_cons/img/icons/negative/menu.svg');
+          }
         }
       }
     }
