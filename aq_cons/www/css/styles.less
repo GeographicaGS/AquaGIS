@@ -1,12 +1,34 @@
-#map {
-  height: 100%;
-  width: 100%;
-  position: absolute !important;
-  top: 0;
-}
+body[layout='aquagis'] {
 
-.basemapselector {
-  position: absolute;
-  bottom: 8px;
-  left: 8px;
+  @aquaGisColor: #6EBAFF;
+  header {
+    background-color: @aquaGisColor;
+
+    & > a {
+      margin-left: 24px;
+      .co_logos {
+        img {
+          &:first-of-type {
+            display: none;
+          }
+        }
+        .sep {
+          display: none;
+        }
+      }
+    }
+  }
+
+  #map {
+    height: 100%;
+    width: 100%;
+    position: absolute !important;
+    top: 0;
+  }
+
+  .basemapselector {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+  }
 }
