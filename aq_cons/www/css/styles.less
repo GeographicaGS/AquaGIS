@@ -7,24 +7,36 @@ body[layout='aquagis'] {
 
     & > a {
       margin-left: 24px;
-      .co_logos {
-        img {
-          &:first-of-type {
-            display: none;
-          }
-        }
-        .sep {
-          display: none;
-        }
-      }
     }
+
     & > .tool {
       > a {
         color: #FFFFFF;
+
         &.admin {
           &:before {
-            // TODO: make img/SC_ic_menu-admin.svg white and place it in aquagis/public/img/icons folder
-            background-image: url('/verticals/aq_cons/img/icons/negative/menu.svg');
+            background-image: url(/img/SC_ic_menu-admin-white.svg);
+          }
+        }
+
+        &.alerts {
+          &:before {
+            background-image: url(/img/SC_ic_menu-alertas-white.svg);
+          }
+        }
+
+        &.lang {
+          &:before {
+            background-image: url(/img/SC_ic_menu-idioma-white.svg);
+          }
+          &:after {
+            content: url(/img/SC_ic_flechaselect_white.svg);
+          }
+        }
+
+        &.user {
+          &:before {
+            background-image: url(/img/SC_ic_menu-usuario-white.svg);
           }
         }
       }
