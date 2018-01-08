@@ -1,8 +1,8 @@
 'use strict';
 
-App.View.Panels.AQCons.Master = App.View.Panels.Base.extend({
+App.View.Panels.Aq_cons.Master = App.View.Panels.Base.extend({
   _mapInstance: null,
-  
+
   initialize: function (options) {
     options = _.defaults(options, {
       dateView: true,
@@ -36,7 +36,7 @@ App.View.Panels.AQCons.Master = App.View.Panels.Base.extend({
   },
 
   _onMapLoaded: function() {
-    let sector = new App.View.Panels.AQCons.Sector({scope: 'aljarafe', entity: 'aq_cons.sector'});      
+    let sector = new App.View.Panels.Aq_cons.Sector({scope: 'aljarafe', entity: 'aq_cons.sector'});
     this._sectorLayer = new App.View.Map.Layer.SectorLayer(sector, {
       filters: {
         bbox: [321.328125, 81.0932138526084, -284.765625000000069, -94.1624339680678],
