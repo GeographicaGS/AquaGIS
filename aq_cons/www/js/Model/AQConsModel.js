@@ -1,11 +1,14 @@
-// 
-// App.Model.AQCons.Sample = Backbone.Model.extend({
-//
-//   initialize: function(options) {
-//     this.options = options;
-//   },
-//
-//   url: function() {
-//     return App.config.api_url + '/' + this.options.scope + '/aq_cons/sample';
-//   },
-// });
+App.View.Panels.AQCons.Sector = App.Model.Post.extend({
+  initialize: function(options) {
+    this.options = options;
+  },
+
+  url: function(options) {
+     return `${App.config.api_url}/${this.options.scope}/maps/${this.options.entity}/now`; 
+  },
+
+  fetch: function(options) {
+    options.data.filters.conditions = options.data.filters.conditions || {};
+    return App.Model.Post.prototype.fetch.call(this, options);
+  }
+});
