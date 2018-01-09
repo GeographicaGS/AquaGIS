@@ -10,7 +10,11 @@ deps.JS = [
   srcJS + 'Metadata.js',
   srcJS + 'Collection/AQConsCollection.js',
   srcJS + 'Model/AQConsModel.js',
+  srcJS + 'View/Map/Layer/ConnectionLayer.js',
+  srcJS + 'View/Map/Layer/ConnectionLineLayer.js',
   srcJS + 'View/Map/Layer/SectorLayer.js',
+  srcJS + 'View/Map/Layer/SensorLayer.js',
+  srcJS + 'View/Map/Layer/TankLayer.js',
   srcJS + 'View/Panels/AQCons/AQConsForecastPanelView.js',
   srcJS + 'View/Panels/AQCons/AQConsMasterPanelView.js'
 ];

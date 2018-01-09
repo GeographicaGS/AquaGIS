@@ -1,11 +1,11 @@
 'use strict';
 
-App.View.Map.Layer.SectorLayer = App.View.Map.Layer.MapboxGLLayer.extend({
+App.View.Map.Layer.ConnectionLayer = App.View.Map.Layer.MapboxGLLayer.extend({
 
 
   initialize: function(model, body, map) {
-    this._idSource = 'aqua_sectors';
-    this._ids = ['sector'];
+    this._idSource = 'connection_datasource';
+    this._ids = ['connections_point'];
     
     App.View.Map.Layer.MapboxGLLayer.prototype.initialize.call(this, model, body, map);
   },
@@ -17,12 +17,13 @@ App.View.Map.Layer.SectorLayer = App.View.Map.Layer.MapboxGLLayer.extend({
   _layersConfig: function() {
     return this.layers = [{
       'id': this._ids[0],
-      'type': 'fill',
+      'type': 'circle',
       'source': this._idSource,
-      'layout': {},
       'paint': {
-          'fill-color': '#f08',
-          'fill-opacity': 0.4
+        'circle-radius': 6,
+        'circle-color': 'blue',
+        'circle-stroke-width': 2,
+        'circle-stroke-color': 'white',
       }
     }];
   }

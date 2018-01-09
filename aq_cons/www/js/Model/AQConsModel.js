@@ -1,4 +1,4 @@
-App.View.Panels.Aq_cons.Sector = App.Model.Post.extend({
+App.Model.Aq_cons.Model = App.Model.Post.extend({
   initialize: function(options) {
     this.options = options;
   },

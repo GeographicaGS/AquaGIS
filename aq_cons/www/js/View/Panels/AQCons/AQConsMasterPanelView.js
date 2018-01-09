@@ -36,10 +36,33 @@ App.View.Panels.Aq_cons.Master = App.View.Panels.Base.extend({
   },
 
   _onMapLoaded: function() {
-    let sector = new App.View.Panels.Aq_cons.Sector({scope: 'aljarafe', entity: 'aq_cons.sector'});
+    let sensor = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.sensor'});
+    let sector = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cons.sector'});
+    let tank = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.tank'});
+    let connection = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.connections_point'});
+    let connectionLine = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.connections_line'});
     this._sectorLayer = new App.View.Map.Layer.SectorLayer(sector, {
       filters: {
-        bbox: [321.328125, 81.0932138526084, -284.765625000000069, -94.1624339680678],
+        condition: {}
+      }
+    }, this._mapInstance);
+    this._sensorLayer = new App.View.Map.Layer.SensorLayer(sensor, {
+      filters: {
+        condition: {}
+      }
+    }, this._mapInstance);
+    this._tankLayer = new App.View.Map.Layer.TankLayer(tank, {
+      filters: {
+        condition: {}
+      }
+    }, this._mapInstance);
+    this._connectionLayer = new App.View.Map.Layer.ConnectionLayer(connection, {
+      filters: {
+        condition: {}
+      }
+    }, this._mapInstance);
+    this._connectionLineLayer = new App.View.Map.Layer.ConnectionLineLayer(connectionLine, {
+      filters: {
         condition: {}
       }
     }, this._mapInstance);
