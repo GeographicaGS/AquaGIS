@@ -8,6 +8,94 @@
 
 body[layout='aquagis'] {
 
+  .login {
+    background-color: @aquaGisSecondaryColor;
+
+    &.error {
+      form .content input[type=password]:-webkit-autofill,
+      form .content input[type=text]:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 1000px #8BC7FF inset, 0 0 0 1px #f30;
+      }
+    }
+
+    form {
+
+      background-color: @aquaGisPrimaryColor;
+
+      .header {
+
+        padding: 51px 0;
+        display: flex;
+        justify-content: center;
+        border-bottom: 1px solid #C5E3FF;
+
+        .co_logos {
+
+          width: 200px;
+          height: 32px;
+          background: url(/verticals/aq_cons/img/aquagis_logo.svg);
+          background-size: contain;
+          background-repeat: no-repeat;
+
+          img {
+            display: none;
+          }
+          .sep {
+            display: none;
+          }
+        }
+      }
+
+      .content {
+        label {
+          color: #FFFFFF;
+        }
+
+        input {
+          color: @aquaGisSecondaryColor;
+        }
+
+        input[type=text],
+        input[type=password] {
+          -webkit-box-shadow: 0 0 0 1000px #8BC7FF inset;
+          border: 1px solid #C5E3FF;
+
+          &:-webkit-autofill {
+            -webkit-text-fill-color: @aquaGisSecondaryColor;
+          }
+
+          &::-webkit-input-placeholder,
+          &:-moz-placeholder,
+          &::-moz-placeholder,
+          &:-ms-input-placeholder,
+          &::-ms-input-placeholder,
+          &::placeholder {
+            color: @aquaGisSecondaryColor;
+          }
+        }
+
+        input[type=submit] {
+          background-color: #3B7DB9;
+          border-radius: 2px;
+          color: #FFFFFF;
+        }
+      }
+    }
+  }
+  
+  .genericPopup {
+
+    li {
+      color: @aquaGisSecondaryColor;
+      font-size: 14px;
+      line-height: 18px;
+
+      &.close_sesion {
+        color: @aquaGisComplementColor;
+      }
+    }
+  }
+
   header {
     background-color: @aquaGisPrimaryColor;
 
@@ -23,19 +111,6 @@ body[layout='aquagis'] {
 
         span.icon {
           background-color: @aquaGisPrimaryColor;
-        }
-      }
-
-      .genericPopup {
-
-        li {
-          color: @aquaGisSecondaryColor;
-          font-size: 14px;
-          line-height: 18px;
-
-          &.close_sesion {
-            color: @aquaGisComplementColor;
-          }
         }
       }
 
