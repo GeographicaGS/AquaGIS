@@ -1,11 +1,15 @@
-@aquaGisColor: #6EBAFF;
-@aquaGisLinkColor: #64B6D9;
-@aquaGreyDark: #55555d;
+@aquaGisPrimaryColor: #6EBAFF;
+@aquaGisSecondaryColor: #165288;
+@aquaGisAccentColor: #64B6D9;
+
+@aquaGisComplementColor: #FF9908;
+@aquaGisGreyDark: #55555d;
+
 
 body[layout='aquagis'] {
 
   header {
-    background-color: @aquaGisColor;
+    background-color: @aquaGisPrimaryColor;
 
     & > a {
       margin-left: 24px;
@@ -15,12 +19,32 @@ body[layout='aquagis'] {
       display: flex;
       align-items: center;
 
+      .admin_popup {
+
+        span.icon {
+          background-color: @aquaGisPrimaryColor;
+        }
+      }
+
+      .genericPopup {
+
+        li {
+          color: @aquaGisSecondaryColor;
+          font-size: 14px;
+          line-height: 18px;
+
+          &.close_sesion {
+            color: @aquaGisComplementColor;
+          }
+        }
+      }
+
       .searchToolBox {
         display: inline-block;
         background-color: rgba(255,255,255,.2);
         margin-top: 0;
         .iconSearch {
-          background-image: url(/verticals/aq_cons/img/icons/negative/SC_icon_search_white.svg);
+          background-image: url(/verticals/aquagis-theme/img/icons/negative/SC_icon_search_white.svg);
         }
 
         input {
@@ -50,7 +74,7 @@ body[layout='aquagis'] {
 
         &.alerts {
           &:before {
-            background-image: url(/verticals/aq_cons/img/icons/negative/SC_ic_menu-alertas-white.svg);
+            background-image: url(/verticals/aquagis-theme/img/icons/negative/SC_ic_menu-alertas-white.svg);
           }
         }
 
@@ -74,26 +98,162 @@ body[layout='aquagis'] {
     }
   }
 
-  nav {
-    &.navbar > ul > li {
-      color: #165288;
+
+  nav.navbar a.navElement.menu {
+    background-image: url(/verticals/aquagis-theme/img/icons/positive/SC_ic_menu_panel.svg);
+
+    &.active {
+      background-image: url(/img/SC_ic_menu_panel-cerrar.svg);
+        background-color: @aquaGisSecondaryColor;
     }
   }
+
+  nav.navbar .menuPanel,
+  nav.navbar a.navElement.menu:hover {
+    background-color: @aquaGisSecondaryColor;
+  }
+
+  nav {
+    &.navbar > ul > li {
+      color: @aquaGisSecondaryColor;
+    }
+    &.navbar a.navElement.back {
+      background-image: url(/verticals/aquagis-theme/img/icons/positive/SC_flecha_atras.svg);
+    }
+  }
+
   .footer {
 
     span, div {
       .font();
-      color: #55555d;
+      color: @aquaGisGreyDark;
       font-size: 12px;
       line-height: 15px;
 
       a {
-        color: #64B6D9;
+        color: @aquaGisAccentColor;
 
         &.black {
-          color: #55555d;
+          color: @aquaGisGreyDark;
         }
       }
+    }
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: @aquaGisSecondaryColor;
+
+    &:hover {
+      background-color: @aquaGisPrimaryColor;
+    }
+  }
+
+  .popup_widget:after {
+    border-color: @aquaGisSecondaryColor transparent transparent;
+  }
+
+  .title_page, h6 {
+    color: @aquaGisSecondaryColor;
+  }
+
+  .loading {
+    svg {
+      path {
+        stroke: @aquaGisPrimaryColor;
+      }
+    }
+  }
+
+  .tooltipIcon.realTime {
+    background-image: url(/verticals/aquagis-theme/img/icons/positive/SC_ic_reloj2.svg);
+  }
+
+  .widget {
+    background-color: @aquaGisSecondaryColor;
+    color: 2px solid @aquaGisSecondaryColor;
+
+    .viewMore {
+      background-color: @aquaGisAccentColor;
+    }
+
+    &.link {
+      &:before {
+        border-color: transparent @aquaGisAccentColor;
+      }
+
+      &:hover {
+        &.shadow,
+        &:not(.shadow) {
+          border: 2px solid @aquaGisAccentColor;
+        }
+
+        .widget_header .title,
+        &.map_device .widget_header > span,
+        &.reduced .widget_header > h4 {
+          color: @aquaGisAccentColor;
+        }
+      }
+    }
+  }
+
+  .split_vertical .split_handler:before {
+    background: url(/verticals/aquagis-theme/img/icons/positive/SM_desplazar.svg) center no-repeat @aquaGisPrimaryColor;
+    background-size: contain;
+  }
+
+  #spatial_filter_map .info a,
+  .popup_widget .exportsel ul li.selected,
+  .mapLegend .legendContainer .legendLink,
+  .linkLeft,
+  .linkRight {
+    color: @aquaGisPrimaryColor;
+  }
+
+  #spatial_filter_map .button_filter.active {
+    background-color: @aquaGisAccentColor;
+    background-image: url(/verticals/aquagis-theme/img/icons/positive/SC_ic_boundingbox-on.svg);
+  }
+
+  #category_list .content .box,
+  #scope_list .content .box {
+    background-color: @aquaGisSecondaryColor;
+  }
+
+  #scope_list {
+    .content {
+      .box {
+        .content_top {
+          .counter {
+            color: @aquaGisPrimaryColor;
+
+            &:before {
+              background-image: url(/verticals/aquagis-theme/img/icons/positive/SC_ic_ambito-contador.svg)
+            }
+          }
+        }
+      }
+    }
+  }
+
+  #user_list .box ul.list li .containerEditAndDelete,
+  #user_list .box ul.list li .onlyOnHover,
+  .admin .box ul.list li .containerEditAndDelete,
+  .admin .box ul.list li .onlyOnHover,
+  .containerEditAndDelete .editUserElementList {
+    color: @aquaGisPrimaryColor;
+
+    &.remove {
+      color: #f30;
+    }
+  }
+
+  .button {
+    background-color: @aquaGisPrimaryColor;
+
+    &.empty {
+      background-color: transparent;
+      color: @aquaGisPrimaryColor;
+      border: 1px solid @aquaGisPrimaryColor;
     }
   }
 
