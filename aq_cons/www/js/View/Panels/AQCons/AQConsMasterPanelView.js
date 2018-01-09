@@ -36,11 +36,25 @@ App.View.Panels.Aq_cons.Master = App.View.Panels.Base.extend({
   },
 
   _onMapLoaded: function() {
+    // Modelos
     let sensor = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.sensor'});
     let sector = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cons.sector'});
     let tank = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.tank'});
     let connection = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.connections_point'});
     let connectionLine = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.connections_line'});
+    let supply = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.supply_point'});
+    let supplyLine = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.supply_line'});
+    let hydrant = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.hydrant_point'});
+    let hydrantLine = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.hydrant_line'});
+    let valve = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.valve_point'});
+    let valveLine = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.valve_line'});
+    let well = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.well_point'});
+    let wellLine = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.well_line'});
+    let plot = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.plot'});
+    let plotStructure = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.plot_structure'});
+
+
+    // Layers
     this._sectorLayer = new App.View.Map.Layer.SectorLayer(sector, {
       filters: {
         condition: {}
@@ -62,6 +76,56 @@ App.View.Panels.Aq_cons.Master = App.View.Panels.Base.extend({
       }
     }, this._mapInstance);
     this._connectionLineLayer = new App.View.Map.Layer.ConnectionLineLayer(connectionLine, {
+      filters: {
+        condition: {}
+      }
+    }, this._mapInstance);
+    this._supplyLayer = new App.View.Map.Layer.SupplyLayer(supply, {
+      filters: {
+        condition: {}
+      }
+    }, this._mapInstance);
+    this._supplyLineLayer = new App.View.Map.Layer.SupplyLineLayer(supplyLine, {
+      filters: {
+        condition: {}
+      }
+    }, this._mapInstance);
+    this._hydrantLayer = new App.View.Map.Layer.HydrantLayer(hydrant, {
+      filters: {
+        condition: {}
+      }
+    }, this._mapInstance);
+    this._hydrantLineLayer = new App.View.Map.Layer.HydrantLineLayer(hydrantLine, {
+      filters: {
+        condition: {}
+      }
+    }, this._mapInstance);
+    this._valveLayer = new App.View.Map.Layer.ValveLayer(valve, {
+      filters: {
+        condition: {}
+      }
+    }, this._mapInstance);
+    this._valveLineLayer = new App.View.Map.Layer.ValveLineLayer(valveLine, {
+      filters: {
+        condition: {}
+      }
+    }, this._mapInstance);
+    this._wellLayer = new App.View.Map.Layer.WellLayer(well, {
+      filters: {
+        condition: {}
+      }
+    }, this._mapInstance);
+    this._wellLineLayer = new App.View.Map.Layer.WellLineLayer(wellLine, {
+      filters: {
+        condition: {}
+      }
+    }, this._mapInstance);
+    this._plotLayer = new App.View.Map.Layer.PlotLayer(plot, {
+      filters: {
+        condition: {}
+      }
+    }, this._mapInstance);
+    this._plotLineLayer = new App.View.Map.Layer.PlotStructureLayer(plotStructure, {
       filters: {
         condition: {}
       }
