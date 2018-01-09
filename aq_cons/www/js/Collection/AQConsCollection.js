@@ -1,6 +1,6 @@
 
 
-App.Collection.AQCons.PanelList = Backbone.Collection.extend({
+App.Collection.Aq_cons.PanelList = Backbone.Collection.extend({
   initialize: function(models,options){
     var base = '/' + options.scopeModel.get('id') + '/' + options.id_category;
     var options = [

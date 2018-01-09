@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>icons/secondary/clock</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icons/secondary/clock" fill="#165288">
+            <g id="Page-1" transform="translate(2.000000, 2.000000)">
+                <path d="M8,0 C3.582,0 0,3.581 0,8 C0,12.419 3.582,16 8,16 C12.418,16 16,12.419 16,8 C16,3.581 12.418,0 8,0 M8,1.5 C11.584,1.5 14.5,4.416 14.5,8 C14.5,11.584 11.584,14.5 8,14.5 C4.416,14.5 1.5,11.584 1.5,8 C1.5,4.416 4.416,1.5 8,1.5" id="Fill-1"></path>
+                <path d="M8,9 C7.447,9 7,8.552 7,8 L7,4 C7,3.448 7.447,3 8,3 C8.553,3 9,3.448 9,4 L9,8 C9,8.552 8.553,9 8,9" id="Fill-3"></path>
+                <path d="M10.5967,10.5 C10.4267,10.5 10.2547,10.457 10.0977,10.366 L7.4997,8.866 C7.0217,8.59 6.8577,7.978 7.1337,7.5 C7.4107,7.021 8.0227,6.857 8.4997,7.134 L11.0977,8.634 C11.5767,8.91 11.7397,9.522 11.4637,10 C11.2787,10.321 10.9427,10.5 10.5967,10.5" id="Fill-5"></path>
+            </g>
+        </g>
+    </g>
+</svg>

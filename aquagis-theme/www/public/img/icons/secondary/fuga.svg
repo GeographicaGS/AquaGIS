@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>icons/secondary/fuga</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icons/secondary/fuga" fill="#165288">
+            <g id="Group-Copy" transform="translate(3.000000, 4.000000)">
+                <path d="M6.76973684,7.09210526 C6.76973684,7.09210526 5.15789474,9.70020595 5.15789474,10.5272632 L5.15789474,10.5308513 L5.15789474,10.538476 C5.15789474,11.4198032 5.87950211,12.25 6.76973684,12.25 C7.65997158,12.25 8.38157895,11.4198032 8.38157895,10.538476 L8.38157895,10.5308513 L8.38157895,10.5272632 C8.38157895,9.70020595 6.76973684,7.09210526 6.76973684,7.09210526" id="Fill-7"></path>
+                <rect id="Rectangle-32" x="11.6052632" y="0" width="1.93421053" height="8.38157895" rx="0.967105263"></rect>
+                <rect id="Rectangle-32-Copy" x="0" y="0" width="1.93421053" height="8.38157895" rx="0.967105263"></rect>
+                <path d="M8.35400993,7.09210526 L10.9605263,7.09210526 L10.9605263,0.644736842 L2.57894737,0.644736842 L2.57894737,7.09210526 L5.29912238,7.09210526 C6.04413837,5.81569993 6.82656615,4.67434211 6.82656615,4.67434211 C6.82656615,4.67434211 7.60899393,5.81569993 8.35400993,7.09210526 Z" id="Combined-Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

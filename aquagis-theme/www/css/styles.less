@@ -1,0 +1,112 @@
+@aquaGisColor: #6EBAFF;
+@aquaGisLinkColor: #64B6D9;
+@aquaGreyDark: #55555d;
+
+body[layout='aquagis'] {
+
+  header {
+    background-color: @aquaGisColor;
+
+    & > a {
+      margin-left: 24px;
+    }
+
+    & > .tool {
+      display: flex;
+      align-items: center;
+
+      .searchToolBox {
+        display: inline-block;
+        background-color: rgba(255,255,255,.2);
+        margin-top: 0;
+        .iconSearch {
+          background-image: url(/verticals/aq_cons/img/icons/negative/SC_icon_search_white.svg);
+        }
+
+        input {
+          background-color: transparent;
+          color: #FFFFFF;
+          font-size: 14px;
+          line-height: 18px;
+
+          &::placeholder {
+            .font();
+            color: #FFFFFF;
+            font-size: 14px;
+            line-height: 18px;
+          }
+        }
+      }
+
+      > a {
+        color: #FFFFFF;
+
+        &.admin {
+          margin-left: 30px;
+          &:before {
+            background-image: url(/img/SC_ic_menu-admin-white.svg);
+          }
+        }
+
+        &.alerts {
+          &:before {
+            background-image: url(/verticals/aq_cons/img/icons/negative/SC_ic_menu-alertas-white.svg);
+          }
+        }
+
+        &.lang {
+          &:before {
+            background-image: url(/img/SC_ic_menu-idioma-white.svg);
+          }
+          &:after {
+            content: url(/img/SC_ic_flechaselect_white.svg);
+          }
+        }
+
+        &.user {
+          padding-left: 14px;
+          border-left: 1px solid #FFFFFF;
+          &:before {
+            background-image: url(/img/SC_ic_menu-usuario-white.svg);
+          }
+        }
+      }
+    }
+  }
+
+  nav {
+    &.navbar > ul > li {
+      color: #165288;
+    }
+  }
+  .footer {
+
+    span, div {
+      .font();
+      color: #55555d;
+      font-size: 12px;
+      line-height: 15px;
+
+      a {
+        color: #64B6D9;
+
+        &.black {
+          color: #55555d;
+        }
+      }
+    }
+  }
+
+  #map {
+    height: 100%;
+    width: 100%;
+    position: absolute !important;
+    top: 0;
+  }
+
+  .basemapselector {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+  }
+}
