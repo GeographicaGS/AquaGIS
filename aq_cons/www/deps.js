@@ -3,12 +3,16 @@ var src = 'src/verticals/aq_cons/';
 var srcJS = src + 'js/';
 var public = 'verticals/aq_cons/';
 
-deps.templateFolder = [srcJS + 'template'];
+deps.templateFolder = [
+  // srcJS + 'template'
+];
 
 deps.JS = [
   srcJS + 'Namespace.js',
   srcJS + 'Collection/AQConsCollection.js',
   srcJS + 'Model/AQConsModel.js',
+  srcJS + 'View/Map/AQConsCurrentMap.js',
+  srcJS + 'View/Map/Layer/AQConsGenericLayer.js',
   srcJS + 'View/Map/Layer/ConnectionLayer.js',
   srcJS + 'View/Map/Layer/ConnectionLineLayer.js',
   srcJS + 'View/Map/Layer/HydrantLayer.js',
