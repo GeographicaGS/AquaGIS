@@ -7,7 +7,6 @@ deps.templateFolder = [srcJS + 'template'];
 
 deps.JS = [
   srcJS + 'Namespace.js',
-  srcJS + 'Metadata.js',
   srcJS + 'Collection/AQConsCollection.js',
   srcJS + 'Model/AQConsModel.js',
   srcJS + 'View/Map/Layer/ConnectionLayer.js',

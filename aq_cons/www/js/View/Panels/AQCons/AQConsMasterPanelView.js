@@ -37,21 +37,21 @@ App.View.Panels.Aq_cons.Master = App.View.Panels.Base.extend({
 
   _onMapLoaded: function() {
     // Modelos
-    let sensor = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.sensor'});
-    let sector = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cons.sector'});
-    let tank = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.tank'});
-    let connection = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.connections_point'});
-    let connectionLine = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.connections_line'});
-    let supply = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.supply_point'});
-    let supplyLine = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.supply_line'});
-    let hydrant = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.hydrant_point'});
-    let hydrantLine = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.hydrant_line'});
-    let valve = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.valve_point'});
-    let valveLine = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.valve_line'});
-    let well = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.well_point'});
-    let wellLine = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.well_line'});
-    let plot = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.plot'});
-    let plotStructure = new App.Model.Aq_cons.Model({scope: 'aljarafe', entity: 'aq_cata.plot_structure'});
+    let sensor = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.sensor'});
+    let sector = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cons.sector'});
+    let tank = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.tank'});
+    let connection = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.connections_point'});
+    let connectionLine = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.connections_line'});
+    let supply = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.supply_point'});
+    let supplyLine = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.supply_line'});
+    let hydrant = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.hydrant_point'});
+    let hydrantLine = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.hydrant_line'});
+    let valve = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.valve_point'});
+    let valveLine = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.valve_line'});
+    let well = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.well_point'});
+    let wellLine = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.well_line'});
+    let plot = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.plot'});
+    let plotStructure = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.plot_structure'});
 
 
     // Layers
