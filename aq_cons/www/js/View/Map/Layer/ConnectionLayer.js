@@ -19,11 +19,10 @@ App.View.Map.Layer.ConnectionLayer = App.View.Map.Layer.MapboxGLLayer.extend({
       'id': this._ids[0],
       'type': 'circle',
       'source': this._idSource,
+      'minzoom': 16,
       'paint': {
-        'circle-radius': 6,
+        'circle-radius': 4,
         'circle-color': 'blue',
-        'circle-stroke-width': 2,
-        'circle-stroke-color': 'white',
       }
     }];
   }

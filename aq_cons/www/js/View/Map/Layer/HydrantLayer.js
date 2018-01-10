@@ -20,10 +20,8 @@ App.View.Map.Layer.HydrantLayer = App.View.Map.Layer.MapboxGLLayer.extend({
       'type': 'circle',
       'source': this._idSource,
       'paint': {
-        'circle-radius': 6,
-        'circle-color': 'red',
-        'circle-stroke-width': 2,
-        'circle-stroke-color': 'white',
+        'circle-radius': 2,
+        'circle-color': 'purple',
       }
     }];
   }

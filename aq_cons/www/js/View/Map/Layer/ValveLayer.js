@@ -19,11 +19,10 @@ App.View.Map.Layer.ValveLayer = App.View.Map.Layer.MapboxGLLayer.extend({
       'id': this._ids[0],
       'type': 'circle',
       'source': this._idSource,
+      'minzoom': 16,
       'paint': {
-        'circle-radius': 6,
+        'circle-radius': 2,
         'circle-color': 'red',
-        'circle-stroke-width': 2,
-        'circle-stroke-color': 'white',
       }
     }];
   }
