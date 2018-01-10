@@ -25,7 +25,9 @@ deps.JS = [
   srcJS + 'View/Map/Layer/WellLayer.js',
   srcJS + 'View/Map/Layer/WellLineLayer.js',
   srcJS + 'View/Panels/AQCons/AQConsForecastPanelView.js',
-  srcJS + 'View/Panels/AQCons/AQConsMasterPanelView.js'
+  srcJS + 'View/Panels/AQCons/AQConsMasterPanelView.js',
+  srcJS + 'View/Panels/AQCons/AQConsConsume.js',
+  srcJS + 'View/Widgets/WidgetTotalConsumeLastWeek.js'
 ];
 
 deps.lessFile = [ src + 'css/styles.less' ];
