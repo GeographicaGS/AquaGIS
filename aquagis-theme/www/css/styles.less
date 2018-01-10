@@ -82,7 +82,7 @@ body[layout='aquagis'] {
       }
     }
   }
-  
+
   .genericPopup {
 
     li {
@@ -245,7 +245,7 @@ body[layout='aquagis'] {
 
   .widget {
     background-color: @aquaGisSecondaryColor;
-    color: 2px solid @aquaGisSecondaryColor;
+    border: 2px solid transparent;
 
     .viewMore {
       background-color: @aquaGisAccentColor;
@@ -289,9 +289,26 @@ body[layout='aquagis'] {
     background-image: url(/verticals/aquagis-theme/img/icons/positive/SC_ic_boundingbox-on.svg);
   }
 
-  #category_list .content .box,
-  #scope_list .content .box {
+  #ui-datepicker-div .ui-datepicker-next, #ui-datepicker-div .ui-datepicker-prev {
+    background-color: @aquaGisPrimaryColor;
+  }
+
+  #category_list .content .box {
     background-color: @aquaGisSecondaryColor;
+  }
+
+  #scope_list .content .box {
+    background-color: #FFFFFF;
+
+    h3 {
+      color: #97A1A7;
+    }
+
+    .header {
+      span {
+        color: @aquaGisSecondaryColor;
+      }
+    }
   }
 
   #scope_list {
@@ -299,6 +316,7 @@ body[layout='aquagis'] {
       .box {
         .content_top {
           .counter {
+            .font(bold);
             color: @aquaGisPrimaryColor;
 
             &:before {
