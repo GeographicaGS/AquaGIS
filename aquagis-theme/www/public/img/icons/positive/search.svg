@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>icons/positive/search</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icons/positive/search" fill="#55555D">
+            <path d="M4.037,8.111 C4.037,5.865 5.866,4.037 8.112,4.037 C10.358,4.037 12.186,5.865 12.186,8.111 C12.186,10.358 10.358,12.186 8.112,12.186 C5.866,12.186 4.037,10.358 4.037,8.111 L4.037,8.111 Z M18,16.559 L13.09,11.649 C13.801,10.65 14.224,9.431 14.224,8.111 C14.224,4.736 11.487,2 8.112,2 C4.737,2 2,4.736 2,8.111 C2,11.487 4.737,14.223 8.112,14.223 C9.431,14.223 10.65,13.8 11.649,13.09 L16.559,18 L18,16.559 Z" id="Fill-3"></path>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,43 @@
+
+  <a target="_blank" class="council" href="#">
+    <div class='co_logos'>
+      <img class="companyLogo" src="/verticals/aq_cons/img/aquagis_logo.svg" alt="Aquagis" />
+    </div>
+  </a>
+  <div class="tool">
+
+    <div class="searchToolBox">
+      <span class="iconSearch"></span>
+      <input type="text" placeholder="Buscar ámbito"/>
+    </div>
+
+    <% if(App.auth != undefined && App.auth.getUser() != undefined && App.auth.getUser().superadmin) {%>
+      <a class="admin" popup="admin" href="#"><%=__('Administración')%></a>
+      <ul class="admin_popup genericPopup">
+      	<li class="users">
+          <%= __('Gestión de usuarios') %>
+          <span class="icon">
+            <img src="/img/SC_ic_usuario-nuevo_white.svg"/>
+          </span>
+        </li>
+        <li class="scopes">
+          <%= __('Ámbitos') %>
+          <span class="icon">
+            <img src="/img/SC_ic_ambito-contador.svg" style="-webkit-filter: grayscale(100%) brightness(100); filter: grayscale(100%) brightness(100);"/>
+          </span>
+        </li>
+        <li class="logs">
+          <%= __('Registro de accesos') %>
+          <span class="icon">
+            <img src="/img/SC_ic_visitas-white.svg"/>
+          </span>
+        </li>
+      </ul>
+    <%}%>
+    <a class="alerts" href="#"><%=__('Alertas')%></a>
+    <a class="user" popup="user" href="#"></a>
+    <ul class="user_popup genericPopup">
+    	<li><%=__('Perfil de usuario')%></li>
+    	<li class="close_sesion"><%=__('Cerrar sesión')%></li>
+    </ul>
+  </div>

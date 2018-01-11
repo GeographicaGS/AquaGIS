@@ -1,6 +1,6 @@
 'use strict';
 
-App.View.Panels.AQCons.Forecast = App.View.Panels.Splitted.extend({
+App.View.Panels.Aq_cons.Forecast = App.View.Panels.Splitted.extend({
 
   initialize: function(options) {
     options = _.defaults(options, {

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>icons/positive/edit</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icons/positive/edit" fill="#CCCCCC">
+            <g id="Page-1" transform="translate(2.000000, 1.500000)">
+                <path d="M13.34804,6.3572 L10.03724,3.0468 C9.96204,2.9716 9.84084,2.9716 9.76564,3.0468 L1.01484,11.7976 C0.98924,11.8232 0.97124,11.8556 0.96324,11.8912 L0.00484,16.1604 C-0.00996,16.2244 0.00964,16.2916 0.05644,16.3384 C0.10284,16.3848 0.17004,16.4044 0.23444,16.3896 L4.50364,15.4316 C4.53924,15.4236 4.57164,15.4056 4.59724,15.38 L13.34804,6.6292 C13.42284,6.554 13.42284,6.4324 13.34804,6.3572" id="Fill-1"></path>
+                <path d="M15.6252,2.5492 L13.8508,0.7748 C13.3512,0.2748 12.538,0.2752 12.038,0.7748 L10.5856,2.2272 C10.5108,2.302 10.5108,2.424 10.5856,2.4988 L13.9012,5.8144 C13.976,5.8896 14.098,5.8896 14.1728,5.8144 L15.6252,4.362 C16.1252,3.8624 16.1252,3.0488 15.6252,2.5492" id="Fill-4"></path>
+            </g>
+        </g>
+    </g>
+</svg>
