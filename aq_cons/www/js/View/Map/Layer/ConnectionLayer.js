@@ -22,7 +22,7 @@ App.View.Map.Layer.ConnectionLayer = App.View.Map.Layer.MapboxGLLayer.extend({
       'maxzoom': 15,
       'paint': {
         'circle-radius': 2,
-        'circle-color': '#3660ba',
+        'circle-color': '#45AAB0',
       }
     }, {
       'id': this._ids[1],
@@ -31,7 +31,7 @@ App.View.Map.Layer.ConnectionLayer = App.View.Map.Layer.MapboxGLLayer.extend({
       'minzoom': 15,
       'layout': {
         'icon-size': 1.5,
-        'icon-image': 'acometida',
+        'icon-image': 'abastecimiento',
         'icon-allow-overlap': true
       }
     }];

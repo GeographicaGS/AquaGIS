@@ -20,7 +20,7 @@ App.View.Map.Layer.WellLineLayer = App.View.Map.Layer.MapboxGLLayer.extend({
       'type': 'line',
       'source': this._idSource,
       'paint': {
-        'line-color': 'red',
+        'line-color': '#45AAB0',
       }
     }];
   }
