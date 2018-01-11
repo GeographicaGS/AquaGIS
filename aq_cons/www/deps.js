@@ -28,10 +28,8 @@ deps.JS = [
   srcJS + 'View/Map/Layer/ValveLineLayer.js',
   srcJS + 'View/Map/Layer/WellLayer.js',
   srcJS + 'View/Map/Layer/WellLineLayer.js',
-  srcJS + 'View/Panels/AQCons/AQConsForecastPanelView.js',
   srcJS + 'View/Panels/AQCons/AQConsMasterPanelView.js',
   srcJS + 'View/Panels/AQCons/AQConsConsume.js',
-  srcJS + 'View/Panels/AQCons/AQConsConsume2.js',
   srcJS + 'View/Widgets/WidgetTotalConsumeLastWeek.js'
 ];
 
