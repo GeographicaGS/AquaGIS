@@ -1,53 +1,39 @@
 'use strict';
 
-App.View.Panels.Aq_cons.CurrentMap = App.View.Panels.Base.extend({
+App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
 
-  _mapInstance: null,
   _payload: {
     filters: {
       condition: {}
     }
   },
   
-  initialize: function () {
-    let optionsMap = {
+  initialize: function (options) {
+    options = _.defaults(options, {
       defaultBasemap: 'positron',
+      sprites: '/verticals/aquagis-theme/mapstyle/sprite',      
       center: [-6.0738382, 37.3357641]
-    }
-
-    this._mapInstance = new App.View.Map.MapboxView(optionsMap);
-    this.listenTo(this._mapInstance.mapChanges,'change',(change)=>{
-      if (change.changed.loaded) {
-        this._onMapLoaded()
-      } else if (change.changed.bbox) {
-        this._onBboxChange(change.changed.bbox);
-      }
     });
-    this.render();
-  },
-
-  render: function () {
-    this.subviews.push(this._mapInstance);
-    App.View.Panels.Base.prototype.render.call(this);
+    App.View.Map.MapboxView.prototype.initialize.call(this, options);
   },
 
   _onMapLoaded: function() {
     // Modelos
-    let sensor = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.sensor'});
-    let sector = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cons.sector'});
-    let tank = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.tank'});
-    let connection = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.connections_point'});
-    let connectionLine = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.connections_line'});
-    let supply = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.supply_point'});
-    let supplyLine = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.supply_line'});
-    let hydrant = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.hydrant_point'});
-    let hydrantLine = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.hydrant_line'});
-    let valve = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.valve_point'});
-    let valveLine = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.valve_line'});
-    let well = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.well_point'});
-    let wellLine = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.well_line'});
-    let plot = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.plot'});
-    let plotStructure = new App.Model.Aq_cons.Model({scope: this.scopeModel.get('id'), entity: 'aq_cata.plot_structure'});
+    let sensor = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cata.sensor'});
+    let sector = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cons.sector'});
+    let tank = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cata.tank'});
+    let connection = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cata.connections_point'});
+    let connectionLine = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cata.connections_line'});
+    let supply = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cata.supply_point'});
+    let supplyLine = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cata.supply_line'});
+    let hydrant = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cata.hydrant_point'});
+    let hydrantLine = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cata.hydrant_line'});
+    let valve = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cata.valve_point'});
+    let valveLine = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cata.valve_line'});
+    let well = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cata.well_point'});
+    let wellLine = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cata.well_line'});
+    let plot = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cata.plot'});
+    let plotStructure = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cata.plot_structure'});
 
 
     // Layers
@@ -64,7 +50,7 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Panels.Base.extend({
           'fill-color': '#f08',
           'fill-opacity': 0.4
       }
-    }], this._mapInstance);
+    }], this);
     // this._sensorLayer = new App.View.Map.Layer.SensorLayer(sensor, {
     //   filters: {
     //     condition: {}
@@ -137,7 +123,7 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Panels.Base.extend({
     // }, this._mapInstance);
   },
 
-  _onBboxChange: function(bbox) {
+  _onBBoxChange: function(bbox) {
     console.log(bbox);
   },
 });

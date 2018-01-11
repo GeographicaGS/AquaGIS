@@ -14,9 +14,14 @@ App.Collection.Aq_cons.PanelList = Backbone.Collection.extend({
       },
       {
         id : 'consume',
-        title: __('Estado General'),
+        title: __('Consumo'),
         url:base + '/dashboard/consume',
       },
+      {
+        id : 'consume2',
+        title: __('Consumo'),
+        url:base + '/dashboard/consume2',
+      }
 
     ];
     this.set(options);

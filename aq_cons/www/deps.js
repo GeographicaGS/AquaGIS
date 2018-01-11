@@ -31,6 +31,7 @@ deps.JS = [
   srcJS + 'View/Panels/AQCons/AQConsForecastPanelView.js',
   srcJS + 'View/Panels/AQCons/AQConsMasterPanelView.js',
   srcJS + 'View/Panels/AQCons/AQConsConsume.js',
+  srcJS + 'View/Panels/AQCons/AQConsConsume2.js',
   srcJS + 'View/Widgets/WidgetTotalConsumeLastWeek.js'
 ];
 
