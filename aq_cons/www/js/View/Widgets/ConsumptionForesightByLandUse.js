@@ -1,77 +1,73 @@
 'use strict';
 
-App.View.Widgets.Aq_cons.ConsumptionForesightByLandUse = Backbone.View.extend({
+App.View.Widgets.Aq_cons.ConsumptionForesightByLandUse = App.View.Widgets.Base.extend({
 
   initialize: function(options) {
-  	this._scope = options.scope;
-    this.render();
-  },
-
-  onClose: function(){
-    if(this._stackedBarsView)
-      this._stackedBarsView.close();
-
-    this.stopListening();
-  },
-
-  render: function(){
-  	var stackCollection = new App.Collection.Waste.IssueStacked([],{'scope':this.id_scope});
-    var legend = App.Static.Collection.Waste.IssueStatusesFull.toJSON();
-  	var stackModel = new Backbone.Model({
-      'scope':this._scope,
-      'title':__('Previsión de consumo por usos de suelo'),
-      'colors':['#E8BA4C', '#4ED8D8', '#9AC74A', '#CB727E'],
-      'xAxisFunction': function(d) {
-      	return __(d);
-      },
-      'yAxisLabel': __('Consumo (m³)'),
-      'hideTooltip':true,
-      'url': '/' + this._scope + '/waste/operation/issues',
-      'showLegend': true,
-      'legend':_.map(_.reject(legend, function(l){ return l.id == 'closed'; }), function(i){ return i.name; })
+    options = _.defaults(options,{
+      title: __('Previsión de consumo por usos de suelo'),
+      timeMode: 'now',
+      id_category: 'aq_cons',
+      permissions: {'variables': ['aq_cons.sector.forecast']},
+      publishable: true,
+      classname: 'App.View.Widgets.Aq_cons.TotalConsumeLastWeek'
     });
-    this._stackedBarsView = new App.View.Widgets.Aq_cons.ConsumptionForesightByLandUseWrapper({
-      'model':stackModel,
-      'collection':stackCollection
-    });
-    this._stackedBarsView.$el.find('.chart').css({'padding-top':0});
-    this.$el.html(this._stackedBarsView.$el);
+    App.View.Widgets.Base.prototype.initialize.call(this,options);
 
-    return this;
-  }
+    if(!this.hasPermissions()) return;
 
-});
-
-App.View.Widgets.Aq_cons.ConsumptionForesightByLandUseWrapper = App.View.Widgets.StackedBars.extend({
-
-  events: {
-    'click .chart .nv-series': '_redrawYAxis',
-  },
-
-  _drawChart:function(){
-  	App.View.Widgets.StackedBars.prototype._drawChart.apply(this);
-    this.$('.chart').css({'padding-top':0});
-  	this._redrawYAxis();
-  },
-
-  _redrawYAxis:function(e){
-    if(e){
-      e.stopPropagation();
-      e.preventDefault();
-    }
-
-    var texts = this.$('.nv-x text');
-    for(var i=0; i<texts.length; i++){
-      var el = d3.select(texts[i]);
-      var words = el.text().split(' ');
-      // var words = el.text().match(/.{1,10}/g);
-      el.text('');
-      for (var y = 0; y < words.length; y++) {
-        var tspan = el.append('tspan').text(words[y]);
-        if (y > 0)
-            tspan.attr('x', 0).attr('dy', '15');
+    this.collection = new App.Collection.Variables.Timeserie([], {
+      scope: this.options.id_scope,
+      vars: ['aq_cons.sector.forecast'],
+      agg: ['SUM'],
+      start: '2018-01-01T00:00:00Z',
+      finish: '2018-01-08T00:00:00Z',
+      step: '1d',
+      filters: {
+        condition: {},
+        group: 'aq_cons.sector.usage'
       }
-    }
-  }
+    });
 
+    // this._chartModel = new Backbone.Model({
+    //   'scope': this.options.id_scope,
+    //   'colors':['#E8BA4C', '#4ED8D8', '#9AC74A', '#CB727E'],
+    //   'xAxisFunction': function(d) {
+    //     return __(d);
+    //   },
+    //   'yAxisLabel': __('Consumo (m³)'),
+    //   'hideTooltip':true,
+    //   'showLegend': true,
+    //   'legend': [__('Público'), __('Industrial'), __('Comercial'), __('Doméstica')]
+    // });
+
+    this._chartModel = new App.Model.BaseChartConfigModel({
+      colors: ['#E8BA4C', '#4ED8D8', '#9AC74A', '#CB727E'],
+      xAxisFunction: function(d) {
+        return __(d);
+      },
+      yAxisLabel: __('Consumo (m³)'),
+      legendNameFunc: function (d) {
+        return __('m³');
+      },
+      legendTemplate: this._template_legend,
+      formatYAxis: {
+        numberOfValues: 4,
+        tickFormat: function (d) {
+          var unit = 'm³';
+          var value = App.nbf(d);
+          if (domain && d === domain[1]) {
+            value += unit;
+          }
+          return value;
+        }
+      }
+    });
+
+    this.subviews.push( new App.View.Widgets.Charts.FillBar({
+      'opts': this._chartModel,
+      'data': this.collection
+    }));
+
+    this.filterables = [this.collection];
+  }
 });
