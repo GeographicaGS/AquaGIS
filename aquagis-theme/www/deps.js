@@ -9,7 +9,8 @@ deps.JS = []
 deps.lessFile = [ src + 'css/styles.less' ];
 
 deps.extraResources = [
-  { srcFolder: src + 'public/img', dstFolder: public + 'img', onDebugIgnore: false }
+  { srcFolder: src + 'public/img', dstFolder: public + 'img', onDebugIgnore: false },
+  { srcFolder: src + 'public/mapstyle', dstFolder: public + 'mapstyle', onDebugIgnore: false }
 ]
 
 if (typeof exports !== 'undefined') {

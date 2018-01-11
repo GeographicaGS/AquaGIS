@@ -5,7 +5,7 @@ App.View.Map.Layer.TankLayer = App.View.Map.Layer.MapboxGLLayer.extend({
 
   initialize: function(model, body, map) {
     this._idSource = 'tank_datasource';
-    this._ids = ['tanks'];
+    this._ids = ['tanks', 'tanks_symbol'];
     
     App.View.Map.Layer.MapboxGLLayer.prototype.initialize.call(this, model, body, map);
   },
@@ -19,11 +19,20 @@ App.View.Map.Layer.TankLayer = App.View.Map.Layer.MapboxGLLayer.extend({
       'id': this._ids[0],
       'type': 'circle',
       'source': this._idSource,
+      'maxzoom': 15,
       'paint': {
-        'circle-radius': 6,
-        'circle-color': 'blue',
-        'circle-stroke-width': 2,
-        'circle-stroke-color': 'red',
+        'circle-radius': 4,
+        'circle-color': '#68BEE2',
+      }
+    }, {
+      'id': this._ids[1],
+      'type': 'symbol',
+      'source': this._idSource,
+      'minzoom': 15,
+      'layout': {
+        'icon-size': 1.5,
+        'icon-image': 'deposito',
+        'icon-allow-overlap': true
       }
     }];
   }
