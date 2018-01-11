@@ -17,3 +17,22 @@ App.Collection.Aq_cons.PanelList = Backbone.Collection.extend({
     this.set(options);
   }
 });
+
+App.Static.Collection.Aq_cons.ConsumeRangeNumeric =  new Backbone.Collection([
+  {min: 0, max: 200, color: '#64B6D9'},
+  {min: 200, max: 400, color: '#4CA7D7'},
+  {min: 400, max: 600, color: '#3397D5'},
+  {min: 600, max: 800, color: '#1A88D3'},
+  {min: 800, max: 1000, color: '#0278D1'},
+  {min: 1000, max: null, color: '#D56780'}
+]);
+
+App.Static.Collection.Aq_cons.Weekdays =  new Backbone.Collection([
+  {id:'Monday', name: 'L', fullName:__('Lunes')},
+  {id:'Tuesday', name: 'M', fullName:__('Martes')},
+  {id:'Wednesday', name: 'X', fullName:__('Miércoles')},
+  {id:'Thursday', name: 'J', fullName:__('Jueves')},
+  {id:'Friday', name: 'V', fullName:__('Viernes')},
+  {id:'Saturday', name: 'S', fullName:__('Sábado')},
+  {id:'Sunday', name: 'D', fullName:__('Domingo')}
+]);
