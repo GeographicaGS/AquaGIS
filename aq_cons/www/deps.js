@@ -3,7 +3,9 @@ var src = 'src/verticals/aq_cons/';
 var srcJS = src + 'js/';
 var public = 'verticals/aq_cons/';
 
-deps.templateFolder = [srcJS + 'template'];
+deps.templateFolder = [
+  // srcJS + 'template'
+];
 
 deps.JS = [
   srcJS + 'Namespace.js',
@@ -24,8 +26,9 @@ deps.JS = [
   srcJS + 'View/Map/Layer/ValveLineLayer.js',
   srcJS + 'View/Map/Layer/WellLayer.js',
   srcJS + 'View/Map/Layer/WellLineLayer.js',
-  srcJS + 'View/Panels/AQCons/AQConsForecastPanelView.js',
-  srcJS + 'View/Panels/AQCons/AQConsMasterPanelView.js'
+  srcJS + 'View/Widgets/ConsumptionForesightByLandUse.js',
+  srcJS + 'View/Panels/AQConsForecastPanelView.js',
+  srcJS + 'View/Panels/MasterPanelView.js'
 ];
 
 deps.lessFile = [ src + 'css/styles.less' ];
