@@ -22,7 +22,7 @@ App.View.Map.Layer.ValveLayer = App.View.Map.Layer.MapboxGLLayer.extend({
       'maxzoom': 15,
       'paint': {
         'circle-radius': 2,
-        'circle-color': '#D26AC0',
+        'circle-color': '#BF9943',
       }
     }, {
       'id': this._ids[1],
@@ -31,7 +31,7 @@ App.View.Map.Layer.ValveLayer = App.View.Map.Layer.MapboxGLLayer.extend({
       'minzoom': 15,
       'layout': {
         'icon-size': 1.5,
-        'icon-image': 'bomba',
+        'icon-image': 'valvula',
         'icon-allow-overlap': true
       }
     }];

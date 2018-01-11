@@ -21,7 +21,7 @@ App.View.Map.Layer.SensorLayer = App.View.Map.Layer.MapboxGLLayer.extend({
       'maxzoom': 15,
       'paint': {
         'circle-radius': 4,
-        'circle-color': '#D26AC0',
+        'circle-color': '#8672D2',
       }
     }, {
       'id': this._ids[1],
@@ -30,7 +30,7 @@ App.View.Map.Layer.SensorLayer = App.View.Map.Layer.MapboxGLLayer.extend({
       'minzoom': 15,
       'layout': {
         'icon-size': 1.5,
-        'icon-image': 'bomba',
+        'icon-image': 'sensor-agua',
         'icon-allow-overlap': true
       }
     }];
