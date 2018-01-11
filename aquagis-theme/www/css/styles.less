@@ -247,6 +247,9 @@ body[layout='aquagis'] {
     background-color: @aquaGisSecondaryColor;
     border: 2px solid transparent;
 
+    &.bgWhite {
+      background-color: #FFFFFF;
+    }
     .viewMore {
       background-color: @aquaGisAccentColor;
     }
@@ -343,12 +346,6 @@ body[layout='aquagis'] {
   .button {
     &:not(.empty) {
       background-color: @aquaGisPrimaryColor;
-    }
-
-    &.empty {
-      // background-color: transparent;
-      // color: @aquaGisPrimaryColor;
-      // border: 1px solid @aquaGisPrimaryColor;
     }
   }
 
