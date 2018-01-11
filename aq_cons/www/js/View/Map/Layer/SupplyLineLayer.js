@@ -20,7 +20,7 @@ App.View.Map.Layer.SupplyLineLayer = App.View.Map.Layer.MapboxGLLayer.extend({
       'type': 'line',
       'source': this._idSource,
       'paint': {
-        'line-color': 'blue',
+        'line-color': '#3561BA',
       }
     }];
   }

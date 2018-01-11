@@ -11,6 +11,8 @@ deps.JS = [
   srcJS + 'Namespace.js',
   srcJS + 'Collection/AQConsCollection.js',
   srcJS + 'Model/AQConsModel.js',
+  srcJS + 'View/Map/AQConsCurrentMap.js',
+  srcJS + 'View/Map/Layer/AQConsGenericLayer.js',
   srcJS + 'View/Map/Layer/ConnectionLayer.js',
   srcJS + 'View/Map/Layer/ConnectionLineLayer.js',
   srcJS + 'View/Map/Layer/HydrantLayer.js',
@@ -27,8 +29,10 @@ deps.JS = [
   srcJS + 'View/Map/Layer/WellLayer.js',
   srcJS + 'View/Map/Layer/WellLineLayer.js',
   srcJS + 'View/Widgets/ConsumptionForesightByLandUse.js',
-  srcJS + 'View/Panels/AQConsForecastPanelView.js',
-  srcJS + 'View/Panels/MasterPanelView.js'
+  srcJS + 'View/Panels/AQCons/AQConsForecastPanelView.js',
+  srcJS + 'View/Panels/AQCons/AQConsMasterPanelView.js',
+  srcJS + 'View/Panels/AQCons/AQConsConsume.js',
+  srcJS + 'View/Widgets/WidgetTotalConsumeLastWeek.js'
 ];
 
 deps.lessFile = [ src + 'css/styles.less' ];

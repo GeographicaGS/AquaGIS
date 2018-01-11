@@ -5,7 +5,7 @@ App.View.Map.Layer.SupplyLayer = App.View.Map.Layer.MapboxGLLayer.extend({
 
   initialize: function(model, body, map) {
     this._idSource = 'supply_datasource';
-    this._ids = ['supplys_point'];
+    this._ids = ['supplys_point', 'supply_symbol'];
     
     App.View.Map.Layer.MapboxGLLayer.prototype.initialize.call(this, model, body, map);
   },
@@ -19,10 +19,19 @@ App.View.Map.Layer.SupplyLayer = App.View.Map.Layer.MapboxGLLayer.extend({
       'id': this._ids[0],
       'type': 'circle',
       'source': this._idSource,
-      'minzoom': 15,      
       'paint': {
-        'circle-radius': 4,
-        'circle-color': 'green',
+        'circle-radius': 2,
+        'circle-color': '#3561BA',
+      }
+    }, {
+      'id': this._ids[1],
+      'type': 'symbol',
+      'source': this._idSource,
+      'minzoom': 15,
+      'layout': {
+        'icon-size': 1.5,
+        'icon-image': 'acometida',
+        'icon-allow-overlap': false
       }
     }];
   }

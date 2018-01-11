@@ -21,7 +21,7 @@ App.View.Map.Layer.SectorLayer = App.View.Map.Layer.MapboxGLLayer.extend({
       'source': this._idSource,
       'layout': {},
       'paint': {
-          'fill-color': '#f08',
+          'fill-color': '#A8D5FF',
           'fill-opacity': 0.4
       }
     }];

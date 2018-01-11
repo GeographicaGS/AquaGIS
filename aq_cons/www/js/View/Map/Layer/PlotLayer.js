@@ -20,7 +20,8 @@ App.View.Map.Layer.PlotLayer = App.View.Map.Layer.MapboxGLLayer.extend({
       'type': 'fill',
       'source': this._idSource,
       'paint': {
-        'fill-color': 'black',
+        'fill-color': '#165288',
+        'fill-opacity': 0.5
       }
     }];
   }

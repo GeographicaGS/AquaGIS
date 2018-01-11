@@ -5,7 +5,7 @@ App.View.Map.Layer.SensorLayer = App.View.Map.Layer.MapboxGLLayer.extend({
 
   initialize: function(model, body, map) {
     this._idSource = 'sensors_datasource';
-    this._ids = ['sensors'];
+    this._ids = ['sensors_circle', 'sensors_symbol'];
     App.View.Map.Layer.MapboxGLLayer.prototype.initialize.call(this, model, body, map);
   },
 
@@ -18,11 +18,20 @@ App.View.Map.Layer.SensorLayer = App.View.Map.Layer.MapboxGLLayer.extend({
       'id': this._ids[0],
       'type': 'circle',
       'source': this._idSource,
+      'maxzoom': 15,
       'paint': {
-        'circle-radius': 6,
-        'circle-color': '#fc0',
-        'circle-stroke-width': 2,
-        'circle-stroke-color': '#fce275',
+        'circle-radius': 4,
+        'circle-color': '#8672D2',
+      }
+    }, {
+      'id': this._ids[1],
+      'type': 'symbol',
+      'source': this._idSource,
+      'minzoom': 15,
+      'layout': {
+        'icon-size': 1.5,
+        'icon-image': 'sensor-agua',
+        'icon-allow-overlap': true
       }
     }];
   }
