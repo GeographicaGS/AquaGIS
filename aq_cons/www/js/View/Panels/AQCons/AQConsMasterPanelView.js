@@ -20,7 +20,7 @@ App.View.Panels.Aq_cons.Master = App.View.Panels.Base.extend({
 
     this._widgets.push(new App.View.Widgets.Aq_cons.TotalConsumeLastWeek({id_scope: this.scopeModel.get('id')}));
 
-    this._widgets.push(new App.View.Widgets.Aq_cons.ConsumptionForesightByLandUse({
+    this._widgets.push(new App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse({
       id_scope: this.scopeModel.get('id')
     }));
 

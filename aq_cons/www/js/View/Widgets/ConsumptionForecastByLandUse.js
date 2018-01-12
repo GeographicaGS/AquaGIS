@@ -1,6 +1,6 @@
 'use strict';
 
-App.View.Widgets.Aq_cons.ConsumptionForesightByLandUse = App.View.Widgets.Base.extend({
+App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse = App.View.Widgets.Base.extend({
 
   initialize: function(options) {
     options = _.defaults(options,{
@@ -9,18 +9,18 @@ App.View.Widgets.Aq_cons.ConsumptionForesightByLandUse = App.View.Widgets.Base.e
       id_category: 'aq_cons',
       permissions: {'variables': ['aq_cons.sector.forecast']},
       publishable: true,
-      classname: 'App.View.Widgets.Aq_cons.TotalConsumeLastWeek'
+      classname: 'App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse'
     });
     App.View.Widgets.Base.prototype.initialize.call(this,options);
 
     if(!this.hasPermissions()) return;
 
-    this.collection = new App.Collection.Variables.Timeserie([], {
+    this.collection = new App.Collection.Variables.Simple([], {
       scope: this.options.id_scope,
       vars: ['aq_cons.sector.forecast'],
       agg: ['SUM'],
       start: '2018-01-01T00:00:00Z',
-      finish: '2018-01-08T00:00:00Z',
+      finish: '2018-01-01T00:00:00Z',
       step: '1d',
       filters: {
         condition: {},
@@ -41,13 +41,14 @@ App.View.Widgets.Aq_cons.ConsumptionForesightByLandUse = App.View.Widgets.Base.e
     // });
 
     this._chartModel = new App.Model.BaseChartConfigModel({
+      stacked: true,
       colors: ['#E8BA4C', '#4ED8D8', '#9AC74A', '#CB727E'],
       xAxisFunction: function(d) {
         return __(d);
       },
       yAxisLabel: __('Consumo (m³)'),
       legendNameFunc: function (d) {
-        return __('m³');
+        return __(d);
       },
       legendTemplate: this._template_legend,
       formatYAxis: {
@@ -63,7 +64,7 @@ App.View.Widgets.Aq_cons.ConsumptionForesightByLandUse = App.View.Widgets.Base.e
       }
     });
 
-    this.subviews.push( new App.View.Widgets.Charts.FillBar({
+    this.subviews.push( new App.View.Widgets.Charts.FillBarStacked({
       'opts': this._chartModel,
       'data': this.collection
     }));
