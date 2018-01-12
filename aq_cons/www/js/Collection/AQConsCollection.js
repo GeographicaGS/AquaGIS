@@ -17,3 +17,10 @@ App.Collection.Aq_cons.PanelList = Backbone.Collection.extend({
     this.set(options);
   }
 });
+
+App.Static.Collection.Aq_cons.LandUses = new Backbone.Collection([
+  {id: 'domestic', name: __('Doméstica'), color: '#CB727E'},
+  {id: 'industrial', name: __('Industrial'), color: '#4ED8D8'},
+  {id: 'comercial', name: __('Comercial'), color: '#9AC74A'},
+  {id: 'public', name: __('Público'), color: '#E8BA4C'},
+]);
