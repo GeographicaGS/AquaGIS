@@ -58,13 +58,9 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
     xRrange[__('Tarde')] = 3;
     xRrange[__('Noche')] = 9;
 
+    let consumeRangeNumeric = new App.Static.Collection.Aq_cons.ConsumeRangeNumeric();
     this._chartModel = new App.Model.BaseChartConfigModel({
-      colors: function(d) {
-        let color = _.find(App.Static.Collection.Aq_cons.ConsumeRangeNumeric.models, function(e) {
-          return e.get('min') <= d && (e.get('max') > d || e.get('max') === null)
-        }).get('color');
-        return color;
-      },
+      colors: consumeRangeNumeric.findColor,
       legendTemplate: this._template_legend,
       xRrange:xRrange,
       xRangeLabels: {
