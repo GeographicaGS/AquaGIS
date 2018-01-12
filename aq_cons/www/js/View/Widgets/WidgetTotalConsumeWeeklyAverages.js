@@ -29,7 +29,21 @@
 App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.extend({
 
   initialize: function(options) {
-
+    this._template_legend = _.template(
+      '<div class="tags textleft">' +
+      ' <div class="btnLegend no_border">' +
+      '   <span class="text first"><strong>' + __('Nivel de consumo (m3)') + '</strong></span>' +
+      ' </div>' +
+      ' <div class="btnLegend no_border inrow">' +
+      '    <span class="text height12">0</span>' +
+      '    <div class="ramp consume"></div>' +
+      '    <span class="text height12">1000</span>' +
+      '    <div class="max-value">' +
+      '     <div class="maxcolor"></div> <span>&gt; ' + _('Caudal máx') + '</span>' +
+      '    </div>' +
+      ' </div>' +
+      '</div>'
+    );
     options = _.defaults(options,{
       title:__('Previsión de consumo semanal'),
       timeMode: 'historic',
@@ -45,9 +59,18 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
     xRrange[__('Noche')] = 9;
 
     this._chartModel = new App.Model.BaseChartConfigModel({
-      titleLegend: __('Nivel de consumo (m3)'),
-      legend: App.Static.Collection.Aq_cons.ConsumeRangeNumeric,
+      colors: function(d) {
+        let color = _.find(App.Static.Collection.Aq_cons.ConsumeRangeNumeric.models, function(e) {
+          return e.get('min') <= d && e.get('max') > d
+        }).get('color');
+        return color;
+      },
+      legendTemplate: this._template_legend,
       xRrange:xRrange,
+      xRangeLabels: {
+        start: true,
+        end: false,
+      },
       keySerie: __('Promedio'),
       startDate: moment("07:00", "HH:mm"),
       nextDateFunction:function(d){
@@ -65,7 +88,7 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
         return type ? __(type.get('fullName')) : d;
       },
       xAxisFunctionPopup: function(d){
-        return App.nbf(d, {decimals: 2}) + ' ' + App.mv().getVariable('environment.noiseobserved.instantsoundlevel').get('units');
+        // return App.nbf(d, {decimals: 2}) + ' ' + App.mv().getVariable('environment.noiseobserved.instantsoundlevel').get('units');
       }
 
     });

@@ -24,15 +24,15 @@ App.View.Panels.Aq_cons.Master = App.View.Panels.Base.extend({
       scope: this.scopeModel.get('id'),
       section: this.id_category,
       color: App.mv().getAdditionalInfo(this.id_category).colour,
-      link : '/' + this.scopeModel.get('id') + '/' + this.id_category + '/dashboard/current',
+      link : '/' + this.scopeModel.get('id') + '/' + this.id_category + '/dashboard/consume',
       title: __('Tiempo Real'),
       timeMode:'now',
       titleLink: __('Tiempo Real')
     });
 
     this._widgets.push(new App.View.WidgetDeviceMap({model: m}));
-    this._widgets.push(new App.View.Widgets.Aq_cons.TotalConsumeLastWeek({id_scope: this.scopeModel.get('id')}));
     this._widgets.push(new App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages({id_scope: this.scopeModel.get('id')}));
+    this._widgets.push(new App.View.Widgets.Aq_cons.TotalConsumeLastWeek({id_scope: this.scopeModel.get('id')}));
 
     this.subviews.push(new App.View.Widgets.Container({
       widgets: this._widgets,
