@@ -12,5 +12,6 @@ App.config = {
   'layout_footer': 'aquagis_footer_template',
   'map_zoom':17,
   'maps_prefix':  'production_',
-  'log': false
+  'log': false,
+  'title': 'AquaGIS'
 };
