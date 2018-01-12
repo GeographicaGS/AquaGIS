@@ -32,7 +32,8 @@ deps.JS = [
   srcJS + 'View/Panels/AQCons/AQConsConsume.js',
   srcJS + 'View/Widgets/ConsumptionForecastByLandUse.js',
   srcJS + 'View/Widgets/ConsumptionForecastByLandUseTimeserie.js',
-  srcJS + 'View/Widgets/WidgetTotalConsumeLastWeek.js'
+  srcJS + 'View/Widgets/WidgetTotalConsumeLastWeek.js',
+  srcJS + 'View/Widgets/WidgetTotalConsumeWeeklyAverages.js'
 ];
 
 deps.lessFile = [ src + 'css/styles.less' ];

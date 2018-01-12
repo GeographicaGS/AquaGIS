@@ -33,7 +33,7 @@ body[layout='aquagis'] {
 
           width: 200px;
           height: 32px;
-          background: url(/verticals/aq_cons/img/aquagis_logo.svg);
+          background: url(/verticals/aquagis-theme/img/aquagis_logo.svg);
           background-size: contain;
           background-repeat: no-repeat;
 
@@ -270,6 +270,27 @@ body[layout='aquagis'] {
         &.reduced .widget_header > h4 {
           color: @aquaGisAccentColor;
         }
+      }
+    }
+    .table_chart .text_axis {
+      fill: #98B2C9;
+    }
+    .ramp.consume {
+      width: 48px;
+      background: -moz-linear-gradient(left, #64B6D9 0%, #4CA7D7 25%, #3397D5 50%, #1A88D3 75%,#0278D1 100%);
+      background: -webkit-linear-gradient(left, #64B6D9 0%, #4CA7D7 25%, #3397D5 50%, #1A88D3 75%,#0278D1 100%);
+      background: linear-gradient(to right, #64B6D9 0%, #4CA7D7 25%, #3397D5 50%, #1A88D3 75%,#0278D1 100%);
+    }
+    .max-value {
+      display: flex;
+      align-items: center;
+      color: #fff;
+      .maxcolor {
+        display: block;
+        width: 10px;
+        height: 10px;
+        margin: 4px;
+        background: #D56780;
       }
     }
   }
