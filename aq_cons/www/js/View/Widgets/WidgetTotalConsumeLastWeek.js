@@ -18,15 +18,15 @@ App.View.Widgets.Aq_cons.TotalConsumeLastWeek = App.View.Widgets.Base.extend({
     App.View.Widgets.Base.prototype.initialize.call(this,options);
 
     if(!this.hasPermissions()) return;
-
+    let nextWeek = App.Utils.getNextWeek();
     this.dataModel = new App.Model.Variables({
       scope: this.options.id_scope,
       variable: 'aq_cons.sector.consumption',
       data: {
         "agg": "SUM",
         "time": {
-          "start": "2018-01-01T00:00:00Z",
-          "finish": "2018-01-08T00:00:00Z"
+          "start": nextWeek[0],
+          "finish": nextWeek[1]
         }
       },
       mode: 'historic'
