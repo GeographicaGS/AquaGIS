@@ -13,5 +13,6 @@ App.config = {
   'map_zoom':17,
   'maps_prefix':  'production_',
   'log': false,
-  'title': 'AquaGIS'
+  'title': 'AquaGIS',
+  'pathFavicon': '/verticals/aquagis-theme',  
 };
