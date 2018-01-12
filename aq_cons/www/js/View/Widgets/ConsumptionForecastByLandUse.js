@@ -41,9 +41,6 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse = App.View.Widgets.Base.ex
         return App.nbf(d / 1000, {decimals:0});
       },
       yAxisLabel: __('Consumo (m³)'),
-      legendNameFunc: function (d) {
-        return __(d);
-      },
       legendTemplate: this._template_legend,
       legendNameFunc: function(d){
         var type = App.Static.Collection.Aq_cons.LandUses.get(d);
