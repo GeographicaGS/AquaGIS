@@ -18,7 +18,6 @@ App.View.Widgets.Aq_cons.TotalConsumeLastWeek = App.View.Widgets.Base.extend({
     App.View.Widgets.Base.prototype.initialize.call(this,options);
 
     if(!this.hasPermissions()) return;
-    let nextWeek = App.Utils.getNextWeek();
     this.dataModel = new App.Model.Variables({
       scope: this.options.id_scope,
       variable: 'aq_cons.sector.consumption',
