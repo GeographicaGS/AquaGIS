@@ -25,8 +25,8 @@ App.View.Widgets.Aq_cons.TotalConsumeLastWeek = App.View.Widgets.Base.extend({
       data: {
         "agg": "SUM",
         "time": {
-          "start": nextWeek[0],
-          "finish": nextWeek[1]
+          "start": App.ctx.getDateRange().start,
+          "finish": App.ctx.getDateRange().finish
         }
       },
       mode: 'historic'

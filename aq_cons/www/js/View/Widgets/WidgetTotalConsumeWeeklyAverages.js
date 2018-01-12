@@ -61,7 +61,7 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
     this._chartModel = new App.Model.BaseChartConfigModel({
       colors: function(d) {
         let color = _.find(App.Static.Collection.Aq_cons.ConsumeRangeNumeric.models, function(e) {
-          return e.get('min') <= d && e.get('max') > d
+          return e.get('min') <= d && (e.get('max') > d || e.get('max') === null)
         }).get('color');
         return color;
       },
@@ -92,14 +92,14 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
       }
 
     });
-
+    let nextWeek = App.Utils.getNextWeek();    
     this.collection = new App.Collection.Post([],{
       data: {
         agg: ["SUM"],
         vars: ["aq_cons.sector.forecast"],
         time: {
-          start: App.ctx.getDateRange().start,
-          finish: App.ctx.getDateRange().finish,
+          start: nextWeek[0],
+          finish: nextWeek[1],
           step: "1h"
         },
         filters: App.ctx.get('bbox_status') && App.ctx.get('bbox') ? { bbox: App.ctx.get('bbox') } : {}
