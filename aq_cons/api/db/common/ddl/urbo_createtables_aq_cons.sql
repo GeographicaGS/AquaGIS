@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------------
 -- HOW TO USE:
--- SELECT urbo_createtables_aq_cons('my_scope', FALSE, FALSE, 'my_carto_user');
+-- SELECT urbo_createtables_aq_cons('scope', FALSE, FALSE, 'carto_user');
 --------------------------------------------------------------------------------
 
 DROP FUNCTION IF EXISTS urbo_createtables_aq_cons(text, boolean, boolean, text);
@@ -45,6 +45,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _time_idx text;
     _ld_unique text;
     _usage_idx text;
+    _extra_id_column text;
     _ddl_qry text;
   BEGIN
 
@@ -119,9 +120,9 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         id_entity character varying(64) NOT NULL,
         "TimeInstant" timestamp without time zone,
         %I geometry(MultiPolygon, 4326),
-        usage text,
         name text,
-        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
 
       -- LASTDATA
@@ -143,7 +144,9 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         "TimeInstant" timestamp without time zone,
         flow double precision,
         pressure double precision,
-        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+        usage text,
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
 
       -- AGG HOURLY
@@ -169,7 +172,8 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         description jsonb,
         area double precision,
         floors integer,
-        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
 
       -- LASTDATA
@@ -191,7 +195,8 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         id_entity character varying(64) NOT NULL,
         "TimeInstant" timestamp without time zone,
         consumption double precision,
-        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
 
       ------------------
@@ -209,7 +214,8 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         floor integer,
         complete_plot boolean NOT NULL,
         usage text,
-        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
 
       -- LASTDATA
@@ -235,7 +241,8 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         "TimeInstant" timestamp without time zone,
         flow double precision,
         pressure double precision,
-        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
 
       -- AGG HOURLY
@@ -258,7 +265,8 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         "TimeInstant" timestamp without time zone,
         flow double precision,
         pressure double precision,
-        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
 
       -- LEAKAGE
@@ -269,7 +277,9 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         hours double precision,
         flow_perc double precision,
         pressure_perc double precision,
-        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+        pressure_variability double precision,
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
       ',
       _tb_catalogue_sector, _geom_fld, _tb_lastdata_sector, _geom_fld,
@@ -287,7 +297,8 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _time_idx = urbo_time_idx_qry(_tb_arr_agg);
     _ld_unique = urbo_unique_lastdata_qry(_tb_arr_ld);
 
-    _usage_idx = format('CREATE INDEX IF NOT EXISTS %s_us_idx
+    _usage_idx = format('
+      CREATE INDEX IF NOT EXISTS %s_us_idx
         ON %s USING btree (usage);
       CREATE INDEX IF NOT EXISTS %s_us_idx
         ON %s USING btree (usage);
@@ -296,10 +307,17 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       CREATE INDEX IF NOT EXISTS %s_us_idx
         ON %s USING btree (usage);
       ',
-      replace(_tb_catalogue_sector, '.', '_'), _tb_catalogue_sector,
       replace(_tb_lastdata_sector, '.', '_'), _tb_lastdata_sector,
+      replace(_tb_measurand_sector, '.', '_'), _tb_measurand_sector,
       replace(_tb_catalogue_const, '.', '_'), _tb_catalogue_const,
       replace(_tb_lastdata_const, '.', '_'), _tb_lastdata_const
+    );
+
+    _extra_id_column = format('
+      ALTER TABLE %s ADD COLUMN id SERIAL PRIMARY KEY;
+      ALTER TABLE %s ADD COLUMN id SERIAL PRIMARY KEY;
+      ',
+      _tb_aux_const_futu, _tb_aux_leakage
     );
 
     IF iscarto IS TRUE then
@@ -319,9 +337,10 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         %s
         %s
         %s
+        %s
         %s',
         _cr_tbs, _pg_geom_idx, _pg_pk, _pg_tbowner, _time_idx, _ld_unique,
-        _usage_idx
+        _usage_idx, _extra_id_column
       );
     END IF;
 
