@@ -4,17 +4,17 @@
 
 --------------------------------------------------------------------------------
 -- HOW TO USE:
--- SELECT urbo_aq_cons_are_leakages('scope', '2018-01-10T08:15:00.000Z');
+-- SELECT * FROM urbo_aq_cons_are_leakages_per_sector('scope', '2018-01-10T08:15:00.000Z');
 --------------------------------------------------------------------------------
 
-DROP FUNCTION IF EXISTS urbo_aq_cons_are_leakages(varchar, timestamp);
+DROP FUNCTION IF EXISTS urbo_aq_cons_are_leakages_per_sector(varchar, timestamp);
 
-CREATE OR REPLACE FUNCTION urbo_aq_cons_are_leakages(
+CREATE OR REPLACE FUNCTION urbo_aq_cons_are_leakages_per_sector(
     id_scope varchar,
     moment timestamp
   )
   RETURNS TABLE(
-    sector varchar,
+    id_entity varchar,
     flow_perc double precision,
     pressure_perc double precision
   ) AS
@@ -29,8 +29,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_are_leakages(
     _t_sector := urbo_get_table_name(id_scope, 'aq_cons_sector');
 
     _q := format('
-      SELECT acs.id_entity::varchar AS sector_id,
-          COALESCE(aal.flow_perc, 0) AS flow_perc,
+      SELECT acs.id_entity::varchar, COALESCE(aal.flow_perc, 0) AS flow_perc,
           COALESCE(aal.pressure_perc, 0) AS pressure_perc
         FROM (
           SELECT DISTINCT ON (id_entity) id_entity, flow_perc,

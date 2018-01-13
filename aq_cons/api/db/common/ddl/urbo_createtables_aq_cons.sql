@@ -50,16 +50,16 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
   BEGIN
 
     _tb_catalogue_sector = urbo_get_table_name(id_scope, 'aq_cons_sector', iscarto);
-    _tb_lastdata_sector = urbo_get_table_name(id_scope, 'aq_cons_sector', iscarto, true);
+    _tb_lastdata_sector = urbo_get_table_name(id_scope, 'aq_cons_sector', iscarto, TRUE);
     _tb_measurand_sector = urbo_get_table_name(id_scope, 'aq_cons_sector_measurand', iscarto);
     _tb_agg_hour_sector = urbo_get_table_name(id_scope, 'aq_cons_sector_agg_hour', iscarto);
 
     _tb_catalogue_plot = urbo_get_table_name(id_scope, 'aq_cons_plot', iscarto);
-    _tb_lastdata_plot = urbo_get_table_name(id_scope, 'aq_cons_plot', iscarto, true);
+    _tb_lastdata_plot = urbo_get_table_name(id_scope, 'aq_cons_plot', iscarto, TRUE);
     _tb_measurand_plot = urbo_get_table_name(id_scope, 'aq_cons_plot_measurand', iscarto);
 
     _tb_catalogue_const = urbo_get_table_name(id_scope, 'aq_cons_const', iscarto);
-    _tb_lastdata_const = urbo_get_table_name(id_scope, 'aq_cons_const', iscarto, true);
+    _tb_lastdata_const = urbo_get_table_name(id_scope, 'aq_cons_const', iscarto, TRUE);
     _tb_measurand_const = urbo_get_table_name(id_scope, 'aq_cons_const_measurand', iscarto);
     _tb_agg_hour_const = urbo_get_table_name(id_scope, 'aq_cons_const_agg_hour', iscarto);
 
@@ -313,6 +313,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       replace(_tb_lastdata_const, '.', '_'), _tb_lastdata_const
     );
 
+    -- Those tables aren't crated with an 'id' column, so...
     _extra_id_column = format('
       ALTER TABLE %s ADD COLUMN id SERIAL PRIMARY KEY;
       ALTER TABLE %s ADD COLUMN id SERIAL PRIMARY KEY;
