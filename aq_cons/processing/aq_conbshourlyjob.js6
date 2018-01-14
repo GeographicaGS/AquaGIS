@@ -38,7 +38,7 @@ class AqConsHourlyJob extends BaseJob {
     let jobInfo = `job ${ job.id }: type '${ job.type }' - title '${ job.data.title }'`;
     let date = new moment(job.data.date);
     let fromDate = new moment(job.data.date).subtract(job.data.magnitudeRange, job.data.unitRange).startOf(job.data.truncateToUnit).toISOString();
-    let sql = `SELECT urbo_aq_cons_agg_hourly('${ job.data.idScope }', '${ fromDate }');`);
+    let sql = `SELECT urbo_aq_cons_agg_hourly('${ job.data.idScope }', '${ fromDate }');`;
 
     let callback = function (err, data) {
       // TODO: Check error for constraints
