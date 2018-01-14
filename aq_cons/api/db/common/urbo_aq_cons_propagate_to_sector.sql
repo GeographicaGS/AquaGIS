@@ -43,7 +43,8 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_sector(
           GROUP BY sl.id_entity, cl.usage
       ),
       urbo_aq_cons_sector_measurand AS (
-        SELECT q2.id_entity, q2.flow + (q2.flow / 100 * al.flow_perc) AS flow,
+        SELECT q2.id_entity, ''%s''::timestamp AS "TimeInstant",
+            q2.flow + (q2.flow / 100 * al.flow_perc) AS flow,
             q2.pressure + (q2.pressure / 100 * al.pressure_perc) AS pressure,
             q2.usage
           FROM (
@@ -69,7 +70,8 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_sector(
       ),
       urbo_update_aq_cons_sector_lastdata AS (
         UPDATE %s sl
-          SET flow = sm.flow,
+          SET "TimeInstant" = sm."TimeInstant",
+            flow = sm.flow,
             pressure = sm.pressure,
             usage = sm.usage
           FROM urbo_aq_cons_sector_measurand sm
@@ -77,13 +79,13 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_sector(
       )
       INSERT INTO %s
           (id_entity, "TimeInstant", flow, pressure, usage)
-        SELECT id_entity, ''%s'', flow, pressure, usage
+        SELECT id_entity, "TimeInstant", flow, pressure, usage
           FROM urbo_aq_cons_sector_measurand;
       ',
       _t_sector_ld, _t_const_ld, _t_const_ms, moment, moment, minutes,
-      id_scope, moment,
+      moment, id_scope, moment,
       _t_sector_ld,
-      _t_sector_ms, moment
+      _t_sector_ms
     );
 
     EXECUTE _q;

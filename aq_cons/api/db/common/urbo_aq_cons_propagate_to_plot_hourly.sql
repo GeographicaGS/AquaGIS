@@ -30,7 +30,8 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_plot_hourly(
 
     _q := format('
       WITH urbo_aq_cons_plot_measurand AS (
-        SELECT cl.refplot AS id_entity, SUM(consumption) AS consumption
+        SELECT cl.refplot AS id_entity, ''%s''::timestamp AS "TimeInstant",
+            SUM(consumption) AS consumption
           FROM %s ca
             INNER JOIN %s cl
               ON ca.id_entity = cl.id_entity
@@ -40,18 +41,19 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_plot_hourly(
       ),
       urbo_update_aq_cons_plot_lastdata AS (
         UPDATE %s pl
-          SET consumption = pm.consumption
+          SET "TimeInstant" = pm."TimeInstant",
+            consumption = pm.consumption
           FROM urbo_aq_cons_plot_measurand pm
           WHERE pl.id_entity = pm.id_entity
       )
       INSERT INTO %s
           (id_entity, "TimeInstant", consumption)
-        SELECT id_entity, ''%s'', consumption
+        SELECT id_entity, "TimeInstant", consumption
           FROM urbo_aq_cons_plot_measurand;
       ',
-      _t_const_ah, _t_const_ld, moment, moment,
+      moment, _t_const_ah, _t_const_ld, moment, moment,
       _t_plot_ld,
-      _t_plot_ms, moment
+      _t_plot_ms
     );
 
     EXECUTE _q;
