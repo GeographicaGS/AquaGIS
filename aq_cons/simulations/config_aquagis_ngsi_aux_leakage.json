@@ -1,0 +1,91 @@
+{
+  "domain": {
+    "service": "aljarafe",
+    "subservice": "/aquagis"
+  },
+  "contextBroker": {
+    "protocol": "http",
+    "host": "urbo-aquagis-orion.geographica.gs",
+    "port": 1026,
+    "ngsiVersion": "1.0"
+  },
+  "exports": {
+    "each30Minutes": "0 */30 * * * *",
+    "now": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})"
+  },
+  "entities": [{
+      "entity_name": "sector_id:16",
+      "entity_type": "AuxLeakage",
+      "schedule": "import(each30Minutes)",
+      "staticAttributes": [],
+      "active": [{
+          "name": "dateModified",
+          "type": "DateTime",
+          "value": "import(now)"
+        },
+        {
+          "name": "isLeakage",
+          "type": "Text",
+          "value": "text-rotation-interpolator({\"units\": \"hours\", \"text\": [[0,[[0.6,\"true\"],[99.4,\"false\"]]], [23,[[0.6,\"true\"],[99.4,\"false\"]]]]})"
+        },
+        {
+          "name": "hours",
+          "type": "Number",
+          "value": "time-random-linear-interpolator([[0,random(4,72)],[24,random(4,72)]])"
+        },
+        {
+          "name": "flowPerc",
+          "type": "Number",
+          "value": "time-random-linear-interpolator([[0,random(20,60)],[24,random(20,60)]])"
+        },
+        {
+          "name": "pressurePerc",
+          "type": "Number",
+          "value": "-20"
+        },
+        {
+          "name": "pressureVariability",
+          "type": "Number",
+          "value": "time-random-linear-interpolator([[0,random(0,2)],[24,random(0,2)]])"
+        }
+      ]
+    },
+    {
+      "entity_name": "sector_id:17",
+      "entity_type": "AuxLeakage",
+      "schedule": "import(each30Minutes)",
+      "staticAttributes": [],
+      "active": [{
+          "name": "dateModified",
+          "type": "DateTime",
+          "value": "import(now)"
+        },
+        {
+          "name": "isLeakage",
+          "type": "Text",
+          "value": "text-rotation-interpolator({\"units\": \"hours\", \"text\": [[0,[[0.6,\"true\"],[99.4,\"false\"]]], [23,[[0.6,\"true\"],[99.4,\"false\"]]]]})"
+        },
+        {
+          "name": "hours",
+          "type": "Number",
+          "value": "time-random-linear-interpolator([[0,random(4,72)],[24,random(4,72)]])"
+        },
+        {
+          "name": "flowPerc",
+          "type": "Number",
+          "value": "time-random-linear-interpolator([[0,random(20,60)],[24,random(20,60)]])"
+        },
+        {
+          "name": "pressurePerc",
+          "type": "Number",
+          "value": "-20"
+        },
+        {
+          "name": "pressureVariability",
+          "type": "Number",
+          "value": "time-random-linear-interpolator([[0,random(0,2)],[24,random(0,2)]])"
+        }
+      ]
+    }
+  ]
+}

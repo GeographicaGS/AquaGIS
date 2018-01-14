@@ -1,0 +1,60 @@
+'use strict';
+
+const appDir = require('app-root-path').path;
+const ospath = require('path');
+
+const config = require(ospath.join(appDir, 'config'));
+const BaseJob = require(ospath.join(appDir, 'jobs', 'basejob'));
+const utils = require(ospath.join(appDir, 'utils'));
+const log = utils.log();
+
+const moment = require('moment-timezone');
+const pgsqlConfig = config.getData().pgsql;
+
+class AqConsFiveMinutelyJob extends BaseJob {
+
+  constructor(cfg){
+    super(cfg);
+  }
+
+  getCreateTable(data){
+    // Creation of the needed tables occurs in the vertical/category creation
+    return 'SELECT 1 AS placeholder;';
+  }
+
+  _aggregate (job, done) {
+    /*
+     * - type: aqConsFiveMinutely
+     *   tableName: aq_cons_const_lastdata_AND_aq_cons_const_measurand
+     *   job: aq_consfiveminutelyjob
+     *   category: aq_cons
+     *   magnitudeRange: 5
+     *   unitRange: minutes
+     *   truncateToUnit: minute
+     *   schedule: '15 *\/5 * * * *'
+     *   carto: false
+     */
+
+    let jobInfo = `job ${ job.id }: type '${ job.type }' - title '${ job.data.title }'`;
+    let date = new moment(job.data.date);
+    let fromDate = new moment(job.data.date).subtract(job.data.magnitudeRange, job.data.unitRange).startOf(job.data.truncateToUnit).toISOString();
+    let sql = `SELECT urbo_aq_cons_propagate_to_sector('${ job.data.idScope }', '${ fromDate }');`);
+
+    let callback = function (err, data) {
+      // TODO: Check error for constraints
+      if (err) {
+        log.error(`${ jobInfo } FAILED: Error executing query`);
+        log.error(err);
+        return done(err);
+      }
+
+      log.debug(`${ jobInfo } DONE`);
+      return done();
+    };
+
+    this.pgModel.query(sql, null, callback);
+  }
+
+}
+
+module.exports = AqConsFiveMinutelyJob;
