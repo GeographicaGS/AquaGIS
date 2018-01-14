@@ -86,10 +86,10 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         _tb_aux_leakage
       ]);
 
-    IF iscarto IS TRUE then
+    IF iscarto IS TRUE THEN
       _checktable = urbo_checktable_ifexists_arr(cartouser, _tb_arr_vars);
 
-      IF _checktable then
+      IF _checktable THEN
         RETURN;
       END IF;
 
@@ -99,7 +99,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     ELSE
       _checktable = urbo_checktable_ifexists_arr(id_scope, _tb_arr_vars, TRUE);
 
-      IF _checktable then
+      IF _checktable THEN
         RETURN;
       END IF;
 
@@ -320,7 +320,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       _tb_aux_const_futu, _tb_aux_leakage
     );
 
-    IF iscarto IS TRUE then
+    IF iscarto IS TRUE THEN
       _ddl_qry = format('
         %s
         %s
@@ -344,7 +344,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       );
     END IF;
 
-    IF isdebug IS TRUE then
+    IF isdebug IS TRUE THEN
       RAISE NOTICE '%', _ddl_qry;
     END IF;
 

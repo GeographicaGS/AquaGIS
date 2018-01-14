@@ -67,7 +67,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_sector(
               ) al
               ON q2.id_entity = al.id_entity
       ),
-      update_aq_cons_sector_lastdata AS (
+      urbo_update_aq_cons_sector_lastdata AS (
         UPDATE %s sl
           SET flow = sm.flow,
             pressure = sm.pressure,
