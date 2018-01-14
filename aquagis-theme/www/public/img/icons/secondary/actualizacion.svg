@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>icons/secondary/actualizacion</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icons/secondary/actualizacion">
+            <g id="Group" transform="translate(1.000000, 3.000000)">
+                <g id="Page-1" transform="translate(8.346269, 7.099389) scale(-1, 1) rotate(-261.000000) translate(-8.346269, -7.099389) translate(2.346269, -0.400611)">
+                    <path d="M5.95370674,2.96844376 C9.24164129,2.96844376 11.9074135,5.63421595 11.9074135,8.9221505 C11.9074135,12.210085 9.24164129,14.8758572 5.95370674,14.8758572 C2.66577219,14.8758572 0,12.210085 0,8.9221505" id="Stroke-1" stroke="#165288" stroke-width="2"></path>
+                    <polygon id="Fill-3" fill="#165288" points="6.41301595 5.46437085 2.09066339 2.96844376 6.41301595 0.472516669"></polygon>
+                </g>
+                <polyline id="Path-15" stroke="#165288" stroke-width="2" points="9.63909237 2.64024722 9.63909237 6.80691389 12.1390924 8.05691389"></polyline>
+            </g>
+        </g>
+    </g>
+</svg>
