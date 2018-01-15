@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>cartografia/valvula</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="12" cy="12" r="12"></circle>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="cartografia/valvula">
+            <g id="Oval-8">
+                <use fill="#68BC84" fill-rule="evenodd" xlink:href="#path-1"></use>
+                <circle stroke="#DDDDDF" stroke-width="1" cx="12" cy="12" r="11.5"></circle>
+            </g>
+            <g id="icons/negative/valvula" transform="translate(2.000000, 2.000000)" fill="#FFFFFF">
+                <g id="Group-2" transform="translate(3.000000, 3.000000)">
+                    <polygon id="Fill-3" points="12.25 5.25 12.25 6.125 11.375 6.125 11.375 7.875 12.25 7.875 12.25 8.75 14 8.75 14 7.875 14 6.125 14 5.25"></polygon>
+                    <polygon id="Fill-5" points="1.75 5.25 0 5.25 0 6.125 0 7.875 0 8.75 1.75 8.75 1.75 7.875 2.625 7.875 2.625 6.125 1.75 6.125"></polygon>
+                    <polygon id="Fill-7" points="5.25 14 8.75 14 8.75 13.125 5.25 13.125"></polygon>
+                    <path d="M8.4245,8.41925 L8.4245,8.425375 C8.4245,9.1735 7.770875,9.781625 6.965875,9.781625 C6.16175,9.781625 5.508125,9.1735 5.508125,8.425375 L5.508125,8.41925 L5.508125,8.41575 C5.508125,7.714875 7,5.25 7,5.25 C7,5.25 8.4245,7.714875 8.4245,8.41575 L8.4245,8.41925 Z M7.875,1.42625 L7.875,0.875 L8.75,0.875 L8.75,0 L5.25,0 L5.25,0.875 L6.125,0.875 L6.125,1.42625 C4.49925,1.5575 3.5,2.04225 3.5,2.625 L2.625,2.625 L2.625,4.375 L3.5,4.375 L3.5,11.375 C3.5,11.858875 3.892,12.25 4.375,12.25 L9.625,12.25 C10.108,12.25 10.5,11.858875 10.5,11.375 L10.5,4.375 L11.375,4.375 L11.375,2.625 L10.5,2.625 C10.5,2.04225 9.50075,1.5575 7.875,1.42625 Z" id="Fill-9"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

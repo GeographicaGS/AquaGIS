@@ -4,11 +4,12 @@ App.View.Map.Layer.Aq_cons.GenericLayer = App.View.Map.Layer.MapboxGLLayer.exten
 
 
   initialize: function(config) {
+    this.legendConfig = config.legend;
     this.layers = config.layers;
-    this._idSource = config.source.id;
+    this._ignoreOnLegend = config.ignoreOnLegend;
+    this._idSource = config.source.id;    
     this._ids = config.layers.map(l => l.id);
-    
-    App.View.Map.Layer.MapboxGLLayer.prototype.initialize.call(this, config.source.model, config.source.payload, config.map);
+    App.View.Map.Layer.MapboxGLLayer.prototype.initialize.call(this, config.source.model, config.source.payload, config.legend, config.map);
   },
 
   _layersConfig: function() {

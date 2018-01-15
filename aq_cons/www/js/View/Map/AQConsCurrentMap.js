@@ -7,6 +7,8 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
       condition: {}
     }
   },
+
+  iconsFolder: '/verticals/aquagis-theme/img/icons/map',
   
   initialize: function (options) {
     options = _.defaults(options, {
@@ -44,6 +46,12 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         id: 'aqua_sectors',
         model: sector,
         payload: this._payload
+      },
+      legend: {
+        sectionId: 'sector',
+        sectionIcon: this.iconsFolder + '/sectores.svg',
+        sectionName: __('Sectores'),
+        name: __('Sectores')
       },
       layers:[{
         'id': 'sector',
@@ -84,6 +92,12 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         model: supplyLine,
         payload: this._payload
       },
+      legend: {
+        sectionId: 'supply',
+        sectionIcon: this.iconsFolder + '/abastecimiento.svg',
+        sectionName: __('Red de abastecimiento'),
+        name: __('Red de abastecimiento')
+      },
       layers:[{
         'id': 'supply_line',
         'type': 'line',
@@ -100,6 +114,12 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         id: 'well_line_datasource',
         model: wellLine,
         payload: this._payload
+      },
+      legend: {
+        sectionId: 'wells',
+        sectionIcon: this.iconsFolder + '/pozo.svg',
+        sectionName: __('Pozos'),
+        name: __('Red')
       },
       layers:[{
         'id': 'well_line',
@@ -118,6 +138,12 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         model: hydrantLine,
         payload: this._payload
       },
+      legend: {
+        sectionId: 'hydrants',
+        sectionIcon: this.iconsFolder + '/hidrante.svg',
+        sectionName: __('Hidrantes'),
+        name: __('Red')
+      },
       layers:[{
         'id': 'hydrant_line',
         'type': 'line',
@@ -135,6 +161,12 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         model: valveLine,
         payload: this._payload
       },
+      legend: {
+        sectionId: 'valves',
+        sectionIcon: this.iconsFolder + '/valvula.svg',
+        sectionName: __('Válvulas'),
+        name: __('Red')
+      },
       layers:[{
         'id': 'valve_line',
         'type': 'line',
@@ -151,6 +183,12 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         id: 'connections_datasource',
         model: connection,
         payload: this._payload
+      },
+      legend: {
+        sectionId: 'connections',
+        sectionIcon: this.iconsFolder + '/acometida.svg',
+        sectionName: __('Acometidas'),
+        name: __('Acometidas')
       },
       layers:[{
         'id': 'connections_circle',
@@ -184,6 +222,12 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         model: hydrant,
         payload: this._payload
       },
+      legend: {
+        sectionId: 'hydrants',
+        sectionIcon: this.iconsFolder + '/hidrante.svg',
+        sectionName: __('Hidrantes'),
+        name: __('Hidrantes')
+      },
       layers:[{
         'id': 'hydrants_circle',
         'type': 'circle',
@@ -215,6 +259,12 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         id: 'valves_datasource',
         model: valve,
         payload: this._payload
+      },
+      legend: {
+        sectionId: 'valves',
+        sectionIcon: this.iconsFolder + '/valvula.svg',
+        sectionName: __('Válvulas'),
+        name: __('Válvulas')
       },
       layers:[{
         'id': 'valves_circle',
@@ -248,6 +298,12 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         model: well,
         payload: this._payload
       },
+      legend: {
+        sectionId: 'wells',
+        sectionIcon: this.iconsFolder + '/pozo.svg',
+        sectionName: __('Pozos'),
+        name: __('Pozos')
+      },
       layers:[{
         'id': 'wells_circle',
         'type': 'circle',
@@ -280,6 +336,12 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         model: sensor,
         payload: this._payload
       },
+      legend: {
+        sectionId: 'sensor',
+        sectionIcon: this.iconsFolder + '/sensor-agua.svg',
+        sectionName: __('Sensores'),
+        name: __('Sensores')
+      },
       layers:[{
         'id': 'sensors_circle',
         'type': 'circle',
@@ -311,6 +373,12 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         model: tank,
         payload: this._payload
       },
+      legend: {
+        sectionId: 'tanks',
+        sectionIcon: this.iconsFolder + '/deposito.svg',
+        sectionName: __('Depósitos'),
+        name: __('Depósitos')
+      },
       layers:[{
         'id': 'tanks_circle',
         'type': 'circle',
@@ -335,13 +403,11 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
       }],
       map: this
     });
-  
-    // this._valveLineLayer = new App.View.Map.Layer.ValveLineLayer(valveLine, {
-    //   filters: {
-    //     condition: {}
-    //   }
-    // }, this._mapInstance);
+
+    this.drawLegend();
   },
+
+  
 
   _onBBoxChange: function(bbox) {
     console.log(bbox);

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>cartografia/publico</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="12" cy="12" r="12"></circle>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="cartografia/publico">
+            <g id="Oval-3">
+                <use fill="#E8BA4C" fill-rule="evenodd" xlink:href="#path-1"></use>
+                <circle stroke="#F2F2F4" stroke-width="1" cx="12" cy="12" r="11.5"></circle>
+            </g>
+            <g id="Group" transform="translate(6.000000, 4.000000)">
+                <path d="M2,12.3203125 L2,6.15900735" id="Path-10" stroke="#FFFFFF" stroke-width="2"></path>
+                <path d="M6,12.3203125 L6,6.15900735" id="Path-10-Copy" stroke="#FFFFFF" stroke-width="2"></path>
+                <path d="M10,12.3203125 L10,6.15900735" id="Path-10-Copy-2" stroke="#FFFFFF" stroke-width="2"></path>
+                <path d="M0.587492958,6.952 L1.76247887,6.952 L10.5095962,6.952 L11.6519437,6.952 C11.8261353,6.952 11.9675579,6.90304225 12.0762441,6.80512676 C12.1850282,6.70721127 12.2394366,6.58210791 12.2394366,6.42978404 C12.2394366,6.25565765 12.163291,6.1142024 12.0109671,6.00548357 L12.0109671,5.97284507 L6.42978404,3.10065728 L6.42978404,2.25205634 C6.75616901,2.40441285 7.25119711,2.42618272 7.91483568,2.31733333 C8.57847425,2.20854922 9.14964796,2.24118772 9.62835681,2.41524883 L9.62835681,0.55485446 C9.17141784,0.380793352 8.60024413,0.348154854 7.91483568,0.456938967 C7.22942723,0.56572308 6.73439914,0.54398584 6.42978404,0.391661972 L6.42978404,0.261107981 C6.42978404,0.0870468732 6.33186854,0 6.13603756,0 C5.94020657,0 5.84229108,0.0870468732 5.84229108,0.261107981 L5.84229108,3.10065728 L0.293746479,5.97284507 L0.261107981,6.00548357 C0.0870468732,6.11426768 0,6.25572293 0,6.42978404 C0,6.58210791 0.0598263662,6.70721127 0.179511737,6.80512676 C0.299197108,6.90304225 0.435169089,6.952 0.587492958,6.952 Z" id="Shape" fill="#FFFFFF" fill-rule="nonzero"></path>
+                <rect id="Rectangle-26" fill="#FFFFFF" x="0" y="13" width="12" height="2"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

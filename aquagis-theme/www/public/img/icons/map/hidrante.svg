@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>cartografia/hidrante</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="12" cy="12" r="12"></circle>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="cartografia/hidrante">
+            <g id="Oval-8">
+                <use fill="#6D83E9" fill-rule="evenodd" xlink:href="#path-1"></use>
+                <circle stroke="#DDDDDF" stroke-width="1" cx="12" cy="12" r="11.5"></circle>
+            </g>
+            <g id="icons/negative/hidrante" transform="translate(3.000000, 3.000000)" fill="#FFFFFF">
+                <g id="Page-1" transform="translate(2.700000, 1.800000)">
+                    <path d="M2.7,13.47543 L2.7,12.59973 L9.9,12.59973 L9.9,13.47543 L10.8,13.47543 L10.8,14.37543 L1.8,14.37543 L1.8,13.47543 L2.7,13.47543 Z" id="Combined-Shape"></path>
+                    <path d="M3.60000001,2.69973 C3.60014589,1.20855411 4.80879,0 6.3,0 C7.79121,0 8.99985411,1.20855411 8.99999999,2.69973 L9.9,2.69973 L9.9,3.59973 L2.7,3.59973 L2.7,2.69973 L3.60000001,2.69973 Z" id="Combined-Shape"></path>
+                    <path d="M6.3,9.9 C5.3055,9.9 4.5,9.0945 4.5,8.1 C4.5,7.1055 5.3055,6.3 6.3,6.3 C7.2945,6.3 8.1,7.1055 8.1,8.1 C8.1,9.0945 7.2945,9.9 6.3,9.9 Z M2.7,11.7 L2.7,4.5 L9.9,4.5 L9.9,11.7 L2.7,11.7 Z M0,9.9009 L0,6.3 L1.8,6.3 L1.8,9.9009 L0,9.9009 Z M10.8,9.9009 L10.8,6.3 L12.6,6.3 L12.6,9.9009 L10.8,9.9009 Z" id="Fill-6"></path>
+                    <path d="M7.2,8.1 C7.2,8.5968 6.7968,9 6.3,9 C5.8032,9 5.4,8.5968 5.4,8.1 C5.4,7.6032 5.8032,7.2 6.3,7.2 C6.7968,7.2 7.2,7.6032 7.2,8.1" id="Fill-10"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
