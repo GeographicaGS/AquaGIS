@@ -4,7 +4,7 @@ var srcJS = src + 'js/';
 var public = 'verticals/aq_cons/';
 
 deps.templateFolder = [
-  // srcJS + 'template'
+  srcJS + 'template'
 ];
 
 deps.JS = [

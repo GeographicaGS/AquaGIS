@@ -1,0 +1,14 @@
+<div class="header">
+  <h4>
+      <%= name %>
+  </h4>
+  <span class="containerId"></span>
+</div>
+<div class="content">
+  <% for(var property in properties) { %>
+  <div class="info-block">
+    <h4><%= __(property) %></h4>
+    <span><%= properties[property] %></span>
+  </div>
+  <% } %>  
+</div>

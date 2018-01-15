@@ -214,7 +214,17 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         }
       }],
       map: this
-    });
+    }).on('click','connections_symbol',function(e) {
+      new mapboxgl.Popup()
+      .setLngLat(e.features[0].geometry.coordinates)
+      .setHTML(new App.View.Map.MapboxGLPopup('#AQCons-popups-base_popup')
+        ._template({
+          'name': __('Acometida'),
+          'properties': {
+            'Capacidad': 1000
+          }
+        })).addTo(this._map);
+    }.bind(this));;
 
     this._hydrantLayer = new App.View.Map.Layer.Aq_cons.GenericLayer({
       source: {
@@ -252,7 +262,17 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         }
       }],
       map: this
-    });
+    }).on('click','hydrants_symbol',function(e) {
+      new mapboxgl.Popup()
+      .setLngLat(e.features[0].geometry.coordinates)
+      .setHTML(new App.View.Map.MapboxGLPopup('#AQCons-popups-base_popup')
+        ._template({
+          'name': __('Hidrante'),
+          'properties': {
+            'Capacidad': 1000
+          }
+        })).addTo(this._map);
+    }.bind(this));;
 
     this._valveLayer = new App.View.Map.Layer.Aq_cons.GenericLayer({
       source: {
@@ -290,7 +310,17 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         }
       }],
       map: this
-    });
+    }).on('click','valves_symbol',function(e) {
+      new mapboxgl.Popup()
+      .setLngLat(e.features[0].geometry.coordinates)
+      .setHTML(new App.View.Map.MapboxGLPopup('#AQCons-popups-base_popup')
+        ._template({
+          'name': __('Válvula'),
+          'properties': {
+            'Capacidad': 1000
+          }
+        })).addTo(this._map);
+    }.bind(this));
 
     this._wellLayer = new App.View.Map.Layer.Aq_cons.GenericLayer({
       source: {
@@ -328,7 +358,17 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         }
       }],
       map: this
-    });
+    }).on('click','wells_symbol',function(e) {
+      new mapboxgl.Popup()
+      .setLngLat(e.features[0].geometry.coordinates)
+      .setHTML(new App.View.Map.MapboxGLPopup('#AQCons-popups-base_popup')
+        ._template({
+          'name': __('Pozo'),
+          'properties': {
+            'Capacidad': 1000
+          }
+        })).addTo(this._map);
+    }.bind(this));
 
     this._sensorLayer = new App.View.Map.Layer.Aq_cons.GenericLayer({
       source: {
@@ -365,7 +405,17 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         }
       }],
       map: this
-    });
+    }).on('click','sensors_symbol',function(e) {
+      new mapboxgl.Popup()
+      .setLngLat(e.features[0].geometry.coordinates)
+      .setHTML(new App.View.Map.MapboxGLPopup('#AQCons-popups-base_popup')
+        ._template({
+          'name': __('Sensor'),
+          'properties': {
+            'Capacidad': 1000
+          }
+        })).addTo(this._map);
+    }.bind(this));
 
     this._tankLayer = new App.View.Map.Layer.Aq_cons.GenericLayer({
       source: {
@@ -402,7 +452,17 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         }
       }],
       map: this
-    });
+    }).on('click','tanks_symbol',function(e) {
+      new mapboxgl.Popup()
+      .setLngLat(e.features[0].geometry.coordinates)
+      .setHTML(new App.View.Map.MapboxGLPopup('#AQCons-popups-base_popup')
+        ._template({
+          'name': __('Depósito'),
+          'properties': {
+            'Capacidad': 1000
+          }
+        })).addTo(this._map);
+    }.bind(this));
 
     this.drawLegend();
   },

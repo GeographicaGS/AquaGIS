@@ -380,6 +380,45 @@ body[layout='aquagis'] {
     position: initial;
   }
 
+  .mapboxgl-popup-content {
+    padding: 0 !important;
+  }
+
+  .mapboxgl-popup.mapboxgl-popup-anchor-bottom {
+    width: 200px;
+    .header {
+      padding: 10px 14px;
+      border-bottom: 1px solid #e3e3e3;
+      h4 {
+        font-size: 12px;
+        line-height: 15px;
+        text-transform: uppercase;
+      }
+      .containerId {
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
+    .content {
+      padding: 10px 14px;
+      .info-block {
+        margin-bottom: 12px;
+        h4 {
+          font-size: 14px;
+          line-height: 17px;
+        }
+        span {
+          font-size: 14px;
+          line-height: 20px;
+        }
+      }
+    }
+  }
+
+  .mapboxgl-popup-close-button {
+    font-size: 20px;
+  }
+
   .mapbox-legend {
     position: absolute;
     top: 52px;
