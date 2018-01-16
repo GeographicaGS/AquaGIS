@@ -1,11 +1,8 @@
 'use strict';
 
 App.View.Widgets.Aq_cons.TotalConsumeLastWeek = App.View.Widgets.Base.extend({
-
-  // _template_legend: _.template("<div class='legendWidget'><span class='icon circle' style='background-color:<%= colors[0] %>'></span><span class='text' style='color:<%= colors[0] %>;font-weight:600'>" + __('Situación actual') + ": </span><span class='value'><%=App.nbf(data[0].values[0].y / 1000)%> t</span></div>"),
-
   initialize: function (options) {
-    this._template_legend = _.template("<div class='legendWidget'><span class='icon circle' style='background-color:<%= colors[0] %>'></span><span class='text' style='color:<%= colors[0] %>;font-weight:600'>" + __('Situación actual') + ": </span><span class='value'><%=App.nbf(data[0].values[0].y)%> m3</span></div>");
+    this._template_legend = _.template("<div class='legendWidget'><span class='icon circle' style='background-color:<%= colors[0] %>'></span><span class='text' style='color:<%= colors[0] %>;font-weight:600'>" + __('Situación actual') + ": </span><span class='value'><%=App.nbf(data[0].values[0].y)%> m³</span></div>");
 
     options = _.defaults(options,{
       title: __('Consumo total semana anterior'),
@@ -44,16 +41,16 @@ App.View.Widgets.Aq_cons.TotalConsumeLastWeek = App.View.Widgets.Base.extend({
       yAxisFunction: function(d){
         return App.nbf(d, {decimals:0});
       },
-      yAxisLabel: __('Consumo (m3)'),
+      yAxisLabel: __('Consumo (m³)'),
       legendNameFunc: function (d) {
-        return __('m3');
+        return __('m³');
       },
       legendTemplate: this._template_legend,
       formatYAxis: {
         numberOfValues: 4,
         tickFormat: function (d) {
-          var unit = 'm3';
-          var value = App.nbf(d);
+          var unit = 'm³';
+          var value = App.nbf(d, {decimals:0});
           if (domain && d === domain[1]) {
             value += unit;
           }

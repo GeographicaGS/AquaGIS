@@ -30,6 +30,8 @@ deps.JS = [
   srcJS + 'View/Map/Layer/WellLineLayer.js',
   srcJS + 'View/Panels/AQCons/AQConsMasterPanelView.js',
   srcJS + 'View/Panels/AQCons/AQConsConsume.js',
+  srcJS + 'View/Widgets/ConsumptionForecastByLandUse.js',
+  srcJS + 'View/Widgets/ConsumptionForecastByLandUseTimeserie.js',
   srcJS + 'View/Widgets/WidgetTotalConsumeLastWeek.js',
   srcJS + 'View/Widgets/WidgetTotalConsumeWeeklyAverages.js'
 ];

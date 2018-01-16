@@ -17,6 +17,7 @@ App.View.Panels.Aq_cons.Master = App.View.Panels.Base.extend({
 
   customRender: function() {
     this._widgets = [];
+
     var m = new App.Model.Widgets.Base({
       entities : ['aq_cons.sector'],
       location : this.scopeModel.get('location'),
@@ -29,10 +30,19 @@ App.View.Panels.Aq_cons.Master = App.View.Panels.Base.extend({
       timeMode:'now',
       titleLink: __('Tiempo Real')
     });
-
     this._widgets.push(new App.View.WidgetDeviceMap({model: m}));
-    this._widgets.push(new App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages({id_scope: this.scopeModel.get('id')}));
-    this._widgets.push(new App.View.Widgets.Aq_cons.TotalConsumeLastWeek({id_scope: this.scopeModel.get('id')}));
+
+    this._widgets.push(new App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages({
+      id_scope: this.scopeModel.get('id')
+    }));
+
+    this._widgets.push(new App.View.Widgets.Aq_cons.TotalConsumeLastWeek({
+      id_scope: this.scopeModel.get('id')
+    }));
+
+    this._widgets.push(new App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse({
+      id_scope: this.scopeModel.get('id')
+    }));
 
     this.subviews.push(new App.View.Widgets.Container({
       widgets: this._widgets,
