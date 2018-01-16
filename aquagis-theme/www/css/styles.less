@@ -430,25 +430,39 @@ body[layout='aquagis'] {
     border: 1px solid #808086;
     border-radius: 1px;
     padding: 4px;
-    .title {
+    .head {
       display: flex;
-      color:#64B6D9;
-      font-size: 12px;
-      font-weight: 600;
-      line-height: 15px;
-      text-transform: uppercase;
-      align-items: center;
-      &::before {
-        content: '';
-        background-image: url('/verticals/aquagis-theme/img/icons/accent/setup.svg');
-        height: 22px;
-        width: 22px;
-        display: block;
-        margin-right: 8px;
+      justify-content: space-between;
+      > img {
+        cursor: pointer;
+        &.opened{
+          transform: rotate(180deg);
+        }
+      }
+      .title {
+        display: flex;
+        color:#64B6D9;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 15px;
+        text-transform: uppercase;
+        align-items: center;
+        &::before {
+          content: '';
+          background-image: url('/verticals/aquagis-theme/img/icons/accent/setup.svg');
+          height: 22px;
+          width: 22px;
+          display: block;
+          margin-right: 8px;
+        }
       }
     }
     .body {
       padding: 0 10px;
+      display: none;
+      &.opened {
+        display: block;
+      }
     }
     .mapbox-legend-item {
       margin-top: 14px;
