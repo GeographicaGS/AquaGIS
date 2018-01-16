@@ -1,6 +1,6 @@
 'use strict';
 
-App.View.Map.Layer.Aq_cons.GenericLayer = App.View.Map.Layer.MapboxGLLayer.extend({
+App.View.Map.Layer.Aq_cons.GeoJSONLayer = App.View.Map.Layer.MapboxGLLayer.extend({
 
 
   initialize: function(config) {
