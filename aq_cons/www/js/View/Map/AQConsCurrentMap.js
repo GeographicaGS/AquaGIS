@@ -34,8 +34,8 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
     let valveLine = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cata.valve_line'});
     let well = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cata.well_point'});
     let wellLine = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cata.well_line'});
-    let plot = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cata.plot'});
-    let plotStructure = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cata.plot_structure'});
+    let plot = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cons.plot'});
+    let plotStructure = new App.Model.Aq_cons.Model({scope: this._options.scope, entity: 'aq_cons.const'});
 
 
     // Layers
@@ -59,12 +59,32 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         'source': 'aqua_sectors',
         'layout': {},
         'paint': {
-            'fill-color': '#A8D5FF',
+            'fill-color': [
+              'interpolate',
+              ['linear'],
+              ['get', 'forecast'],
+              0, '#A8D5FF',
+              200, '#EED322',
+              400, '#E6B71E',
+              600, '#DA9C20',
+              800, '#CA8323',
+              1000, '#B86B25'
+            ],
             'fill-opacity': 0.4
         }
       }],
       map: this
-    });
+    })
+    .setHoverable(true)
+    .setInteractivity(__('Sector'),[{
+      feature: 'id_entity',
+      label: 'Identificador',
+      units: ''
+    }, {
+      feature: 'name',
+      label: 'Nombre',
+      units: ''
+    }]);
 
     this._plotLayer = new App.View.Map.Layer.Aq_cons.GenericLayer({
       source: {
@@ -84,7 +104,29 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         }
       }],
       map: this
-    });
+    })
+    .setHoverable(true)
+    .setInteractivity(__('Parcela'),[{
+      feature: 'id_entity',
+      label: 'Identificador',
+      units: ''
+    }, {
+      feature: 'area',
+      label: 'Área',
+      units: 'm2'
+    }, {
+      feature: 'floors',
+      label: 'Plantas',
+      units: ''
+    },{
+      feature: 'description#RegistryRef',
+      label: 'Identificador catastral',
+      units: ''
+    },{
+      feature: 'description#Block',
+      label: 'Identificador de manzana',
+      units: ''
+    }]);
 
     this._supplyLineLayer = new App.View.Map.Layer.Aq_cons.GenericLayer({
       source: {
@@ -214,17 +256,13 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         }
       }],
       map: this
-    }).on('click','connections_symbol',function(e) {
-      new mapboxgl.Popup()
-      .setLngLat(e.features[0].geometry.coordinates)
-      .setHTML(new App.View.Map.MapboxGLPopup('#AQCons-popups-base_popup')
-        ._template({
-          'name': __('Acometida'),
-          'properties': {
-            'Capacidad': 1000
-          }
-        })).addTo(this._map);
-    }.bind(this));;
+    })
+    .setHoverable(true)
+    .setInteractivity(__('Hidrante'),[{
+      feature:'id_acome_p',
+      label: 'Acometida',
+      units: ''
+    }]);
 
     this._hydrantLayer = new App.View.Map.Layer.Aq_cons.GenericLayer({
       source: {
@@ -262,17 +300,13 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         }
       }],
       map: this
-    }).on('click','hydrants_symbol',function(e) {
-      new mapboxgl.Popup()
-      .setLngLat(e.features[0].geometry.coordinates)
-      .setHTML(new App.View.Map.MapboxGLPopup('#AQCons-popups-base_popup')
-        ._template({
-          'name': __('Hidrante'),
-          'properties': {
-            'Capacidad': 1000
-          }
-        })).addTo(this._map);
-    }.bind(this));;
+    })
+    .setHoverable(true)
+    .setInteractivity(__('Hidrante'),[{
+      feature:'id_hydra_p',
+      label: 'Identificador',
+      units: ''
+    }]);
 
     this._valveLayer = new App.View.Map.Layer.Aq_cons.GenericLayer({
       source: {
@@ -310,17 +344,13 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         }
       }],
       map: this
-    }).on('click','valves_symbol',function(e) {
-      new mapboxgl.Popup()
-      .setLngLat(e.features[0].geometry.coordinates)
-      .setHTML(new App.View.Map.MapboxGLPopup('#AQCons-popups-base_popup')
-        ._template({
-          'name': __('Válvula'),
-          'properties': {
-            'Capacidad': 1000
-          }
-        })).addTo(this._map);
-    }.bind(this));
+    })
+    .setHoverable(true)
+    .setInteractivity(__('Válvula'),[{
+      feature:'id_valve_p',
+      label: 'Identificador',
+      units: ''
+    }]);
 
     this._wellLayer = new App.View.Map.Layer.Aq_cons.GenericLayer({
       source: {
@@ -358,17 +388,13 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         }
       }],
       map: this
-    }).on('click','wells_symbol',function(e) {
-      new mapboxgl.Popup()
-      .setLngLat(e.features[0].geometry.coordinates)
-      .setHTML(new App.View.Map.MapboxGLPopup('#AQCons-popups-base_popup')
-        ._template({
-          'name': __('Pozo'),
-          'properties': {
-            'Capacidad': 1000
-          }
-        })).addTo(this._map);
-    }.bind(this));
+    })
+    .setHoverable(true)
+    .setInteractivity(__('Pozo'),[{
+      feature:'id_well_p',
+      label: 'Identificador',
+      units: ''
+    }]);
 
     this._sensorLayer = new App.View.Map.Layer.Aq_cons.GenericLayer({
       source: {
@@ -405,17 +431,17 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         }
       }],
       map: this
-    }).on('click','sensors_symbol',function(e) {
-      new mapboxgl.Popup()
-      .setLngLat(e.features[0].geometry.coordinates)
-      .setHTML(new App.View.Map.MapboxGLPopup('#AQCons-popups-base_popup')
-        ._template({
-          'name': __('Sensor'),
-          'properties': {
-            'Capacidad': 1000
-          }
-        })).addTo(this._map);
-    }.bind(this));
+    })
+    .setHoverable(true)
+    .setInteractivity(__('Sensor'),[{
+      feature: 'id_sensor',
+      label: 'Identificador',
+      units: ''
+    },{
+      feature: 'id_sector',
+      label: 'Identificador de sector',
+      units: ''
+    }]);
 
     this._tankLayer = new App.View.Map.Layer.Aq_cons.GenericLayer({
       source: {
@@ -452,22 +478,28 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
         }
       }],
       map: this
-    }).on('click','tanks_symbol',function(e) {
-      new mapboxgl.Popup()
-      .setLngLat(e.features[0].geometry.coordinates)
-      .setHTML(new App.View.Map.MapboxGLPopup('#AQCons-popups-base_popup')
-        ._template({
-          'name': __('Depósito'),
-          'properties': {
-            'Capacidad': 1000
-          }
-        })).addTo(this._map);
-    }.bind(this));
+    })
+    .setHoverable(true)
+    .setInteractivity(__('Depósito'),[{
+      feature:'id_tank',
+      label: 'Identificador',
+      units: ''
+    },{
+      feature:'capacity',
+      label: 'Capacidad',
+      units: 'l'
+    },{
+      feature:'status',
+      label: 'Estado',
+      units: ''
+    },{
+      feature:'location',
+      label: 'Ubicación',
+      units: ''
+    }]);
 
     this.drawLegend();
   },
-
-  
 
   _onBBoxChange: function(bbox) {
     console.log(bbox);

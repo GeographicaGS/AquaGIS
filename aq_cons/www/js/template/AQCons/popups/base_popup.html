@@ -5,10 +5,10 @@
   <span class="containerId"></span>
 </div>
 <div class="content">
-  <% for(var property in properties) { %>
+  <% for(var property of properties) { %>
   <div class="info-block">
-    <h4><%= __(property) %></h4>
-    <span><%= properties[property] %></span>
+    <h4><%= __(property.label) %></h4>
+    <span><%= property.value + ' ' + (property.units) %></span>
   </div>
   <% } %>  
 </div>

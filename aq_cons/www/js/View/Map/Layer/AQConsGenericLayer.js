@@ -9,7 +9,7 @@ App.View.Map.Layer.Aq_cons.GenericLayer = App.View.Map.Layer.MapboxGLLayer.exten
     this._ignoreOnLegend = config.ignoreOnLegend;
     this._idSource = config.source.id;    
     this._ids = config.layers.map(l => l.id);
-    
+
     App.View.Map.Layer.MapboxGLLayer.prototype
       .initialize.call(this, config.source.model,
       config.source.payload,config.legend, config.map);
@@ -17,5 +17,39 @@ App.View.Map.Layer.Aq_cons.GenericLayer = App.View.Map.Layer.MapboxGLLayer.exten
 
   _layersConfig: function() {
     return this.layers;
+  },
+
+  setInteractivity: function(label, properties) {
+    this.on('click',this.layers.map(l => l.id), function(e) {
+      new mapboxgl.Popup()
+      .setLngLat(e.lngLat)
+      .setHTML(new App.View.Map.MapboxGLPopup('#AQCons-popups-base_popup')
+        ._template({
+          'name': label,
+          'properties': _.map(properties, function(p) {
+            if (p.feature.includes('#')) {
+              let access = p.feature.split('#');
+              p.value = JSON.parse(e.features[0].properties[access[0]])[access[1]];
+            } else {
+              p.value = e.features[0].properties[p.feature];  
+            }
+            return p;
+          })
+      })).addTo(this._map._map);
+    }.bind(this));
+    return this;
+  },
+
+  setHoverable: function(isHoverable) {
+    if (isHoverable) {
+      this.on('mouseenter',_.map(this.layers,function(l) {return l.id}), function() {
+        this._map._map.getCanvas().style.cursor = 'pointer';
+      }.bind(this));
+
+      this.on('mouseleave',_.map(this.layers,function(l) {return l.id}), function() {
+        this._map._map.getCanvas().style.cursor = '';
+      }.bind(this));
+    }
+    return this;
   }
 });
