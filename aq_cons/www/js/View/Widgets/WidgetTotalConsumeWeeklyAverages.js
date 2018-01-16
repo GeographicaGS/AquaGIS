@@ -84,7 +84,7 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
         return type ? __(type.get('fullName')) : d;
       },
       xAxisFunctionPopup: function(d){
-        // return App.nbf(d, {decimals: 2}) + ' ' + App.mv().getVariable('environment.noiseobserved.instantsoundlevel').get('units');
+        return App.nbf(d, {decimals: 2});
       }
 
     });
