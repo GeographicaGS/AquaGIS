@@ -36,10 +36,14 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_sector(
           FROM %s sl
             LEFT JOIN %s cl
               on sl.id_entity = cl.refsector
-            LEFT JOIN %s cm
+            LEFT JOIN (
+              SELECT id_entity, AVG(flow) AS flow, AVG(pressure) AS pressure
+                FROM %s
+              WHERE "TimeInstant" <= ''%s''
+                AND "TimeInstant" > ''%s''::timestamp - interval ''%s minutes''
+              GROUP BY id_entity
+            ) cm
               ON cl.id_entity = cm.id_entity
-          WHERE cm."TimeInstant" >= ''%s''
-            AND cm."TimeInstant" < ''%s''::timestamp + interval ''%s minutes''
           GROUP BY sl.id_entity, cl.usage
       ),
       urbo_aq_cons_sector_measurand AS (
