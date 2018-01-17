@@ -371,9 +371,54 @@ body[layout='aquagis'] {
   }
 
   .basemapselector {
-    position: absolute;
-    bottom: 8px;
-    left: 8px;
+    position: absolute !important;
+    top: calc(~'50% - 26px') !important;
+    bottom: inherit !important;
+    left: 8px !important;
+  }
+
+  #map {
+    position: initial;
+  }
+
+  .mapboxgl-popup-content {
+    padding: 0 !important;
+  }
+
+  .mapboxgl-popup.mapboxgl-popup-anchor-bottom,
+  .mapboxgl-popup.mapboxgl-popup-anchor-top {
+    width: 200px;
+    .header {
+      padding: 10px 14px;
+      border-bottom: 1px solid #e3e3e3;
+      h4 {
+        font-size: 12px;
+        line-height: 15px;
+        text-transform: uppercase;
+      }
+      .containerId {
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
+    .content {
+      padding: 10px 14px;
+      .info-block {
+        margin-bottom: 12px;
+        h4 {
+          font-size: 14px;
+          line-height: 17px;
+        }
+        span {
+          font-size: 14px;
+          line-height: 20px;
+        }
+      }
+    }
+  }
+
+  .mapboxgl-popup-close-button {
+    font-size: 20px;
   }
 
   .mapbox-legend {
@@ -382,13 +427,59 @@ body[layout='aquagis'] {
     left: 10px;
     z-index: 9;
     width: 320px;
+    z-index: 999;
     background: #fff;
     border: 1px solid #808086;
     border-radius: 1px;
-    padding: 8px;
+    padding: 4px;
+    .head {
+      display: flex;
+      justify-content: space-between;
+      > img {
+        cursor: pointer;
+        &.opened{
+          transform: rotate(180deg);
+        }
+      }
+      .title {
+        display: flex;
+        color:#64B6D9;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 15px;
+        text-transform: uppercase;
+        align-items: center;
+        &::before {
+          content: '';
+          background-image: url('/verticals/aquagis-theme/img/icons/accent/setup.svg');
+          height: 22px;
+          width: 22px;
+          display: block;
+          margin-right: 8px;
+        }
+      }
+    }
+    .body {
+      padding: 0 10px;
+      display: none;
+      &.opened {
+        display: block;
+      }
+    }
     .mapbox-legend-item {
-      > span {
-        font-size: 14px;
+      margin-top: 14px;
+      > .item-head {
+        display: flex;
+        align-items: center;
+        > img {
+          width: 22px;
+          margin-right: 10px;
+        }
+        > span {
+          font-size: 16px;
+          line-height: 20px;
+          color: #55555D;
+        }
       }
       .mapbox-legend-item-child {
         margin-left: 16px;

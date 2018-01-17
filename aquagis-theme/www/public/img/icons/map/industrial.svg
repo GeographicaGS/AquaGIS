@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>cartografia/industrial</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="12" cy="12" r="12"></circle>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="cartografia/industrial">
+            <g id="Oval-3">
+                <use fill="#4ED8D8" fill-rule="evenodd" xlink:href="#path-1"></use>
+                <circle stroke="#F2F2F4" stroke-width="1" cx="12" cy="12" r="11.5"></circle>
+            </g>
+            <polygon id="Path-19" fill="#FFFFFF" points="6 5 6 11 18 11 18 6.63636364 13.5 9.5 13.5 6.77272727 8.85714286 9.36363636 8.85714286 5"></polygon>
+            <path d="M7.00668623,11 L7.00095557,17 L16.9933138,17 L16.9990444,11 L7.00668623,11 Z" id="Path-20" stroke="#FFFFFF" stroke-width="2"></path>
+            <path d="M11.5,14 L9,14" id="Path-11-Copy" stroke="#FFFFFF" stroke-width="2"></path>
+        </g>
+    </g>
+</svg>
