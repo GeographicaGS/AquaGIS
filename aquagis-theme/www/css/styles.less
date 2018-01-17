@@ -371,9 +371,10 @@ body[layout='aquagis'] {
   }
 
   .basemapselector {
-    position: absolute;
-    bottom: 8px;
-    left: 8px;
+    position: absolute !important;
+    top: calc(~'50% - 26px') !important;
+    bottom: inherit !important;
+    left: 8px !important;
   }
 
   #map {
@@ -426,6 +427,7 @@ body[layout='aquagis'] {
     left: 10px;
     z-index: 9;
     width: 320px;
+    z-index: 999;
     background: #fff;
     border: 1px solid #808086;
     border-radius: 1px;

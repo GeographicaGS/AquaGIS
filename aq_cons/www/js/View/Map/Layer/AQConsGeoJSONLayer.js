@@ -24,18 +24,7 @@ App.View.Map.Layer.Aq_cons.GeoJSONLayer = App.View.Map.Layer.MapboxGLLayer.exten
       new mapboxgl.Popup()
       .setLngLat(e.lngLat)
       .setHTML(new App.View.Map.MapboxGLPopup('#AQCons-popups-base_popup')
-        ._template({
-          'name': label,
-          'properties': _.map(properties, function(p) {
-            if (p.feature.includes('#')) {
-              let access = p.feature.split('#');
-              p.value = JSON.parse(e.features[0].properties[access[0]])[access[1]];
-            } else {
-              p.value = e.features[0].properties[p.feature];  
-            }
-            return p;
-          })
-      })).addTo(this._map._map);
+        .bindData(label,properties, e)).addTo(this._map._map);
     }.bind(this));
     return this;
   },
