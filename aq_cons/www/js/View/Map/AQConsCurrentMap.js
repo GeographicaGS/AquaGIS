@@ -28,6 +28,7 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
   },
 
   onClose: function() {
-    this.layers.close();
+    if(this.layers !== undefined)
+      this.layers.close();
   }
 });
