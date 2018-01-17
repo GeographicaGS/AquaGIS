@@ -9,7 +9,7 @@ App.View.Panels.Aq_cons.Consume = App.View.Panels.Splitted.extend({
       id_category: 'aq_cons',
       spatialFilter: false,
       master: false,
-      title: __('Consumo'),
+      title: __('Previsión Semanal'),
       id_panel: 'consume',
       filteView: false,
     });
