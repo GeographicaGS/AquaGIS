@@ -18,7 +18,7 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
   },
 
   _onMapLoaded: function() {
-    new App.View.Map.Layer.Aq_cons.GroupLayer(this._options, this._payload, this);
+    this.layers = new App.View.Map.Layer.Aq_cons.GroupLayer(this._options, this._payload, this);
 
     this.drawLegend();
   },
@@ -26,4 +26,8 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
   _onBBoxChange: function(bbox) {
     console.log(bbox);
   },
+
+  onClose: function() {
+    this.layers.close();
+  }
 });
