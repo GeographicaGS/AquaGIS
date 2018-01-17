@@ -9,7 +9,7 @@ App.Collection.Aq_cons.PanelList = Backbone.Collection.extend({
       },
       {
         id : 'consume',
-        title: __('Consumo'),
+        title: __('Previsión Semanal'),
         url:base + '/dashboard/consume',
       }
 
