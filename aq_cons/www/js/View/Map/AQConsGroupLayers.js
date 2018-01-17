@@ -482,5 +482,20 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       label: 'Ubicación',
       units: ''
     }]);
+  },
+
+  onClose: function() {
+    this._sectorLayer.close();
+    this._plotLayer.close();
+    this._supplyLineLayer.close();
+    this._wellLineLayer.close();
+    this._hydrantLineLayer.close();
+    this._valveLineLayer.close();
+    this._connectionLayer.close();
+    this._hydrantLayer.close();
+    this._valveLayer.close();
+    this._wellLayer.close();
+    this._sensorLayer.close();
+    this._tankLayer.close();
   }
 });

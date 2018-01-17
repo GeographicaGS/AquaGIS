@@ -9,6 +9,7 @@ App.View.Map.Layer.Aq_cons.GeoJSONLayer = App.View.Map.Layer.MapboxGLLayer.exten
     this._ignoreOnLegend = config.ignoreOnLegend;
     this._idSource = config.source.id;    
     this._ids = config.layers.map(l => l.id);
+    this.popupTemplate = new App.View.Map.MapboxGLPopup('#AQCons-popups-base_popup');
 
     App.View.Map.Layer.MapboxGLLayer.prototype
       .initialize.call(this, config.source.model,
@@ -23,7 +24,7 @@ App.View.Map.Layer.Aq_cons.GeoJSONLayer = App.View.Map.Layer.MapboxGLLayer.exten
     this.on('click',this.layers.map(l => l.id), function(e) {
       new mapboxgl.Popup()
       .setLngLat(e.lngLat)
-      .setHTML(new App.View.Map.MapboxGLPopup('#AQCons-popups-base_popup')
+      .setHTML(this.popupTemplate
         .bindData(label,properties, e)).addTo(this._map._map);
     }.bind(this));
     return this;
