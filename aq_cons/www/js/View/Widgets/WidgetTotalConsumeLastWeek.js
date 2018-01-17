@@ -13,7 +13,7 @@ App.View.Widgets.Aq_cons.TotalConsumeLastWeek = App.View.Widgets.Base.extend({
       classname: 'App.View.Widgets.Aq_cons.TotalConsumeLastWeek'
     });
     App.View.Widgets.Base.prototype.initialize.call(this,options);
-
+    let prevWeek = App.Utils.getPrevWeek();        
     if(!this.hasPermissions()) return;
     this.dataModel = new App.Model.Variables({
       scope: this.options.id_scope,
@@ -21,8 +21,8 @@ App.View.Widgets.Aq_cons.TotalConsumeLastWeek = App.View.Widgets.Base.extend({
       data: {
         "agg": "SUM",
         "time": {
-          "start": App.ctx.getDateRange().start,
-          "finish": App.ctx.getDateRange().finish
+          "start": prevWeek[0],
+          "finish": prevWeek[1]
         }
       },
       mode: 'historic'
