@@ -243,9 +243,9 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       map: map
     })
     .setHoverable(true)
-    .setInteractivity(__('Hidrante'),[{
+    .setInteractivity(__('Acometida'),[{
       feature:'id_acome_p',
-      label: 'Acometida',
+      label: 'Identificador',
       units: ''
     }]);
 
