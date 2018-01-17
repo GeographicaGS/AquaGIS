@@ -32,7 +32,7 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
     this._template_legend = _.template(
       '<div class="tags textleft">' +
       ' <div class="btnLegend no_border">' +
-      '   <span class="text first"><strong>' + __('Nivel de consumo (m3)') + '</strong></span>' +
+      '   <span class="text first"><strong>' + __('Nivel de consumo (m³)') + '</strong></span>' +
       ' </div>' +
       ' <div class="btnLegend no_border inrow">' +
       '    <span class="text height12">0</span>' +
