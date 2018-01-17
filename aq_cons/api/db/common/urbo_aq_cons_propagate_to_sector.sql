@@ -31,31 +31,38 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_sector(
 
     _q := format('
       WITH urbo_aq_cons_const_measurand_per_sector_and_usage AS (
-        SELECT sl.id_entity, SUM(COALESCE(cm.flow, 0)) AS flow,
+        SELECT sl.id_entity, MAX(cm."TimeInstant") AS "TimeInstant",
+            SUM(COALESCE(cm.flow, 0)) AS flow,
             SUM(COALESCE(cm.pressure, 0)) AS pressure, cl.usage
           FROM %s sl
             LEFT JOIN %s cl
               on sl.id_entity = cl.refsector
-            LEFT JOIN %s cm
+            LEFT JOIN (
+              SELECT id_entity, MAX("TimeInstant") AS "TimeInstant",
+                  AVG(flow) AS flow, AVG(pressure) AS pressure
+                FROM %s
+              WHERE "TimeInstant" <= ''%s''
+                AND "TimeInstant" > ''%s''::timestamp - interval ''%s minutes''
+              GROUP BY id_entity
+            ) cm
               ON cl.id_entity = cm.id_entity
-          WHERE cm."TimeInstant" >= ''%s''
-            AND cm."TimeInstant" < ''%s''::timestamp + interval ''%s minutes''
           GROUP BY sl.id_entity, cl.usage
       ),
       urbo_aq_cons_sector_measurand AS (
-        SELECT q2.id_entity, ''%s''::timestamp AS "TimeInstant",
+        SELECT q2.id_entity, q2."TimeInstant",
             q2.flow + (q2.flow / 100 * al.flow_perc) AS flow,
             q2.pressure + (q2.pressure / 100 * al.pressure_perc) AS pressure,
             q2.usage
           FROM (
-            SELECT q01.id_entity, q01.flow, q01.pressure, q11.usage
+            SELECT q01.id_entity, q11."TimeInstant", q01.flow, q01.pressure,
+                q11.usage
               FROM (
                 SELECT id_entity, SUM(flow) AS flow, SUM(pressure) AS pressure
                   FROM urbo_aq_cons_const_measurand_per_sector_and_usage q00
                   GROUP BY id_entity
               ) q01
                 INNER JOIN (
-                  SELECT DISTINCT ON (id_entity) id_entity, usage
+                  SELECT DISTINCT ON (id_entity) id_entity, "TimeInstant", usage
                     FROM urbo_aq_cons_const_measurand_per_sector_and_usage q10
                     ORDER BY id_entity ASC, flow DESC
                 ) q11
@@ -83,7 +90,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_sector(
           FROM urbo_aq_cons_sector_measurand;
       ',
       _t_sector_ld, _t_const_ld, _t_const_ms, moment, moment, minutes,
-      moment, id_scope, moment,
+      id_scope, moment,
       _t_sector_ld,
       _t_sector_ms
     );

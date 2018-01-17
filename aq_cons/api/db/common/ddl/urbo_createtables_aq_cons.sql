@@ -155,6 +155,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         "TimeInstant" timestamp without time zone,
         consumption double precision,
         forecast double precision,
+        pressure_forecast double precision,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
@@ -251,6 +252,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         "TimeInstant" timestamp without time zone,
         consumption double precision,
         forecast double precision,
+        pressure_forecast double precision,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
@@ -264,6 +266,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         id_entity character varying(64) NOT NULL,
         "TimeInstant" timestamp without time zone,
         flow double precision,
+        pressure double precision,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );

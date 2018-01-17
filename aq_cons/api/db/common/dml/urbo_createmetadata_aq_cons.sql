@@ -70,11 +70,12 @@ CREATE OR REPLACE FUNCTION urbo_createmetadata_aq_cons(
           (''aq_cons.sector.pressure'', ''aq_cons.sector'', ''pressure'', ''Presión'', ''kgf/cm²'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": false, "default": false}'', ''aq_cons_sector_measurand'', ''variable'', TRUE, FALSE),
           (''aq_cons.sector.consumption'', ''aq_cons.sector'', ''consumption'', ''Consumo'', ''m³'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_sector_agg_hour'', ''aggregated'', TRUE, FALSE),
           (''aq_cons.sector.forecast'', ''aq_cons.sector'', ''forecast'', ''Previsión de consumo'', ''m³'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_sector_agg_hour'', ''aggregated'', TRUE, FALSE),
+          (''aq_cons.sector.pressure_forecast'', ''aq_cons.sector'', ''pressure_forecast'', ''Previsión de presión'', ''kgf/cm²'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": false, "default": false}'', ''aq_cons_sector_agg_hour'', ''aggregated'', TRUE, FALSE),
 
           (''aq_cons.plot.description'', ''aq_cons.plot'', ''description'', ''Descripción de la parcela'', NULL, NULL, ''{"NOAGG"}'', FALSE, NULL, NULL, ''catalogue'', FALSE, FALSE),
           (''aq_cons.plot.area'', ''aq_cons.plot'', ''area'', ''Área'', ''m²'', NULL, ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, NULL, NULL, ''catalogue'', TRUE, FALSE),
           (''aq_cons.plot.floors'', ''aq_cons.plot'', ''floors'', ''Número de plantas'', NULL, NULL, ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, NULL, NULL, ''catalogue'', TRUE, FALSE),
-          (''aq_cons.plot.consumption'', ''aq_cons.plot'', ''flow'', ''Consumo'', ''m'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_plot_measurand'', ''variable'', TRUE, FALSE),
+          (''aq_cons.plot.consumption'', ''aq_cons.plot'', ''consumption'', ''Consumo'', ''m'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_plot_measurand'', ''variable'', TRUE, FALSE),
 
           (''aq_cons.const.name'', ''aq_cons.const'', ''name'', ''Nombre de la construcción'', NULL, NULL, ''{"NOAGG"}'', FALSE, NULL, NULL, ''catalogue'', FALSE, FALSE),
           (''aq_cons.const.floor'', ''aq_cons.const'', ''floor'', ''Planta'', NULL, NULL, ''{"AVG", "MIN", "MAX"}'', FALSE, NULL, NULL, ''catalogue'', FALSE, FALSE),
@@ -83,7 +84,8 @@ CREATE OR REPLACE FUNCTION urbo_createmetadata_aq_cons(
           (''aq_cons.const.flow'', ''aq_cons.const'', ''flow'', ''Caudal'', ''m³/h'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": false, "default": false}'', ''aq_cons_const_measurand'', ''variable'', TRUE, FALSE),
           (''aq_cons.const.pressure'', ''aq_cons.const'', ''pressure'', ''Presión'', ''kgf/cm²'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": false, "default": false}'', ''aq_cons_const_measurand'', ''variable'', TRUE, FALSE),
           (''aq_cons.const.consumption'', ''aq_cons.const'', ''consumption'', ''Consumo'', ''m³'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_const_agg_hour'', ''aggregated'', TRUE, FALSE),
-          (''aq_cons.const.forecast'', ''aq_cons.const'', ''forecast'', ''Previsión de consumo'', ''m³'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_const_agg_hour'', ''aggregated'', TRUE, FALSE);
+          (''aq_cons.const.forecast'', ''aq_cons.const'', ''forecast'', ''Previsión de consumo'', ''m³'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_const_agg_hour'', ''aggregated'', TRUE, FALSE),
+          (''aq_cons.const.pressure_forecast'', ''aq_cons.const'', ''pressure_forecast'', ''Previsión de presión'', ''kgf/cm²'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": false, "default": false}'', ''aq_cons_const_agg_hour'', ''aggregated'', TRUE, FALSE);
       ',
       _tb_categories, _tb_entities, _tb_entities, _tb_variables
     );
