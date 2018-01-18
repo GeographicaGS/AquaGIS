@@ -51,7 +51,11 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
   updatePayloadVariable: function(variable) {
     this._payload.var = variable;
     this.layers.updatePayload(this._payload);
-    console.log(this._payload);
+  },
+
+  updatePayloadTime: function(range) {
+    this._payload.time = range;
+    this.layers.updatePayload(this._payload);
   },
 
   onClose: function() {

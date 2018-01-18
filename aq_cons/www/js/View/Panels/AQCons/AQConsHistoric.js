@@ -19,6 +19,11 @@ App.View.Panels.Aq_cons.Historic = App.View.Panels.Splitted.extend({
         this._mapView.updatePayloadVariable(e.get('variable'));
       }
     });
+    this.listenTo(App.ctx, 'change:start change:finish', function(e) {
+      if (this._mapView !== undefined) {
+        this._mapView.updatePayloadTime(App.ctx.getDateRange());
+      }
+    });
     App.View.Panels.Splitted.prototype.initialize.call(this, options);
     this.render();
   },
@@ -51,5 +56,14 @@ App.View.Panels.Aq_cons.Historic = App.View.Panels.Splitted.extend({
     this.subviews.push(this._mapView);
     this.$el.append(this.variableSelector.render().$el);
     
-  }
+  },
+
+  _onTopHidingToggled: function(e){
+    if(this._mapView){
+      this._mapView.$el.toggleClass('collapsed');
+    	setTimeout(function(){
+      	this._mapView.resetSize();
+    	}.bind(this), 300);
+    }
+  } 
 });
