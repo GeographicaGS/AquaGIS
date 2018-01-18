@@ -403,6 +403,26 @@ body[layout='aquagis'] {
 
   #map {
     position: initial;
+    .tags {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      z-index: 9;
+      height: 28px;
+      padding: 4px;
+      bottom: calc(~'50%');
+      background: #fff;
+      .btnLegend {
+        margin: 4px;
+        display: flex;
+        align-items: center;
+        .ramp.consume {
+          background: -moz-linear-gradient(left, #64B6D9 0%, #4CA7D7 25%, #3397D5 50%, #1A88D3 75%,#0278D1 100%);
+          background: -webkit-linear-gradient(left, #64B6D9 0%, #4CA7D7 25%, #3397D5 50%, #1A88D3 75%,#0278D1 100%);
+          background: linear-gradient(to right, #64B6D9 0%, #4CA7D7 25%, #3397D5 50%, #1A88D3 75%,#0278D1 100%);
+        }
+      }
+    }
   }
 
   .mapboxgl-popup-content {
