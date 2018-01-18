@@ -43,7 +43,6 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
   },
 
   _onBBoxChange: function(bbox) {
-    console.log(bbox);
   },
 
   onClose: function() {
