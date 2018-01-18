@@ -31,6 +31,8 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_agg_hour_const text;
     _tb_aux_const_futu text;
     _tb_aux_leakage text;
+    _tb_aux_leak_rules text;
+    _tb_aux_leak_historic text;
     _tb_arr_ld text[];
     _tb_arr_bsc text[];
     _tb_arr_vars text[];
@@ -65,6 +67,8 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
 
     _tb_aux_const_futu = urbo_get_table_name(id_scope, 'aq_aux_const_futu', iscarto);
     _tb_aux_leakage = urbo_get_table_name(id_scope, 'aq_aux_leak', iscarto);
+    _tb_aux_leak_rules = urbo_get_table_name(id_scope, 'aq_aux_leak_rules', iscarto);
+    _tb_aux_leak_historic = urbo_get_table_name(id_scope, 'aq_aux_leak_sector_historic', iscarto);
 
     _tb_arr_ld = ARRAY[
         _tb_lastdata_sector, _tb_lastdata_plot, _tb_lastdata_const
@@ -83,7 +87,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_arr_agg = array_cat(_tb_arr_vars,
       ARRAY[
         _tb_agg_hour_sector, _tb_agg_hour_const, _tb_aux_const_futu,
-        _tb_aux_leakage
+        _tb_aux_leakage, _tb_aux_leak_historic
       ]);
 
     IF iscarto IS TRUE THEN
@@ -106,7 +110,13 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       _geom_fld = 'position';
       _pg_geom_idx = urbo_geom_idx_qry(_geom_fld, _tb_arr_bsc);
       _pg_pk = urbo_pk_qry(_tb_arr_vars);
-      _pg_tbowner = urbo_tbowner_qry(_tb_arr_agg);
+      _pg_tbowner = format('
+        %s
+        %s
+        ',
+        urbo_tbowner_qry(_tb_arr_agg),
+        urbo_tbowner_qry(ARRAY[_tb_aux_leak_rules])
+      );
 
     END IF;
 
@@ -134,6 +144,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         name text,
         flow double precision,
         pressure double precision,
+        leak_status smallint,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
@@ -145,6 +156,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         flow double precision,
         pressure double precision,
         usage text,
+        leak_status smallint,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
@@ -280,6 +292,22 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
+
+      -- LEAK RULES
+      CREATE TABLE IF NOT EXISTS %s (
+        consumption double precision,
+        pressure double precision,
+        time double precision,
+        status integer
+      );
+
+      -- LEAK HISTORIC
+      CREATE TABLE IF NOT EXISTS %s (
+        id_entity character varying(64) NOT NULL,
+        "TimeInstant" timestamp without time zone,
+        status integer,
+        rule text
+      );
       ',
       _tb_catalogue_sector, _geom_fld, _tb_lastdata_sector, _geom_fld,
       _tb_measurand_sector,  _tb_agg_hour_sector,
@@ -290,7 +318,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       _tb_catalogue_const, _geom_fld, _tb_lastdata_const, _geom_fld,
       _tb_measurand_const, _tb_agg_hour_const,
 
-      _tb_aux_const_futu, _tb_aux_leakage
+      _tb_aux_const_futu, _tb_aux_leakage, _tb_aux_leak_rules, _tb_aux_leak_historic
     );
 
     _time_idx = urbo_time_idx_qry(_tb_arr_agg);
@@ -316,8 +344,10 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _extra_id_column = format('
       ALTER TABLE %s ADD COLUMN id SERIAL PRIMARY KEY;
       ALTER TABLE %s ADD COLUMN id SERIAL PRIMARY KEY;
+      ALTER TABLE %s ADD COLUMN id SERIAL PRIMARY KEY;
+      ALTER TABLE %s ADD COLUMN id SERIAL PRIMARY KEY;
       ',
-      _tb_aux_const_futu, _tb_aux_leakage
+      _tb_aux_const_futu, _tb_aux_leakage, _tb_aux_leak_rules, _tb_aux_leak_historic
     );
 
     IF iscarto IS TRUE THEN
