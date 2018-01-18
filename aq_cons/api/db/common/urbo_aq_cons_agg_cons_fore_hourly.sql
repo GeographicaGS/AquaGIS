@@ -30,7 +30,6 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_cons_fore_hourly(
     _t_from text;
     _t_from_join text;
     _save_moment text;
-    _to_variable text;
     _from_variable text;
     _q text;
   BEGIN
@@ -42,18 +41,16 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_cons_fore_hourly(
     END IF;
 
     _save_moment := moment;
-    IF variable <> 'consumption' THEN
+    IF variable <> 'consumption' AND variable <> 'pressure_agg' THEN
       _save_moment := format('%s''::timestamp + interval ''7 days', moment);
       -- Every "TimeInstant" should have and interval of plus 7 days, but the
       -- connector it's ignoring the simulator, so, this interval is only in
       -- "TimeInstant" to save.
     END IF;
 
-    _to_variable := variable;
     _from_variable := 'flow';
-    IF variable = 'pressure' THEN
-      _to_variable := 'pressure_forecast';
-      _from_variable := variable;
+    IF variable ilike 'pressure_%' THEN
+      _from_variable := 'pressure';
     END IF;
 
     IF from_join_table IS NULL THEN
@@ -69,8 +66,8 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_cons_fore_hourly(
         ON CONFLICT (id_entity, "TimeInstant")
           DO UPDATE SET %s = EXCLUDED.%s;
         ',
-        _t_to, _to_variable, _save_moment, _from_variable, _to_variable,
-        _t_from, moment, moment, _to_variable, _to_variable
+        _t_to, variable, _save_moment, _from_variable, variable,
+        _t_from, moment, moment, variable, variable
       );
 
     ELSE
@@ -92,9 +89,9 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_cons_fore_hourly(
         ON CONFLICT (id_entity, "TimeInstant")
           DO UPDATE SET %s = EXCLUDED.%s;
         ',
-        _t_to, _to_variable, _save_moment, _from_variable, _to_variable,
+        _t_to, variable, _save_moment, _from_variable, variable,
         _from_variable, _from_variable, _t_from, moment, moment, _t_from_join,
-        _to_variable, _to_variable
+        variable, variable
       );
     END IF;
 
