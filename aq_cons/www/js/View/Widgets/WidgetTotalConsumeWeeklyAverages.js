@@ -29,15 +29,16 @@
 App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.extend({
 
   initialize: function(options) {
+    let nextWeek = App.Utils.getNextWeek();        
     this._template_legend = _.template(
       '<div class="tags textleft">' +
       ' <div class="btnLegend no_border">' +
-      '   <span class="text first"><strong>' + __('Nivel de consumo (m3)') + '</strong></span>' +
+      '   <span class="text first"><strong>' + __('Nivel de consumo (m³)') + '</strong></span>' +
       ' </div>' +
       ' <div class="btnLegend no_border inrow">' +
       '    <span class="text height12">0</span>' +
       '    <div class="ramp consume"></div>' +
-      '    <span class="text height12">1000</span>' +
+      '    <span class="text height12">5</span>' +
       '    <div class="max-value">' +
       '     <div class="maxcolor"></div> <span>&gt; ' + _('Caudal máx') + '</span>' +
       '    </div>' +
@@ -49,7 +50,9 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
       timeMode: 'historic',
       id_category: 'aq_cons',
       classname: 'App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages',
-      publishable: true
+      publishable: true,
+      start: nextWeek[0],
+      finish: nextWeek[1]
     });
     App.View.Widgets.Base.prototype.initialize.call(this,options);
 
@@ -67,7 +70,7 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
         start: true,
         end: false,
       },
-      keySerie: __('Promedio'),
+      keySerie: __('Suma'),
       startDate: moment("07:00", "HH:mm"),
       nextDateFunction:function(d){
         return d.add(1,'hours');
@@ -84,11 +87,10 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
         return type ? __(type.get('fullName')) : d;
       },
       xAxisFunctionPopup: function(d){
-        return App.nbf(d, {decimals: 2});
+        return App.nbf(d, {decimals: 2}) + ' m³';
       }
 
     });
-    let nextWeek = App.Utils.getNextWeek();    
     this.collection = new App.Collection.Post([],{
       data: {
         agg: ["SUM"],

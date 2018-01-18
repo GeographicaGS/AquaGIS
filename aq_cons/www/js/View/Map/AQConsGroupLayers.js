@@ -77,6 +77,12 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         model: plot,
         payload: this._payload
       },
+      legend: {
+        sectionId: 'plot',
+        sectionIcon: this.iconsFolder + '/edificio.svg',
+        sectionName: __('Edificios'),
+        name: __('Edificios')
+      },
       layers:[{
         'id': 'plot',
         'type': 'fill',
@@ -121,7 +127,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       },
       legend: {
         sectionId: 'supply',
-        sectionIcon: this.iconsFolder + '/abastecimiento.svg',
+        sectionIcon: this.iconsFolder + '/red.svg',
         sectionName: __('Red de abastecimiento'),
         name: __('Red de abastecimiento')
       },
@@ -243,9 +249,9 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       map: map
     })
     .setHoverable(true)
-    .setInteractivity(__('Hidrante'),[{
+    .setInteractivity(__('Acometida'),[{
       feature:'id_acome_p',
-      label: 'Acometida',
+      label: 'Identificador',
       units: ''
     }]);
 
