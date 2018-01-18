@@ -14,19 +14,21 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse = App.View.Widgets.Base.ex
     App.View.Widgets.Base.prototype.initialize.call(this,options);
 
     if(!this.hasPermissions()) return;
-
+    let nextWeek = App.Utils.getNextWeek();    
+    
     this.collection = new App.Collection.Variables.Simple([], {
       scope: this.options.id_scope,
       vars: ['aq_cons.sector.forecast'],
       agg: ['SUM'],
-      start: '2018-01-01T00:00:00Z',
-      finish: '2018-01-01T00:00:00Z',
+      start: nextWeek[0],
+      finish: nextWeek[1],
       step: '1d',
       filters: {
         condition: {},
         group: 'aq_cons.sector.usage'
       }
     });
+    this.collection.parse = App.Collection.Variables.TimeserieGrouped.prototype.parse;
 
     this._chartModel = new App.Model.BaseChartConfigModel({
       stacked: true,
