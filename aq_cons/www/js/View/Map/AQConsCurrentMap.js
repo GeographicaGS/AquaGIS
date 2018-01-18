@@ -14,7 +14,20 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
       sprites: '/verticals/aquagis-theme/mapstyle/sprite',      
       center: [-6.0738382, 37.3357641]
     });
+
+    this._template_legend = _.template(
+      '<div class="tags textleft">' +
+      ' <div class="btnLegend no_border">' +
+      '   <span class="text first"><strong>' + __('Nivel de consumo (m³):') + '</strong></span>' +
+      ' </div>' +
+      ' <div class="btnLegend no_border inrow">' +
+      '    <span class="text height12">0</span>' +
+      '    <div class="ramp consume"></div>' +
+      '    <span class="text height12">5 m³</span>' +
+      ' </div>' +
+      '</div>');
     App.View.Map.MapboxView.prototype.initialize.call(this, options);
+    this.$el.append(this._template_legend);
   },
 
   _onMapLoaded: function() {
