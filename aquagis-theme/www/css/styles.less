@@ -374,9 +374,31 @@ body[layout='aquagis'] {
 
   .basemapselector {
     position: absolute !important;
-    top: calc(~'50% - 26px') !important;
+    background-color: #fff;
+    top: calc(~'50% - 28px') !important;
     bottom: inherit !important;
-    left: 8px !important;
+    left: initial !important;
+    right: 0 !important;
+    display: flex;
+    align-items: center;
+    img {
+      border-right: 1px solid #DDDDDF;
+      padding: 4px;
+    }
+    #basemapselector {
+      border: none;
+      height: 28px;
+      background: none;
+      width: calc(118px - 28px);
+      background: url('/img/arrow-dropdown.svg');
+      background-repeat: no-repeat;
+      background-position: calc(~'100% - 4px');
+      padding-left: 10px;
+      text-transform: capitalize;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
   }
 
   #map {
