@@ -37,7 +37,8 @@ App.View.Panels.Aq_cons.Consume = App.View.Panels.Splitted.extend({
   onAttachToDOM: function() {
     this._mapView = new App.View.Panels.Aq_cons.CurrentMap({
       el: this.$('.top'),
-      scope: this.scopeModel.get('id')
+      scope: this.scopeModel.get('id'),
+      type: 'historic'
     }).render();
 
     this.subviews.push(this._mapView);

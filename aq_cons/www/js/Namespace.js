@@ -1,4 +1,5 @@
 App.Model.Aq_cons = {};
+App.View.Aq_cons = {};
 App.View.Map.Aq_cons = {};
 App.View.Widgets.Aq_cons = {};
 App.View.Panels.Aq_cons = {};

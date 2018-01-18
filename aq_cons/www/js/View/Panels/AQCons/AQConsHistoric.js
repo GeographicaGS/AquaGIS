@@ -13,6 +13,12 @@ App.View.Panels.Aq_cons.Historic = App.View.Panels.Splitted.extend({
       id_panel: 'historic',
       filteView: false,
     });
+    this.variableSelector = new App.View.Aq_cons.VariableSelector();
+    this.listenTo(this.variableSelector.variable,'change',function(e) {
+      if (this._mapView !== undefined) {
+        this._mapView.updatePayloadVariable(e.get('variable'));
+      }
+    });
     App.View.Panels.Splitted.prototype.initialize.call(this, options);
     this.render();
   },
@@ -32,14 +38,18 @@ App.View.Panels.Aq_cons.Historic = App.View.Panels.Splitted.extend({
       widgets: this._widgets,
       el: this.$('.bottom .widgetContainer')
     }));
+
   },
 
   onAttachToDOM: function() {
     this._mapView = new App.View.Panels.Aq_cons.CurrentMap({
       el: this.$('.top'),
-      scope: this.scopeModel.get('id')
+      scope: this.scopeModel.get('id'),
+      type: 'historic'
     }).render();
 
     this.subviews.push(this._mapView);
+    this.$el.append(this.variableSelector.render().$el);
+    
   }
 });

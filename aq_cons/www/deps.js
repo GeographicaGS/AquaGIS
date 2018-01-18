@@ -11,6 +11,7 @@ deps.JS = [
   srcJS + 'Namespace.js',
   srcJS + 'Collection/AQConsCollection.js',
   srcJS + 'Model/AQConsModel.js',
+  srcJS + 'View/AQConsVariableSelector.js',
   srcJS + 'View/Map/AQConsCurrentMap.js',
   srcJS + 'View/Map/AQConsGroupLayers.js',
   srcJS + 'View/Map/Layer/AQConsGeoJSONLayer.js',

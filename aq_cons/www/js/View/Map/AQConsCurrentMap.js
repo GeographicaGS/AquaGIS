@@ -6,9 +6,12 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
     options = _.defaults(options, {
       defaultBasemap: 'positron',
       sprites: '/verticals/aquagis-theme/mapstyle/sprite',      
-      center: [-6.0738382, 37.3357641]
+      center: [-6.0738382, 37.3357641],
+      type: 'now'
     });
-    var nextWeek = App.Utils.getNextWeek();    
+
+    var nextWeek = App.Utils.getNextWeek();   
+
     this._payload = {
       agg: 'SUM',
       var: 'aq_cons.sector.forecast',
@@ -43,6 +46,12 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
   },
 
   _onBBoxChange: function(bbox) {
+  },
+
+  updatePayloadVariable: function(variable) {
+    this._payload.var = variable;
+    this.layers.updatePayload(this._payload);
+    console.log(this._payload);
   },
 
   onClose: function() {
