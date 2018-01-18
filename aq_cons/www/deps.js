@@ -16,6 +16,7 @@ deps.JS = [
   srcJS + 'View/Map/Layer/AQConsGeoJSONLayer.js',
   srcJS + 'View/Panels/AQCons/AQConsMasterPanelView.js',
   srcJS + 'View/Panels/AQCons/AQConsForecast.js',
+  srcJS + 'View/Panels/AQCons/AQConsHistoric.js',
   srcJS + 'View/Widgets/ConsumptionForecastByLandUse.js',
   srcJS + 'View/Widgets/ConsumptionForecastByLandUseTimeserie.js',
   srcJS + 'View/Widgets/WidgetTotalConsumeLastWeek.js',
