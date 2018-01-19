@@ -11,6 +11,11 @@ App.Collection.Aq_cons.PanelList = Backbone.Collection.extend({
         id : 'consume',
         title: __('Previsión Semanal'),
         url:base + '/dashboard/consume',
+      },
+      {
+        id : 'historic',
+        title: __('Histórico de previsiones'),
+        url:base + '/dashboard/historic',
       }
 
     ];

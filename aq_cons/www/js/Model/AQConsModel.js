@@ -4,7 +4,7 @@ App.Model.Aq_cons.Model = App.Model.Post.extend({
   },
 
   url: function(options) {
-     return `${App.config.api_url}/${this.options.scope}/maps/${this.options.entity}/now`; 
+     return App.config.api_url + "/" + this.options.scope + "/maps/" + this.options.entity + "/" + this.options.type; 
   },
 
   fetch: function(options) {

@@ -2,18 +2,27 @@
 
 App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
 
-  _payload: {
-    filters: {
-      condition: {}
-    }
-  },
-  
   initialize: function (options) {
     options = _.defaults(options, {
       defaultBasemap: 'positron',
       sprites: '/verticals/aquagis-theme/mapstyle/sprite',      
-      center: [-6.0738382, 37.3357641]
+      center: [-6.0738382, 37.3357641],
+      type: 'now'
     });
+
+    var nextWeek = App.Utils.getNextWeek();   
+
+    this._payload = {
+      agg: 'SUM',
+      var: 'aq_cons.sector.forecast',
+      time: {
+          start: nextWeek[0],
+          finish: nextWeek[1]
+      },
+      filters: {
+        condition: {}
+      }
+    },
 
     this._template_legend = _.template(
       '<div class="tags textleft">' +
@@ -37,7 +46,20 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
   },
 
   _onBBoxChange: function(bbox) {
-    console.log(bbox);
+    if (App.ctx.get('bbox_status')) {
+      let __bbox = [bbox.getNorthEast().lng,bbox.getNorthEast().lat,bbox.getSouthWest().lng,bbox.getSouthWest().lat]
+      App.ctx.set('bbox', __bbox);
+    }
+  },
+
+  updatePayloadVariable: function(variable) {
+    this._payload.var = variable;
+    this.layers.updatePayload(this._payload);
+  },
+
+  updatePayloadTime: function(range) {
+    this._payload.time = range;
+    this.layers.updatePayload(this._payload);
   },
 
   onClose: function() {
