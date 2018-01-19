@@ -42,8 +42,8 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_cons_fore_hourly(
 
     _save_moment := moment;
     IF variable <> 'consumption' AND variable <> 'pressure_agg' THEN
-      _save_moment := format('%s''::timestamp + interval ''7 days', moment);
-      -- Every "TimeInstant" should have and interval of plus 7 days, but the
+      _save_moment := format('%s''::timestamp + interval ''14 days', moment);
+      -- Every "TimeInstant" should have and interval of plus 14 days, but the
       -- connector it's ignoring the simulator, so, this interval is only in
       -- "TimeInstant" to save.
     END IF;
@@ -80,7 +80,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_cons_fore_hourly(
             SELECT id_entity, AVG(%s) AS %s
               FROM %s
               WHERE "TimeInstant" >= ''%s''
-                AND "TimeInstant" < ''%s''::timestamp + interval ''1 hour''
+                AND "TimeInstant" < ''%s'' + interval ''1 hour''
               GROUP BY id_entity
           ) cf
             INNER JOIN %s cl
@@ -90,8 +90,8 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_cons_fore_hourly(
           DO UPDATE SET %s = EXCLUDED.%s;
         ',
         _t_to, variable, _save_moment, _from_variable, variable,
-        _from_variable, _from_variable, _t_from, moment, moment, _t_from_join,
-        variable, variable
+        _from_variable, _from_variable, _t_from, _save_moment, _save_moment,
+        _t_from_join, variable, variable
       );
     END IF;
 
