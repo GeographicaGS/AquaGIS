@@ -46,15 +46,15 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
             'fill-color': [
               'interpolate',
               ['linear'],
-              ['get', 'forecast'],
-              0, '#A8D5FF',
-              200, '#EED322',
-              400, '#E6B71E',
-              600, '#DA9C20',
-              800, '#CA8323',
-              1000, '#B86B25'
+              ['get', 'aq_cons.sector.forecast'],
+              0, '#64B6D9',
+              1, '#4CA7D7',
+              2, '#3397D5',
+              3, '#1A88D3',
+              4, '#0278D1',
+              5, '#D56780',
             ],
-            'fill-opacity': 0.4
+            'fill-opacity': 0.6
         }
       }],
       map: map
@@ -81,7 +81,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     }]);
 
     let plotPayload = JSON.parse(JSON.stringify(this._payload));
-    plotPayload.var = plotPayload.var.replace(/(.*\.).*(\..*)/,'$1const$2');
+    plotPayload.var = 'aq_cons.plot.consumption';
 
     this._plotLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
       source: {
@@ -528,11 +528,10 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
   },
 
   updatePayload: function(payload) {
-    let plotPayload = JSON.parse(JSON.stringify(payload));
-    plotPayload.var = plotPayload.var.replace(/(.*\.).*(\..*)/,'$1const$2')
 
     this._sectorLayer.updateData(payload);
-    this._plotLayer.updateData(plotPayload);
+    this._sectorLayer.updatePaintOptions(payload.var);
+    this._plotLayer.updateData(payload);
     this._supplyLineLayer.updateData(payload);
     this._wellLineLayer.updateData(payload);
     this._hydrantLineLayer.updateData(payload);
@@ -543,6 +542,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     this._wellLayer.updateData(payload);
     this._sensorLayer.updateData(payload);
     this._tankLayer.updateData(payload);
+
 
   }
 });
