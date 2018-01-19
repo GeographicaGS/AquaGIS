@@ -7,7 +7,7 @@ App.View.Panels.Aq_cons.Historic = App.View.Panels.Splitted.extend({
     options = _.defaults(options, {
       dateView: true,
       id_category: 'aq_cons',
-      spatialFilter: false,
+      spatialFilter: true,
       master: false,
       title: __('Histórico de previsiones'),
       id_panel: 'historic',

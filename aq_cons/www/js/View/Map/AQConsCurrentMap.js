@@ -46,6 +46,10 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
   },
 
   _onBBoxChange: function(bbox) {
+    if (App.ctx.get('bbox_status')) {
+      let __bbox = [bbox.getNorthEast().lng,bbox.getNorthEast().lat,bbox.getSouthWest().lng,bbox.getSouthWest().lat]
+      App.ctx.set('bbox', __bbox);
+    }
   },
 
   updatePayloadVariable: function(variable) {
