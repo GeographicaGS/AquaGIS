@@ -13,7 +13,7 @@ App.View.Widgets.Aq_cons.TotalConsumeLastWeek = App.View.Widgets.Base.extend({
       classname: 'App.View.Widgets.Aq_cons.TotalConsumeLastWeek'
     });
     App.View.Widgets.Base.prototype.initialize.call(this,options);
-    let prevWeek = App.Utils.getPrevWeek();        
+    let prevWeek = App.Utils.getPrevWeek();
     if(!this.hasPermissions()) return;
     this.dataModel = new App.Model.Variables({
       scope: this.options.id_scope,
@@ -38,31 +38,23 @@ App.View.Widgets.Aq_cons.TotalConsumeLastWeek = App.View.Widgets.Base.extend({
       xAxisFunction: function (d) {
       	return __('Todos los sectores');
       },
-      yAxisFunction: function(d){
-        return App.nbf(d, {decimals:0});
-      },
+      // yAxisFunction: function(d){
+      //   return App.nbf(d, {decimals:0});
+      // },
       yAxisLabel: __('Consumo (m³)'),
       legendNameFunc: function (d) {
-        return __('m³');
+        return __('Consumo (m³)');
       },
       legendTemplate: this._template_legend,
       formatYAxis: {
-        numberOfValues: 4,
+        // numberOfValues: 4,
         tickFormat: function (d) {
-          var unit = 'm³';
-          var value = App.nbf(d, {decimals:0});
-          if (domain && d === domain[1]) {
-            value += unit;
-          }
-          return value;
+          return App.nbf(d, {decimals:0});
         }
       }
     });
 
-    if (!domain) {
-      var domain = [0,100000];
-    }
-    this._chartModel.set({yAxisDomain: domain});
+    this._chartModel.set({yAxisDomain: [0,40]});
 
     this.subviews.push(new App.View.Widgets.Charts.FillBar({
       opts: this._chartModel,

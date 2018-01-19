@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
     <title>cartografia/industrial</title>
     <desc>Created with Sketch.</desc>
-    <defs>
-        <circle id="path-1" cx="12" cy="12" r="12"></circle>
-    </defs>
+    <defs></defs>
     <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="cartografia/industrial">
-            <g id="Oval-3">
-                <use fill="#4ED8D8" fill-rule="evenodd" xlink:href="#path-1"></use>
-                <circle stroke="#F2F2F4" stroke-width="1" cx="12" cy="12" r="11.5"></circle>
-            </g>
+            <circle id="Oval-3" fill="#4ED8D8" cx="12" cy="12" r="12"></circle>
             <polygon id="Path-19" fill="#FFFFFF" points="6 5 6 11 18 11 18 6.63636364 13.5 9.5 13.5 6.77272727 8.85714286 9.36363636 8.85714286 5"></polygon>
-            <path d="M7.00668623,11 L7.00095557,17 L16.9933138,17 L16.9990444,11 L7.00668623,11 Z" id="Path-20" stroke="#FFFFFF" stroke-width="2"></path>
-            <path d="M11.5,14 L9,14" id="Path-11-Copy" stroke="#FFFFFF" stroke-width="2"></path>
+            <path d="M8.00573157,12 L8.00191113,16 L15.9942684,16 L15.9980889,12 L8.00573157,12 Z M6.00764088,10 L18,10 L17.9923591,18 L6,18 L6.00764088,10 Z" id="Path-20" fill="#FFFFFF" fill-rule="nonzero"></path>
+            <polygon id="Path-11-Copy" fill="#FFFFFF" fill-rule="nonzero" points="11.5 13 11.5 15 9 15 9 13"></polygon>
+            <path d="M12,23 C18.0751322,23 23,18.0751322 23,12 C23,5.92486775 18.0751322,1 12,1 C5.92486775,1 1,5.92486775 1,12 C1,18.0751322 5.92486775,23 12,23 Z M12,24 C5.372583,24 0,18.627417 0,12 C0,5.372583 5.372583,0 12,0 C18.627417,0 24,5.372583 24,12 C24,18.627417 18.627417,24 12,24 Z" id="Oval" fill="#FFFFFF" fill-rule="nonzero"></path>
         </g>
     </g>
 </svg>

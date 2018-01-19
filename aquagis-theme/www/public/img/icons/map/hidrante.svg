@@ -3,15 +3,10 @@
     <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
     <title>cartografia/hidrante</title>
     <desc>Created with Sketch.</desc>
-    <defs>
-        <circle id="path-1" cx="12" cy="12" r="12"></circle>
-    </defs>
+    <defs></defs>
     <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="cartografia/hidrante">
-            <g id="Oval-8">
-                <use fill="#6D83E9" fill-rule="evenodd" xlink:href="#path-1"></use>
-                <circle stroke="#DDDDDF" stroke-width="1" cx="12" cy="12" r="11.5"></circle>
-            </g>
+            <circle id="Oval-8" fill="#E87668" cx="12" cy="12" r="12"></circle>
             <g id="icons/negative/hidrante" transform="translate(3.000000, 3.000000)" fill="#FFFFFF">
                 <g id="Page-1" transform="translate(2.700000, 1.800000)">
                     <path d="M2.7,13.47543 L2.7,12.59973 L9.9,12.59973 L9.9,13.47543 L10.8,13.47543 L10.8,14.37543 L1.8,14.37543 L1.8,13.47543 L2.7,13.47543 Z" id="Combined-Shape"></path>
@@ -20,6 +15,7 @@
                     <path d="M7.2,8.1 C7.2,8.5968 6.7968,9 6.3,9 C5.8032,9 5.4,8.5968 5.4,8.1 C5.4,7.6032 5.8032,7.2 6.3,7.2 C6.7968,7.2 7.2,7.6032 7.2,8.1" id="Fill-10"></path>
                 </g>
             </g>
+            <path d="M12,23 C18.0751322,23 23,18.0751322 23,12 C23,5.92486775 18.0751322,1 12,1 C5.92486775,1 1,5.92486775 1,12 C1,18.0751322 5.92486775,23 12,23 Z M12,24 C5.372583,24 0,18.627417 0,12 C0,5.372583 5.372583,0 12,0 C18.627417,0 24,5.372583 24,12 C24,18.627417 18.627417,24 12,24 Z" id="Oval" fill="#FFFFFF" fill-rule="nonzero"></path>
         </g>
     </g>
 </svg>

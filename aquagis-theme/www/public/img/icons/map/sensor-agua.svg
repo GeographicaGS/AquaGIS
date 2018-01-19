@@ -3,15 +3,10 @@
     <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
     <title>cartografia/sensor-agua</title>
     <desc>Created with Sketch.</desc>
-    <defs>
-        <circle id="path-1" cx="12" cy="12" r="12"></circle>
-    </defs>
+    <defs></defs>
     <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="cartografia/sensor-agua">
-            <g id="Oval-3-Copy-2">
-                <use fill="#9D61F9" fill-rule="evenodd" xlink:href="#path-1"></use>
-                <circle stroke="#DDDDDF" stroke-width="1" cx="12" cy="12" r="11.5"></circle>
-            </g>
+            <circle id="Oval-3-Copy-2" fill="#9D61F9" cx="12" cy="12" r="12"></circle>
             <g id="icons/negative/sensor-tuberia" transform="translate(2.000000, 2.000000)" fill="#FFFFFF">
                 <g id="Group-2" transform="translate(9.000000, 3.000000)">
                     <path d="M8,4 L8,2.999 C7.232,2.999 6.464,2.706 5.879,2.121 C5.294,1.536 5.001,0.768 5.001,0 L4,0 C4,1.024 4.39,2.047 5.172,2.828 C5.953,3.609 6.976,4 8,4" id="Fill-1"></path>
@@ -24,6 +19,7 @@
                     <path d="M10,9.23076923 L10,6.15384615 C10,5.72923077 9.65538462,5.38461538 9.23076923,5.38461538 C8.80615385,5.38461538 8.46153846,5.72923077 8.46153846,6.15384615 L8.46153846,9.23076923 C8.46153846,9.65538462 8.80615385,10 9.23076923,10 C9.65538462,10 10,9.65538462 10,9.23076923" id="Fill-11"></path>
                 </g>
             </g>
+            <path d="M12,23 C18.0751322,23 23,18.0751322 23,12 C23,5.92486775 18.0751322,1 12,1 C5.92486775,1 1,5.92486775 1,12 C1,18.0751322 5.92486775,23 12,23 Z M12,24 C5.372583,24 0,18.627417 0,12 C0,5.372583 5.372583,0 12,0 C18.627417,0 24,5.372583 24,12 C24,18.627417 18.627417,24 12,24 Z" id="Oval" fill="#FFFFFF" fill-rule="nonzero"></path>
         </g>
     </g>
 </svg>

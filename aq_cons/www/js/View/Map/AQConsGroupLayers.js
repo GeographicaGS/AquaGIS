@@ -1,7 +1,7 @@
 
 App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
   iconsFolder: '/verticals/aquagis-theme/img/icons/map',
-  
+
   initialize: function(options, payload, map) {
     this._payload = payload;
 
@@ -42,21 +42,35 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'type': 'fill',
         'source': 'aqua_sectors',
         'layout': {},
+        'maxzoom': 16,
         'paint': {
-            'fill-color': [
-              'interpolate',
-              ['linear'],
-              ['get', 'aq_cons.sector.forecast'],
-              0, '#64B6D9',
-              1, '#4CA7D7',
-              2, '#3397D5',
-              3, '#1A88D3',
-              4, '#0278D1',
-              5, '#D56780',
-            ],
-            'fill-opacity': 0.6
+          'fill-color': {
+            'property': 'aq_cons.sector.forecast',
+            'type': 'exponential',
+            'default': 'red',
+            'stops': [
+              [0, '#64B6D9'],
+              [1, '#4CA7D7'],
+              [2, '#3397D5'],
+              [3, '#1A88D3'],
+              [4, '#0278D1']
+            ]
+          },
+          'fill-opacity': 0.7
         }
-      }],
+      },
+      {
+        'id': 'sector_line',
+        'type': 'line',
+        'source': 'aqua_sectors',
+        'layout': {},
+        'paint': {
+          'line-color': '#165288',
+          'line-width': 2,
+          'line-dasharray': [2,2]
+        }
+      }
+    ],
       map: map
     })
     .setHoverable(true)
@@ -105,7 +119,19 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
             'fill-color': '#165288',
             'fill-opacity': 0.4
         }
-      }],
+      },
+      {
+        'id': 'plot_line',
+        'type': 'line',
+        'source': 'aqua_plots',
+        'layout': {},
+        'minzoom': 16,
+        'paint': {
+          'line-color': '#165288',
+          'line-width': 1
+        }
+      }
+    ],
       map: map
     })
     .setHoverable(true)
@@ -158,7 +184,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'type': 'line',
         'source': 'supply_line_datasource',
         'paint': {
-          'line-color': '#45AAB0',
+          'line-color': '#86E9A7',
         }
       }],
       map: map
@@ -254,16 +280,30 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'paint': {
           'circle-radius': 2,
           'circle-stroke-width': 1,
-          'circle-stroke-color': '#DDDDDF',
+          'circle-stroke-color': '#FFF',
           'circle-color': '#3561BA',
         }
-      }, {
+      },
+      {
+        'id': 'connections_circle_2',
+        'type': 'circle',
+        'source': 'connections_datasource',
+        'minzoom': 16,
+        'maxzoom': 17,
+        'paint': {
+          'circle-radius': 4,
+          'circle-stroke-width': 1,
+          'circle-stroke-color': '#FFF',
+          'circle-color': '#3561BA',
+        }
+      },
+       {
         'id': 'connections_symbol',
         'type': 'symbol',
         'source': 'connections_datasource',
-        'minzoom': 16,
+        'minzoom': 17,
         'layout': {
-          'icon-size': 1.5,
+
           'icon-image': 'acometida',
           'icon-allow-overlap': true
         }
@@ -298,16 +338,30 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'paint': {
           'circle-radius': 2,
           'circle-stroke-width': 1,
-          'circle-stroke-color': '#DDDDDF',
-          'circle-color': '#6D83E9',
+          'circle-stroke-color': '#FFF',
+          'circle-color': '#E87668',
         }
-      }, {
+      },
+      {
+        'id': 'hydrants_circle_2',
+        'type': 'circle',
+        'source': 'hydrants_datasource',
+        'minzoom': 16,
+        'maxzoom': 17,
+        'paint': {
+          'circle-radius': 4,
+          'circle-stroke-width': 1,
+          'circle-stroke-color': '#FFF',
+          'circle-color': '#E87668',
+        }
+      },
+      {
         'id': 'hydrants_symbol',
         'type': 'symbol',
         'source': 'hydrants_datasource',
-        'minzoom': 16,
+        'minzoom': 17,
         'layout': {
-          'icon-size': 1.5,
+
           'icon-image': 'hidrante',
           'icon-allow-overlap': true
         }
@@ -342,16 +396,30 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'paint': {
           'circle-radius': 2,
           'circle-stroke-width': 1,
-          'circle-stroke-color': '#DDDDDF',
+          'circle-stroke-color': '#FFF',
           'circle-color': '#68BC84',
         }
-      }, {
+      },
+      {
+        'id': 'valves_circle_2',
+        'type': 'circle',
+        'source': 'valves_datasource',
+        'minzoom': 16,
+        'maxzoom': 17,
+        'paint': {
+          'circle-radius': 4,
+          'circle-stroke-width': 1,
+          'circle-stroke-color': '#FFF',
+          'circle-color': '#68BC84',
+        }
+      },
+       {
         'id': 'valves_symbol',
         'type': 'symbol',
         'source': 'valves_datasource',
-        'minzoom': 16,
+        'minzoom': 17,
         'layout': {
-          'icon-size': 1.5,
+
           'icon-image': 'valvula',
           'icon-allow-overlap': true
         }
@@ -386,16 +454,30 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'paint': {
           'circle-radius': 2,
           'circle-stroke-width': 1,
-          'circle-stroke-color': '#DDDDDF',
+          'circle-stroke-color': '#FFF',
           'circle-color': '#0F82E0',
         }
-      }, {
+      },
+      {
+        'id': 'wells_circle_2',
+        'type': 'circle',
+        'source': 'wells_datasource',
+        'minzoom': 16,
+        'maxzoom': 17,
+        'paint': {
+          'circle-radius': 4,
+          'circle-stroke-width': 1,
+          'circle-stroke-color': '#FFF',
+          'circle-color': '#0F82E0',
+        }
+      },
+      {
         'id': 'wells_symbol',
         'type': 'symbol',
         'source': 'wells_datasource',
-        'minzoom': 16,
+        'minzoom': 17,
         'layout': {
-          'icon-size': 1.5,
+
           'icon-image': 'pozo',
           'icon-allow-overlap': true
         }
@@ -427,7 +509,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'source': 'sensors_datasource',
         'maxzoom': 16,
         'paint': {
-          'circle-radius': 2,
+          'circle-radius': 4,
           'circle-stroke-width': 1,
           'circle-stroke-color': '#DDDDDF',
           'circle-color': '#8672D2',
@@ -438,7 +520,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'source': 'sensors_datasource',
         'minzoom': 16,
         'layout': {
-          'icon-size': 1.5,
+
           'icon-image': 'sensor-agua',
           'icon-allow-overlap': true
         }
@@ -474,7 +556,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'source': 'tanks_datasource',
         'maxzoom': 16,
         'paint': {
-          'circle-radius': 2,
+          'circle-radius': 4,
           'circle-stroke-width': 1,
           'circle-stroke-color': '#DDDDDF',
           'circle-color': '#68BEE2',
@@ -485,7 +567,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'source': 'tanks_datasource',
         'minzoom': 16,
         'layout': {
-          'icon-size': 1.5,
+
           'icon-image': 'deposito',
           'icon-allow-overlap': true
         }
