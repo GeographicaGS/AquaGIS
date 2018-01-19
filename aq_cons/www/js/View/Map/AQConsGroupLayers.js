@@ -6,25 +6,24 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     this._payload = payload;
 
     // Modelos
-    let sensor = new App.Model.Aq_cons.Model({scope: options.scope, entity: 'aq_cata.sensor'});
-    let sector = new App.Model.Aq_cons.Model({scope: options.scope, entity: 'aq_cons.sector'});
-    let tank = new App.Model.Aq_cons.Model({scope: options.scope, entity: 'aq_cata.tank'});
-    let connection = new App.Model.Aq_cons.Model({scope: options.scope, entity: 'aq_cata.connections_point'});
-    let connectionLine = new App.Model.Aq_cons.Model({scope: options.scope, entity: 'aq_cata.connections_line'});
-    let supply = new App.Model.Aq_cons.Model({scope: options.scope, entity: 'aq_cata.supply_point'});
-    let supplyLine = new App.Model.Aq_cons.Model({scope: options.scope, entity: 'aq_cata.supply_line'});
-    let hydrant = new App.Model.Aq_cons.Model({scope: options.scope, entity: 'aq_cata.hydrant_point'});
-    let hydrantLine = new App.Model.Aq_cons.Model({scope: options.scope, entity: 'aq_cata.hydrant_line'});
-    let valve = new App.Model.Aq_cons.Model({scope: options.scope, entity: 'aq_cata.valve_point'});
-    let valveLine = new App.Model.Aq_cons.Model({scope: options.scope, entity: 'aq_cata.valve_line'});
-    let well = new App.Model.Aq_cons.Model({scope: options.scope, entity: 'aq_cata.well_point'});
-    let wellLine = new App.Model.Aq_cons.Model({scope: options.scope, entity: 'aq_cata.well_line'});
-    let plot = new App.Model.Aq_cons.Model({scope: options.scope, entity: 'aq_cons.plot'});
-    let plotStructure = new App.Model.Aq_cons.Model({scope: options.scope, entity: 'aq_cons.const'});
+    let sensor = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.sensor'});
+    let sector = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.sector'});
+    let tank = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.tank'});
+    let connection = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.connections_point'});
+    let connectionLine = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.connections_line'});
+    let supply = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.supply_point'});
+    let supplyLine = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.supply_line'});
+    let hydrant = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.hydrant_point'});
+    let hydrantLine = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.hydrant_line'});
+    let valve = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.valve_point'});
+    let valveLine = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.valve_line'});
+    let well = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.well_point'});
+    let wellLine = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.well_line'});
+    let plot = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.plot'});
+    let plotStructure = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.const'});
 
 
     // Layers
-
     // SECTOR
     this._sectorLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
       source: {
@@ -45,19 +44,19 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'layout': {},
         'maxzoom': 16,
         'paint': {
-            'fill-color': {
-              'property': 'forecast',
-              'type': 'exponential',
-              'default': 'red',
-              'stops': [
-                [0, '#64B6D9'],
-                [1, '#4CA7D7'],
-                [2, '#3397D5'],
-                [3, '#1A88D3'],
-                [4, '#0278D1']
-              ]
-            },
-            'fill-opacity': 0.7
+          'fill-color': {
+            'property': 'aq_cons.sector.forecast',
+            'type': 'exponential',
+            'default': 'red',
+            'stops': [
+              [0, '#64B6D9'],
+              [1, '#4CA7D7'],
+              [2, '#3397D5'],
+              [3, '#1A88D3'],
+              [4, '#0278D1']
+            ]
+          },
+          'fill-opacity': 0.7
         }
       },
       {
@@ -83,13 +82,26 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       feature: 'name',
       label: 'Nombre',
       units: ''
+    }, {
+      feature: 'aq_cons.sector.forecast?',
+      label: 'Previsión',
+      units: 'm³',
+      nbf: App.nbf
+    }, {
+      feature: 'aq_cons.sector.consumption?',
+      label: 'Consumo',
+      units: 'm³',
+      nbf: App.nbf
     }]);
+
+    let plotPayload = JSON.parse(JSON.stringify(this._payload));
+    plotPayload.var = 'aq_cons.plot.consumption';
 
     this._plotLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
       source: {
         id: 'aqua_plots',
         model: plot,
-        payload: this._payload
+        payload: plotPayload
       },
       legend: {
         sectionId: 'plot',
@@ -143,6 +155,16 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       feature: 'description#Block',
       label: 'Identificador de manzana',
       units: ''
+    },{
+      feature: 'aq_cons.const.forecast?',
+      label: 'Previsión',
+      units: 'm³',
+      nbf: App.nbf
+    }, {
+      feature: 'aq_cons.const.consumption?',
+      label: 'Consumo',
+      units: 'm³',
+      nbf: App.nbf
     }]);
 
     this._supplyLineLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
@@ -585,5 +607,24 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     this._wellLayer.close();
     this._sensorLayer.close();
     this._tankLayer.close();
+  },
+
+  updatePayload: function(payload) {
+
+    this._sectorLayer.updateData(payload);
+    this._sectorLayer.updatePaintOptions(payload.var);
+    this._plotLayer.updateData(payload);
+    this._supplyLineLayer.updateData(payload);
+    this._wellLineLayer.updateData(payload);
+    this._hydrantLineLayer.updateData(payload);
+    this._valveLineLayer.updateData(payload);
+    this._connectionLayer.updateData(payload);
+    this._hydrantLayer.updateData(payload);
+    this._valveLayer.updateData(payload);
+    this._wellLayer.updateData(payload);
+    this._sensorLayer.updateData(payload);
+    this._tankLayer.updateData(payload);
+
+
   }
 });

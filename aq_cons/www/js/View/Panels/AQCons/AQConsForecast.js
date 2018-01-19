@@ -7,13 +7,17 @@ App.View.Panels.Aq_cons.Consume = App.View.Panels.Splitted.extend({
     options = _.defaults(options, {
       dateView: true,
       id_category: 'aq_cons',
-      spatialFilter: false,
+      spatialFilter: true,
       master: false,
       title: __('Previsión Semanal'),
       id_panel: 'consume',
       filteView: false,
     });
     App.View.Panels.Splitted.prototype.initialize.call(this, options);
+    var nextWeek = App.Utils.getNextWeek();   
+    
+    this.dateViewModel.set('start', moment.utc(nextWeek[0]));    
+    this.dateViewModel.set('finish', moment.utc(nextWeek[1]));
     this.render();
   },
 
@@ -39,9 +43,15 @@ App.View.Panels.Aq_cons.Consume = App.View.Panels.Splitted.extend({
   onAttachToDOM: function() {
     this._mapView = new App.View.Panels.Aq_cons.CurrentMap({
       el: this.$('.top'),
-      scope: this.scopeModel.get('id')
+      scope: this.scopeModel.get('id'),
+      type: 'historic'
     }).render();
-
+    this.$('#dateSelector').addClass('disabled');
     this.subviews.push(this._mapView);
+  },
+
+  onClose: function() {
+    this._mapView.close();
+    this.$('#dateSelector').removeClass('disabled')    
   }
 });
