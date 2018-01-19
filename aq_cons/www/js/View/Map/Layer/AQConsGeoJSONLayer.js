@@ -7,7 +7,7 @@ App.View.Map.Layer.Aq_cons.GeoJSONLayer = App.View.Map.Layer.MapboxGLLayer.exten
     this.legendConfig = config.legend;
     this.layers = config.layers;
     this._ignoreOnLegend = config.ignoreOnLegend;
-    this._idSource = config.source.id;    
+    this._idSource = config.source.id;
     this._ids = config.layers.map(l => l.id);
     this.popupTemplate = new App.View.Map.MapboxGLPopup('#AQCons-popups-base_popup');
 

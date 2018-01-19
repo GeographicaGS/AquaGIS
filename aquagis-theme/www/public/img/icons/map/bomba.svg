@@ -3,19 +3,15 @@
     <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
     <title>cartografia/bomba</title>
     <desc>Created with Sketch.</desc>
-    <defs>
-        <circle id="path-1" cx="12" cy="12" r="12"></circle>
-    </defs>
+    <defs></defs>
     <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="cartografia/bomba">
-            <g id="Oval-8">
-                <use fill="#D26AC0" fill-rule="evenodd" xlink:href="#path-1"></use>
-                <circle stroke="#DDDDDF" stroke-width="1" cx="12" cy="12" r="11.5"></circle>
-            </g>
+            <circle id="Oval-8" fill="#D26AC0" cx="12" cy="12" r="12"></circle>
             <g id="icons/negative/bomba" transform="translate(2.000000, 2.000000)" fill="#FFFFFF">
                 <path d="M8,13 L7,13 L6,13 C5.448,13 5,12.552 5,12 L4,12 L4,10 L2,10 L2,9 L4,9 L4,7 L5,7 C5,6.448 5.448,6 6,6 L7,6 L8,6 L8,4 L11,4 L12,5 L12,6 L14,6 L16,7 L16,12 L14,13 L12,13 L12,14 L8,14 L8,13 Z M7,12 L14,12 L14,11 L7,11 L7,12 Z M7,10 L14,10 L14,9 L7,9 L7,10 Z M7,8 L14,8 L14,7 L7,7 L7,8 Z" id="Combined-Shape"></path>
                 <polygon id="Fill-14" points="7 16 13 16 13 15 7 15"></polygon>
             </g>
+            <path d="M12,23 C18.0751322,23 23,18.0751322 23,12 C23,5.92486775 18.0751322,1 12,1 C5.92486775,1 1,5.92486775 1,12 C1,18.0751322 5.92486775,23 12,23 Z M12,24 C5.372583,24 0,18.627417 0,12 C0,5.372583 5.372583,0 12,0 C18.627417,0 24,5.372583 24,12 C24,18.627417 18.627417,24 12,24 Z" id="Oval" fill="#FFFFFF" fill-rule="nonzero"></path>
         </g>
     </g>
 </svg>

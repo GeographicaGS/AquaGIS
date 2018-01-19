@@ -14,21 +14,26 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse = App.View.Widgets.Base.ex
     App.View.Widgets.Base.prototype.initialize.call(this,options);
 
     if(!this.hasPermissions()) return;
-    let nextWeek = App.Utils.getNextWeek();    
-    
-    this.collection = new App.Collection.Variables.Simple([], {
-      scope: this.options.id_scope,
-      vars: ['aq_cons.sector.forecast'],
-      agg: ['SUM'],
+    let nextWeek = App.Utils.getNextWeek();
+
+    this.collection = new App.Collection.Variables.Historic([], {
+      id_scope: this.options.id_scope,
+      id_variable: 'aq_cons.const.forecast',
+      agg: 'SUM',
       start: nextWeek[0],
       finish: nextWeek[1],
-      step: '1d',
       filters: {
         condition: {},
-        group: 'aq_cons.sector.usage'
+        group: "aq_cons.const.usage"
       }
     });
-    this.collection.parse = App.Collection.Variables.TimeserieGrouped.prototype.parse;
+    this.collection.parse = function(response) {
+      const elements = {};
+      for (const e of response) {
+        elements[e.group] = e.value;
+      }
+      return [{step: null,elements: elements}];
+    };
 
     this._chartModel = new App.Model.BaseChartConfigModel({
       stacked: true,
@@ -39,9 +44,6 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse = App.View.Widgets.Base.ex
       xAxisFunction: function (d) {
         return __('Todos los sectores');
       },
-      yAxisFunction: function(d){
-        return App.nbf(d / 1000, {decimals:0});
-      },
       yAxisLabel: __('Consumo (m³)'),
       legendTemplate: this._template_legend,
       legendNameFunc: function(d){
@@ -49,22 +51,16 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse = App.View.Widgets.Base.ex
         return type.get('name');
       },
       formatYAxis: {
-        numberOfValues: 4,
+        // numberOfValues: 2,
         tickFormat: function (d) {
           var unit = 'm³';
-          var value = App.nbf(d / 1000, {decimals:0});
-          if (domain && d === domain[1]) {
-            value += unit;
-          }
-          return value;
+          // var value = App.nbf(d / 1000, {decimals:0});
+          var value = App.nbf(d, {decimals:2});
+          return value + 'm³';
         }
       }
     });
-
-    if (!domain) {
-      var domain = [0,100000000];
-    }
-    this._chartModel.set({yAxisDomain: domain});
+    this._chartModel.set({yAxisDomain: [0,40]});
 
     this.subviews.push( new App.View.Widgets.Charts.FillBarStacked({
       'opts': this._chartModel,
