@@ -40,7 +40,7 @@ router.get('/plot/:id/constructions',
       plot: req.params.id
     };
 
-    new AqConsModel().AqConsModel(opts)
+    new AqConsModel().getPlotConstructions(opts)
     .then(function(data) {
       res.json(data)
     })

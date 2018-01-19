@@ -54,6 +54,10 @@ class AqConsModel extends PGSQLModel {
         return x;
       });
 
+      if (!data.length) {
+        return Promise.reject(utils.error('Plot not found', 404));
+      }
+
       return Promise.resolve(data);
     })
 
