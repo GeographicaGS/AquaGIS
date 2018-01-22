@@ -4,6 +4,7 @@ App.View.Map.Layer.Aq_cons.GeoJSONLayer = App.View.Map.Layer.MapboxGLLayer.exten
 
 
   initialize: function(config) {
+    this.layerModifier = config.source.modifier;
     this.legendConfig = config.legend;
     this.layers = config.layers;
     this._ignoreOnLegend = config.ignoreOnLegend;
@@ -41,5 +42,10 @@ App.View.Map.Layer.Aq_cons.GeoJSONLayer = App.View.Map.Layer.MapboxGLLayer.exten
       }.bind(this));
     }
     return this;
-  }
+  },
+
+  updatePaintOptions: function(options) {
+    this.layers[0].paint['fill-color']['property'] = options;
+    this._map._map.setPaintProperty(this._ids[0], 'fill-color', this.layers[0].paint['fill-color']);
+  },
 });
