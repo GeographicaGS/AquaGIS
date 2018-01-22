@@ -50,7 +50,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_sector(
       ),
       urbo_aq_cons_sector_measurand AS (
         SELECT q2.id_entity, q2."TimeInstant",
-            q2.flow + (q2.flow / 100 * al.flow_perc) AS flow,
+            q2.flow + (q2.flow / 100 * al.flow_perc) + (q2.flow / 100 * al.performance) AS flow,
             q2.pressure + (q2.pressure / 100 * al.pressure_perc) AS pressure,
             q2.usage
           FROM (
