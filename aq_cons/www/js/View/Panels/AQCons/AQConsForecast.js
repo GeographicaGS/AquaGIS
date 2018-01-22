@@ -27,6 +27,7 @@ App.View.Panels.Aq_cons.Consume = App.View.Panels.Splitted.extend({
     this._widgets.push(new App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages({
       id_scope: this.scopeModel.get('id'),
       dimension: 'allWidth',
+      timeMode:'historic'      
     }));
 
     this._widgets.push(new App.View.Widgets.Aq_cons.ConsumptionForecastByLandUseTimeserie({
