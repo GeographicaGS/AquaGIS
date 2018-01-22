@@ -4,7 +4,6 @@ App.View.Map.Layer.Aq_cons.GeoJSONLayer = App.View.Map.Layer.MapboxGLLayer.exten
 
 
   initialize: function(config) {
-    this.layerModifier = config.source.modifier;
     this.legendConfig = config.legend;
     this.layers = config.layers;
     this._ignoreOnLegend = config.ignoreOnLegend;
