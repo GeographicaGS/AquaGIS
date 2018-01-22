@@ -54,7 +54,8 @@ App.View.Widgets.Aq_cons.TotalConsumeLastWeek = App.View.Widgets.Base.extend({
       }
     });
 
-    this._chartModel.set({yAxisDomain: [0,40]});
+    // this._chartModel.set({yAxisDomain: [0,100]});
+    this._chartModel.set({yAxisDomain: [0,100]});
 
     this.subviews.push(new App.View.Widgets.Charts.FillBar({
       opts: this._chartModel,
@@ -62,6 +63,14 @@ App.View.Widgets.Aq_cons.TotalConsumeLastWeek = App.View.Widgets.Base.extend({
     }));
 
     this.filterables = [this.dataModel];
+  },
+
+  render: function(){
+    const prevWeek = App.Utils.getPrevWeek();
+    App.View.Widgets.Base.prototype.render.call(this);
+    $(this.$el.find('.date_tooltip .date span')[0]).text(App.formatDate(prevWeek[0]));
+    $(this.$el.find('.date_tooltip .date span')[1]).text(App.formatDate(prevWeek[1]));
+    return this;
   }
 
 });
