@@ -34,7 +34,6 @@ App.View.Panels.Aq_cons.Historic = App.View.Panels.Splitted.extend({
   customRender: function() {
     this._widgets = [];
 
-    
     this._widgets.push(new App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages({
       id_scope: this.scopeModel.get('id'),
       dimension: 'allWidth',
@@ -44,7 +43,6 @@ App.View.Panels.Aq_cons.Historic = App.View.Panels.Splitted.extend({
     this._widgets.push(new App.View.Widgets.Aq_cons.ConsumptionForecastByLandUseTimeserie({
       id_scope: this.scopeModel.get('id'),
       dimension: 'allWidth',
-      timeMode: 'historic'
     }));
 
     this.subviews.push(new App.View.Widgets.Container({
