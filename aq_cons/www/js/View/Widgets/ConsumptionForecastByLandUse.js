@@ -60,7 +60,7 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse = App.View.Widgets.Base.ex
         }
       }
     });
-    this._chartModel.set({yAxisDomain: [0,40]});
+    this._chartModel.set({yAxisDomain: [0,100]});
 
     this.subviews.push( new App.View.Widgets.Charts.FillBarStacked({
       'opts': this._chartModel,

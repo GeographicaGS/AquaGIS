@@ -34,18 +34,18 @@ App.Static.Collection.Aq_cons.LandUses = new Backbone.Collection([
 App.Static.Collection.Aq_cons.ConsumeRangeNumeric =  Backbone.Collection.extend({
   initialize: function() {
     _.bindAll(this,'findColor');
-    this.add([{min: 0, max: 1, color: '#64B6D9'},
-    {min: 1, max: 2, color: '#4CA7D7'},
-    {min: 2, max: 3, color: '#3397D5'},
-    {min: 3, max: 4, color: '#1A88D3'},
-    {min: 4, max: 5, color: '#0278D1'},
-    {min: 5, max: null, color: '#D56780'}])
+    this.add([{min: 0, max: 0.2, color: '#64B6D9'},
+    {min: 0.2, max: 0.4, color: '#4CA7D7'},
+    {min: 0.4, max: 0.6, color: '#3397D5'},
+    {min: 0.6, max: 0.8, color: '#1A88D3'},
+    {min: 0.8, max: 1, color: '#0278D1'},
+    {min: 1, max: null, color: '#D56780'}])
   },
   findColor: function(d) {
     let color = _.find(this.models, function(e) {
       return e.get('min') <= d && (e.get('max') > d || e.get('max') === null)
     }).get('color');
-    return color || 'transparent';
+    return color || 'rgba(255, 255, 255, 0.05)';
   }
 });
 
