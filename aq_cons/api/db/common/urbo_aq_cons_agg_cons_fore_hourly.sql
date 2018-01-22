@@ -35,10 +35,13 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_cons_fore_hourly(
     _t_to text;
     _t_from text;
     _t_from_join text;
+    _t_leak text;
     _save_moment text;
     _from_variable text;
     _ref_variable text;
     _q text;
+    _extra_q text;
+    _final_q text;
   BEGIN
 
     _t_to := urbo_get_table_name(id_scope, to_table);
@@ -107,7 +110,34 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_cons_fore_hourly(
       );
     END IF;
 
-    EXECUTE _q;
+    _extra_q := '';
+    IF from_join_table IS NOT NULL AND _ref_variable = 'refsector' AND variable = 'forecast' THEN
+      _t_leak := urbo_get_table_name(id_scope, 'aq_aux_leak');
+
+      _extra_q := format('
+        UPDATE %s original
+          SET
+            %s = original.%s + (original.%s / 100 * perf.performance)
+          FROM (
+            SELECT id_entity, AVG(performance) AS performance
+              FROM %s
+              WHERE "TimeInstant" >= ''%s''
+                AND "TimeInstant" < (''%s'')::timestamp + interval ''1 hour''
+              GROUP BY id_entity
+          ) perf
+          WHERE original.id_entity = perf.id_entity;
+        ',
+        _t_to, variable, variable, variable, _t_leak, _save_moment, _save_moment
+      );
+    END IF;
+
+    _final_q := format('
+      %s
+      %s',
+      _q, _extra_q
+    );
+
+    EXECUTE _final_q;
 
   END;
   $$ LANGUAGE plpgsql;
