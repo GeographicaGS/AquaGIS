@@ -10,8 +10,6 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     let sector = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.sector'});
     let tank = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.tank'});
     let connection = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.connections_point'});
-    let connectionLine = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.connections_line'});
-    let supply = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.supply_point'});
     let supplyLine = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.supply_line'});
     let hydrant = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.hydrant_point'});
     let hydrantLine = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.hydrant_line'});
@@ -20,7 +18,15 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     let well = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.well_point'});
     let wellLine = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.well_line'});
     let plot = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.plot'});
-    let plotStructure = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.const'});
+    
+    sector.parse = function(e) {
+      e.features = _.map(e.features, function(feature) {
+        feature.properties['aq_cons.sector.forecast'] /= 7;
+        return feature;
+      });
+      debugger;
+      return e;
+    };
 
 
     // Layers
