@@ -16,7 +16,8 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_are_leakages_per_sector(
   RETURNS TABLE(
     id_entity varchar,
     flow_perc double precision,
-    pressure_perc double precision
+    pressure_perc double precision,
+    performance double precision
   ) AS
   $$
   DECLARE
@@ -30,11 +31,13 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_are_leakages_per_sector(
 
     _q := format('
       SELECT acs.id_entity::varchar, COALESCE(aal.flow_perc, 0) AS flow_perc,
-          COALESCE(aal.pressure_perc, 0) AS pressure_perc
+          COALESCE(aal.pressure_perc, 0) AS pressure_perc,
+          COALESCE(aal.performance, 0) AS performance
         FROM (
           SELECT DISTINCT ON (id_entity) id_entity, flow_perc,
               CASE WHEN pressure_perc > 0 THEN (pressure_perc * (-1))
-                ELSE 0 END AS pressure_perc
+                ELSE 0 END AS pressure_perc,
+              performance
             FROM %s
             WHERE "TimeInstant" <= ''%s''
             ORDER BY id_entity ASC, "TimeInstant" DESC
