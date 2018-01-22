@@ -4,12 +4,18 @@
 
 --------------------------------------------------------------------------------
 -- HOW TO USE:
--- SELECT urbo_aq_cons_agg_cons_fore_hourly('scope', '2018-01-16T08:00:00.000Z', 'aq_cons_const_agg_hour', 'aq_cons_const_measurand', NULL, 'consumption');
--- SELECT urbo_aq_cons_agg_cons_fore_hourly('scope', '2018-01-16T08:00:00.000Z', 'aq_cons_sector_agg_hour', 'aq_cons_sector_measurand', NULL, 'consumption');
--- SELECT urbo_aq_cons_agg_cons_fore_hourly('scope', '2018-01-16T08:00:00.000Z', 'aq_cons_const_agg_hour', 'aq_aux_const_futu', NULL, 'forecast');
--- SELECT urbo_aq_cons_agg_cons_fore_hourly('scope', '2018-01-16T08:00:00.000Z', 'aq_cons_sector_agg_hour', 'aq_aux_const_futu', 'aq_cons_const', 'forecast');
--- SELECT urbo_aq_cons_agg_cons_fore_hourly('scope', '2018-01-16T08:00:00.000Z', 'aq_cons_const_agg_hour', 'aq_aux_const_futu', NULL, 'pressure');
--- SELECT urbo_aq_cons_agg_cons_fore_hourly('scope', '2018-01-16T08:00:00.000Z', 'aq_cons_sector_agg_hour', 'aq_aux_const_futu', 'aq_cons_const', 'pressure');
+-- SELECT urbo_aq_cons_agg_cons_fore_hourly('aljarafe', '2018-01-16T08:00:00.000Z', 'aq_cons_const_agg_hour', 'aq_cons_const_measurand', NULL, 'consumption');
+-- SELECT urbo_aq_cons_agg_cons_fore_hourly('aljarafe', '2018-01-16T08:00:00.000Z', 'aq_cons_plot_agg_hour', 'aq_cons_plot_measurand', NULL, 'consumption');
+-- SELECT urbo_aq_cons_agg_cons_fore_hourly('aljarafe', '2018-01-16T08:00:00.000Z', 'aq_cons_sector_agg_hour', 'aq_cons_sector_measurand', NULL, 'consumption');
+-- SELECT urbo_aq_cons_agg_cons_fore_hourly('aljarafe', '2018-01-16T08:00:00.000Z', 'aq_cons_const_agg_hour', 'aq_cons_const_measurand', NULL, 'pressure_agg');
+-- SELECT urbo_aq_cons_agg_cons_fore_hourly('aljarafe', '2018-01-16T08:00:00.000Z', 'aq_cons_plot_agg_hour', 'aq_cons_plot_measurand', NULL, 'pressure_agg');
+-- SELECT urbo_aq_cons_agg_cons_fore_hourly('aljarafe', '2018-01-16T08:00:00.000Z', 'aq_cons_sector_agg_hour', 'aq_cons_sector_measurand', NULL, 'pressure_agg');
+-- SELECT urbo_aq_cons_agg_cons_fore_hourly('aljarafe', '2018-01-16T08:00:00.000Z', 'aq_cons_const_agg_hour', 'aq_aux_const_futu', NULL, 'forecast');
+-- SELECT urbo_aq_cons_agg_cons_fore_hourly('aljarafe', '2018-01-16T08:00:00.000Z', 'aq_cons_plot_agg_hour', 'aq_aux_const_futu', 'aq_cons_const', 'forecast');
+-- SELECT urbo_aq_cons_agg_cons_fore_hourly('aljarafe', '2018-01-16T08:00:00.000Z', 'aq_cons_sector_agg_hour', 'aq_aux_const_futu', 'aq_cons_const', 'forecast');
+-- SELECT urbo_aq_cons_agg_cons_fore_hourly('aljarafe', '2018-01-16T08:00:00.000Z', 'aq_cons_const_agg_hour', 'aq_aux_const_futu', NULL, 'pressure_forecast');
+-- SELECT urbo_aq_cons_agg_cons_fore_hourly('aljarafe', '2018-01-16T08:00:00.000Z', 'aq_cons_plot_agg_hour', 'aq_aux_const_futu', 'aq_cons_const', 'pressure_forecast');
+-- SELECT urbo_aq_cons_agg_cons_fore_hourly('aljarafe', '2018-01-16T08:00:00.000Z', 'aq_cons_sector_agg_hour', 'aq_aux_const_futu', 'aq_cons_const', 'pressure_forecast');
 --------------------------------------------------------------------------------
 
 DROP FUNCTION IF EXISTS urbo_aq_cons_agg_cons_fore_hourly(varchar, timestamp, varchar, varchar, varchar, varchar);
@@ -31,6 +37,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_cons_fore_hourly(
     _t_from_join text;
     _save_moment text;
     _from_variable text;
+    _ref_variable text;
     _q text;
   BEGIN
 
@@ -53,6 +60,11 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_cons_fore_hourly(
       _from_variable := 'pressure';
     END IF;
 
+    _ref_variable := 'refsector';
+    IF _t_to ILIKE '%plot%' THEN
+      _ref_variable := 'refplot';
+    END IF;
+
     IF from_join_table IS NULL THEN
       _q := format('
         INSERT INTO %s
@@ -61,37 +73,37 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_cons_fore_hourly(
             AVG(%s) AS %s
           FROM %s
           WHERE "TimeInstant" >= ''%s''
-            AND "TimeInstant" < ''%s''::timestamp + interval ''1 hour''
+            AND "TimeInstant" < (''%s'')::timestamp + interval ''1 hour''
           GROUP BY id_entity
         ON CONFLICT (id_entity, "TimeInstant")
           DO UPDATE SET %s = EXCLUDED.%s;
         ',
         _t_to, variable, _save_moment, _from_variable, variable,
-        _t_from, moment, moment, variable, variable
+        _t_from, _save_moment, _save_moment, variable, variable
       );
 
     ELSE
       _q := format('
         INSERT INTO %s
           (id_entity, "TimeInstant", %s)
-        SELECT cl.refsector AS id_entity, ''%s'' AS "TimeInstant",
+        SELECT cl.%s AS id_entity, ''%s'' AS "TimeInstant",
             SUM(cf.%s) AS %s
           FROM (
             SELECT id_entity, AVG(%s) AS %s
               FROM %s
               WHERE "TimeInstant" >= ''%s''
-                AND "TimeInstant" < ''%s'' + interval ''1 hour''
+                AND "TimeInstant" < (''%s'')::timestamp + interval ''1 hour''
               GROUP BY id_entity
           ) cf
             INNER JOIN %s cl
               ON cf.id_entity = cl.id_entity
-          GROUP BY cl.refsector
+          GROUP BY cl.%s
         ON CONFLICT (id_entity, "TimeInstant")
           DO UPDATE SET %s = EXCLUDED.%s;
         ',
-        _t_to, variable, _save_moment, _from_variable, variable,
+        _t_to, variable, _ref_variable, _save_moment, _from_variable, variable,
         _from_variable, _from_variable, _t_from, _save_moment, _save_moment,
-        _t_from_join, variable, variable
+        _t_from_join, _ref_variable, variable, variable
       );
     END IF;
 
