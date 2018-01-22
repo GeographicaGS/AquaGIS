@@ -17,11 +17,13 @@ App.View.Panels.Aq_cons.Historic = App.View.Panels.Splitted.extend({
     this.listenTo(this.variableSelector.variable,'change',function(e) {
       if (this._mapView !== undefined) {
         this._mapView.updatePayloadVariable(e.get('variable'));
+
       }
     });
     this.listenTo(App.ctx, 'change:start change:finish', function(e) {
       if (this._mapView !== undefined) {
         this._mapView.updatePayloadTime(App.ctx.getDateRange());
+
       }
     });
     App.View.Panels.Splitted.prototype.initialize.call(this, options);
@@ -31,11 +33,15 @@ App.View.Panels.Aq_cons.Historic = App.View.Panels.Splitted.extend({
 
   customRender: function() {
     this._widgets = [];
-    // this._widgets.push(new App.View.Widgets.Aq_cons.ConsumptionForecastByLandUseTimeserie({
-    //   id_scope: this.scopeModel.get('id')
-    // }));
 
+    
     this._widgets.push(new App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages({
+      id_scope: this.scopeModel.get('id'),
+      dimension: 'allWidth',
+      timeMode: 'historic'
+    }));
+    
+    this._widgets.push(new App.View.Widgets.Aq_cons.ConsumptionForecastByLandUseTimeserie({
       id_scope: this.scopeModel.get('id'),
       dimension: 'allWidth',
       timeMode: 'historic'

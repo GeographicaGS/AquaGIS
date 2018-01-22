@@ -10,8 +10,6 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     let sector = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.sector'});
     let tank = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.tank'});
     let connection = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.connections_point'});
-    let connectionLine = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.connections_line'});
-    let supply = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.supply_point'});
     let supplyLine = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.supply_line'});
     let hydrant = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.hydrant_point'});
     let hydrantLine = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.hydrant_line'});
@@ -20,7 +18,25 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     let well = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.well_point'});
     let wellLine = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.well_line'});
     let plot = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.plot'});
-    let plotStructure = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.const'});
+    
+    sector.parse = function(e) {
+      e.features = _.map(e.features, function(feature) {
+        let diffDates = App.ctx.get('finish').diff(App.ctx.get('start'), 'days');
+        feature.properties[JSON.parse(this.payload.data).var] /= diffDates;
+        return feature;
+      }.bind(this));
+      return e;
+    };
+    plot.parse = function(e) {
+      e.features = _.map(e.features, function(feature) {
+        let payload = JSON.parse(this.payload.data).var;
+        let plotPayload = payload.replace(/(.*\.).*(\..*)/,'$1plot$2');
+        let diffDates = App.ctx.get('finish').diff(App.ctx.get('start'), 'days');
+        feature.properties[plotPayload] /= diffDates;
+        return feature;
+      }.bind(this));
+      return e;
+    };
 
 
     // Layers
@@ -29,7 +45,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       source: {
         id: 'aqua_sectors',
         model: sector,
-        payload: this._payload
+        payload: this._payload,
       },
       legend: {
         sectionId: 'sector',
@@ -47,7 +63,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
           'fill-color': {
             'property': 'aq_cons.sector.forecast',
             'type': 'exponential',
-            'default': 'red',
+            'default': 'transparent',
             'stops': [
               [0, '#64B6D9'],
               [1, '#4CA7D7'],
@@ -95,7 +111,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     }]);
 
     let plotPayload = JSON.parse(JSON.stringify(this._payload));
-    plotPayload.var = 'aq_cons.plot.consumption';
+    plotPayload.var = plotPayload.var.replace(/(.*\.).*(\..*)/,'$1plot$2');
 
     this._plotLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
       source: {
@@ -116,8 +132,19 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'layout': {},
         'minzoom': 16,
         'paint': {
-            'fill-color': '#165288',
-            'fill-opacity': 0.4
+          'fill-color': {
+            'property': 'aq_cons.plot.forecast',
+            'type': 'exponential',
+            'default': 'transparent',
+            'stops': [
+              [0, '#64B6D9'],
+              [1, '#4CA7D7'],
+              [2, '#3397D5'],
+              [3, '#1A88D3'],
+              [4, '#0278D1']
+            ]
+          },
+          'fill-opacity': 0.7
         }
       },
       {
@@ -156,12 +183,12 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       label: 'Identificador de manzana',
       units: ''
     },{
-      feature: 'aq_cons.const.forecast?',
+      feature: 'aq_cons.plot.forecast?',
       label: 'Previsión',
       units: 'm³',
       nbf: App.nbf
     }, {
-      feature: 'aq_cons.const.consumption?',
+      feature: 'aq_cons.plot.consumption?',
       label: 'Consumo',
       units: 'm³',
       nbf: App.nbf
@@ -610,10 +637,16 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
   },
 
   updatePayload: function(payload) {
+    this._payload = payload;
+    let plotPayload = JSON.parse(JSON.stringify(payload));
+    plotPayload.var = plotPayload.var.replace(/(.*\.).*(\..*)/,'$1plot$2');
 
     this._sectorLayer.updateData(payload);
     this._sectorLayer.updatePaintOptions(payload.var);
-    this._plotLayer.updateData(payload);
+    
+    this._plotLayer.updateData(plotPayload);
+    this._plotLayer.updatePaintOptions(plotPayload.var);    
+
     this._supplyLineLayer.updateData(payload);
     this._wellLineLayer.updateData(payload);
     this._hydrantLineLayer.updateData(payload);
@@ -624,7 +657,5 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     this._wellLayer.updateData(payload);
     this._sensorLayer.updateData(payload);
     this._tankLayer.updateData(payload);
-
-
   }
 });
