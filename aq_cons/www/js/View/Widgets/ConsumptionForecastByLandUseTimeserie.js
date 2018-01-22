@@ -38,7 +38,15 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUseTimeserie = App.View.Widget
         var type = App.Static.Collection.Aq_cons.LandUses.get(d);
         return type.get('name');
       },
-      xAxisFunction: function(d) { return App.formatDate(d,'DD/MM HH:mm'); },
+      xAxisFunction: function(d) {
+        var match, formatDate;
+        if((match = this.options.get('currentStep').match(/(\d)d/)) !== null){
+          formatDate = 'DD/MM';
+        }else if((match = this.options.get('currentStep').match(/(\d)h/)) !== null){
+          formatDate = 'DD/MM HH:mm';
+        }
+        return App.formatDate(d,formatDate);
+      },
       yAxisFunction: [
         function(d) { return App.nbf(d, {decimals: 0})}
       ],
