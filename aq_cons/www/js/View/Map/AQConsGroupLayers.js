@@ -29,7 +29,12 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       source: {
         id: 'aqua_sectors',
         model: sector,
-        payload: this._payload
+        payload: this._payload,
+        modifier: function(e) {
+          e.properties['aq_cons.sector.forecast'] /= 7;
+
+          return e;
+        }
       },
       legend: {
         sectionId: 'sector',
@@ -47,7 +52,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
           'fill-color': {
             'property': 'aq_cons.sector.forecast',
             'type': 'exponential',
-            'default': 'red',
+            'default': 'transparent',
             'stops': [
               [0, '#64B6D9'],
               [1, '#4CA7D7'],
@@ -610,7 +615,6 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
   },
 
   updatePayload: function(payload) {
-
     this._sectorLayer.updateData(payload);
     this._sectorLayer.updatePaintOptions(payload.var);
     this._plotLayer.updateData(payload);
@@ -624,7 +628,5 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     this._wellLayer.updateData(payload);
     this._sensorLayer.updateData(payload);
     this._tankLayer.updateData(payload);
-
-
   }
 });
