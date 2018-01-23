@@ -21,7 +21,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     
     sector.parse = function(e) {
       e.features = _.map(e.features, function(feature) {
-        let diffDates = App.ctx.get('finish').diff(App.ctx.get('start'), 'days');
+        let diffDates = App.ctx.get('finish').diff(App.ctx.get('start'), 'days') + 1;
         let sectorPayload = JSON.parse(this.payload.data).var;
 
         feature.properties[sectorPayload + '.total'] = feature.properties[sectorPayload];          
@@ -38,7 +38,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       e.features = _.map(e.features, function(feature) {
         let payload = JSON.parse(this.payload.data).var;
         let plotPayload = payload.replace(/(.*\.).*(\..*)/,'$1plot$2');
-        let diffDates = App.ctx.get('finish').diff(App.ctx.get('start'), 'days');
+        let diffDates = App.ctx.get('finish').diff(App.ctx.get('start'), 'days') + 1;
 
         feature.properties[plotPayload + '.total'] = feature.properties[plotPayload];                    
         if (feature.properties[plotPayload] !== null) {
