@@ -46,5 +46,6 @@ App.View.Map.Layer.Aq_cons.GeoJSONLayer = App.View.Map.Layer.MapboxGLLayer.exten
   updatePaintOptions: function(options) {
     this.layers[0].paint['fill-color']['property'] = options;
     this._map._map.setPaintProperty(this._ids[0], 'fill-color', this.layers[0].paint['fill-color']);
+    console.log(this.layers[0].paint['fill-color']);
   },
 });

@@ -22,7 +22,14 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     sector.parse = function(e) {
       e.features = _.map(e.features, function(feature) {
         let diffDates = App.ctx.get('finish').diff(App.ctx.get('start'), 'days');
-        feature.properties[JSON.parse(this.payload.data).var] /= diffDates;
+        let sectorPayload = JSON.parse(this.payload.data).var;
+
+        if (feature.properties[sectorPayload] === null) {
+          feature.properties[sectorPayload] = undefined;
+        } else {
+          feature.properties[sectorPayload] /= diffDates;
+        }
+        
         return feature;
       }.bind(this));
       return e;
@@ -32,7 +39,13 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         let payload = JSON.parse(this.payload.data).var;
         let plotPayload = payload.replace(/(.*\.).*(\..*)/,'$1plot$2');
         let diffDates = App.ctx.get('finish').diff(App.ctx.get('start'), 'days');
-        feature.properties[plotPayload] /= diffDates;
+
+        if (feature.properties[plotPayload] === null) {
+          feature.properties[plotPayload] = undefined;
+        } else {
+          feature.properties[plotPayload] /= diffDates;
+        }
+
         return feature;
       }.bind(this));
       return e;
@@ -66,10 +79,10 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
             'default': 'transparent',
             'stops': [
               [0, '#64B6D9'],
-              [1, '#4CA7D7'],
-              [2, '#3397D5'],
-              [3, '#1A88D3'],
-              [4, '#0278D1']
+              [0.75, '#4CA7D7'],
+              [1.5, '#3397D5'],
+              [2.25, '#1A88D3'],
+              [3, '#0278D1']
             ]
           },
           'fill-opacity': 0.7
@@ -134,14 +147,14 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'paint': {
           'fill-color': {
             'property': 'aq_cons.plot.forecast',
-            'type': 'exponential',
+            'type': 'interval',
             'default': 'transparent',
             'stops': [
               [0, '#64B6D9'],
-              [1, '#4CA7D7'],
-              [2, '#3397D5'],
-              [3, '#1A88D3'],
-              [4, '#0278D1']
+              [0.125, '#4CA7D7'],
+              [0.250, '#3397D5'],
+              [0.375, '#1A88D3'],
+              [0.5, '#0278D1']
             ]
           },
           'fill-opacity': 0.7

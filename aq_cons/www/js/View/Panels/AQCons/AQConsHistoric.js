@@ -18,7 +18,6 @@ App.View.Panels.Aq_cons.Historic = App.View.Panels.Splitted.extend({
       if (this._mapView !== undefined) {
         this._mapView.updatePayloadVariable(e.get('variable'));
         this.widgetTimeSeries.filterables[0].options.data.vars = [e.get('variable')];
-        debugger;
         this.widgetWeekly.filterables[0].url = this.widgetWeekly.filterables[0]
           .url.replace(/(.*\/)aq_cons\.sector\..*(\/.*)/,'$1' + e.get('variable') + '$2');
         
