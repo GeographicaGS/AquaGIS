@@ -22,17 +22,29 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     sector.parse = function(e) {
       e.features = _.map(e.features, function(feature) {
         let diffDates = App.ctx.get('finish').diff(App.ctx.get('start'), 'days');
-        feature.properties[JSON.parse(this.payload.data).var] /= diffDates;
+        let sectorPayload = JSON.parse(this.payload.data).var;
+
+        if (feature.properties[sectorPayload] !== null) {
+          feature.properties[sectorPayload + '.total'] = feature.properties[sectorPayload];          
+          feature.properties[sectorPayload] /= diffDates;
+        }
+
         return feature;
       }.bind(this));
       return e;
     };
+
     plot.parse = function(e) {
       e.features = _.map(e.features, function(feature) {
         let payload = JSON.parse(this.payload.data).var;
         let plotPayload = payload.replace(/(.*\.).*(\..*)/,'$1plot$2');
         let diffDates = App.ctx.get('finish').diff(App.ctx.get('start'), 'days');
-        feature.properties[plotPayload] /= diffDates;
+
+        if (feature.properties[plotPayload] !== null) {
+          feature.properties[plotPayload + '.total'] = feature.properties[plotPayload];                    
+          feature.properties[plotPayload] /= diffDates;
+        }
+
         return feature;
       }.bind(this));
       return e;
@@ -66,10 +78,10 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
             'default': 'transparent',
             'stops': [
               [0, '#64B6D9'],
-              [1, '#4CA7D7'],
-              [2, '#3397D5'],
-              [3, '#1A88D3'],
-              [4, '#0278D1']
+              [0.75, '#4CA7D7'],
+              [1.5, '#3397D5'],
+              [2.25, '#1A88D3'],
+              [3, '#0278D1']
             ]
           },
           'fill-opacity': 0.7
@@ -91,24 +103,30 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     })
     .setHoverable(true)
     .setInteractivity(__('Sector'),[{
-      feature: 'id_entity',
-      label: 'Identificador',
-      units: ''
-    }, {
-      feature: 'name',
-      label: 'Nombre',
-      units: ''
-    }, {
-      feature: 'aq_cons.sector.forecast?',
-      label: 'Previsión',
-      units: 'm³',
-      nbf: App.nbf
-    }, {
-      feature: 'aq_cons.sector.consumption?',
-      label: 'Consumo',
-      units: 'm³',
-      nbf: App.nbf
-    }]);
+        feature: 'name',
+        label: 'Nombre',
+        units: ''
+      }, {
+        feature: 'aq_cons.sector.forecast.total?',
+        label: 'Consumo total',
+        units: 'm³',
+        nbf: App.nbf
+      }, {
+        feature: 'aq_cons.sector.consumption.total?',
+        label: 'Consumo total',
+        units: 'm³',
+        nbf: App.nbf
+      }, {
+        feature: 'aq_cons.sector.forecast?',
+        label: 'Consumo diario',
+        units: 'm³',
+        nbf: App.nbf
+      }, {
+        feature: 'aq_cons.sector.consumption?',
+        label: 'Consumo diario',
+        units: 'm³',
+        nbf: App.nbf
+      }]);
 
     let plotPayload = JSON.parse(JSON.stringify(this._payload));
     plotPayload.var = plotPayload.var.replace(/(.*\.).*(\..*)/,'$1plot$2');
@@ -134,14 +152,14 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'paint': {
           'fill-color': {
             'property': 'aq_cons.plot.forecast',
-            'type': 'exponential',
+            'type': 'interval',
             'default': 'transparent',
             'stops': [
               [0, '#64B6D9'],
-              [1, '#4CA7D7'],
-              [2, '#3397D5'],
-              [3, '#1A88D3'],
-              [4, '#0278D1']
+              [0.125, '#4CA7D7'],
+              [0.250, '#3397D5'],
+              [0.375, '#1A88D3'],
+              [0.5, '#0278D1']
             ]
           },
           'fill-opacity': 0.7
@@ -162,37 +180,68 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       map: map
     })
     .setHoverable(true)
-    .setInteractivity(__('Parcela'),[{
-      feature: 'id_entity',
-      label: 'Identificador',
-      units: ''
-    }, {
-      feature: 'area',
-      label: 'Área',
-      units: 'm2'
-    }, {
-      feature: 'floors',
-      label: 'Plantas',
-      units: ''
-    },{
-      feature: 'description#RegistryRef',
-      label: 'Identificador catastral',
-      units: ''
-    },{
-      feature: 'description#Block',
-      label: 'Identificador de manzana',
-      units: ''
-    },{
-      feature: 'aq_cons.plot.forecast?',
-      label: 'Previsión',
-      units: 'm³',
-      nbf: App.nbf
-    }, {
-      feature: 'aq_cons.plot.consumption?',
-      label: 'Consumo',
-      units: 'm³',
-      nbf: App.nbf
-    }]);
+    .setInteractivity(__('Parcela'), function(e, popup, _this) {
+      let prop = [{
+        feature: 'description#RegistryRef',
+        label: 'Identificador catastral',
+        units: ''
+      },{
+        feature: 'aq_cons.plot.forecast.total?',
+        label: 'Consumo total',
+        units: 'm³',
+        nbf: App.nbf
+      }, {
+        feature: 'aq_cons.plot.consumption.total?',
+        label: 'Consumo total',
+        units: 'm³',
+        nbf: App.nbf
+      },{
+        feature: 'aq_cons.plot.forecast?',
+        label: 'Consumo diario',
+        units: 'm³',
+        nbf: App.nbf
+      }, {
+        feature: 'aq_cons.plot.consumption?',
+        label: 'Consumo diario',
+        units: 'm³',
+        nbf: App.nbf
+      }, {
+        feature: 'area',
+        label: 'Área',
+        units: 'm2'
+      }, {
+        feature: 'floors',
+        label: 'Plantas',
+        units: ''
+      }];
+
+      new App.Collection.Aq_cons.PlotsModel({
+        scope: options.scope,
+        entity: e.features[0].properties['id_entity']
+      }).fetch({success: function(response) {
+        let constructions = response.toJSON();
+        e.features[0].properties['n_const'] = constructions.length;
+        let arr = [];
+        _.each(constructions, function(c) {
+          if (!arr.includes(c.usage)) {
+            arr.push(__(c.usage))
+          }
+        });
+        e.features[0].properties['type_const'] = arr.join(",");
+        prop.push({
+          feature: 'type_const',
+          label: 'Tipos de construcciones',
+          units: ''
+        });
+        prop.push({
+          feature: 'n_const',
+          label: 'Número de construcciones',
+          units: ''
+        });
+        let html = _this.bindData(__('Parcela'),prop,e);
+        popup.setHTML(html);
+      }})
+    });
 
     this._supplyLineLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
       source: {
@@ -338,11 +387,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       map: map
     })
     .setHoverable(true)
-    .setInteractivity(__('Acometida'),[{
-      feature:'id_acome_p',
-      label: 'Identificador',
-      units: ''
-    }]);
+    .setInteractivity(__('Acometida'));
 
     this._hydrantLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
       source: {
@@ -396,11 +441,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       map: map
     })
     .setHoverable(true)
-    .setInteractivity(__('Hidrante'),[{
-      feature:'id_hydra_p',
-      label: 'Identificador',
-      units: ''
-    }]);
+    .setInteractivity(__('Hidrante'));
 
     this._valveLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
       source: {
@@ -454,11 +495,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       map: map
     })
     .setHoverable(true)
-    .setInteractivity(__('Válvula'),[{
-      feature:'id_valve_p',
-      label: 'Identificador',
-      units: ''
-    }]);
+    .setInteractivity(__('Válvula'));
 
     this._wellLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
       source: {
@@ -512,11 +549,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       map: map
     })
     .setHoverable(true)
-    .setInteractivity(__('Pozo'),[{
-      feature:'id_well_p',
-      label: 'Identificador',
-      units: ''
-    }]);
+    .setInteractivity(__('Pozo'));
 
     this._sensorLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
       source: {
@@ -555,15 +588,44 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       map: map
     })
     .setHoverable(true)
-    .setInteractivity(__('Sensor'),[{
-      feature: 'id_sensor',
-      label: 'Identificador',
-      units: ''
-    },{
-      feature: 'id_sector',
-      label: 'Identificador de sector',
-      units: ''
-    }]);
+    .setInteractivity(__('Sensor'), function(e, popup, _this) {
+      let prop = [];
+      new App.Model.Aq_cons.SensorModel({
+        scope: options.scope,
+        entity: e.features[0].properties['id_sector']
+      }).fetch({success: function(response) {
+        let sensors = response.toJSON();
+        e.features[0].properties['aq_cons.sector.flow'] = _.find(sensors.lastdata, function(ld) {
+          return ld['var_id'] === 'aq_cons.sector.flow';
+        })['var_value'];
+        e.features[0].properties['aq_cons.sector.pressure'] = _.find(sensors.lastdata, function(ld) {
+          return ld['var_id'] === 'aq_cons.sector.pressure';
+        })['var_value'];
+        e.features[0].properties['aq_cons.sector.name'] = _.find(sensors.lastdata, function(ld) {
+          return ld['var_id'] === 'aq_cons.sector.name';
+        })['var_value'];
+
+        prop.push({
+          feature: 'aq_cons.sector.name',
+          label: 'Sector', 
+          units: '',
+        });
+        prop.push({
+          feature: 'aq_cons.sector.flow',
+          label: 'Caudal actual', 
+          units: 'm³/h',
+          nbf: App.nbf
+        });
+        prop.push({
+          feature: 'aq_cons.sector.pressure',
+          label: 'Caudal actual',
+          units: 'kgf/cm²',
+          nbf: App.nbf
+        });
+        let html = _this.bindData(__('Sensor'),prop,e);
+        popup.setHTML(html);
+      }});
+    });
 
     this._tankLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
       source: {
@@ -603,8 +665,8 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     })
     .setHoverable(true)
     .setInteractivity(__('Depósito'),[{
-      feature:'id_tank',
-      label: 'Identificador',
+      feature:'tank',
+      label: 'Referencia',
       units: ''
     },{
       feature:'capacity',
