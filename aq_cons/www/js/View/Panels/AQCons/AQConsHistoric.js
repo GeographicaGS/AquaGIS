@@ -28,7 +28,10 @@ App.View.Panels.Aq_cons.Historic = App.View.Panels.Splitted.extend({
     this.listenTo(App.ctx, 'change:start change:finish', function(e) {
       if (this._mapView !== undefined) {
         this._mapView.updatePayloadTime(App.ctx.getDateRange());
-
+      }
+      if (this.widgetWeekly) {
+        this.widgetWeekly.filterables[0].options.data.time.start = App.ctx.getDateRange().start;
+        this.widgetWeekly.filterables[0].options.data.time.finish = App.ctx.getDateRange().finish;      
       }
     });
     App.View.Panels.Splitted.prototype.initialize.call(this, options);

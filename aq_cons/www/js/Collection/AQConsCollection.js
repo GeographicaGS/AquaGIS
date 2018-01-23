@@ -42,9 +42,12 @@ App.Static.Collection.Aq_cons.ConsumeRangeNumeric =  Backbone.Collection.extend(
     {min: 1, max: null, color: '#D56780'}])
   },
   findColor: function(d) {
-    let color = _.find(this.models, function(e) {
-      return e.get('min') <= d && (e.get('max') > d || e.get('max') === null)
-    }).get('color');
+    let color = undefined;
+    if(d !== null) {
+      color = _.find(this.models, function(e) {
+        return e.get('min') <= d && (e.get('max') > d || e.get('max') === null)
+      }).get('color');
+    }
     return color || 'rgba(255, 255, 255, 0.05)';
   }
 });
