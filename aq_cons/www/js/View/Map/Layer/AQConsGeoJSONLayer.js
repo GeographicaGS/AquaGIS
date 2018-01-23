@@ -20,12 +20,12 @@ App.View.Map.Layer.Aq_cons.GeoJSONLayer = App.View.Map.Layer.MapboxGLLayer.exten
     return this.layers;
   },
 
-  setInteractivity: function(label, properties) {
+  setInteractivity: function(label, properties = []) {
     this.on('click',this.layers.map(l => l.id), function(e) {
-      new mapboxgl.Popup()
-      .setLngLat(e.lngLat)
-      .setHTML(this.popupTemplate
-        .bindData(label,properties, e)).addTo(this._map._map);
+      let mpopup = new mapboxgl.Popup()
+      .setLngLat(e.lngLat);
+      mpopup.setHTML(this.popupTemplate
+        .drawTemplate(label,properties, e, mpopup)).addTo(this._map._map);
     }.bind(this));
     return this;
   },

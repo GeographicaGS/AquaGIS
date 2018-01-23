@@ -14,7 +14,7 @@ App.View.Aq_cons.VariableSelector = Backbone.View.extend({
     this.$el[0].id = 'variableselector';
     this.$el.append(this._template({'variables': [{
       'value':'aq_cons.sector.forecast',
-      'name':'Prevision',
+      'name':'Previsión',
     }, {
       'value':'aq_cons.sector.consumption',
       'name':'Consumo',
