@@ -589,11 +589,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     })
     .setHoverable(true)
     .setInteractivity(__('Sensor'), function(e, popup, _this) {
-      let prop = [{
-        feature: 'id_sector',
-        label: 'Identificador de sector',
-        units: ''
-      }];
+      let prop = [];
       new App.Model.Aq_cons.SensorModel({
         scope: options.scope,
         entity: e.features[0].properties['id_sector']
@@ -605,7 +601,15 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         e.features[0].properties['aq_cons.sector.pressure'] = _.find(sensors.lastdata, function(ld) {
           return ld['var_id'] === 'aq_cons.sector.pressure';
         })['var_value'];
-        debugger;
+        e.features[0].properties['aq_cons.sector.name'] = _.find(sensors.lastdata, function(ld) {
+          return ld['var_id'] === 'aq_cons.sector.name';
+        })['var_value'];
+
+        prop.push({
+          feature: 'aq_cons.sector.name',
+          label: 'Sector', 
+          units: '',
+        });
         prop.push({
           feature: 'aq_cons.sector.flow',
           label: 'Caudal actual', 
