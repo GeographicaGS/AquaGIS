@@ -25,6 +25,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         let sectorPayload = JSON.parse(this.payload.data).var;
 
         if (feature.properties[sectorPayload] !== null) {
+          feature.properties[sectorPayload + '.total'] = feature.properties[sectorPayload];          
           feature.properties[sectorPayload] /= diffDates;
         }
 
@@ -40,6 +41,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         let diffDates = App.ctx.get('finish').diff(App.ctx.get('start'), 'days');
 
         if (feature.properties[plotPayload] !== null) {
+          feature.properties[plotPayload + '.total'] = feature.properties[plotPayload];                    
           feature.properties[plotPayload] /= diffDates;
         }
 
@@ -100,17 +102,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       map: map
     })
     .setHoverable(true)
-    .setInteractivity(__('Sector'),function(e, popup, _this){
-      let diffDates = App.ctx.get('finish').diff(App.ctx.get('start'), 'days');
-      e.features[0].properties['aq_cons.sector.forecast.total'] = e.features[0]
-      .properties['aq_cons.sector.forecast'] === null ? null : e.features[0]
-        .properties['aq_cons.sector.forecast'] * diffDates;
-
-      e.features[0].properties['aq_cons.sector.consumption.total'] = e.features[0]
-      .properties['aq_cons.sector.consumption'] === null ? null : e.features[0]
-        .properties['aq_cons.sector.consumption'] * diffDates;
-
-      let prop = [{
+    .setInteractivity(__('Sector'),[{
         feature: 'name',
         label: 'Nombre',
         units: ''
@@ -134,11 +126,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         label: 'Consumo diario',
         units: 'm³',
         nbf: App.nbf
-      }];
-
-      let html = _this.bindData(__('Sector'),prop,e);
-      popup.setHTML(html);
-    });
+      }]);
 
     let plotPayload = JSON.parse(JSON.stringify(this._payload));
     plotPayload.var = plotPayload.var.replace(/(.*\.).*(\..*)/,'$1plot$2');
@@ -193,15 +181,6 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     })
     .setHoverable(true)
     .setInteractivity(__('Parcela'), function(e, popup, _this) {
-      let diffDates = App.ctx.get('finish').diff(App.ctx.get('start'), 'days');
-      e.features[0].properties['aq_cons.plot.forecast.total'] = e.features[0]
-      .properties['aq_cons.plot.forecast'] === null ? null : e.features[0]
-        .properties['aq_cons.plot.forecast'] * diffDates;
-
-      e.features[0].properties['aq_cons.plot.consumption.total'] = e.features[0]
-      .properties['aq_cons.plot.consumption'] === null ? null : e.features[0]
-        .properties['aq_cons.plot.consumption'] * diffDates;
-
       let prop = [{
         feature: 'description#RegistryRef',
         label: 'Identificador catastral',
@@ -245,7 +224,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         let arr = [];
         _.each(constructions, function(c) {
           if (!arr.includes(c.usage)) {
-            arr.push(c.usage)
+            arr.push(__(c.usage))
           }
         });
         e.features[0].properties['type_const'] = arr.join(",");
@@ -609,15 +588,40 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       map: map
     })
     .setHoverable(true)
-    .setInteractivity(__('Sensor'),[{
-      feature: 'id_sensor',
-      label: 'Identificador',
-      units: ''
-    },{
-      feature: 'id_sector',
-      label: 'Identificador de sector',
-      units: ''
-    }]);
+    .setInteractivity(__('Sensor'), function(e, popup, _this) {
+      let prop = [{
+        feature: 'id_sector',
+        label: 'Identificador de sector',
+        units: ''
+      }];
+      new App.Model.Aq_cons.SensorModel({
+        scope: options.scope,
+        entity: e.features[0].properties['id_sector']
+      }).fetch({success: function(response) {
+        let sensors = response.toJSON();
+        e.features[0].properties['aq_cons.sector.flow'] = _.find(sensors.lastdata, function(ld) {
+          return ld['var_id'] === 'aq_cons.sector.flow';
+        })['var_value'];
+        e.features[0].properties['aq_cons.sector.pressure'] = _.find(sensors.lastdata, function(ld) {
+          return ld['var_id'] === 'aq_cons.sector.pressure';
+        })['var_value'];
+        debugger;
+        prop.push({
+          feature: 'aq_cons.sector.flow',
+          label: 'Caudal actual', 
+          units: 'm³/h',
+          nbf: App.nbf
+        });
+        prop.push({
+          feature: 'aq_cons.sector.pressure',
+          label: 'Caudal actual',
+          units: 'kgf/cm²',
+          nbf: App.nbf
+        });
+        let html = _this.bindData(__('Sensor'),prop,e);
+        popup.setHTML(html);
+      }});
+    });
 
     this._tankLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
       source: {
