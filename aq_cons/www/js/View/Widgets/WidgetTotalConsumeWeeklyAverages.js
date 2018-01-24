@@ -57,9 +57,10 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
     App.View.Widgets.Base.prototype.initialize.call(this,options);
 
     var xRrange = {};
-    xRrange[__('Día')] = 12;
-    xRrange[__('Tarde')] = 3;
-    xRrange[__('Noche')] = 9;
+    xRrange[__('Madrugada')] = 6;
+    xRrange[__('Día')] = 9;
+    xRrange[__('Tarde')] = 5;
+    xRrange[__('Noche')] = 4;
 
     let consumeRangeNumeric = new App.Static.Collection.Aq_cons.ConsumeRangeNumeric();
     this._chartModel = new App.Model.BaseChartConfigModel({
@@ -71,7 +72,7 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
         end: false,
       },
       keySerie: __('Suma'),
-      startDate: moment("07:00", "HH:mm"),
+      startDate: moment("00:00", "HH:mm"),
       nextDateFunction:function(d){
         return d.add(1,'hours');
       },
@@ -113,6 +114,13 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
 
     this.filterables = [this.collection];
 
+  },
+
+  render: function() {
+    debugger;
+    this.$el.attr('id','widgetTotalConsumeWeeklyAverage');
+    return App.View.Widgets.Base.prototype.render.call(this);
+    
   }
 
 });
