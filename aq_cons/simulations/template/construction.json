@@ -1,0 +1,59 @@
+{
+  "entity_type": "Construction",
+  "entity_name": "",
+  "schedule": "",
+  "staticAttributes": [
+    {
+      "name": "location",
+      "type": "geo:json",
+      "value": {}
+    },
+    {
+      "name": "refSector",
+      "type": "Text",
+      "value": ""
+    },
+    {
+      "name": "refPlot",
+      "type": "Text",
+      "value": ""
+    },
+    {
+      "name": "name",
+      "type": "Text",
+      "value": ""
+    },
+    {
+      "name": "floor",
+      "type": "Text",
+      "value": ""
+    },
+    {
+      "name": "completePlot",
+      "type": "Boolean",
+      "value": ""
+    },
+    {
+      "name": "usage",
+      "type": "Text",
+      "value": ""
+    }
+  ],
+  "active": [
+    {
+      "name": "dateModified",
+      "type": "DateTime",
+      "value": "import(now)"
+    },
+    {
+      "name": "flow",
+      "type": "Number",
+      "value": ""
+    },
+    {
+      "name": "pressure",
+      "type": "Number",
+      "value": ""
+    }
+  ]
+}

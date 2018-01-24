@@ -1,0 +1,39 @@
+{
+  "entity_type": "Plot",
+  "entity_name": "",
+  "schedule": "once",
+  "staticAttributes": [
+    {
+      "name": "location",
+      "type": "geo:json",
+      "value": {}
+    },
+    {
+      "name": "refSector",
+      "type": "Text",
+      "value": ""
+    },
+    {
+      "name": "description",
+      "type": "json",
+      "value": {}
+    },
+    {
+      "name": "area",
+      "type": "Number",
+      "value": ""
+    },
+    {
+      "name": "floors",
+      "type": "Number",
+      "value": ""
+    }
+  ],
+  "active": [
+    {
+      "name": "dateModified",
+      "type": "DateTime",
+      "value": "import(now)"
+    }
+  ]
+}
