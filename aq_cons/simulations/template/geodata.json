@@ -1,0 +1,105 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -3.7058687210083003,
+                40.42073728484179
+              ],
+              [
+                -3.7060028314590454,
+                40.42069236136368
+              ],
+              [
+                -3.705863356590271,
+                40.420627018069204
+              ],
+              [
+                -3.7058687210083003,
+                40.42073728484179
+              ]
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "plot_id:1",
+        "refSector": "sector_id:1",
+        "description": {
+          "RegistryInternalNum": "232745625",
+          "RegistryRef": "0679207QB6307N",
+          "Block": "6792",
+          "Prov": "41",
+          "Mun": "59"
+        },
+        "name": "CL ROSA CHACEL 51",
+        "floors": 3,
+        "area": 130,
+        "usage": "domestic",
+        "centroid": {
+          "type": "Point",
+          "coordinates": [
+            -3.7059116363525386,
+            40.42069236136368
+          ]
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                -3.705710470676422,
+                40.4216194125159
+              ],
+              [
+                -3.705782890319824,
+                40.421609202771
+              ],
+              [
+                -3.705729246139527,
+                40.42157448962685
+              ],
+              [
+                -3.705710470676422,
+                40.4216194125159
+              ]
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "plot_id:2",
+        "refSector": "sector_id:1",
+        "description": {
+          "RegistryInternalNum": "232745625",
+          "RegistryRef": "0679207QB6307N",
+          "Block": "6792",
+          "Prov": "41",
+          "Mun": "59"
+        },
+        "name": "CL ROSA CHACEL 52",
+        "floors": 3,
+        "area": 130,
+        "usage": "domestic",
+        "centroid": {
+          "type": "Point",
+          "coordinates": [
+            -3.7057453393936153,
+            40.42160716082184
+          ]
+        }
+      }
+    }
+  ]
+}

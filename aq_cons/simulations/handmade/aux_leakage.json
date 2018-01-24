@@ -1,14 +1,6 @@
 {
-  "domain": {
-    "service": "aljarafe",
-    "subservice": "/aquagis"
-  },
-  "contextBroker": {
-    "protocol": "http",
-    "host": "urbo-aquagis-orion.geographica.gs",
-    "port": 1026,
-    "ngsiVersion": "1.0"
-  },
+  "domain": "import(export_domain.json)",
+  "contextBroker": "import(export_context_broker.json)",
   "exports": {
     "leakage": "0 */5 6-17 * * 1",
     "NoLeakageMonday": "0 */5 0-5,18-23 * * 1",
@@ -19,24 +11,22 @@
     "NormalBehaviour": "0 */5 * * * *",
     "now": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})"
   },
-  "entities": [{
+  "entities": [
+    {
       "entity_name": "sector_id:16",
       "entity_type": "AuxLeakage",
       "schedule": "import(leakage)",
-      "staticAttributes": [
-
-      ],
-      "active": [{
+      "staticAttributes": [],
+      "active": [
+        {
           "name": "dateModified",
           "type": "DateTime",
           "value": "import(now)"
-        },
-        {
+        }, {
           "name": "flowPerc",
           "type": "Number",
           "value": "time-random-linear-interpolator([[0,random(50,52)],[24,random(50,52)]])"
-        },
-        {
+        }, {
           "name": "pressurePerc",
           "type": "Number",
           "value": "time-random-linear-interpolator([[0,random(20,22)],[24,random(20,22)]])"
@@ -46,25 +36,21 @@
           "value": "20"
         }
       ]
-    },
-    {
+    }, {
       "entity_name": "sector_id:16",
       "entity_type": "AuxLeakage",
       "schedule": "import(NoLeakageMonday)",
-      "staticAttributes": [
-
-      ],
-      "active": [{
+      "staticAttributes": [],
+      "active": [
+        {
           "name": "dateModified",
           "type": "DateTime",
           "value": "import(now)"
-        },
-        {
+        }, {
           "name": "flowPerc",
           "type": "Number",
           "value": "0"
-        },
-        {
+        }, {
           "name": "pressurePerc",
           "type": "Number",
           "value": "0"
@@ -74,25 +60,21 @@
           "value": "20"
         }
       ]
-    },
-    {
+    }, {
       "entity_name": "sector_id:16",
       "entity_type": "AuxLeakage",
       "schedule": "import(NoLeakageRestWeek)",
-      "staticAttributes": [
-
-      ],
-      "active": [{
+      "staticAttributes": [],
+      "active": [
+        {
           "name": "dateModified",
           "type": "DateTime",
           "value": "import(now)"
-        },
-        {
+        }, {
           "name": "flowPerc",
           "type": "Number",
           "value": "0"
-        },
-        {
+        }, {
           "name": "pressurePerc",
           "type": "Number",
           "value": "0"
@@ -102,25 +84,21 @@
           "value": "20"
         }
       ]
-    },
-    {
+    }, {
       "entity_name": "sector_id:17",
       "entity_type": "AuxLeakage",
       "schedule": "import(anomaly)",
-      "staticAttributes": [
-
-      ],
-      "active": [{
+      "staticAttributes": [],
+      "active": [
+        {
           "name": "dateModified",
           "type": "DateTime",
           "value": "import(now)"
-        },
-        {
+        }, {
           "name": "flowPerc",
           "type": "Number",
           "value": "time-random-linear-interpolator([[0,random(20,22)],[24,random(20,22)]])"
-        },
-        {
+        }, {
           "name": "pressurePerc",
           "type": "Number",
           "value": "0"
@@ -130,25 +108,21 @@
           "value": "20"
         }
       ]
-    },
-    {
+    }, {
       "entity_name": "sector_id:17",
       "entity_type": "AuxLeakage",
       "schedule": "import(NoAnomalyThursday)",
-      "staticAttributes": [
-
-      ],
-      "active": [{
+      "staticAttributes": [],
+      "active": [
+        {
           "name": "dateModified",
           "type": "DateTime",
           "value": "import(now)"
-        },
-        {
+        }, {
           "name": "flowPerc",
           "type": "Number",
           "value": "0"
-        },
-        {
+        }, {
           "name": "pressurePerc",
           "type": "Number",
           "value": "0"
@@ -158,25 +132,21 @@
           "value": "20"
         }
       ]
-    },
-    {
+    }, {
       "entity_name": "sector_id:17",
       "entity_type": "AuxLeakage",
       "schedule": "import(NoAnomalyRestWeek)",
-      "staticAttributes": [
-
-      ],
-      "active": [{
+      "staticAttributes": [],
+      "active": [
+        {
           "name": "dateModified",
           "type": "DateTime",
           "value": "import(now)"
-        },
-        {
+        }, {
           "name": "flowPerc",
           "type": "Number",
           "value": "0"
-        },
-        {
+        }, {
           "name": "pressurePerc",
           "type": "Number",
           "value": "0"
@@ -186,25 +156,21 @@
           "value": "20"
         }
       ]
-    },
-    {
+    }, {
       "entity_name": "sector_id:18",
       "entity_type": "AuxLeakage",
       "schedule": "import(NormalBehaviour)",
-      "staticAttributes": [
-
-      ],
-      "active": [{
+      "staticAttributes": [],
+      "active": [
+        {
           "name": "dateModified",
           "type": "DateTime",
           "value": "import(now)"
-        },
-        {
+        }, {
           "name": "flowPerc",
           "type": "Number",
           "value": "0"
-        },
-        {
+        }, {
           "name": "pressurePerc",
           "type": "Number",
           "value": "0"
@@ -214,25 +180,21 @@
           "value": "20"
         }
       ]
-    },
-    {
+    }, {
       "entity_name": "sector_id:19",
       "entity_type": "AuxLeakage",
       "schedule": "import(NormalBehaviour)",
-      "staticAttributes": [
-
-      ],
-      "active": [{
+      "staticAttributes": [],
+      "active": [
+        {
           "name": "dateModified",
           "type": "DateTime",
           "value": "import(now)"
-        },
-        {
+        }, {
           "name": "flowPerc",
           "type": "Number",
           "value": "0"
-        },
-        {
+        }, {
           "name": "pressurePerc",
           "type": "Number",
           "value": "0"
@@ -242,25 +204,21 @@
           "value": "20"
         }
       ]
-    },
-    {
+    }, {
       "entity_name": "sector_id:20",
       "entity_type": "AuxLeakage",
       "schedule": "import(NormalBehaviour)",
-      "staticAttributes": [
-
-      ],
-      "active": [{
+      "staticAttributes": [],
+      "active": [
+        {
           "name": "dateModified",
           "type": "DateTime",
           "value": "import(now)"
-        },
-        {
+        }, {
           "name": "flowPerc",
           "type": "Number",
           "value": "0"
-        },
-        {
+        }, {
           "name": "pressurePerc",
           "type": "Number",
           "value": "0"
