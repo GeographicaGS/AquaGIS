@@ -117,7 +117,6 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
   },
 
   render: function() {
-    debugger;
     this.$el.attr('id','widgetTotalConsumeWeeklyAverage');
     return App.View.Widgets.Base.prototype.render.call(this);
     
