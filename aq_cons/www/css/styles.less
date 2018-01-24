@@ -14,6 +14,17 @@
   }
 }
 
+a.co_fullscreen_toggle {
+  top: calc(~'25% + 33px');
+  height: 33px;
+  width: 33px;
+}
+
+a.co_fullscreen_toggle.restore {
+  background-image: url(/img/SC_ico_herram_reducir.svg);
+  transform: translateY(calc(~'50% + 33px'));
+}
+
 #map {
   // position: initial;
   position: relative;
@@ -38,6 +49,7 @@
       }
     }
   }
+  
   .basemapselector {
     position: absolute !important;
     background-color: #fff;

@@ -63,5 +63,15 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
   onClose: function() {
     if(this.layers !== undefined)
       this.layers.close();
+  },
+
+  toggle3d: function(e) {
+    App.View.Map.MapboxView.prototype.toggle3d.call(this,e);
+    let zoom = this._map.getZoom();
+    if(zoom < 16 && this._is3dActive) {
+      this._map.easeTo({zoom: 16});
+    }
+    this._map.setLayoutProperty('plot_buildings', 'visibility',
+    this._is3dActive ? 'visible' : 'none');
   }
 });
