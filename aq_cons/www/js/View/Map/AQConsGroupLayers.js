@@ -39,8 +39,8 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         let payload = JSON.parse(this.payload.data).var;
         let plotPayload = payload.replace(/(.*\.).*(\..*)/,'$1plot$2');
         let diffDates = App.ctx.get('finish').diff(App.ctx.get('start'), 'days') + 1;
-
-        feature.properties[plotPayload + '.total'] = feature.properties[plotPayload];                    
+        feature.properties['height'] = feature.properties['floors'] * 4;
+        feature.properties[plotPayload + '.total'] = feature.properties[plotPayload];                   
         if (feature.properties[plotPayload] !== null) {
           feature.properties[plotPayload] /= diffDates;
         }
@@ -162,10 +162,9 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
               [0.5, '#0278D1']
             ]
           },
-          'fill-opacity': 0.7
+          'fill-opacity': 0.7,
         }
-      },
-      {
+      }, {
         'id': 'plot_line',
         'type': 'line',
         'source': 'aqua_plots',
@@ -174,6 +173,33 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'paint': {
           'line-color': '#165288',
           'line-width': 1
+        }
+      }, {
+        'id': 'plot_buildings',
+        'type': 'fill-extrusion',
+        'source': 'aqua_plots',
+        'minzoom': 16,
+        'layout': {
+          'visibility': 'none'          
+        },
+        'paint': {
+          'fill-extrusion-height': {
+            'property': 'height',
+            'type': 'identity'
+          },
+          'fill-extrusion-color': {
+            'property': 'aq_cons.plot.forecast',
+            'type': 'interval',
+            'default': 'transparent',
+            'stops': [
+              [0, '#64B6D9'],
+              [0.125, '#4CA7D7'],
+              [0.250, '#3397D5'],
+              [0.375, '#1A88D3'],
+              [0.5, '#0278D1']
+            ]
+          },
+          'fill-extrusion-opacity': 0.8,
         }
       }
     ],
@@ -656,7 +682,6 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'source': 'tanks_datasource',
         'minzoom': 16,
         'layout': {
-
           'icon-image': 'deposito',
           'icon-allow-overlap': true
         }
@@ -681,6 +706,8 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       label: 'Ubicación',
       units: ''
     }]);
+
+    map._map.moveLayer('plot_buildings');
   },
 
   onClose: function() {
