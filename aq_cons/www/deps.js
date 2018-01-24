@@ -9,6 +9,7 @@ deps.templateFolder = [
 
 deps.JS = [
   srcJS + 'Namespace.js',
+  srcJS + 'Metadata.js',
   srcJS + 'Collection/AQConsCollection.js',
   srcJS + 'Model/AQConsModel.js',
   srcJS + 'View/AQConsVariableSelector.js',
@@ -27,8 +28,8 @@ deps.JS = [
 deps.lessFile = [ src + 'css/styles.less' ];
 
 deps.extraResources = [
-  // { srcFolder: src + 'public/img', dstFolder: public + 'img', onDebugIgnore: false }
-]
+  { srcFolder: src + 'public/img', dstFolder: public + 'img', onDebugIgnore: false },
+];
 
 if (typeof exports !== 'undefined') {
   exports.deps = deps;

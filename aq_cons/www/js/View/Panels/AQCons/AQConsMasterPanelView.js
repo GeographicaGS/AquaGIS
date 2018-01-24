@@ -26,9 +26,9 @@ App.View.Panels.Aq_cons.Master = App.View.Panels.Base.extend({
       section: this.id_category,
       color: App.mv().getAdditionalInfo(this.id_category).colour,
       link : '/' + this.scopeModel.get('id') + '/' + this.id_category + '/dashboard/consume',
-      title: __('Tiempo Real'),
+      title: __('Mapa'),
       timeMode:'now',
-      titleLink: __('Tiempo Real')
+      titleLink: __('Mapa')
     });
     this._widgets.push(new App.View.WidgetDeviceMap({model: m}));
 
