@@ -6,7 +6,7 @@
     <defs></defs>
     <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="cartografia/sensor-agua">
-            <circle id="Oval-3-Copy-2" fill="#9D61F9" cx="12" cy="12" r="12"></circle>
+            <circle id="Oval-3-Copy-2" fill="#9D61F9" cx="12" cy="12" r="11"></circle>
             <g id="icons/negative/sensor-tuberia" transform="translate(2.000000, 2.000000)" fill="#FFFFFF">
                 <g id="Group-2" transform="translate(9.000000, 3.000000)">
                     <path d="M8,4 L8,2.999 C7.232,2.999 6.464,2.706 5.879,2.121 C5.294,1.536 5.001,0.768 5.001,0 L4,0 C4,1.024 4.39,2.047 5.172,2.828 C5.953,3.609 6.976,4 8,4" id="Fill-1"></path>

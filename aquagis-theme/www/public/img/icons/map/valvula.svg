@@ -6,7 +6,7 @@
     <defs></defs>
     <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="cartografia/valvula">
-            <circle id="Oval-8" fill="#68BC84" cx="12" cy="12" r="12"></circle>
+            <ellipse id="Oval-8" fill="#68BC84" cx="12" cy="12" rx="11" ry="12"></ellipse>
             <g id="icons/negative/valvula" transform="translate(2.000000, 2.000000)" fill="#FFFFFF">
                 <g id="Group-2" transform="translate(3.000000, 3.000000)">
                     <polygon id="Fill-3" points="12.25 5.25 12.25 6.125 11.375 6.125 11.375 7.875 12.25 7.875 12.25 8.75 14 8.75 14 7.875 14 6.125 14 5.25"></polygon>
