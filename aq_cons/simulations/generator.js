@@ -97,7 +97,7 @@ const getConstrActive = (protoActive, usage, area, exportStrings) => {
   active[2].schedule = randomizeScheduleFirstZero(exportStrings.schedules.week);
 
   active.push(clone(protoActive[1]));
-  active[3].value = `import(flow${ capitalizeFirst(usage) }${ size }WeekEnd)`;
+  active[3].value = `import(flow${ capitalizeFirst(usage) }${ size }Weekend)`;
   active[3].schedule = randomizeScheduleFirstZero(exportStrings.schedules.weekend);
 
   return active;
