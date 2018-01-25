@@ -39,7 +39,6 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUseTimeserie = App.View.Widget
         return type.get('name');
       },
       xAxisFunction: function(d) {
-        console.log(d);
         var match, formatDate;
         if((match = this.options.get('currentStep').match(/(\d)d/)) !== null){
           formatDate = 'DD/MM';
