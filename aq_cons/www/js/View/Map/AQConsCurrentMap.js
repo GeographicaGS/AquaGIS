@@ -6,7 +6,7 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
     options = _.defaults(options, {
       defaultBasemap: 'positron',
       sprites: '/verticals/aquagis-theme/mapstyle/sprite',      
-      center: [-6.0738382, 37.3357641],
+      center: [-6.058731999113434, 37.34176929299322],
       type: 'now'
     });
 

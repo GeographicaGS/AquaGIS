@@ -40,7 +40,7 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
       '    <div class="ramp consume"></div>' +
       '    <span class="text height12">1</span>' +
       '    <div class="max-value">' +
-      '     <div class="maxcolor"></div> <span>&gt; ' + _('Consumo') + '</span>' +
+      '     <div class="maxcolor"></div> <span>&gt; 1</span>' +
       '    </div>' +
       ' </div>' +
       '</div>'

@@ -285,7 +285,19 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'id': 'supply_line',
         'type': 'line',
         'source': 'supply_line_datasource',
+        'minzoom': 14,
         'paint': {
+          'line-width': 1,
+          'line-color': '#86E9A7',
+        }
+      },
+      {
+        'id': 'supply_line2',
+        'type': 'line',
+        'source': 'supply_line_datasource',
+        'minzoom': 16,
+        'paint': {
+          'line-width': 2,
           'line-color': '#86E9A7',
         }
       }],
@@ -373,24 +385,12 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         sectionName: __('Acometidas'),
         name: __('Acometidas')
       },
-      layers:[{
+      layers:[
+      {
         'id': 'connections_circle',
         'type': 'circle',
         'source': 'connections_datasource',
-        'minzoom': 14,
-        'maxzoom': 16,
-        'paint': {
-          'circle-radius': 2,
-          'circle-stroke-width': 1,
-          'circle-stroke-color': '#FFF',
-          'circle-color': '#3561BA',
-        }
-      },
-      {
-        'id': 'connections_circle_2',
-        'type': 'circle',
-        'source': 'connections_datasource',
-        'minzoom': 16,
+        'minzoom': 15,
         'maxzoom': 17,
         'paint': {
           'circle-radius': 4,
@@ -427,24 +427,12 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         sectionName: __('Hidrantes'),
         name: __('Hidrantes')
       },
-      layers:[{
+      layers:[
+      {
         'id': 'hydrants_circle',
         'type': 'circle',
         'source': 'hydrants_datasource',
-        'minzoom': 14,
-        'maxzoom': 16,
-        'paint': {
-          'circle-radius': 2,
-          'circle-stroke-width': 1,
-          'circle-stroke-color': '#FFF',
-          'circle-color': '#E87668',
-        }
-      },
-      {
-        'id': 'hydrants_circle_2',
-        'type': 'circle',
-        'source': 'hydrants_datasource',
-        'minzoom': 16,
+        'minzoom': 15,
         'maxzoom': 17,
         'paint': {
           'circle-radius': 4,
@@ -481,24 +469,12 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         sectionName: __('Válvulas'),
         name: __('Válvulas')
       },
-      layers:[{
+      layers:[
+      {
         'id': 'valves_circle',
         'type': 'circle',
         'source': 'valves_datasource',
-        'minzoom': 14,
-        'maxzoom': 16,
-        'paint': {
-          'circle-radius': 2,
-          'circle-stroke-width': 1,
-          'circle-stroke-color': '#FFF',
-          'circle-color': '#68BC84',
-        }
-      },
-      {
-        'id': 'valves_circle_2',
-        'type': 'circle',
-        'source': 'valves_datasource',
-        'minzoom': 16,
+        'minzoom': 15,
         'maxzoom': 17,
         'paint': {
           'circle-radius': 4,
@@ -535,24 +511,12 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         sectionName: __('Pozos'),
         name: __('Pozos')
       },
-      layers:[{
+      layers:[
+      {
         'id': 'wells_circle',
         'type': 'circle',
         'source': 'wells_datasource',
-        'minzoom': 14,
-        'maxzoom': 16,
-        'paint': {
-          'circle-radius': 2,
-          'circle-stroke-width': 1,
-          'circle-stroke-color': '#FFF',
-          'circle-color': '#0F82E0',
-        }
-      },
-      {
-        'id': 'wells_circle_2',
-        'type': 'circle',
-        'source': 'wells_datasource',
-        'minzoom': 16,
+        'minzoom': 15,
         'maxzoom': 17,
         'paint': {
           'circle-radius': 4,

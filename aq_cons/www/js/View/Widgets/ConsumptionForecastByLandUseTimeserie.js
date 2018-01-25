@@ -57,6 +57,7 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUseTimeserie = App.View.Widget
         'industrial': {type: 'bar', axis: 1},
         'domestic': {type: 'bar', axis: 1},
       },
+      hideYAxis2: true,      
       stacked: true
     });
 
