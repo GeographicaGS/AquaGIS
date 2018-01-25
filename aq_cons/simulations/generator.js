@@ -71,15 +71,22 @@ const getConstrId = (plotId, floor) => {
   return `construction_id:${ plotId.split(':')[1] }_${ floor }`;
 };
 
-const randomizeScheduleFirstZero = (protoSchedule) => {
-  let randomSecond = Math.floor((Math.random() * 59) + 1);
-  return protoSchedule.replace('0', randomSecond);
+const randomNoughToSixty = () => {
+  return Math.floor((Math.random() * 59) + 1);
+};
+
+const replaceFirstZero = (protoSchedule, replace) => {
+  return protoSchedule.replace('0', replace);
 };
 
 const getConstrActive = (protoActive, usage, area, exportStrings) => {
+  let theSecond = randomNoughToSixty();
+
   let active = [protoActive[0], protoActive[2]];
+  active[0].schedule = replaceFirstZero(exportStrings.schedules.allWeek, theSecond);
+
   active[1].value = 'import(pressureAnyUseAllWeek)';
-  active[1].schedule = randomizeScheduleFirstZero(exportStrings.schedules.allWeek);
+  active[1].schedule = replaceFirstZero(exportStrings.schedules.allWeek, theSecond);
 
   let size = null;
   if (usage === 'industrial') {
@@ -94,11 +101,11 @@ const getConstrActive = (protoActive, usage, area, exportStrings) => {
 
   active.push(clone(protoActive[1]));
   active[2].value = `import(flow${ capitalizeFirst(usage) }${ size }Week)`;
-  active[2].schedule = randomizeScheduleFirstZero(exportStrings.schedules.week);
+  active[2].schedule = replaceFirstZero(exportStrings.schedules.week, theSecond);
 
   active.push(clone(protoActive[1]));
   active[3].value = `import(flow${ capitalizeFirst(usage) }${ size }Weekend)`;
-  active[3].schedule = randomizeScheduleFirstZero(exportStrings.schedules.weekend);
+  active[3].schedule = replaceFirstZero(exportStrings.schedules.weekend, theSecond);
 
   return active;
 };
@@ -121,7 +128,6 @@ const createConstr = (protoPlot, floor, template, exportStrings) => {
   let constr = clone(template);
 
   constr.entity_name = getConstrId(protoPlot.properties.id, floor);
-  constr.schedule = randomizeScheduleFirstZero(randomizeScheduleFirstZero(exportStrings.schedules.everyHour));
 
   constr.staticAttributes[0].value = protoPlot.properties.centroid;
   constr.staticAttributes[1].value = protoPlot.properties.refSector;
@@ -142,7 +148,6 @@ const createFutu = (protoPlot, floor, template, exportStrings) => {
   let futu = clone(template);
 
   futu.entity_name = getConstrId(protoPlot.properties.id, floor);
-  futu.schedule = randomizeScheduleFirstZero(randomizeScheduleFirstZero(exportStrings.schedules.everyHour));
 
   futu.active = getConstrActive(
     futu.active, protoPlot.properties.usage,

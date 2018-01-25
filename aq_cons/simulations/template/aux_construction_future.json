@@ -1,7 +1,7 @@
 {
   "entity_type": "AuxConstructionFuture",
   "entity_name": "",
-  "schedule": "",
+  "schedule": "once",
   "staticAttributes": [],
   "active": [
     {
