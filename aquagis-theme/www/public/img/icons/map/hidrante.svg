@@ -6,7 +6,7 @@
     <defs></defs>
     <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="cartografia/hidrante">
-            <circle id="Oval-8" fill="#E87668" cx="12" cy="12" r="12"></circle>
+            <ellipse id="Oval-8" fill="#E87668" cx="12" cy="12" rx="11" ry="12"></ellipse>
             <g id="icons/negative/hidrante" transform="translate(3.000000, 3.000000)" fill="#FFFFFF">
                 <g id="Page-1" transform="translate(2.700000, 1.800000)">
                     <path d="M2.7,13.47543 L2.7,12.59973 L9.9,12.59973 L9.9,13.47543 L10.8,13.47543 L10.8,14.37543 L1.8,14.37543 L1.8,13.47543 L2.7,13.47543 Z" id="Combined-Shape"></path>

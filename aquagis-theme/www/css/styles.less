@@ -173,8 +173,11 @@ body[layout='aquagis'] {
     }
   }
 
-  nav.navbar {
+  header {
     z-index: 9999;
+  }
+  nav.navbar {
+    z-index: 9998;
   }
   nav.navbar a.navElement.menu {
     background-image: url(/verticals/aquagis-theme/img/icons/positive/SC_ic_menu_panel.svg);
@@ -225,8 +228,16 @@ body[layout='aquagis'] {
     }
   }
 
-  .popup_widget:after {
-    border-color: @aquaGisSecondaryColor transparent transparent;
+  .popup_widget {
+    &:not(:hover):after {
+      border-color: @aquaGisPrimaryColor transparent transparent;
+    }
+    &:hover{
+      &:after{
+        border-width: 0 4px 7px;
+        border-color: transparent transparent @aquaGisPrimaryColor;
+      }
+    }
   }
 
   .title_page, h6 {
@@ -372,18 +383,24 @@ body[layout='aquagis'] {
     }
   }
 
-  .mapboxgl-popup-content {
+  .mapboxgl-popup-content{
     padding: 0 !important;
+    background-color: @aquaGisSecondaryColor;
+  }
+  .mapboxgl-popup-tip {
+    border-top-color: @aquaGisSecondaryColor;
+    border-bottom-color: @aquaGisSecondaryColor;
   }
 
   .mapboxgl-popup.mapboxgl-popup-anchor-bottom,
   .mapboxgl-popup.mapboxgl-popup-anchor-top {
-    width: 200px;
+    width: 260px;
     .header {
       padding: 10px 14px;
-      border-bottom: 1px solid #e3e3e3;
+      // color: #5B84D7;
+      color: #fff;
       h4 {
-        font-size: 12px;
+        font-size: 14px;
         line-height: 15px;
         text-transform: uppercase;
       }
@@ -393,18 +410,20 @@ body[layout='aquagis'] {
       }
     }
     .content {
+      color: #fff;
       padding: 10px 14px;
       max-height: 200px;
       overflow-y: scroll;
       .info-block {
         margin-bottom: 12px;
         h4 {
-          font-size: 14px;
-          line-height: 17px;
+          font-size: 12px;
+          line-height: 12px;
+          font-weight: 600;
+          text-transform: uppercase;
         }
         span {
-          font-size: 14px;
-          line-height: 20px;
+          color: #98B2C9;
         }
       }
     }
@@ -415,7 +434,8 @@ body[layout='aquagis'] {
 
   .mapboxgl-popup-close-button {
     font-size: 20px;
-  }
+    color: #8AA8C3
+  };
 
   .mapbox-legend {
     position: fixed;
@@ -424,7 +444,7 @@ body[layout='aquagis'] {
     left: 10px;
     z-index: 9;
     width: 320px;
-    z-index: 1;
+    z-index: 2;
     background: #fff;
     border: 1px solid #808086;
     border-radius: 1px;
@@ -483,4 +503,13 @@ body[layout='aquagis'] {
       }
     }
   }
+}
+
+.widget .chart .nvd3 text,
+.chart.d3 .axis text {
+  fill: #98B2C9;
+}
+
+.data_download, .popup_widget {
+  color: #64B6D9;
 }
