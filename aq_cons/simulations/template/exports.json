@@ -1,0 +1,33 @@
+{
+  "interpolators": {
+    "flow": {
+      "industrialWeek": "time-random-linear-interpolator([[0,random(3.5,4)],[12,random(6.5,7)],[24,random(3.5,4)]])",
+      "industrialWeekend": "time-random-linear-interpolator([[0,random(3.5,4)],[12,random(6.5,7)],[24,random(3.5,4)]])",
+      "comercialWeek": "time-random-linear-interpolator([[0,random(3.5,4)],[12,random(6.5,7)],[24,random(3.5,4)]])",
+      "comercialWeekend": "time-random-linear-interpolator([[0,random(3.5,4)],[12,random(6.5,7)],[24,random(3.5,4)]])",
+      "domesticWeek": "time-random-linear-interpolator([[0,random(3.5,4)],[12,random(6.5,7)],[24,random(3.5,4)]])",
+      "domesticWeekend": "time-random-linear-interpolator([[0,random(3.5,4)],[12,random(6.5,7)],[24,random(3.5,4)]])"
+    },
+    "pressure": {
+      "anyUseAllWeek": "time-random-linear-interpolator([[0,random(3.5,4)],[24,random(3.5,4)]])"
+    }
+  },
+  "schedules": {
+    "everyHour": "0 0 */1 * * *",
+    "week": "0 */10 * * * 1-5",
+    "weekend": "0 */10 * * * 0,6",
+    "allWeek": "0 */10 * * * *"
+  },
+  "interpolatorFactors": {
+    "industrialLarge": 2.2,
+    "comercialLarge": 1.8,
+    "domesticLarge": 2.4,
+    "domesticMedium": 1.6
+  },
+  "areaThresholds": {
+    "indsutrialLarge": 600,
+    "comercialLarge": 60,
+    "domesticLarge": 200,
+    "domesticMedium": 60
+  }
+}
