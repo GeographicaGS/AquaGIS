@@ -1,6 +1,14 @@
 {
-  "domain": "import(export_domain.json)",
-  "contextBroker": "import(export_context_broker.json)",
+  "domain": {
+    "service": "aljarafe",
+    "subservice": "/aquagis"
+  },
+  "contextBroker": {
+    "protocol": "http",
+    "host": "urbo-aquagis-orion.geographica.gs",
+    "port": 1026,
+    "ngsiVersion": "1.0"
+  },
   "exports": {
     "now": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})"
   },

@@ -1,6 +1,0 @@
-{
-  "protocol": "http",
-  "host": "urbo-aquagis-orion.geographica.gs",
-  "port": 1026,
-  "ngsiVersion": "1.0"
-}

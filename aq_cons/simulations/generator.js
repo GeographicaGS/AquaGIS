@@ -97,7 +97,7 @@ const getConstrActive = (protoActive, usage, area, exportStrings) => {
   active[2].schedule = randomizeScheduleFirstZero(exportStrings.schedules.week);
 
   active.push(clone(protoActive[1]));
-  active[3].value = `import(flow${ capitalizeFirst(usage) }${ size }WeekEnd)`;
+  active[3].value = `import(flow${ capitalizeFirst(usage) }${ size }Weekend)`;
   active[3].schedule = randomizeScheduleFirstZero(exportStrings.schedules.weekend);
 
   return active;
@@ -157,6 +157,8 @@ const dirOut = path.join(__dirname, './generated/');
 
 // Filenames
 const fileMain = 'main.json'
+const fileExportDomain = 'export_domain.json';
+const fileExportContextBroker = 'export_context_broker.json';
 const filePlot = 'plot.json';
 const fileConstr = 'construction.json';
 const fileFutu = 'aux_construction_future.json';
@@ -166,6 +168,8 @@ const fileExportStrings = 'exports.json';
 // Input data
 let geoData = require(path.join(dirTemplate, fileGeoData)).features;
 let exportStrings = require(path.join(dirTemplate, fileExportStrings));
+let exportDomain = require(path.join(dirTemplate, fileExportDomain));
+let exportContextBroker = require(path.join(dirTemplate, fileExportContextBroker));
 
 // Templates
 let mainTemplate = require(path.join(dirTemplate, fileMain));
@@ -179,6 +183,9 @@ let constrOutputFile = path.join(dirOut, fileConstr);
 let futuOutputFile = path.join(dirOut, fileFutu);
 
 // Output data
+mainTemplate.domain = exportDomain;
+mainTemplate.contextBroker = exportContextBroker;
+
 let plotOutput = clone(mainTemplate);
 let constrOutput = clone(mainTemplate);
 let futuOutput = clone(mainTemplate);

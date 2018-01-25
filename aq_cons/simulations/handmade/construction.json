@@ -1,6 +1,14 @@
 {
-  "domain": "import(export_domain.json)",
-  "contextBroker": "import(export_context_broker.json)",
+  "domain": {
+    "service": "aljarafe",
+    "subservice": "/aquagis"
+  },
+  "contextBroker": {
+    "protocol": "http",
+    "host": "urbo-aquagis-orion.geographica.gs",
+    "port": 1026,
+    "ngsiVersion": "1.0"
+  },
   "exports": {
     "JanToMayWeek": "0 */5 * * 1-5,11-12 1-5",
     "JanToMayWeekend": "0 */5 * * 1-5,11-12 0,6",
