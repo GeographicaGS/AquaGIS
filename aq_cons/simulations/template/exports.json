@@ -14,8 +14,7 @@
   },
   "schedules": {
     "week": "0 */15 * * * 1-5",
-    "weekend": "0 */15 * * * 0,6",
-    "allWeek": "0 */15 * * * *"
+    "weekend": "0 */15 * * * 0,6"
   },
   "interpolatorFactors": {
     "industrialLarge": 5,

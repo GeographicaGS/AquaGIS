@@ -81,12 +81,21 @@ const replaceFirstZero = (protoSchedule, replace) => {
 
 const getConstrActive = (protoActive, usage, area, exportStrings) => {
   let theSecond = randomNoughToSixty();
+  let active = [];
 
-  let active = [protoActive[0], protoActive[2]];
-  active[0].schedule = replaceFirstZero(exportStrings.schedules.allWeek, theSecond);
+  active.push(clone(protoActive[0]));
+  active[0].schedule = replaceFirstZero(exportStrings.schedules.week, theSecond);
 
-  active[1].value = 'import(pressureAnyUseAllWeek)';
-  active[1].schedule = replaceFirstZero(exportStrings.schedules.allWeek, theSecond);
+  active.push(clone(protoActive[0]));
+  active[1].schedule = replaceFirstZero(exportStrings.schedules.weekend, theSecond);
+
+  active.push(clone(protoActive[2]));
+  active[2].value = 'import(pressureAnyUseAllWeek)';
+  active[2].schedule = replaceFirstZero(exportStrings.schedules.week, theSecond);
+
+  active.push(clone(protoActive[2]));
+  active[3].value = 'import(pressureAnyUseAllWeek)';
+  active[3].schedule = replaceFirstZero(exportStrings.schedules.weekend, theSecond);
 
   let size = null;
   if (usage === 'industrial') {
@@ -100,12 +109,12 @@ const getConstrActive = (protoActive, usage, area, exportStrings) => {
   }
 
   active.push(clone(protoActive[1]));
-  active[2].value = `import(flow${ capitalizeFirst(usage) }${ size }Week)`;
-  active[2].schedule = replaceFirstZero(exportStrings.schedules.week, theSecond);
+  active[4].value = `import(flow${ capitalizeFirst(usage) }${ size }Week)`;
+  active[4].schedule = replaceFirstZero(exportStrings.schedules.week, theSecond);
 
   active.push(clone(protoActive[1]));
-  active[3].value = `import(flow${ capitalizeFirst(usage) }${ size }Weekend)`;
-  active[3].schedule = replaceFirstZero(exportStrings.schedules.weekend, theSecond);
+  active[5].value = `import(flow${ capitalizeFirst(usage) }${ size }Weekend)`;
+  active[5].schedule = replaceFirstZero(exportStrings.schedules.weekend, theSecond);
 
   return active;
 };
@@ -199,6 +208,8 @@ let futuOutput = clone(mainTemplate);
 constrOutput.exports = getExports(constrOutput.exports, exportStrings);
 futuOutput.exports = getExports(futuOutput.exports, exportStrings);
 
+var plots = 0;
+var constrs = 0;
 // For each plot in geoData
 for (let protoPlot of geoData) {
   plotOutput.entities.push(createPlot(protoPlot, plotTemplate));
@@ -206,8 +217,14 @@ for (let protoPlot of geoData) {
   for (let i in range(protoPlot.properties.floors)) {
     constrOutput.entities.push(createConstr(protoPlot, i , constrTemplate, exportStrings));
     futuOutput.entities.push(createFutu(protoPlot, i, futuTemplate, exportStrings));
+
+    constrs++;
   }
+
+  plots++;
 }
+
+console.log(`${ constrs } constructions in ${ plots } plots`);
 
 saveJSONFile(plotOutputFile, plotOutput);
 saveJSONFile(constrOutputFile, constrOutput);

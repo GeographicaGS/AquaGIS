@@ -10,10 +10,10 @@
     "ngsiVersion": "1.0"
   },
   "exports": {
-    "JanToMayWeek": "0 */5 * * 1-5,11-12 1-5",
-    "JanToMayWeekend": "0 */5 * * 1-5,11-12 0,6",
-    "JunToOctWeek": "0 */5 * * 6-10 1-5",
-    "JunToOctWeekend": "0 */5 * * 6-10 0,6",
+    "JanToMayWeek": "0 */15 * * 1-5,11-12 1-5",
+    "JanToMayWeekend": "0 */15 * * 1-5,11-12 0,6",
+    "JunToOctWeek": "0 */15 * * 6-10 1-5",
+    "JunToOctWeekend": "0 */15 * * 6-10 0,6",
     "now": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})"
   },
   "entities": [
