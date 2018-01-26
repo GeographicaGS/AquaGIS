@@ -9,7 +9,7 @@ App.View.Panels.Aq_cons.Historic = App.View.Panels.Splitted.extend({
       id_category: 'aq_cons',
       spatialFilter: true,
       master: false,
-      title: __('Histórico de previsiones'),
+      title: __('Histórico'),
       id_panel: 'historic',
       filteView: false,
     });

@@ -14,7 +14,7 @@ App.Collection.Aq_cons.PanelList = Backbone.Collection.extend({
       },
       {
         id : 'historic',
-        title: __('Histórico de previsiones'),
+        title: __('Histórico'),
         url:base + '/dashboard/historic',
       }
 
