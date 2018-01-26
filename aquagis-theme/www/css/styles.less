@@ -388,16 +388,30 @@ body[layout='aquagis'] {
 
   .mapboxgl-popup-content{
     padding: 0 !important;
+    padding-right: 10px !important;
     background-color: @aquaGisSecondaryColor;
   }
-  .mapboxgl-popup-tip {
-    border-top-color: @aquaGisSecondaryColor;
-    border-bottom-color: @aquaGisSecondaryColor;
+  .mapboxgl-popup.mapboxgl-popup-anchor-bottom,
+  .mapboxgl-popup.mapboxgl-popup-anchor-top,
+  .mapboxgl-popup-anchor-top-left,
+  .mapboxgl-popup-anchor-bottom-left,
+  .mapboxgl-popup-anchor-top-right,
+  .mapboxgl-popup-anchor-bottom-right {
+    .mapboxgl-popup-tip {
+      border-top-color: @aquaGisSecondaryColor;
+      border-bottom-color: @aquaGisSecondaryColor;
+    }
+  }
+  .mapboxgl-popup.mapboxgl-popup-anchor-right,
+  .mapboxgl-popup.mapboxgl-popup-anchor-left {
+    .mapboxgl-popup-tip {
+      border-left-color: @aquaGisSecondaryColor;
+      border-right-color: @aquaGisSecondaryColor;
+    }
   }
 
-  .mapboxgl-popup.mapboxgl-popup-anchor-bottom,
-  .mapboxgl-popup.mapboxgl-popup-anchor-top {
-    width: 260px;
+  .mapboxgl-popup {
+    max-width: 260px;
     .header {
       padding: 10px 14px;
       // color: #5B84D7;
