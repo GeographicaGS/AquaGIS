@@ -10,230 +10,234 @@
     "ngsiVersion": "1.0"
   },
   "exports": {
-    "leakage": "0 */5 6-17 * * 1",
-    "NoLeakageMonday": "0 */5 0-5,18-23 * * 1",
-    "NoLeakageRestWeek": "0 */5 * * * 0,2-6",
-    "anomaly": "0 */5 12-20 * * 4",
-    "NoAnomalyThursday": "0 */5 0-11,21-23 * * 4",
-    "NoAnomalyRestWeek": "0 */5 * * * 0,1-3,5-6",
-    "NormalBehaviour": "0 */5 * * * *",
+    "leakage": "0 */15 6-17 * * 1",
+    "NoLeakageMonday": "0 */15 0-5,18-23 * * 1",
+    "NoLeakageRestWeek": "0 */15 * * * 0,2-6",
+    "anomaly": "0 */15 12-20 * * 4",
+    "NoAnomalyThursday": "0 */15 0-11,21-23 * * 4",
+    "NoAnomalyRestWeek": "0 */15 * * * 0,1-3,5-6",
+    "NormalBehaviour": "0 */15 * * * *",
     "now": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})"
   },
   "entities": [
     {
       "entity_name": "sector_id:16",
       "entity_type": "AuxLeakage",
-      "schedule": "import(leakage)",
+      "schedule": "once",
       "staticAttributes": [],
       "active": [
         {
           "name": "dateModified",
           "type": "DateTime",
-          "value": "import(now)"
+          "value": "import(now)",
+          "schedule": "import(leakage)"
         }, {
-          "name": "flowPerc",
-          "type": "Number",
-          "value": "time-random-linear-interpolator([[0,random(50,52)],[24,random(50,52)]])"
-        }, {
-          "name": "pressurePerc",
-          "type": "Number",
-          "value": "time-random-linear-interpolator([[0,random(20,22)],[24,random(20,22)]])"
-        }, {
-          "name": "performance",
-          "type": "Number",
-          "value": "20"
-        }
-      ]
-    }, {
-      "entity_name": "sector_id:16",
-      "entity_type": "AuxLeakage",
-      "schedule": "import(NoLeakageMonday)",
-      "staticAttributes": [],
-      "active": [
-        {
           "name": "dateModified",
           "type": "DateTime",
-          "value": "import(now)"
+          "value": "import(now)",
+          "schedule": "import(NoLeakageMonday)"
         }, {
-          "name": "flowPerc",
-          "type": "Number",
-          "value": "0"
-        }, {
-          "name": "pressurePerc",
-          "type": "Number",
-          "value": "0"
-        }, {
-          "name": "performance",
-          "type": "Number",
-          "value": "20"
-        }
-      ]
-    }, {
-      "entity_name": "sector_id:16",
-      "entity_type": "AuxLeakage",
-      "schedule": "import(NoLeakageRestWeek)",
-      "staticAttributes": [],
-      "active": [
-        {
           "name": "dateModified",
           "type": "DateTime",
-          "value": "import(now)"
+          "value": "import(now)",
+          "schedule": "import(NoLeakageRestWeek)"
         }, {
           "name": "flowPerc",
           "type": "Number",
-          "value": "0"
+          "value": "time-random-linear-interpolator([[0,random(50,52)],[24,random(50,52)]])",
+          "schedule": "import(leakage)"
+        }, {
+          "name": "flowPerc",
+          "type": "Number",
+          "value": "0",
+          "schedule": "import(NoLeakageMonday)"
+        }, {
+          "name": "flowPerc",
+          "type": "Number",
+          "value": "0",
+          "schedule": "import(NoLeakageRestWeek)"
         }, {
           "name": "pressurePerc",
           "type": "Number",
-          "value": "0"
+          "value": "time-random-linear-interpolator([[0,random(20,22)],[24,random(20,22)]])",
+          "schedule": "import(leakage)"
+        }, {
+          "name": "pressurePerc",
+          "type": "Number",
+          "value": "0",
+          "schedule": "import(NoLeakageMonday)"
+        }, {
+          "name": "pressurePerc",
+          "type": "Number",
+          "value": "0",
+          "schedule": "import(NoLeakageRestWeek)"
         }, {
           "name": "performance",
           "type": "Number",
-          "value": "20"
+          "value": "20",
+          "schedule": "import(leakage)"
+        }, {
+          "name": "performance",
+          "type": "Number",
+          "value": "20",
+          "schedule": "import(NoLeakageMonday)"
+        }, {
+          "name": "performance",
+          "type": "Number",
+          "value": "20",
+          "schedule": "import(NoLeakageRestWeek)"
         }
       ]
     }, {
       "entity_name": "sector_id:17",
       "entity_type": "AuxLeakage",
-      "schedule": "import(anomaly)",
+      "schedule": "once",
       "staticAttributes": [],
       "active": [
         {
           "name": "dateModified",
           "type": "DateTime",
-          "value": "import(now)"
+          "value": "import(now)",
+          "schedule": "import(anomaly)"
         }, {
-          "name": "flowPerc",
-          "type": "Number",
-          "value": "time-random-linear-interpolator([[0,random(20,22)],[24,random(20,22)]])"
-        }, {
-          "name": "pressurePerc",
-          "type": "Number",
-          "value": "0"
-        }, {
-          "name": "performance",
-          "type": "Number",
-          "value": "20"
-        }
-      ]
-    }, {
-      "entity_name": "sector_id:17",
-      "entity_type": "AuxLeakage",
-      "schedule": "import(NoAnomalyThursday)",
-      "staticAttributes": [],
-      "active": [
-        {
           "name": "dateModified",
           "type": "DateTime",
-          "value": "import(now)"
+          "value": "import(now)",
+          "schedule": "import(NoAnomalyThursday)"
         }, {
-          "name": "flowPerc",
-          "type": "Number",
-          "value": "0"
-        }, {
-          "name": "pressurePerc",
-          "type": "Number",
-          "value": "0"
-        }, {
-          "name": "performance",
-          "type": "Number",
-          "value": "20"
-        }
-      ]
-    }, {
-      "entity_name": "sector_id:17",
-      "entity_type": "AuxLeakage",
-      "schedule": "import(NoAnomalyRestWeek)",
-      "staticAttributes": [],
-      "active": [
-        {
           "name": "dateModified",
           "type": "DateTime",
-          "value": "import(now)"
+          "value": "import(now)",
+          "schedule": "import(NoAnomalyRestWeek)"
         }, {
           "name": "flowPerc",
           "type": "Number",
-          "value": "0"
+          "value": "time-random-linear-interpolator([[0,random(20,22)],[24,random(20,22)]])",
+          "schedule": "import(anomaly)"
+        }, {
+          "name": "flowPerc",
+          "type": "Number",
+          "value": "0",
+          "schedule": "import(NoAnomalyThursday)"
+        }, {
+          "name": "flowPerc",
+          "type": "Number",
+          "value": "0",
+          "schedule": "import(NoAnomalyRestWeek)"
         }, {
           "name": "pressurePerc",
           "type": "Number",
-          "value": "0"
+          "value": "0",
+          "schedule": "import(anomaly)"
+        }, {
+          "name": "pressurePerc",
+          "type": "Number",
+          "value": "0",
+          "schedule": "import(NoAnomalyThursday)"
+        }, {
+          "name": "pressurePerc",
+          "type": "Number",
+          "value": "0",
+          "schedule": "import(NoAnomalyRestWeek)"
         }, {
           "name": "performance",
           "type": "Number",
-          "value": "20"
+          "value": "20",
+          "schedule": "import(anomaly)"
+        }, {
+          "name": "performance",
+          "type": "Number",
+          "value": "20",
+          "schedule": "import(NoAnomalyThursday)"
+        }, {
+          "name": "performance",
+          "type": "Number",
+          "value": "20",
+          "schedule": "import(NoAnomalyRestWeek)"
         }
       ]
     }, {
       "entity_name": "sector_id:18",
       "entity_type": "AuxLeakage",
-      "schedule": "import(NormalBehaviour)",
+      "schedule": "once",
       "staticAttributes": [],
       "active": [
         {
           "name": "dateModified",
           "type": "DateTime",
-          "value": "import(now)"
+          "value": "import(now)",
+          "schedule": "import(NormalBehaviour)"
         }, {
           "name": "flowPerc",
           "type": "Number",
-          "value": "0"
+          "value": "0",
+          "schedule": "import(NormalBehaviour)"
         }, {
           "name": "pressurePerc",
           "type": "Number",
-          "value": "0"
+          "value": "0",
+          "schedule": "import(NormalBehaviour)"
         }, {
           "name": "performance",
           "type": "Number",
-          "value": "20"
+          "value": "20",
+          "schedule": "import(NormalBehaviour)"
         }
       ]
     }, {
       "entity_name": "sector_id:19",
       "entity_type": "AuxLeakage",
-      "schedule": "import(NormalBehaviour)",
+      "schedule": "once",
       "staticAttributes": [],
       "active": [
         {
           "name": "dateModified",
           "type": "DateTime",
-          "value": "import(now)"
+          "value": "import(now)",
+          "schedule": "import(NormalBehaviour)"
         }, {
           "name": "flowPerc",
           "type": "Number",
-          "value": "0"
+          "value": "0",
+          "schedule": "import(NormalBehaviour)"
         }, {
           "name": "pressurePerc",
           "type": "Number",
-          "value": "0"
+          "value": "0",
+          "schedule": "import(NormalBehaviour)"
         }, {
           "name": "performance",
           "type": "Number",
-          "value": "20"
+          "value": "20",
+          "schedule": "import(NormalBehaviour)"
         }
       ]
     }, {
       "entity_name": "sector_id:20",
       "entity_type": "AuxLeakage",
-      "schedule": "import(NormalBehaviour)",
+      "schedule": "once",
       "staticAttributes": [],
       "active": [
         {
           "name": "dateModified",
           "type": "DateTime",
-          "value": "import(now)"
+          "value": "import(now)",
+          "schedule": "import(NormalBehaviour)"
         }, {
           "name": "flowPerc",
           "type": "Number",
-          "value": "0"
+          "value": "0",
+          "schedule": "import(NormalBehaviour)"
         }, {
           "name": "pressurePerc",
           "type": "Number",
-          "value": "0"
+          "value": "0",
+          "schedule": "import(NormalBehaviour)"
         }, {
           "name": "performance",
           "type": "Number",
-          "value": "20"
+          "value": "20",
+          "schedule": "import(NormalBehaviour)"
         }
       ]
     }

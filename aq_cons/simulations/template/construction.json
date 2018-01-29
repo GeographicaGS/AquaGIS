@@ -1,7 +1,7 @@
 {
   "entity_type": "Construction",
   "entity_name": "",
-  "schedule": "",
+  "schedule": "once",
   "staticAttributes": [
     {
       "name": "location",
