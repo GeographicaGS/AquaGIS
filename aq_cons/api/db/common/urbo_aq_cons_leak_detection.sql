@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------------
 -- HOW TO USE:
--- SELECT urbo_aq_cons_leak_detection('scope', '2018-01-17T13:00:00.000Z');
+-- SELECT urbo_aq_cons_leak_detection('aljarafe', '2018-01-22T07:00:00.000Z');
 --------------------------------------------------------------------------------
 
 DROP TYPE IF EXISTS aq_cons_rule;
@@ -41,15 +41,21 @@ DECLARE
   _sector_data aq_cons_sector_data;
   _t_rules text;
   _t_const_sector_agg_hour text;
+  _t_aq_aux_leak_sector_historic text;
+  _t_aq_cons_sector_lastdata text;
   _increase_consumption double precision;
   _increase_pressure double precision;
   _consumption_rule_result boolean;
   _pressure_rule_result boolean;
   _leak_status JSON;
+  _key text;
+  _rule_description text;
 BEGIN
 
   _t_rules := urbo_get_table_name(id_scope, 'aq_aux_leak_rules');
   _t_const_sector_agg_hour := urbo_get_table_name(id_scope, 'aq_cons_sector_agg_hour');
+  _t_aq_cons_sector_lastdata := urbo_get_table_name(id_scope, 'aq_cons_sector_lastdata');
+  _t_aq_aux_leak_sector_historic := urbo_get_table_name(id_scope, 'aq_aux_leak_sector_historic');
   _leak_status = '{}'::json;
 
   _q := format('
@@ -73,9 +79,6 @@ BEGIN
       _increase_consumption := (_sector_data.consumption - _sector_data.consumption_forecast) / _sector_data.consumption_forecast * 100;
       _increase_pressure := (_sector_data.pressure - _sector_data.pressure_forecast) / _sector_data.pressure_forecast * 100;
 
-      RAISE NOTICE '%', _increase_consumption;
-      RAISE NOTICE '%', _increase_pressure;
-
       _q := format('
           SELECT urbo_aq_cons_leak_check_rule(%s, %s)
       ', COALESCE(_rule.consumption::text, 'NULL'), COALESCE(_increase_consumption::text, 'NULL'));
@@ -88,16 +91,35 @@ BEGIN
 
       IF _consumption_rule_result AND _pressure_rule_result
       THEN
-        --_leak_status = GREATEST(leak_status, _rule.status);
-      --   -- select COALESCE(leak_status, 0) FROM aljarafe.aq_cons_sector_lastdata
-      --   UPDATE aljarafe.aq_cons_sector_lastdata
-      --   SET leak_status = %s
-      --   WHERE id_entity = %s;
-      --
-      --
+        IF _leak_status->>_sector_data.id_entity IS NULL OR
+          GREATEST((_leak_status->_sector_data.id_entity->>'status')::integer, _rule.status) = _rule.status
+        THEN
+          _rule_description :=
+            (CASE WHEN _rule.status = 1 THEN 'Anomalía' ELSE 'Fuga' END) || ' detectada debido a ' ||
+            (CASE WHEN _rule.consumption IS NOT NULL THEN (CASE WHEN _rule.consumption > 0 THEN 'un aumento del consumo en un ' ELSE 'una disminución del consumo en un ' END) || @_rule.consumption || '%' ELSE ''  END) ||
+            (CASE WHEN _rule.consumption IS NOT NULL AND _rule.pressure IS NOT NULL THEN ' y a ' ELSE '' END) ||
+            (CASE WHEN _rule.pressure IS NOT NULL THEN (CASE WHEN _rule.pressure > 0 THEN 'un aumento de la presión en un ' ELSE 'una disminución de la presión en un ' END) || @_rule.pressure || '%' ELSE ''  END)
+            ;
+
+          _leak_status := _leak_status::jsonb || format('{"%s":{"status":%s, "description":"%s"}}', _sector_data.id_entity, _rule.status, _rule_description)::jsonb;
+        END IF;
       END IF;
     END LOOP;
   END LOOP;
+
+  FOR _key IN SELECT * FROM json_object_keys(_leak_status)
+  LOOP
+    _q := format('
+      UPDATE %s SET leak_status=%s WHERE id_entity=''%s''
+    ', _t_aq_cons_sector_lastdata, _leak_status->_key->>'status', _key);
+    EXECUTE _q;
+
+    _q := format('
+      INSERT INTO %s (id_entity, "TimeInstant", status, rule) VALUES(''%s'', ''%s'', %s, ''%s'')
+    ', _t_aq_aux_leak_sector_historic, _key, moment, _leak_status->_key->>'status', _leak_status->_key->>'description');
+    EXECUTE _q;
+  END LOOP;
+
 END;
 $$ LANGUAGE plpgsql;
 
@@ -110,7 +132,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_leak_check_rule(
 RETURNS boolean AS
 $$
 BEGIN
-  IF rule IS NOT NULL AND (
+  IF rule IS NULL OR (
     (rule < 0 AND  value <= rule) OR
     (rule > 0 AND value >= rule)
   )
@@ -121,5 +143,3 @@ BEGIN
   END IF;
 END;
 $$ LANGUAGE plpgsql;
-
-SELECT urbo_aq_cons_leak_detection('aljarafe', '2018-01-17T13:00:00.000Z');
