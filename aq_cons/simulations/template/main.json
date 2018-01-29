@@ -1,0 +1,9 @@
+{
+  "domain": "",
+  "contextBroker": "",
+  "exports": {
+    "now": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})",
+    "future": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 1209600})"
+  },
+  "entities": []
+}

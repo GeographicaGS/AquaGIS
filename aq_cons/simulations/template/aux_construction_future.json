@@ -1,0 +1,23 @@
+{
+  "entity_type": "AuxConstructionFuture",
+  "entity_name": "",
+  "schedule": "once",
+  "staticAttributes": [],
+  "active": [
+    {
+      "name": "dateModified",
+      "type": "DateTime",
+      "value": "import(future)"
+    },
+    {
+      "name": "flow",
+      "type": "Number",
+      "value": ""
+    },
+    {
+      "name": "pressure",
+      "type": "Number",
+      "value": ""
+    }
+  ]
+}

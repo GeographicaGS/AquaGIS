@@ -25,6 +25,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_catalogue_plot text;
     _tb_lastdata_plot text;
     _tb_measurand_plot text;
+    _tb_agg_hour_plot text;
     _tb_catalogue_const text;
     _tb_lastdata_const text;
     _tb_measurand_const text;
@@ -48,60 +49,62 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _ld_unique text;
     _usage_idx text;
     _extra_id_column text;
+    _defaults_leak_rules text;
     _ddl_qry text;
   BEGIN
 
-    _tb_catalogue_sector = urbo_get_table_name(id_scope, 'aq_cons_sector', iscarto);
-    _tb_lastdata_sector = urbo_get_table_name(id_scope, 'aq_cons_sector', iscarto, TRUE);
-    _tb_measurand_sector = urbo_get_table_name(id_scope, 'aq_cons_sector_measurand', iscarto);
-    _tb_agg_hour_sector = urbo_get_table_name(id_scope, 'aq_cons_sector_agg_hour', iscarto);
+    _tb_catalogue_sector := urbo_get_table_name(id_scope, 'aq_cons_sector', iscarto);
+    _tb_lastdata_sector := urbo_get_table_name(id_scope, 'aq_cons_sector', iscarto, TRUE);
+    _tb_measurand_sector := urbo_get_table_name(id_scope, 'aq_cons_sector_measurand', iscarto);
+    _tb_agg_hour_sector := urbo_get_table_name(id_scope, 'aq_cons_sector_agg_hour', iscarto);
 
-    _tb_catalogue_plot = urbo_get_table_name(id_scope, 'aq_cons_plot', iscarto);
-    _tb_lastdata_plot = urbo_get_table_name(id_scope, 'aq_cons_plot', iscarto, TRUE);
-    _tb_measurand_plot = urbo_get_table_name(id_scope, 'aq_cons_plot_measurand', iscarto);
+    _tb_catalogue_plot := urbo_get_table_name(id_scope, 'aq_cons_plot', iscarto);
+    _tb_lastdata_plot := urbo_get_table_name(id_scope, 'aq_cons_plot', iscarto, TRUE);
+    _tb_measurand_plot := urbo_get_table_name(id_scope, 'aq_cons_plot_measurand', iscarto);
+    _tb_agg_hour_plot := urbo_get_table_name(id_scope, 'aq_cons_plot_agg_hour', iscarto);
 
-    _tb_catalogue_const = urbo_get_table_name(id_scope, 'aq_cons_const', iscarto);
-    _tb_lastdata_const = urbo_get_table_name(id_scope, 'aq_cons_const', iscarto, TRUE);
-    _tb_measurand_const = urbo_get_table_name(id_scope, 'aq_cons_const_measurand', iscarto);
-    _tb_agg_hour_const = urbo_get_table_name(id_scope, 'aq_cons_const_agg_hour', iscarto);
+    _tb_catalogue_const := urbo_get_table_name(id_scope, 'aq_cons_const', iscarto);
+    _tb_lastdata_const := urbo_get_table_name(id_scope, 'aq_cons_const', iscarto, TRUE);
+    _tb_measurand_const := urbo_get_table_name(id_scope, 'aq_cons_const_measurand', iscarto);
+    _tb_agg_hour_const := urbo_get_table_name(id_scope, 'aq_cons_const_agg_hour', iscarto);
 
     _tb_aux_const_futu = urbo_get_table_name(id_scope, 'aq_aux_const_futu', iscarto);
     _tb_aux_leakage = urbo_get_table_name(id_scope, 'aq_aux_leak', iscarto);
     _tb_aux_leak_rules = urbo_get_table_name(id_scope, 'aq_aux_leak_rules', iscarto);
     _tb_aux_leak_historic = urbo_get_table_name(id_scope, 'aq_aux_leak_sector_historic', iscarto);
 
-    _tb_arr_ld = ARRAY[
+    _tb_arr_ld := ARRAY[
         _tb_lastdata_sector, _tb_lastdata_plot, _tb_lastdata_const
       ];
 
-    _tb_arr_bsc = array_cat(_tb_arr_ld,
+    _tb_arr_bsc := array_cat(_tb_arr_ld,
       ARRAY[
         _tb_catalogue_sector, _tb_catalogue_plot, _tb_catalogue_const
       ]);
 
-    _tb_arr_vars = array_cat(_tb_arr_bsc,
+    _tb_arr_vars := array_cat(_tb_arr_bsc,
       ARRAY[
         _tb_measurand_sector, _tb_measurand_plot, _tb_measurand_const
       ]);
 
-    _tb_arr_agg = array_cat(_tb_arr_vars,
+    _tb_arr_agg := array_cat(_tb_arr_vars,
       ARRAY[
-        _tb_agg_hour_sector, _tb_agg_hour_const, _tb_aux_const_futu,
+        _tb_agg_hour_sector, _tb_agg_hour_plot, _tb_agg_hour_const, _tb_aux_const_futu,
         _tb_aux_leakage, _tb_aux_leak_historic
       ]);
 
     IF iscarto IS TRUE THEN
-      _checktable = urbo_checktable_ifexists_arr(cartouser, _tb_arr_vars);
+      _checktable := urbo_checktable_ifexists_arr(cartouser, _tb_arr_vars);
 
       IF _checktable THEN
         RETURN;
       END IF;
 
-      _geom_fld = 'the_geom';
-      _cartodbfy = urbo_cartodbfy_tables_qry(cartouser, _tb_arr_vars);
+      _geom_fld := 'the_geom';
+      _cartodbfy := urbo_cartodbfy_tables_qry(cartouser, _tb_arr_vars);
 
     ELSE
-      _checktable = urbo_checktable_ifexists_arr(id_scope, _tb_arr_vars, TRUE);
+      _checktable := urbo_checktable_ifexists_arr(id_scope, _tb_arr_vars, TRUE);
 
       IF _checktable THEN
         RETURN;
@@ -120,7 +123,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
 
     END IF;
 
-    _cr_tbs = format('
+    _cr_tbs := format('
       ------------
       -- SECTOR --
       ------------
@@ -166,7 +169,9 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         id_entity character varying(64) NOT NULL,
         "TimeInstant" timestamp without time zone,
         consumption double precision,
+        pressure_agg double precision,
         forecast double precision,
+        pressure_forecast double precision,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
@@ -197,7 +202,9 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         description jsonb,
         area double precision NOT NULL,
         floors integer NOT NULL,
-        consumption double precision,
+        usage text,
+        flow double precision,
+        pressure double precision,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
@@ -206,7 +213,21 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       CREATE TABLE IF NOT EXISTS %s (
         id_entity character varying(64) NOT NULL,
         "TimeInstant" timestamp without time zone,
+        usage text,
+        flow double precision,
+        pressure double precision,
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+      );
+
+      -- AGG HOURLY
+      CREATE TABLE IF NOT EXISTS %s (
+        id_entity character varying(64) NOT NULL,
+        "TimeInstant" timestamp without time zone,
         consumption double precision,
+        pressure_agg double precision,
+        forecast double precision,
+        pressure_forecast double precision,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
@@ -262,7 +283,9 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         id_entity character varying(64) NOT NULL,
         "TimeInstant" timestamp without time zone,
         consumption double precision,
+        pressure_agg double precision,
         forecast double precision,
+        pressure_forecast double precision,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
@@ -276,6 +299,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         id_entity character varying(64) NOT NULL,
         "TimeInstant" timestamp without time zone,
         flow double precision,
+        pressure double precision,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
@@ -289,6 +313,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         flow_perc double precision,
         pressure_perc double precision,
         pressure_variability double precision,
+        performance double precision,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
@@ -313,7 +338,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       _tb_measurand_sector,  _tb_agg_hour_sector,
 
       _tb_catalogue_plot, _geom_fld, _tb_lastdata_plot, _geom_fld,
-      _tb_measurand_plot,
+      _tb_measurand_plot, _tb_agg_hour_plot,
 
       _tb_catalogue_const, _geom_fld, _tb_lastdata_const, _geom_fld,
       _tb_measurand_const, _tb_agg_hour_const,
@@ -321,10 +346,14 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       _tb_aux_const_futu, _tb_aux_leakage, _tb_aux_leak_rules, _tb_aux_leak_historic
     );
 
-    _time_idx = urbo_time_idx_qry(_tb_arr_agg);
-    _ld_unique = urbo_unique_lastdata_qry(_tb_arr_ld);
+    _time_idx := urbo_time_idx_qry(_tb_arr_agg);
+    _ld_unique := urbo_unique_lastdata_qry(_tb_arr_ld);
 
-    _usage_idx = format('
+    _usage_idx := format('
+      CREATE INDEX IF NOT EXISTS %s_us_idx
+        ON %s USING btree (usage);
+      CREATE INDEX IF NOT EXISTS %s_us_idx
+        ON %s USING btree (usage);
       CREATE INDEX IF NOT EXISTS %s_us_idx
         ON %s USING btree (usage);
       CREATE INDEX IF NOT EXISTS %s_us_idx
@@ -336,12 +365,14 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       ',
       replace(_tb_lastdata_sector, '.', '_'), _tb_lastdata_sector,
       replace(_tb_measurand_sector, '.', '_'), _tb_measurand_sector,
+      replace(_tb_lastdata_plot, '.', '_'), _tb_lastdata_plot,
+      replace(_tb_measurand_plot, '.', '_'), _tb_measurand_plot,
       replace(_tb_catalogue_const, '.', '_'), _tb_catalogue_const,
       replace(_tb_lastdata_const, '.', '_'), _tb_lastdata_const
     );
 
-    -- Those tables aren't crated with an 'id' column, so...
-    _extra_id_column = format('
+    -- Those tables aren't created with an 'id' column, so...
+    _extra_id_column := format('
       ALTER TABLE %s ADD COLUMN id SERIAL PRIMARY KEY;
       ALTER TABLE %s ADD COLUMN id SERIAL PRIMARY KEY;
       ALTER TABLE %s ADD COLUMN id SERIAL PRIMARY KEY;
@@ -350,8 +381,15 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       _tb_aux_const_futu, _tb_aux_leakage, _tb_aux_leak_rules, _tb_aux_leak_historic
     );
 
+    _defaults_leak_rules = format('
+      INSERT INTO %s(consumption, pressure, "time", status) VALUES (%s, %s, %s, %s);
+      INSERT INTO %s(consumption, "time", status) VALUES (%s, %s, %s);
+    ',
+      _tb_aux_leak_rules, 50, -20, 3600, 2, _tb_aux_leak_rules, 20, 3600, 1
+    );
+
     IF iscarto IS TRUE THEN
-      _ddl_qry = format('
+      _ddl_qry := format('
         %s
         %s
         %s
@@ -360,7 +398,8 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         _cr_tbs, _cartodbfy, _time_idx, _ld_unique, _usage_idx
       );
     ELSE
-      _ddl_qry = format('
+      _ddl_qry := format('
+        %s
         %s
         %s
         %s
@@ -370,7 +409,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         %s
         %s',
         _cr_tbs, _pg_geom_idx, _pg_pk, _pg_tbowner, _time_idx, _ld_unique,
-        _usage_idx, _extra_id_column
+        _usage_idx, _extra_id_column, _defaults_leak_rules
       );
     END IF;
 

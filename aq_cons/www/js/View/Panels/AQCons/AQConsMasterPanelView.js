@@ -26,27 +26,37 @@ App.View.Panels.Aq_cons.Master = App.View.Panels.Base.extend({
       section: this.id_category,
       color: App.mv().getAdditionalInfo(this.id_category).colour,
       link : '/' + this.scopeModel.get('id') + '/' + this.id_category + '/dashboard/consume',
-      title: __('Tiempo Real'),
+      title: __('Mapa'),
       timeMode:'now',
-      titleLink: __('Tiempo Real')
+      titleLink: __('Previsión')
     });
     this._widgets.push(new App.View.WidgetDeviceMap({model: m}));
 
     this._widgets.push(new App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages({
-      id_scope: this.scopeModel.get('id')
+      id_scope: this.scopeModel.get('id'),
+      timeMode:'historic',
+      link : '/' + this.scopeModel.get('id') + '/' + this.id_category + '/dashboard/consume',      
+      titleLink: __('Previsión')      
     }));
 
     this._widgets.push(new App.View.Widgets.Aq_cons.TotalConsumeLastWeek({
-      id_scope: this.scopeModel.get('id')
+      id_scope: this.scopeModel.get('id'),
+      timeMode:'historic',
+      link : '/' + this.scopeModel.get('id') + '/' + this.id_category + '/dashboard/historic',      
+      titleLink: __('Histórico')            
     }));
 
     this._widgets.push(new App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse({
-      id_scope: this.scopeModel.get('id')
+      id_scope: this.scopeModel.get('id'),
+      timeMode:'historic',
+      link : '/' + this.scopeModel.get('id') + '/' + this.id_category + '/dashboard/consume',      
+      titleLink: __('Previsión')      
     }));
 
     this.subviews.push(new App.View.Widgets.Container({
       widgets: this._widgets,
       el: this.$(".widgets")
     }));
+    this.$('#dateSelector').addClass('disabled');
   }
 });

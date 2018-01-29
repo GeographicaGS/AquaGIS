@@ -9,8 +9,13 @@ App.Collection.Aq_cons.PanelList = Backbone.Collection.extend({
       },
       {
         id : 'consume',
-        title: __('Consumo'),
+        title: __('Previsión Semanal'),
         url:base + '/dashboard/consume',
+      },
+      {
+        id : 'historic',
+        title: __('Histórico'),
+        url:base + '/dashboard/historic',
       }
 
     ];
@@ -20,7 +25,7 @@ App.Collection.Aq_cons.PanelList = Backbone.Collection.extend({
 
 
 App.Static.Collection.Aq_cons.LandUses = new Backbone.Collection([
-  {id: 'domestic', name: __('Doméstica'), color: '#CB727E'},
+  {id: 'domestic', name: __('Doméstico'), color: '#CB727E'},
   {id: 'industrial', name: __('Industrial'), color: '#4ED8D8'},
   {id: 'comercial', name: __('Comercial'), color: '#9AC74A'},
   {id: 'public', name: __('Público'), color: '#E8BA4C'},
@@ -29,18 +34,21 @@ App.Static.Collection.Aq_cons.LandUses = new Backbone.Collection([
 App.Static.Collection.Aq_cons.ConsumeRangeNumeric =  Backbone.Collection.extend({
   initialize: function() {
     _.bindAll(this,'findColor');
-    this.add([{min: 0, max: 200, color: '#64B6D9'},
-    {min: 200, max: 400, color: '#4CA7D7'},
-    {min: 400, max: 600, color: '#3397D5'},
-    {min: 600, max: 800, color: '#1A88D3'},
-    {min: 800, max: 1000, color: '#0278D1'},
-    {min: 1000, max: null, color: '#D56780'}])
+    this.add([{min: 0, max: 0.2, color: '#64B6D9'},
+    {min: 0.2, max: 0.4, color: '#4CA7D7'},
+    {min: 0.4, max: 0.6, color: '#3397D5'},
+    {min: 0.6, max: 0.8, color: '#1A88D3'},
+    {min: 0.8, max: 1, color: '#0278D1'},
+    {min: 1, max: null, color: '#D56780'}])
   },
   findColor: function(d) {
-    let color = _.find(this.models, function(e) {
-      return e.get('min') <= d && (e.get('max') > d || e.get('max') === null)
-    }).get('color');
-    return color || 'transparent';
+    let color = undefined;
+    if(d !== null) {
+      color = _.find(this.models, function(e) {
+        return e.get('min') <= d && (e.get('max') > d || e.get('max') === null)
+      }).get('color');
+    }
+    return color || 'rgba(255, 255, 255, 0.05)';
   }
 });
 

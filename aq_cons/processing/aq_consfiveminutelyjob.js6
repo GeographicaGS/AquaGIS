@@ -37,8 +37,11 @@ class AqConsFiveMinutelyJob extends BaseJob {
 
     let jobInfo = `job ${ job.id }: type '${ job.type }' - title '${ job.data.title }'`;
     let date = new moment(job.data.date);
-    let fromDate = new moment(job.data.date).subtract(job.data.magnitudeRange, job.data.unitRange).startOf(job.data.truncateToUnit).toISOString();
-    let sql = `SELECT urbo_aq_cons_propagate_to_sector('${ job.data.idScope }', '${ fromDate }', ${ job.data.magnitudeRange });`;
+
+    // Here we don't need this, so... COMMENTING!
+    // let fromDate = new moment(job.data.date).subtract(job.data.magnitudeRange, job.data.unitRange).startOf(job.data.truncateToUnit).toISOString();
+
+    let sql = `SELECT urbo_aq_cons_propagate('${ job.data.idScope }', '${ date }', ${ job.data.magnitudeRange });`;
 
     let callback = function (err, data) {
       // TODO: Check error for constraints

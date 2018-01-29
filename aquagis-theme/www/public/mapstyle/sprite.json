@@ -1,65 +1,114 @@
 {
   "abastecimiento": {
-    "x": 0,
-    "y": 0,
-    "pixelRatio": 2,
+    "height": 24,
+    "pixelRatio": 1,
     "width": 24,
-    "height": 24
+    "x": 0,
+    "y": 0
   },
   "acometida": {
-    "x": 0,
-    "y": 25,
-    "pixelRatio": 2,
+    "height": 24,
+    "pixelRatio": 1,
     "width": 24,
-    "height": 24
-  },
-  "bomba-warning": {
-    "x": 25,
-    "y": 0,
-    "pixelRatio": 2,
-    "width": 24,
-    "height": 24
+    "x": 24,
+    "y": 0
   },
   "bomba": {
-    "x": 25,
-    "y": 25,
-    "pixelRatio": 2,
+    "height": 24,
+    "pixelRatio": 1,
     "width": 24,
-    "height": 24
+    "x": 0,
+    "y": 24
+  },
+  "bomba-warning": {
+    "height": 24,
+    "pixelRatio": 1,
+    "width": 24,
+    "x": 24,
+    "y": 24
+  },
+  "comercial": {
+    "height": 24,
+    "pixelRatio": 1,
+    "width": 24,
+    "x": 48,
+    "y": 0
   },
   "deposito": {
-    "x": 0,
-    "y": 50,
-    "pixelRatio": 2,
+    "height": 24,
+    "pixelRatio": 1,
     "width": 24,
-    "height": 24
+    "x": 72,
+    "y": 0
+  },
+  "domestico": {
+    "height": 24,
+    "pixelRatio": 1,
+    "width": 24,
+    "x": 48,
+    "y": 24
   },
   "hidrante": {
-    "x": 25,
-    "y": 50,
-    "pixelRatio": 2,
+    "height": 24,
+    "pixelRatio": 1,
     "width": 24,
-    "height": 24
+    "x": 72,
+    "y": 24
+  },
+  "industrial": {
+    "height": 24,
+    "pixelRatio": 1,
+    "width": 24,
+    "x": 0,
+    "y": 48
   },
   "pozo": {
-    "x": 50,
-    "y": 0,
-    "pixelRatio": 2,
+    "height": 24,
+    "pixelRatio": 1,
     "width": 24,
-    "height": 24
+    "x": 24,
+    "y": 48
+  },
+  "publico": {
+    "height": 24,
+    "pixelRatio": 1,
+    "width": 24,
+    "x": 48,
+    "y": 48
+  },
+  "sectores": {
+    "height": 20,
+    "pixelRatio": 1,
+    "width": 20,
+    "x": 72,
+    "y": 72
   },
   "sensor-agua": {
-    "x": 50,
-    "y": 25,
-    "pixelRatio": 2,
+    "height": 24,
+    "pixelRatio": 1,
     "width": 24,
-    "height": 24
+    "x": 72,
+    "y": 48
+  },
+  "supply": {
+    "height": 24,
+    "pixelRatio": 1,
+    "width": 24,
+    "x": 0,
+    "y": 72
   },
   "valvula": {
-    "x": 50,
-    "y": 50,
-    "pixelRatio": 2,
+    "height": 24,
+    "pixelRatio": 1,
     "width": 24,
-    "height": 24
+    "x": 24,
+    "y": 72
+  },
+  "warning": {
+    "height": 24,
+    "pixelRatio": 1,
+    "width": 24,
+    "x": 48,
+    "y": 72
   }
 }

@@ -7,6 +7,9 @@
 
 
 body[layout='aquagis'] {
+  .fill_height {
+    position: relative;
+  }
 
   .login {
     background-color: @aquaGisSecondaryColor;
@@ -173,7 +176,12 @@ body[layout='aquagis'] {
     }
   }
 
-
+  header {
+    z-index: 7;
+  }
+  nav.navbar {
+    z-index: 6;
+  }
   nav.navbar a.navElement.menu {
     background-image: url(/verticals/aquagis-theme/img/icons/positive/SC_ic_menu_panel.svg);
 
@@ -223,8 +231,16 @@ body[layout='aquagis'] {
     }
   }
 
-  .popup_widget:after {
-    border-color: @aquaGisSecondaryColor transparent transparent;
+  .popup_widget {
+    &:not(:hover):after {
+      border-color: @aquaGisPrimaryColor transparent transparent;
+    }
+    &:hover{
+      &:after{
+        border-width: 0 4px 7px;
+        border-color: transparent transparent @aquaGisPrimaryColor;
+      }
+    }
   }
 
   .title_page, h6 {
@@ -370,29 +386,147 @@ body[layout='aquagis'] {
     }
   }
 
-  .basemapselector {
-    position: absolute;
-    bottom: 8px;
-    left: 8px;
+  .mapboxgl-popup-content{
+    padding: 0 !important;
+    padding-right: 10px !important;
+    background-color: @aquaGisSecondaryColor;
+  }
+  .mapboxgl-popup.mapboxgl-popup-anchor-bottom,
+  .mapboxgl-popup.mapboxgl-popup-anchor-top,
+  .mapboxgl-popup-anchor-top-left,
+  .mapboxgl-popup-anchor-bottom-left,
+  .mapboxgl-popup-anchor-top-right,
+  .mapboxgl-popup-anchor-bottom-right {
+    .mapboxgl-popup-tip {
+      border-top-color: @aquaGisSecondaryColor;
+      border-bottom-color: @aquaGisSecondaryColor;
+    }
+  }
+  .mapboxgl-popup.mapboxgl-popup-anchor-right,
+  .mapboxgl-popup.mapboxgl-popup-anchor-left {
+    .mapboxgl-popup-tip {
+      border-left-color: @aquaGisSecondaryColor;
+      border-right-color: @aquaGisSecondaryColor;
+    }
   }
 
+  .mapboxgl-popup {
+    max-width: 260px;
+    .header {
+      padding: 10px 14px;
+      // color: #5B84D7;
+      color: #fff;
+      h4 {
+        font-size: 14px;
+        line-height: 15px;
+        text-transform: uppercase;
+      }
+      .containerId {
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
+    .content {
+      color: #fff;
+      padding: 10px 14px;
+      max-height: 200px;
+      overflow-y: scroll;
+      .info-block {
+        margin-bottom: 12px;
+        h4 {
+          font-size: 12px;
+          line-height: 12px;
+          font-weight: 600;
+          text-transform: uppercase;
+        }
+        span {
+          color: #98B2C9;
+        }
+      }
+    }
+    .loader.loader--style3{
+      text-align: center;
+    }
+  }
+
+  .mapboxgl-popup-close-button {
+    font-size: 20px;
+    color: #8AA8C3
+  };
+
   .mapbox-legend {
-    position: absolute;
-    top: 52px;
+    position: fixed;
+    // top: 52px;
+    top: 155px;
     left: 10px;
     z-index: 9;
     width: 320px;
+    z-index: 2;
     background: #fff;
     border: 1px solid #808086;
     border-radius: 1px;
-    padding: 8px;
+    padding: 4px;
+    .head {
+      display: flex;
+      justify-content: space-between;
+      > img {
+        cursor: pointer;
+        &.opened{
+          transform: rotate(180deg);
+        }
+      }
+      .title {
+        display: flex;
+        color:#64B6D9;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 15px;
+        text-transform: uppercase;
+        align-items: center;
+        &::before {
+          content: '';
+          background-image: url('/verticals/aquagis-theme/img/icons/accent/setup.svg');
+          height: 22px;
+          width: 22px;
+          display: block;
+          margin-right: 8px;
+        }
+      }
+    }
+    .body {
+      padding: 0 10px;
+      display: none;
+      &.opened {
+        display: block;
+      }
+    }
     .mapbox-legend-item {
-      > span {
-        font-size: 14px;
+      margin-top: 14px;
+      > .item-head {
+        display: flex;
+        align-items: center;
+        > img {
+          width: 22px;
+          margin-right: 10px;
+        }
+        > span {
+          font-size: 16px;
+          line-height: 20px;
+          color: #55555D;
+        }
       }
       .mapbox-legend-item-child {
         margin-left: 16px;
       }
     }
   }
+}
+
+.widget .chart .nvd3 text,
+.chart.d3 .axis text {
+  fill: #98B2C9;
+}
+
+.data_download, .popup_widget {
+  color: #64B6D9;
 }
