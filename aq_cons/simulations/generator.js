@@ -75,27 +75,39 @@ const randomNoughToSixty = () => {
   return Math.floor((Math.random() * 59) + 1);
 };
 
-const replaceFirstZero = (protoSchedule, replace) => {
-  return protoSchedule.replace('0', replace);
+const randomQuarter = () => {
+  let first = Math.floor((Math.random() * 14) + 1);
+  return `${ first },${ first + 15 },${ first + 30 },${ first + 45 }`;
+};
+
+const replaceCronString = (protoSchedule, position, replace) => {
+  let schedule = protoSchedule.split(' ');
+  schedule[position] = replace;
+  return schedule.join(' ');
 };
 
 const getConstrActive = (protoActive, usage, area, exportStrings) => {
   let theSecond = randomNoughToSixty();
+  let theQuarter = randomQuarter();
   let active = [];
 
   active.push(clone(protoActive[0]));
-  active[0].schedule = replaceFirstZero(exportStrings.schedules.week, theSecond);
+  active[0].schedule = replaceCronString(exportStrings.schedules.week, 0, theSecond);
+  active[0].schedule = replaceCronString(active[0].schedule, 1, theQuarter);
 
   active.push(clone(protoActive[0]));
-  active[1].schedule = replaceFirstZero(exportStrings.schedules.weekend, theSecond);
+  active[1].schedule = replaceCronString(exportStrings.schedules.weekend, 0, theSecond);
+  active[1].schedule = replaceCronString(active[1].schedule, 1, theQuarter);
 
   active.push(clone(protoActive[2]));
   active[2].value = 'import(pressureAnyUseAllWeek)';
-  active[2].schedule = replaceFirstZero(exportStrings.schedules.week, theSecond);
+  active[2].schedule = replaceCronString(exportStrings.schedules.week, 0, theSecond);
+  active[2].schedule = replaceCronString(active[2].schedule, 1, theQuarter);
 
   active.push(clone(protoActive[2]));
   active[3].value = 'import(pressureAnyUseAllWeek)';
-  active[3].schedule = replaceFirstZero(exportStrings.schedules.weekend, theSecond);
+  active[3].schedule = replaceCronString(exportStrings.schedules.weekend, 0, theSecond);
+  active[3].schedule = replaceCronString(active[3].schedule, 1, theQuarter);
 
   let size = null;
   if (usage === 'industrial') {
@@ -110,11 +122,13 @@ const getConstrActive = (protoActive, usage, area, exportStrings) => {
 
   active.push(clone(protoActive[1]));
   active[4].value = `import(flow${ capitalizeFirst(usage) }${ size }Week)`;
-  active[4].schedule = replaceFirstZero(exportStrings.schedules.week, theSecond);
+  active[4].schedule = replaceCronString(exportStrings.schedules.week, 0, theSecond);
+  active[4].schedule = replaceCronString(active[4].schedule, 1, theQuarter);
 
   active.push(clone(protoActive[1]));
   active[5].value = `import(flow${ capitalizeFirst(usage) }${ size }Weekend)`;
-  active[5].schedule = replaceFirstZero(exportStrings.schedules.weekend, theSecond);
+  active[5].schedule = replaceCronString(exportStrings.schedules.weekend, 0, theSecond);
+  active[5].schedule = replaceCronString(active[5].schedule, 1, theQuarter);
 
   return active;
 };
