@@ -43,6 +43,7 @@ DECLARE
   _t_const_sector_agg_hour text;
   _t_aq_aux_leak_sector_historic text;
   _t_aq_cons_sector_lastdata text;
+  _t_aq_cons_sector_measurand text;
   _increase_consumption double precision;
   _increase_pressure double precision;
   _consumption_rule_result boolean;
@@ -56,6 +57,7 @@ BEGIN
   _t_const_sector_agg_hour := urbo_get_table_name(id_scope, 'aq_cons_sector_agg_hour');
   _t_aq_cons_sector_lastdata := urbo_get_table_name(id_scope, 'aq_cons_sector_lastdata');
   _t_aq_aux_leak_sector_historic := urbo_get_table_name(id_scope, 'aq_aux_leak_sector_historic');
+  _t_aq_cons_sector_measurand := urbo_get_table_name(id_scope, 'aq_cons_sector_measurand');
   _leak_status = '{}'::json;
 
   _q := format('
@@ -118,6 +120,14 @@ BEGIN
       INSERT INTO %s (id_entity, "TimeInstant", status, rule) VALUES(''%s'', ''%s'', %s, ''%s'')
     ', _t_aq_aux_leak_sector_historic, _key, moment, _leak_status->_key->>'status', _leak_status->_key->>'description');
     EXECUTE _q;
+
+    _q := format('
+      INSERT INTO %s (id_entity, "TimeInstant", leak_status) VALUES(''%s'', ''%s'', %s)
+      ON CONFLICT (id_entity, "TimeInstant")
+      DO UPDATE SET leak_status = %s;
+    ', _t_aq_cons_sector_measurand, _key, moment, _leak_status->_key->>'status', _leak_status->_key->>'status');
+    EXECUTE _q;
+
   END LOOP;
 
 END;
