@@ -68,7 +68,6 @@ App.View.Widgets.Aq_cons.FlowEvolution = App.View.Widgets.Base.extend({
       xAxisFunction: function(d) { return App.formatDate(d,'DD/MM HH:mm'); },
       yAxisFunction: [
         function(d) { return App.nbf(d)},
-        function(d) { return App.nbf(d)}
       ],
       yAxisLabel: [
         __('Caudal') + ' ('+ sectorFlowMetadata.get('units') +')',
