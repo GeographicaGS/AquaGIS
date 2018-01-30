@@ -1,6 +1,16 @@
 'use strict';
 
 App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
+  _template_legend: _.template('<div class="tags textleft">' +
+  ' <div class="btnLegend no_border">' +
+  '   <span class="text first"><strong>' + __('Nivel de consumo:') + '</strong></span>' +
+  ' </div>' +
+  ' <div class="btnLegend no_border inrow">' +
+  '    <span class="text height12">' + __('Menos') + '</span>' +
+  '    <div class="ramp consume"></div>' +
+  '    <span class="text height12">' + __('Más') + '</span>' +
+  ' </div>' +
+  '</div>'),
 
   initialize: function (options) {
     options = _.defaults(options, {
@@ -24,17 +34,6 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
       }
     },
 
-    this._template_legend = _.template(
-      '<div class="tags textleft">' +
-      ' <div class="btnLegend no_border">' +
-      '   <span class="text first"><strong>' + __('Nivel de consumo:') + '</strong></span>' +
-      ' </div>' +
-      ' <div class="btnLegend no_border inrow">' +
-      '    <span class="text height12">' + __('Menos') + '</span>' +
-      '    <div class="ramp consume"></div>' +
-      '    <span class="text height12">' + __('Más') + '</span>' +
-      ' </div>' +
-      '</div>');
     App.View.Map.MapboxView.prototype.initialize.call(this, options);
     this.$el.append(this._template_legend);
   },

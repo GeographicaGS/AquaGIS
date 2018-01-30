@@ -1,7 +1,6 @@
 'use strict';
 
 App.View.Widgets.Aq_cons.PressureSectorRanking = App.View.Widgets.Base.extend({
-
   initialize: function(options) {
     options = _.defaults(options,{
       title: __('Sectores con mayor presión'),
