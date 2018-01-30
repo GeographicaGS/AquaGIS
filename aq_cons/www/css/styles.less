@@ -29,6 +29,40 @@ a.co_fullscreen_toggle.restore {
   
 }
 
+.table.transparent table th {
+  color: #98B2C9;
+}
+  
+.table.transparent table td {
+  vertical-align: middle;
+  > .flow, > .pressure {
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    span {
+      font-weight: 700;
+      font-family: 'Source Sans Pro',sans-serif;
+      margin-left: 5px;
+    }
+  }
+  > .pressure > .rankingBar > div {
+      background-color: #f8cb1c;
+  }
+  .rankingBar {
+    width: 90px;
+    height: 11px;
+    position: relative;
+    background-color: #28659f;
+    > div {
+      position: absolute;
+      background-color: #00b8c7;
+      left: 0;
+      top: 0;
+      bottom: 0;
+    }
+  }
+}
+
 #map {
   // position: initial;
   position: relative;
