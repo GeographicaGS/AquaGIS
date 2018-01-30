@@ -50,7 +50,6 @@ App.View.Widgets.Aq_cons.FlowEvolution = App.View.Widgets.Base.extend({
         return;
       },
       legendNameFunc: function(key,d){
-        debugger;
         var data;
         var label = __('Nivel de caudal');
         if(key !== 'avg') {
