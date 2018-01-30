@@ -30,22 +30,21 @@ App.View.Widgets.Aq_cons.FlowEvolution = App.View.Widgets.Base.extend({
     });
 
     this.collection.url = App.config.api_url + '/' + this.options.id_scope + '/variables/aq_cons.sector.flow/devices_group_timeserie';
-    this.collection.parse = function(response) {
-      var data = App.Collection.Variables.Timeserie.prototype.parse.call(this, response);
-      return _.map(data, function(d, i) {
-        d.order = i;
-        return d;
-      });
-    }
+    this.collection.parse = App.Collection.Variables.Timeserie.prototype.parse;
 
     var sectorFlow = App.mv().getVariable('aq_cons.sector.flow');
+    var keys = {};
+    var colors = ['#4D7BD9','#9966CC','#199183','#269DEF', '#64B6D9', '#64B7A3'];
     this._chartModel = new App.Model.BaseChartConfigModel({
       colors: function(d,i){
-        let colors = ['#4D7BD9','#9966CC','#199183','#269DEF', '#64B6D9', '#64B6D9'];
-        return colors[d.order];
+        var keysLength = Object.keys(keys).length;
+        if(!keys[d.key]) {
+          keys[d.key] = colors[keysLength % colors.length]
+        } 
+        return keys[d.key];
       },
       classes: function(d,i) {
-        if(d.key === 'avg') {
+        if(d.key !== 'avg') {
           return 'dashed';
         }
       },
