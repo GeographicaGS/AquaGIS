@@ -23,14 +23,18 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
 
     this._widgets.push(new App.View.Widgets.Aq_cons.FlowSectorRanking({
       id_scope: this.scopeModel.get('id'),
-      link : '/' + this.scopeModel.get('id') + '/' + this.id_category + '/dashboard/leak',      
-      titleLink: __('Tiempo real')      
     }));
 
     this._widgets.push(new App.View.Widgets.Aq_cons.PressureSectorRanking({
       id_scope: this.scopeModel.get('id'),
-      link : '/' + this.scopeModel.get('id') + '/' + this.id_category + '/dashboard/leak',      
-      titleLink: __('Tiempo real')      
+    }));
+
+    this._widgets.push(new App.View.Widgets.Aq_cons.FlowEvolution({
+      id_scope: this.scopeModel.get('id'),
+    }));
+
+    this._widgets.push(new App.View.Widgets.Aq_cons.PressureEvolution({
+      id_scope: this.scopeModel.get('id'),
     }));
 
     this.subviews.push(new App.View.Widgets.Container({
