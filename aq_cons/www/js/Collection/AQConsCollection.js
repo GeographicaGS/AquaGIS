@@ -16,6 +16,11 @@ App.Collection.Aq_cons.PanelList = Backbone.Collection.extend({
         id : 'historic',
         title: __('Histórico'),
         url:base + '/dashboard/historic',
+      },
+      {
+        id : 'leak',
+        title: __('Tiempo real'),
+        url:base + '/dashboard/leak',
       }
 
     ];
