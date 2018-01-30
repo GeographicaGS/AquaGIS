@@ -21,8 +21,8 @@ App.View.Widgets.Aq_cons.PressureEvolution = App.View.Widgets.Base.extend({
         vars: ["aq_cons.sector.pressure"],
         groupagg: true,
         time: {
-          start: moment().startOf('day').toDate(),
-          finish: moment().endOf('day').toDate(),
+          start: moment().startOf('hour').subtract(1,'day').toDate(),
+          finish: moment().startOf('hour').toDate(),
           step: '1h'
         },
         filters: App.ctx.get('bbox_status') && App.ctx.get('bbox') ? { bbox: App.ctx.get('bbox') } : {}
@@ -32,22 +32,22 @@ App.View.Widgets.Aq_cons.PressureEvolution = App.View.Widgets.Base.extend({
     this.collection.url = App.config.api_url + '/' + this.options.id_scope + '/variables/aq_cons.sector.pressure/devices_group_timeserie';
     this.collection.parse = App.Collection.Variables.Timeserie.prototype.parse;
 
-    var sectorPressure = App.mv().getVariable('aq_cons.sector.pressure');
-    var keys = {};
+    var sectorPressureMetadata = App.mv().getVariable('aq_cons.sector.pressure');
+    var sectorKeys = {};
     var colors = ['#4D7BD9','#9966CC','#199183','#269DEF', '#64B6D9', '#64B7A3'];
     this._chartModel = new App.Model.BaseChartConfigModel({
       colors: function(d,i){
-        debugger;
-        var keysLength = Object.keys(keys).length;
-        if(!keys[d.realKey]) {
-          keys[d.realKey] = colors[keysLength % colors.length]
+        var keysLength = Object.keys(sectorKeys).length;
+        if(!sectorKeys[d.realKey]) {
+          sectorKeys[d.realKey] = colors[keysLength % colors.length]
         } 
-        return keys[d.realKey];
+        return sectorKeys[d.realKey];
       },
       classes: function(d,i) {
         if(d.realKey !== 'avg') {
           return 'dashed';
         }
+        return;
       },
       legendNameFunc: function(key,d){
         var data;
@@ -68,10 +68,9 @@ App.View.Widgets.Aq_cons.PressureEvolution = App.View.Widgets.Base.extend({
       xAxisFunction: function(d) { return App.formatDate(d,'DD/MM HH:mm'); },
       yAxisFunction: [
         function(d) { return App.nbf(d)},
-        function(d) { return App.nbf(d)}
       ],
       yAxisLabel: [
-        __('Presión') + ' ('+ sectorPressure.get('units') +')',
+        __('Presión') + ' ('+ sectorPressureMetadata.get('units') +')',
       ],
       currentStep: '1h',
       keysConfig: {
