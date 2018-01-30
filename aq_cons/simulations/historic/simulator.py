@@ -8,13 +8,14 @@ import random
 from pathlib import Path
 from datetime import datetime
 from scipy.interpolate import interp1d
+from tqdm import tqdm
 
 
 def generate_static_entities(data):
 
     data_in_dict = collections.defaultdict(list)
 
-    for entity in data['entities']:
+    for entity in tqdm(data['entities'], desc='Generating statics'):
         data_in_dict['id_entity'].append(entity['entity_name'])
 
         for static_attribute in entity['staticAttributes']:
@@ -41,7 +42,7 @@ def generate_simulations(data, from_timestamp, to_timestamp):
 
     data_in_dict = collections.defaultdict(list)
 
-    for entity in data['entities']:
+    for entity in tqdm(data['entities'], desc='Generating entities and timestamp'):
         entities_to_active[entity['entity_name']] = entity['active']
 
         for date in date_range:
@@ -49,7 +50,9 @@ def generate_simulations(data, from_timestamp, to_timestamp):
             data_in_dict['timestamp'].append(date)
 
     dataframe = pd.DataFrame(data=data_in_dict)
-    dataframe[['pressure', 'flow']] = dataframe.apply(lambda row: calculate_pressure_flow(row, entities_to_active, parameters), axis=1)
+
+    tqdm.pandas(desc='Apply progress')
+    dataframe[['pressure', 'flow']] = dataframe.progress_apply(lambda row: calculate_pressure_flow(row, entities_to_active, parameters), axis=1)
 
     output_dir = Path('output')
     output_dir.mkdir(exist_ok=True)
