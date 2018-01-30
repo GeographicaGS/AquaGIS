@@ -85,6 +85,29 @@ a.co_fullscreen_toggle.restore {
         background: -webkit-linear-gradient(left, #64B6D9 0%, #4CA7D7 25%, #3397D5 50%, #1A88D3 75%,#0278D1 100%);
         background: linear-gradient(to right, #64B6D9 0%, #4CA7D7 25%, #3397D5 50%, #1A88D3 75%,#0278D1 100%);
       }
+      .legend-map {
+        color: #55555D;
+        padding-left: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &:before {
+          content: '';
+          width: 12px;
+          height: 12px;
+          border-radius: 6px;
+          margin-right: 4px;
+        }
+        &.normal:before {
+          background-color: #7ED321;
+        }
+        &.anomaly:before {
+          background-color: #F8CA1C;        
+        }
+        &.leak:before {
+          background-color: #F4455A;        
+        }
+      }
     }
   }
   
