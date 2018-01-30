@@ -35,7 +35,6 @@ def generate_static_entities(data):
 def generate_simulations(data, from_timestamp, to_timestamp):
 
     parameters = generate_parameters_with_interpolators(data['exports'])
-    print(parameters['flowDomesticSmallWeek'])
     date_range = pd.date_range(from_timestamp, to_timestamp, freq='15min')
 
     entities_to_active = dict()
