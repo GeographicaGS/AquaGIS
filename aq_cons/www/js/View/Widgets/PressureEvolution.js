@@ -1,24 +1,24 @@
 'use strict';
 
-App.View.Widgets.Aq_cons.FlowEvolution = App.View.Widgets.Base.extend({
+App.View.Widgets.Aq_cons.PressureEvolution = App.View.Widgets.Base.extend({
 
   initialize: function(options) {
     options = _.defaults(options,{
-      title: __('Caudal Total'),
+      title: __('Presión media'),
       timeMode:'historic',
       id_category: 'aq_cons',
       exportable: true,
       dimension: 'allWidth',
       publishable: true,
-      classname: 'App.View.Widgets.Lighting.FlowEvolution'
+      classname: 'App.View.Widgets.Lighting.PressureEvolution'
     });
     App.View.Widgets.Base.prototype.initialize.call(this,options);
 
 
     this.collection = new App.Collection.Post([],{
       data: {
-        agg: ["SUM"],
-        vars: ["aq_cons.sector.flow"],
+        agg: ["AVG"],
+        vars: ["aq_cons.sector.pressure"],
         groupagg: true,
         time: {
           start: moment().startOf('day').toDate(),
@@ -29,10 +29,10 @@ App.View.Widgets.Aq_cons.FlowEvolution = App.View.Widgets.Base.extend({
       },
     });
 
-    this.collection.url = App.config.api_url + '/' + this.options.id_scope + '/variables/aq_cons.sector.flow/devices_group_timeserie';
+    this.collection.url = App.config.api_url + '/' + this.options.id_scope + '/variables/aq_cons.sector.pressure/devices_group_timeserie';
     this.collection.parse = App.Collection.Variables.Timeserie.prototype.parse;
 
-    var sectorFlow = App.mv().getVariable('aq_cons.sector.flow');
+    var sectorPressure = App.mv().getVariable('aq_cons.sector.pressure');
     var keys = {};
     var colors = ['#4D7BD9','#9966CC','#199183','#269DEF', '#64B6D9', '#64B7A3'];
     this._chartModel = new App.Model.BaseChartConfigModel({
@@ -51,7 +51,7 @@ App.View.Widgets.Aq_cons.FlowEvolution = App.View.Widgets.Base.extend({
       },
       legendNameFunc: function(key,d){
         var data;
-        var label = __('Nivel de caudal');
+        var label = __('Nivel de presión');
         if(key !== 'avg') {
           let coll = new App.Model.Base();
           coll.url = App.config.api_url + '/aljarafe/devices/aq_cons.sector/' + key + '/lastdata';
@@ -71,7 +71,7 @@ App.View.Widgets.Aq_cons.FlowEvolution = App.View.Widgets.Base.extend({
         function(d) { return App.nbf(d)}
       ],
       yAxisLabel: [
-        __('Caudal') + ' ('+ sectorFlow.get('units') +')',
+        __('Presión') + ' ('+ sectorPressure.get('units') +')',
       ],
       currentStep: '1h',
       keysConfig: {

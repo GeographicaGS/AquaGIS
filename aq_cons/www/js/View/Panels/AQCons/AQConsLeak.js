@@ -33,6 +33,10 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
       id_scope: this.scopeModel.get('id'),
     }));
 
+    this._widgets.push(new App.View.Widgets.Aq_cons.PressureEvolution({
+      id_scope: this.scopeModel.get('id'),
+    }));
+
     this.subviews.push(new App.View.Widgets.Container({
       widgets: this._widgets,
       el: this.$('.bottom .widgetContainer')

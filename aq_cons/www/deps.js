@@ -25,6 +25,7 @@ deps.JS = [
   srcJS + 'View/Widgets/ConsumptionForecastByLandUse.js',
   srcJS + 'View/Widgets/ConsumptionForecastByLandUseTimeserie.js',
   srcJS + 'View/Widgets/FlowEvolution.js',  
+  srcJS + 'View/Widgets/PressureEvolution.js',  
   srcJS + 'View/Widgets/FlowSectorRanking.js',
   srcJS + 'View/Widgets/PressureSectorRanking.js',
   srcJS + 'View/Widgets/WidgetTotalConsumeLastWeek.js',
