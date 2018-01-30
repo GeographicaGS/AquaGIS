@@ -28,7 +28,6 @@ App.View.Widgets.Aq_cons.FlowSectorRanking = App.View.Widgets.Base.extend({
     });
 
     var _this = this;
-    debugger;
     var tableModel = new Backbone.Model({
       css_class: 'transparent rankingWidget flow',
       csv:false,
