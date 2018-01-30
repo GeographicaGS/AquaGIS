@@ -28,7 +28,6 @@ App.View.Widgets.Aq_cons.PressureSectorRanking = App.View.Widgets.Base.extend({
     });
 
     var _this = this;
-    debugger;
     var tableModel = new Backbone.Model({
       css_class: 'transparent rankingWidget flow',
       csv:false,
@@ -39,9 +38,12 @@ App.View.Widgets.Aq_cons.PressureSectorRanking = App.View.Widgets.Base.extend({
         pressure:{
           title: App.mv().getVariable('aq_cons.sector.pressure').get('units'),
           formatFN: function(d) {
-            debugger;
-            var max = _this.collection.at(0).get('pressure'),
-              width = d*100/max,
+            if (_this.collection.at(0)) {
+              var max = _this.collection.at(0).get('pressure');
+            } else {
+              var max = 1;
+            }
+            var width = d*100/max,
               d = App.nbf(d),
               template = _.template('<div class="pressure"><div class="rankingBar"><div style="width:<%=width%>%"></div></div><span><%=d%></span></div>');
             return template({width: width, d: d});
