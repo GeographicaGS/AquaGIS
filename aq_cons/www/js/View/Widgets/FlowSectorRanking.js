@@ -43,9 +43,9 @@ App.View.Widgets.Aq_cons.FlowSectorRanking = App.View.Widgets.Base.extend({
             } else {
               var max = 1;
             }
-            var width = d*100/max,
-              d = App.nbf(d),
-              template = _.template('<div class="flow"><div class="rankingBar"><div style="width:<%=width%>%"></div></div><span><%=d%></span></div>');
+            var width = d*100/max;
+            d = App.nbf(d);
+            var template = _.template('<div class="flow"><div class="rankingBar"><div style="width:<%=width%>%"></div></div><span><%=d%></span></div>');
             return template({width: width, d: d});
           }
         },
