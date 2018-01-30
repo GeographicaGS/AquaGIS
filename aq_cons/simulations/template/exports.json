@@ -1,33 +1,31 @@
-{  
-   "interpolators":{  
-      "flow":{  
-         "industrialWeek":"time-random-linear-interpolator([[0,random(0.003,0.010)],[5,random(0.003,0.010)],[6,random(0.020,0.040)],[9,random(0.020,0.040)],[10,random(0.030,0.050)],[14,random(0.030,0.050)],[15,random(0.020,0.040)],[19,random(0.020,0.040)],[20,random(0.003,0.010)],[24,random(0.003,0.010)]])",
-         "industrialWeekend":"time-random-linear-interpolator([[0,random(0.003,0.010)],[24,random(0.003,0.010)]])",
-         "comercialWeek":"time-random-linear-interpolator([[0,random(0.001,0.003)],[7,random(0.001,0.003)],[8,random(0.005,0.020)],[9,random(0.005,0.020)],[10,random(0.020,0.030)],[12,random(0.020,0.030)],[13,random(0.005,0.020)],[18,random(0.005,0.020)],[19,random(0.020,0.030)],[21,random(0.020,0.030)],[22,random(0.005,0.020)],[23,random(0.001,0.003)],[24,random(0.001,0.002)]])",
-         "comercialWeekend":"time-random-linear-interpolator([[0,random(0.003,0.010)],[24,random(0.003,0.010)]])",
-         "domesticWeek":"time-random-linear-interpolator([[0,random(0.001,0.002)],[2,random(0.000,0.002)],[5,random(0.000,0.002)],[6,random(0.005,0.010)],[7,random(0.005,0.010)],[9,random(0.010,0.015)],[10,random(0.000,0.001)],[14,random(0.000,0.001)],[15,random(0.015,0.030)],[18,random(0.010,0.020)],[20,random(0.015,0.030)],[22,random(0.015,0.030)],[23,random(0.005,0.010)],[24,random(0.001,0.002)]])",
-         "domesticWeekend":"time-random-linear-interpolator([[0,random(0.005,0.010)],[2,random(0.001,0.002)],[3,random(0.000,0.002)],[8,random(0.000,0.002)],[9,random(0.000,0.005)],[10,random(0.015,0.030)],[14,random(0.015,0.030)],[15,random(0.005,0.010)],[17,random(0.005,0.010)],[20,random(0.000,0.005)],[21,random(0.015,0.030)],[23,random(0.015,0.030)],[24,random(0.005,0.010)]])"
-      },
-      "pressure":{  
-         "anyUseAllWeek":"time-random-linear-interpolator([[0,random(3.5,4)],[24,random(3.5,4)]])"
-      }
-   },
-   "schedules":{  
-      "everyHour":"0 0 */1 * * *",
-      "week":"0 */15 * * * 1-5",
-      "weekend":"0 */15 * * * 0,6",
-      "allWeek":"0 */15 * * * *"
-   },
-   "interpolatorFactors":{  
-      "industrialLarge":5,
-      "comercialLarge":3,
-      "domesticLarge":4,
-      "domesticMedium":2
-   },
-   "areaThresholds":{  
-      "indsutrialLarge":600,
-      "comercialLarge":450,
-      "domesticLarge":200,
-      "domesticMedium":100
-   }
+{
+  "interpolators": {
+    "flow": {
+      "industrialWeek": "time-random-linear-interpolator([[0,random(0.003,0.010)],[5,random(0.003,0.010)],[6,random(0.020,0.040)],[9,random(0.020,0.040)],[10,random(0.030,0.050)],[14,random(0.030,0.050)],[15,random(0.020,0.040)],[19,random(0.020,0.040)],[20,random(0.003,0.010)],[24,random(0.003,0.010)]])",
+      "industrialWeekend": "time-random-linear-interpolator([[0,random(0.003,0.010)],[24,random(0.003,0.010)]])",
+      "comercialWeek": "time-random-linear-interpolator([[0,random(0.001,0.003)],[7,random(0.001,0.003)],[8,random(0.005,0.020)],[9,random(0.005,0.020)],[10,random(0.020,0.030)],[12,random(0.020,0.030)],[13,random(0.005,0.020)],[18,random(0.005,0.020)],[19,random(0.020,0.030)],[21,random(0.020,0.030)],[22,random(0.005,0.020)],[23,random(0.001,0.003)],[24,random(0.001,0.002)]])",
+      "comercialWeekend": "time-random-linear-interpolator([[0,random(0.003,0.010)],[24,random(0.003,0.010)]])",
+      "domesticWeek": "time-random-linear-interpolator([[0,random(0.001,0.002)],[2,random(0.000,0.002)],[5,random(0.000,0.002)],[6,random(0.005,0.010)],[7,random(0.005,0.010)],[9,random(0.010,0.015)],[10,random(0.000,0.001)],[14,random(0.000,0.001)],[15,random(0.015,0.030)],[18,random(0.010,0.020)],[20,random(0.015,0.030)],[22,random(0.015,0.030)],[23,random(0.005,0.010)],[24,random(0.001,0.002)]])",
+      "domesticWeekend": "time-random-linear-interpolator([[0,random(0.005,0.010)],[2,random(0.001,0.002)],[3,random(0.000,0.002)],[8,random(0.000,0.002)],[9,random(0.000,0.005)],[10,random(0.015,0.030)],[14,random(0.015,0.030)],[15,random(0.005,0.010)],[17,random(0.005,0.010)],[20,random(0.000,0.005)],[21,random(0.015,0.030)],[23,random(0.015,0.030)],[24,random(0.005,0.010)]])"
+    },
+    "pressure": {
+      "anyUseAllWeek": "time-random-linear-interpolator([[0,random(3.5,4)],[24,random(3.5,4)]])"
+    }
+  },
+  "schedules": {
+    "week": "0 */15 * * * 1-5",
+    "weekend": "0 */15 * * * 0,6"
+  },
+  "interpolatorFactors": {
+    "industrialLarge": 5,
+    "comercialLarge": 3,
+    "domesticLarge": 4,
+    "domesticMedium": 2
+  },
+  "areaThresholds": {
+    "indsutrialLarge": 600,
+    "comercialLarge": 450,
+    "domesticLarge": 200,
+    "domesticMedium": 100
+  }
 }

@@ -71,15 +71,43 @@ const getConstrId = (plotId, floor) => {
   return `construction_id:${ plotId.split(':')[1] }_${ floor }`;
 };
 
-const randomizeScheduleFirstZero = (protoSchedule) => {
-  let randomSecond = Math.floor((Math.random() * 59) + 1);
-  return protoSchedule.replace('0', randomSecond);
+const randomNoughToSixty = () => {
+  return Math.floor((Math.random() * 59) + 1);
+};
+
+const randomQuarter = () => {
+  let first = Math.floor((Math.random() * 14) + 1);
+  return `${ first },${ first + 15 },${ first + 30 },${ first + 45 }`;
+};
+
+const replaceCronString = (protoSchedule, position, replace) => {
+  let schedule = protoSchedule.split(' ');
+  schedule[position] = replace;
+  return schedule.join(' ');
 };
 
 const getConstrActive = (protoActive, usage, area, exportStrings) => {
-  let active = [protoActive[0], protoActive[2]];
-  active[1].value = 'import(pressureAnyUseAllWeek)';
-  active[1].schedule = randomizeScheduleFirstZero(exportStrings.schedules.allWeek);
+  let theSecond = randomNoughToSixty();
+  let theQuarter = randomQuarter();
+  let active = [];
+
+  active.push(clone(protoActive[0]));
+  active[0].schedule = replaceCronString(exportStrings.schedules.week, 0, theSecond);
+  active[0].schedule = replaceCronString(active[0].schedule, 1, theQuarter);
+
+  active.push(clone(protoActive[0]));
+  active[1].schedule = replaceCronString(exportStrings.schedules.weekend, 0, theSecond);
+  active[1].schedule = replaceCronString(active[1].schedule, 1, theQuarter);
+
+  active.push(clone(protoActive[2]));
+  active[2].value = 'import(pressureAnyUseAllWeek)';
+  active[2].schedule = replaceCronString(exportStrings.schedules.week, 0, theSecond);
+  active[2].schedule = replaceCronString(active[2].schedule, 1, theQuarter);
+
+  active.push(clone(protoActive[2]));
+  active[3].value = 'import(pressureAnyUseAllWeek)';
+  active[3].schedule = replaceCronString(exportStrings.schedules.weekend, 0, theSecond);
+  active[3].schedule = replaceCronString(active[3].schedule, 1, theQuarter);
 
   let size = null;
   if (usage === 'industrial') {
@@ -93,12 +121,14 @@ const getConstrActive = (protoActive, usage, area, exportStrings) => {
   }
 
   active.push(clone(protoActive[1]));
-  active[2].value = `import(flow${ capitalizeFirst(usage) }${ size }Week)`;
-  active[2].schedule = randomizeScheduleFirstZero(exportStrings.schedules.week);
+  active[4].value = `import(flow${ capitalizeFirst(usage) }${ size }Week)`;
+  active[4].schedule = replaceCronString(exportStrings.schedules.week, 0, theSecond);
+  active[4].schedule = replaceCronString(active[4].schedule, 1, theQuarter);
 
   active.push(clone(protoActive[1]));
-  active[3].value = `import(flow${ capitalizeFirst(usage) }${ size }Weekend)`;
-  active[3].schedule = randomizeScheduleFirstZero(exportStrings.schedules.weekend);
+  active[5].value = `import(flow${ capitalizeFirst(usage) }${ size }Weekend)`;
+  active[5].schedule = replaceCronString(exportStrings.schedules.weekend, 0, theSecond);
+  active[5].schedule = replaceCronString(active[5].schedule, 1, theQuarter);
 
   return active;
 };
@@ -121,7 +151,6 @@ const createConstr = (protoPlot, floor, template, exportStrings) => {
   let constr = clone(template);
 
   constr.entity_name = getConstrId(protoPlot.properties.id, floor);
-  constr.schedule = randomizeScheduleFirstZero(randomizeScheduleFirstZero(exportStrings.schedules.everyHour));
 
   constr.staticAttributes[0].value = protoPlot.properties.centroid;
   constr.staticAttributes[1].value = protoPlot.properties.refSector;
@@ -142,7 +171,6 @@ const createFutu = (protoPlot, floor, template, exportStrings) => {
   let futu = clone(template);
 
   futu.entity_name = getConstrId(protoPlot.properties.id, floor);
-  futu.schedule = randomizeScheduleFirstZero(randomizeScheduleFirstZero(exportStrings.schedules.everyHour));
 
   futu.active = getConstrActive(
     futu.active, protoPlot.properties.usage,
@@ -194,6 +222,8 @@ let futuOutput = clone(mainTemplate);
 constrOutput.exports = getExports(constrOutput.exports, exportStrings);
 futuOutput.exports = getExports(futuOutput.exports, exportStrings);
 
+var plots = 0;
+var constrs = 0;
 // For each plot in geoData
 for (let protoPlot of geoData) {
   plotOutput.entities.push(createPlot(protoPlot, plotTemplate));
@@ -201,8 +231,14 @@ for (let protoPlot of geoData) {
   for (let i in range(protoPlot.properties.floors)) {
     constrOutput.entities.push(createConstr(protoPlot, i , constrTemplate, exportStrings));
     futuOutput.entities.push(createFutu(protoPlot, i, futuTemplate, exportStrings));
+
+    constrs++;
   }
+
+  plots++;
 }
+
+console.log(`${ constrs } constructions in ${ plots } plots`);
 
 saveJSONFile(plotOutputFile, plotOutput);
 saveJSONFile(constrOutputFile, constrOutput);

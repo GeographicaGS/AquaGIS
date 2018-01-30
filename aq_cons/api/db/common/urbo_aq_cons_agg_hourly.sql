@@ -32,7 +32,9 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_hourly(
       SELECT urbo_aq_cons_agg_cons_fore_hourly(''%s'', ''%s'', ''aq_cons_const_agg_hour'', ''aq_aux_const_futu'', NULL, ''pressure_forecast'');
       SELECT urbo_aq_cons_agg_cons_fore_hourly(''%s'', ''%s'', ''aq_cons_plot_agg_hour'', ''aq_aux_const_futu'', ''aq_cons_const'', ''pressure_forecast'');
       SELECT urbo_aq_cons_agg_cons_fore_hourly(''%s'', ''%s'', ''aq_cons_sector_agg_hour'', ''aq_aux_const_futu'', ''aq_cons_const'', ''pressure_forecast'');
+      SELECT urbo_aq_cons_leak_detection(''%s'', ''%s'');
       ',
+      id_scope, moment,
       id_scope, moment,
       id_scope, moment,
       id_scope, moment,
