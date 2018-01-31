@@ -88,26 +88,26 @@ const replaceCronString = (protoSchedule, position, replace) => {
 
 const getConstrActive = (protoActive, usage, area, exportStrings) => {
   let theSecond = randomNoughToSixty();
-  let theQuarter = randomQuarter();
+  let theMinute = randomNoughToSixty();  // randomQuarter();
   let active = [];
 
   active.push(clone(protoActive[0]));
   active[0].schedule = replaceCronString(exportStrings.schedules.week, 0, theSecond);
-  active[0].schedule = replaceCronString(active[0].schedule, 1, theQuarter);
+  active[0].schedule = replaceCronString(active[0].schedule, 1, theMinute);
 
   active.push(clone(protoActive[0]));
   active[1].schedule = replaceCronString(exportStrings.schedules.weekend, 0, theSecond);
-  active[1].schedule = replaceCronString(active[1].schedule, 1, theQuarter);
+  active[1].schedule = replaceCronString(active[1].schedule, 1, theMinute);
 
   active.push(clone(protoActive[2]));
   active[2].value = 'import(pressureAnyUseAllWeek)';
   active[2].schedule = replaceCronString(exportStrings.schedules.week, 0, theSecond);
-  active[2].schedule = replaceCronString(active[2].schedule, 1, theQuarter);
+  active[2].schedule = replaceCronString(active[2].schedule, 1, theMinute);
 
   active.push(clone(protoActive[2]));
   active[3].value = 'import(pressureAnyUseAllWeek)';
   active[3].schedule = replaceCronString(exportStrings.schedules.weekend, 0, theSecond);
-  active[3].schedule = replaceCronString(active[3].schedule, 1, theQuarter);
+  active[3].schedule = replaceCronString(active[3].schedule, 1, theMinute);
 
   let size = null;
   if (usage === 'industrial') {
@@ -123,12 +123,12 @@ const getConstrActive = (protoActive, usage, area, exportStrings) => {
   active.push(clone(protoActive[1]));
   active[4].value = `import(flow${ capitalizeFirst(usage) }${ size }Week)`;
   active[4].schedule = replaceCronString(exportStrings.schedules.week, 0, theSecond);
-  active[4].schedule = replaceCronString(active[4].schedule, 1, theQuarter);
+  active[4].schedule = replaceCronString(active[4].schedule, 1, theMinute);
 
   active.push(clone(protoActive[1]));
   active[5].value = `import(flow${ capitalizeFirst(usage) }${ size }Weekend)`;
   active[5].schedule = replaceCronString(exportStrings.schedules.weekend, 0, theSecond);
-  active[5].schedule = replaceCronString(active[5].schedule, 1, theQuarter);
+  active[5].schedule = replaceCronString(active[5].schedule, 1, theMinute);
 
   return active;
 };
