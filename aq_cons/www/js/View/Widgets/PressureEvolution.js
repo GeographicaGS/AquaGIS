@@ -43,26 +43,33 @@ App.View.Widgets.Aq_cons.PressureEvolution = App.View.Widgets.Base.extend({
         } 
         return sectorKeys[d.realKey];
       },
+      // classes: function(d,i) {
+      //   if(d.realKey !== 'avg') {
+      //     return 'dashed';
+      //   }
+      //   return;
+      // },
       classes: function(d,i) {
         if(d.realKey !== 'avg') {
-          return 'dashed';
+          return 'secondary';
         }
-        return;
+        return 'primary';
       },
+      hideYAxis2: true,            
       legendNameFunc: function(key,d){
         var data;
         var label = __('Nivel de presión');
-        if(key !== 'avg') {
-          let coll = new App.Model.Base();
-          coll.url = App.config.api_url + '/aljarafe/devices/aq_cons.sector/' + key + '/lastdata';
-          coll.fetch({ async: false, success: function(e) {
-            data = e.toJSON()}
-          });
-          let _ldata = _.find(data.lastdata, function(el) {
-            return el.var_id === 'aq_cons.sector.name'
-          });
-          label = _ldata.var_value;
-        }
+        // if(key !== 'avg') {
+        //   let coll = new App.Model.Base();
+          // coll.url = App.config.api_url + '/aljarafe/devices/aq_cons.sector/' + key + '/lastdata';
+          // coll.fetch({ async: false, success: function(e) {
+          //   data = e.toJSON()}
+          // });
+          // let _ldata = _.find(data.lastdata, function(el) {
+          //   return el.var_id === 'aq_cons.sector.name'
+          // });
+          // label = _ldata.var_value;
+        // }
         return label;
       },
       xAxisFunction: function(d) { return App.formatDate(d,'DD/MM HH:mm'); },
@@ -79,7 +86,7 @@ App.View.Widgets.Aq_cons.PressureEvolution = App.View.Widgets.Base.extend({
       showLineDots: false,
     });
 
-    this.subviews.push(new App.View.Widgets.Charts.D3.BarsLine({
+    this.subviews.push(new App.View.Widgets.Aq_cons.D3BarsLineCustom({
       opts: this._chartModel,
       data: this.collection
     }));

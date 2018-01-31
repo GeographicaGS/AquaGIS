@@ -10,7 +10,8 @@ App.View.Widgets.Aq_cons.FlowEvolution = App.View.Widgets.Base.extend({
       exportable: true,
       dimension: 'allWidth',
       publishable: true,
-      classname: 'App.View.Widgets.Lighting.FlowEvolution'
+      classname: 'App.View.Widgets.Lighting.FlowEvolution',
+      stepsAvailable: ['1h','2h','4h']
     });
     App.View.Widgets.Base.prototype.initialize.call(this,options);
 
@@ -42,27 +43,33 @@ App.View.Widgets.Aq_cons.FlowEvolution = App.View.Widgets.Base.extend({
           sectorKeys[d.realKey] = colors[keysLength % colors.length]
         } 
         return sectorKeys[d.realKey];
+        // if(d.realKey !== 'avg') {
+        //   return '#199183';
+        // } else {
+        //   return '#64B7A3';
+        // }
       },
       classes: function(d,i) {
         if(d.realKey !== 'avg') {
-          return 'dashed';
+          return 'secondary';
         }
-        return;
+        return 'primary';
       },
+      hideYAxis2: true,            
       legendNameFunc: function(key,d){
         var data;
         var label = __('Nivel de caudal');
-        if(key !== 'avg') {
-          let coll = new App.Model.Base();
-          coll.url = App.config.api_url + '/aljarafe/devices/aq_cons.sector/' + key + '/lastdata';
-          coll.fetch({ async: false, success: function(e) {
-            data = e.toJSON()}
-          });
-          let _ldata = _.find(data.lastdata, function(el) {
-            return el.var_id === 'aq_cons.sector.name'
-          });
-          label = _ldata.var_value;
-        }
+        // if(key !== 'avg') {
+        //   let coll = new App.Model.Base();
+        //   coll.url = App.config.api_url + '/aljarafe/devices/aq_cons.sector/' + key + '/lastdata';
+        //   coll.fetch({ async: false, success: function(e) {
+        //     data = e.toJSON()}
+        //   });
+        //   let _ldata = _.find(data.lastdata, function(el) {
+        //     return el.var_id === 'aq_cons.sector.name'
+        //   });
+        //   label = _ldata.var_value;
+        // }
         return label;
       },
       xAxisFunction: function(d) { return App.formatDate(d,'DD/MM HH:mm'); },
@@ -78,8 +85,8 @@ App.View.Widgets.Aq_cons.FlowEvolution = App.View.Widgets.Base.extend({
       },
       showLineDots: false,
     });
-
-    this.subviews.push(new App.View.Widgets.Charts.D3.BarsLine({
+  
+    this.subviews.push(new App.View.Widgets.Aq_cons.D3BarsLineCustom({
       opts: this._chartModel,
       data: this.collection
     }));
