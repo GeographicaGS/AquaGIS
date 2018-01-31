@@ -5,15 +5,28 @@ App.View.Widgets.Aq_cons.PressureEvolution = App.View.Widgets.Base.extend({
   initialize: function(options) {
     options = _.defaults(options,{
       title: __('Presión media'),
-      timeMode:'historic',
+      timeMode:'now',
       id_category: 'aq_cons',
       exportable: true,
       dimension: 'allWidth',
       publishable: true,
       classname: 'App.View.Widgets.Lighting.PressureEvolution'
     });
+
     App.View.Widgets.Base.prototype.initialize.call(this,options);
 
+    // Getting sectors names
+    this.sectorsNames = {};
+    let sectorNamesCollection = new App.Collection.Base();
+    sectorNamesCollection.url = App.config.api_url + '/aljarafe/devices/mapentities?entities=aq_cons.sector';
+    sectorNamesCollection.fetch({ async: false, success: function(e) {
+      let tmp = e.toJSON();
+      _.each(tmp, function(element) {
+        this.sectorsNames[element.device_id] = _.find(element.lastdata, function(ldata) {
+          return ldata.var === 'aq_cons.sector.name';
+        }).value;
+      }.bind(this));
+    }.bind(this)});
 
     this.collection = new App.Collection.Post([],{
       data: {
@@ -43,12 +56,6 @@ App.View.Widgets.Aq_cons.PressureEvolution = App.View.Widgets.Base.extend({
         } 
         return sectorKeys[d.realKey];
       },
-      // classes: function(d,i) {
-      //   if(d.realKey !== 'avg') {
-      //     return 'dashed';
-      //   }
-      //   return;
-      // },
       classes: function(d,i) {
         if(d.realKey !== 'avg') {
           return 'secondary';
@@ -57,21 +64,9 @@ App.View.Widgets.Aq_cons.PressureEvolution = App.View.Widgets.Base.extend({
       },
       hideYAxis2: true,            
       legendNameFunc: function(key,d){
-        var data;
-        var label = __('Nivel de presión');
-        // if(key !== 'avg') {
-        //   let coll = new App.Model.Base();
-          // coll.url = App.config.api_url + '/aljarafe/devices/aq_cons.sector/' + key + '/lastdata';
-          // coll.fetch({ async: false, success: function(e) {
-          //   data = e.toJSON()}
-          // });
-          // let _ldata = _.find(data.lastdata, function(el) {
-          //   return el.var_id === 'aq_cons.sector.name'
-          // });
-          // label = _ldata.var_value;
-        // }
+        var label = this.sectorsNames[key] || __('Nivel de caudal');
         return label;
-      },
+      }.bind(this),
       xAxisFunction: function(d) { return App.formatDate(d,'DD/MM HH:mm'); },
       yAxisFunction: [
         function(d) { return App.nbf(d)},
