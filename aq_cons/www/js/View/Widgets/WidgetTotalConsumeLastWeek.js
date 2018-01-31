@@ -36,7 +36,7 @@ App.View.Widgets.Aq_cons.TotalConsumeLastWeek = App.View.Widgets.Base.extend({
     this._chartModel = new App.Model.BaseChartConfigModel({
       colors: ['#64B6D9'],
       xAxisFunction: function (d) {
-      	return __('Todos los sectores');
+        return __('Todos los sectores');
       },
       // yAxisFunction: function(d){
       //   return App.nbf(d, {decimals:0});

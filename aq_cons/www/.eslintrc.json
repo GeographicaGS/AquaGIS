@@ -12,7 +12,7 @@
         "moment": true,
         "d3": true,
         "turf": true,
-        "mapbox-gl": true
+        "mapboxgl": true
     },
     "extends": "eslint:recommended",
     "parserOptions": {
