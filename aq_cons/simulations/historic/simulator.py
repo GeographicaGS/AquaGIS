@@ -193,17 +193,17 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    # with open(args.simulation_file) as simulation_file:
-    #     data_json = json.load(simulation_file)
-    #
-    #     generate_static(data_json, 'entities')
-    #
-    #     if args.chunk:
-    #         generate_simulations(data_json, args.from_date, args.to_date, args.frequency, args.chunk)
-    #         generate_future_simulations(data_json, args.from_date, args.to_date, args.frequency, args.chunk)
-    #     else:
-    #         generate_simulations(data_json, args.from_date, args.to_date, args.frequency)
-    #         generate_future_simulations(data_json, args.from_date, args.to_date, args.frequency, args.chunk)
+    with open(args.simulation_file) as simulation_file:
+        data_json = json.load(simulation_file)
+
+        generate_static(data_json, 'entities')
+
+        if args.chunk:
+            generate_simulations(data_json, args.from_date, args.to_date, args.frequency, args.chunk)
+            generate_future_simulations(data_json, args.from_date, args.to_date, args.frequency, args.chunk)
+        else:
+            generate_simulations(data_json, args.from_date, args.to_date, args.frequency)
+            generate_future_simulations(data_json, args.from_date, args.to_date, args.frequency, args.chunk)
 
     if args.plot:
         with open(args.plot) as plot_file:
