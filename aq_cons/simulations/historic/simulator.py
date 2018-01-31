@@ -1,27 +1,33 @@
-import sys
 import json
 import pandas as pd
 import collections
 import re
 import numpy as np
 import random
+import gc
+import multiprocessing
+import argparse
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timedelta
 from scipy.interpolate import interp1d
 from tqdm import tqdm
 
 
-def generate_static_entities(data):
+def generate_static(data, type_entity):
 
     data_in_dict = collections.defaultdict(list)
 
-    for entity in tqdm(data['entities'], desc='Generating statics'):
+    for entity in tqdm(data['entities'], desc='Generating {} statics'.format(type_entity)):
         data_in_dict['id_entity'].append(entity['entity_name'])
 
         for static_attribute in entity['staticAttributes']:
-            if static_attribute['name'] == 'location':
+            if static_attribute['name'] == 'location' and type_entity == 'entities':
                 data_in_dict['x'].append(static_attribute['value']['coordinates'][0])
                 data_in_dict['y'].append(static_attribute['value']['coordinates'][1])
+            elif static_attribute['name'] == 'location' and type_entity == 'plots':
+                data_in_dict['location'].append(json.dumps(static_attribute['value']))
+            elif static_attribute['name'] == 'description' and type_entity == 'plots':
+                data_in_dict['description'].append(json.dumps(static_attribute['value']))
             else:
                 data_in_dict[static_attribute['name']].append(static_attribute['value'])
 
@@ -29,14 +35,19 @@ def generate_static_entities(data):
     output_dir.mkdir(exist_ok=True)
 
     dataframe = pd.DataFrame(data=data_in_dict)
-    dataframe.to_csv(output_dir / 'static_entities-{}.csv'.format(datetime.now().strftime('%d-%m-%Y_%H:%M:%S')),
+    dataframe.to_csv(output_dir / 'static_{}-{}.csv'.format(type_entity, datetime.now().strftime('%d-%m-%Y_%H:%M:%S')),
                      index=False, encoding='utf-8')
 
+    dataframe = None
+    data_in_dict = None
 
-def generate_simulations(data, from_timestamp, to_timestamp):
+    gc.collect()
+
+
+def generate_simulations(data, from_timestamp, to_timestamp, frequency, chunk_size=None, name='historic'):
 
     parameters = generate_parameters_with_interpolators(data['exports'])
-    date_range = pd.date_range(from_timestamp, to_timestamp, freq='15min')
+    date_range = pd.date_range(from_timestamp, to_timestamp, freq=frequency)
 
     entities_to_active = dict()
 
@@ -51,14 +62,62 @@ def generate_simulations(data, from_timestamp, to_timestamp):
 
     dataframe = pd.DataFrame(data=data_in_dict)
 
+    data_in_dict = None
+    gc.collect()
+
+    cpu_number = multiprocessing.cpu_count() - 1
+    pool = multiprocessing.Pool(processes=cpu_number)
+
+    if not chunk_size:
+        chunks = range(0, len(dataframe), (len(dataframe)//cpu_number)+1)
+    else:
+        chunks = range(0, len(dataframe), chunk_size)
+
+    results = list()
+    for index in range(len(chunks)):
+        if not index == len(chunks) - 1:
+            result = pool.apply_async(calculate_simulation_in_multiprocess, (dataframe[chunks[index]:chunks[index+1]-1], entities_to_active, parameters, name, index))
+        else:
+            result = pool.apply_async(calculate_simulation_in_multiprocess,
+                             (dataframe[chunks[index]:], entities_to_active, parameters, name, index))
+        results.append(result)
+
+
+    dataframe = None
+    gc.collect()
+
+    pool.close()
+    pool.join()
+
+    output = [result.get() for result in results]
+
+
+def generate_future_simulations(data, from_timestamp, to_timestamp, frequency, chunk_size=None):
+
+    date_format = '%d/%m/%Y %H:%M'
+
+    future_to_timestamp = datetime.strptime(to_timestamp, date_format)
+    future_to_timestamp = future_to_timestamp + timedelta(days=14)
+
+    if not chunk_size:
+        generate_simulations(data, from_timestamp, future_to_timestamp.strftime(date_format), frequency, 2000000, name='future')
+    else:
+        generate_simulations(data, from_timestamp, future_to_timestamp.strftime(date_format), frequency, chunk_size*0.75, name='future')
+
+
+def calculate_simulation_in_multiprocess(dataframe, entities_to_active, parameters, name, index):
     tqdm.pandas(desc='Apply progress')
-    dataframe[['pressure', 'flow']] = dataframe.progress_apply(lambda row: calculate_pressure_flow(row, entities_to_active, parameters), axis=1)
+    dataframe[['pressure', 'flow']] = dataframe.progress_apply(
+        lambda row: calculate_pressure_flow(row, entities_to_active, parameters), axis=1)
 
     output_dir = Path('output')
     output_dir.mkdir(exist_ok=True)
 
-    dataframe.to_csv(output_dir / 'simulations-{}.csv'.format(datetime.now().strftime('%d-%m-%Y_%H:%M:%S')),
+    dataframe.to_csv(output_dir / 'simulations_{}_{}_{}.csv'.format(name, index, datetime.now().strftime('%d-%m-%Y_%H:%M:%S')),
                      index=False, encoding='utf-8')
+
+    dataframe = None
+    gc.collect()
 
 
 def calculate_pressure_flow(row, actives, parameters_random_function):
@@ -123,18 +182,31 @@ def generate_parameters_with_interpolators(raw_interpolators):
 
 if __name__ == '__main__':
 
-    if len(sys.argv) != 4:
-        print('Error: parameters are incorrect')
-        print('Usage: python {} {} {} {}'.format(sys.argv[0], '<SIMULATION_FILE>', '<FROM>', '<TO>'))
-        raise SystemExit
-    else:
-        simulation_file_path = sys.argv[1]
-        from_parameter = sys.argv[2]
-        to_parameter = sys.argv[3]
+    parser = argparse.ArgumentParser()
 
-    with open(simulation_file_path) as simulation_file:
-        data_json = json.load(simulation_file)
+    parser.add_argument('simulation_file', help='File to simulate')
+    parser.add_argument('from_date', help='Date which starting to simulate. Format: %d/%m/%Y %H:%M')
+    parser.add_argument('to_date', help='Date which starting to simulate. Format: %d/%m/%Y %H:%M')
+    parser.add_argument('frequency', help='Frequency between dates, in pandas format (eg: 15T)')
+    parser.add_argument('--chunk', type=int, help='Chunk size')
+    parser.add_argument('--plot', help='File to generate the plot statics')
 
-        generate_static_entities(data_json)
+    args = parser.parse_args()
 
-        generate_simulations(data_json, from_parameter, to_parameter)
+    # with open(args.simulation_file) as simulation_file:
+    #     data_json = json.load(simulation_file)
+    #
+    #     generate_static(data_json, 'entities')
+    #
+    #     if args.chunk:
+    #         generate_simulations(data_json, args.from_date, args.to_date, args.frequency, args.chunk)
+    #         generate_future_simulations(data_json, args.from_date, args.to_date, args.frequency, args.chunk)
+    #     else:
+    #         generate_simulations(data_json, args.from_date, args.to_date, args.frequency)
+    #         generate_future_simulations(data_json, args.from_date, args.to_date, args.frequency, args.chunk)
+
+    if args.plot:
+        with open(args.plot) as plot_file:
+            plot_json = json.load(plot_file)
+
+            generate_static(plot_json, 'plots')
