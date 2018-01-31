@@ -11,7 +11,7 @@ const log = utils.log();
 const moment = require('moment-timezone');
 const pgsqlConfig = config.getData().pgsql;
 
-class AqConsFiveMinutelyJob extends BaseJob {
+class AqConsXMinutelyJob extends BaseJob {
 
   constructor(cfg){
     super(cfg);
@@ -24,24 +24,20 @@ class AqConsFiveMinutelyJob extends BaseJob {
 
   _aggregate (job, done) {
     /*
-     * - type: aqConsFiveMinutely
+     * - type: aqConsXMinutely
      *   tableName: aq_cons_const_lastdata_AND_aq_cons_const_measurand
-     *   job: aq_consfiveminutelyjob
+     *   job: aq_consxminutelyjob
      *   category: aq_cons
-     *   magnitudeRange: 5
+     *   magnitudeRange: 60
      *   unitRange: minutes
      *   truncateToUnit: minute
-     *   schedule: '15 *\/5 * * * *'
+     *   schedule: '15 0 * * * *'
      *   carto: false
      */
 
     let jobInfo = `job ${ job.id }: type '${ job.type }' - title '${ job.data.title }'`;
-    let date = new moment(job.data.date);
-
-    // Here we don't need this, so... COMMENTING!
-    // let fromDate = new moment(job.data.date).subtract(job.data.magnitudeRange, job.data.unitRange).startOf(job.data.truncateToUnit).toISOString();
-
-    let sql = `SELECT urbo_aq_cons_propagate('${ job.data.idScope }', '${ date }', ${ job.data.magnitudeRange });`;
+    let fromDate = new moment(job.data.date).subtract(job.data.magnitudeRange, job.data.unitRange).startOf(job.data.truncateToUnit).toISOString();
+    let sql = `SELECT urbo_aq_cons_propagate('${ job.data.idScope }', '${ fromDate }', ${ job.data.magnitudeRange });`;
 
     let callback = function (err, data) {
       // TODO: Check error for constraints
@@ -60,4 +56,4 @@ class AqConsFiveMinutelyJob extends BaseJob {
 
 }
 
-module.exports = AqConsFiveMinutelyJob;
+module.exports = AqConsXMinutelyJob;
