@@ -81,6 +81,7 @@ App.View.Map.Layer.Aq_cons.SectorLeakLayer = Backbone.View.extend({
       });
       map._map.fitBounds(turf.bbox(featureCollection));
       map._map.setFilter("sector_selected", ["==", "id_entity", e.features[0].properties['id_entity']]);
+      map.mapChanges.set({'clickedSector': e});
     });
   },
 
