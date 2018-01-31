@@ -176,3 +176,31 @@ a.co_fullscreen_toggle.restore {
     color: #55555D;
   }
 }
+
+.chart.d3 .lineGroup path.line {
+  &.primary, &.in {
+    stroke: #fff !important;
+    stroke-width: 2px;
+    stroke-opacity: 1;
+    -webkit-transition: stroke-width 500ms; /* Safari */
+    transition: stroke-width 500ms;
+  }
+  &.secondary, &.out {
+    mix-blend-mode: screen;    
+    stroke: #aaa !important;    
+    stroke-width: 0.8px;
+    stroke-opacity: 0.4;
+    -webkit-transition: stroke-width 500ms; /* Safari */
+    transition: stroke-width 500ms;
+  }
+  &.in {
+    stroke: #fff !important;
+    stroke-width: 2px;
+    stroke-opacity: 1;
+  }
+  &.out {
+    stroke: #aaa !important;    
+    stroke-width: 0.8px;
+    stroke-opacity: 0.4;
+  }
+}
