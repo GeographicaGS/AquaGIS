@@ -37,10 +37,9 @@ App.View.Widgets.Aq_cons.PressureSectorRanking = App.View.Widgets.Base.extend({
         pressure:{
           title: App.mv().getVariable('aq_cons.sector.pressure').get('units'),
           formatFN: function(d) {
+            var max = 1;
             if (_this.collection.at(0)) {
-              var max = _this.collection.at(0).get('pressure');
-            } else {
-              var max = 1;
+              max = _this.collection.at(0).get('pressure');
             }
             var width = d*100/max;
             d = App.nbf(d);
