@@ -1,7 +1,7 @@
 App.Collection.Aq_cons.PanelList = Backbone.Collection.extend({
   initialize: function(models,options){
     var base = '/' + options.scopeModel.get('id') + '/' + options.id_category;
-    var options = [
+    var _verticalOptions = [
       {
         id : 'master',
         title: __('Estado General'),
@@ -24,7 +24,7 @@ App.Collection.Aq_cons.PanelList = Backbone.Collection.extend({
       }
 
     ];
-    this.set(options);
+    this.set(_verticalOptions);
   }
 });
 

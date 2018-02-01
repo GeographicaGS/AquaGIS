@@ -38,10 +38,9 @@ App.View.Widgets.Aq_cons.FlowSectorRanking = App.View.Widgets.Base.extend({
         flow:{
           title: App.mv().getVariable('aq_cons.sector.flow').get('units'),
           formatFN: function(d) {
+            var max = 1;
             if (_this.collection.at(0)) {
-              var max = _this.collection.at(0).get('flow');
-            } else {
-              var max = 1;
+              max = _this.collection.at(0).get('flow');
             }
             var width = d*100/max;
             d = App.nbf(d);
