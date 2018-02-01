@@ -41,7 +41,7 @@ DECLARE
   _sector_data aq_cons_sector_data;
   _t_rules text;
   _t_const_sector_agg_hour text;
-  _t_aq_aux_leak_sector_historic text;
+  _tb_leak_historic_sector text;
   _t_aq_cons_sector_lastdata text;
   _t_aq_cons_sector_measurand text;
   _increase_consumption double precision;
@@ -56,7 +56,7 @@ BEGIN
   _t_rules := urbo_get_table_name(id_scope, 'aq_aux_leak_rules');
   _t_const_sector_agg_hour := urbo_get_table_name(id_scope, 'aq_cons_sector_agg_hour');
   _t_aq_cons_sector_lastdata := urbo_get_table_name(id_scope, 'aq_cons_sector_lastdata');
-  _t_aq_aux_leak_sector_historic := urbo_get_table_name(id_scope, 'aq_aux_leak_sector_historic');
+  _tb_leak_historic_sector := urbo_get_table_name(id_scope, 'aq_cons_sector_leak_historic');
   _t_aq_cons_sector_measurand := urbo_get_table_name(id_scope, 'aq_cons_sector_measurand');
   _leak_status = '{}'::json;
 
@@ -112,20 +112,13 @@ BEGIN
   FOR _key IN SELECT * FROM json_object_keys(_leak_status)
   LOOP
     _q := format('
-      UPDATE %s SET leak_status=%s WHERE id_entity=''%s''
-    ', _t_aq_cons_sector_lastdata, _leak_status->_key->>'status', _key);
+      UPDATE %s SET leak_status=%s, leak_rule=''%s'' WHERE id_entity=''%s'';
+    ', _t_aq_cons_sector_lastdata, _leak_status->_key->>'status', _leak_status->_key->>'description', _key);
     EXECUTE _q;
 
     _q := format('
-      INSERT INTO %s (id_entity, "TimeInstant", status, rule) VALUES(''%s'', ''%s'', %s, ''%s'')
-    ', _t_aq_aux_leak_sector_historic, _key, moment, _leak_status->_key->>'status', _leak_status->_key->>'description');
-    EXECUTE _q;
-
-    _q := format('
-      INSERT INTO %s (id_entity, "TimeInstant", leak_status) VALUES(''%s'', ''%s'', %s)
-      ON CONFLICT (id_entity, "TimeInstant")
-      DO UPDATE SET leak_status = %s;
-    ', _t_aq_cons_sector_measurand, _key, moment, _leak_status->_key->>'status', _leak_status->_key->>'status');
+      INSERT INTO %s (id_entity, "TimeInstant", leak_status, leak_rule) VALUES(''%s'', ''%s'', %s, ''%s'');
+    ', _tb_leak_historic_sector, _key, moment, _leak_status->_key->>'status', _leak_status->_key->>'description');
     EXECUTE _q;
 
   END LOOP;
@@ -143,7 +136,7 @@ RETURNS boolean AS
 $$
 BEGIN
   IF rule IS NULL OR (
-    (rule < 0 AND  value <= rule) OR
+    (rule < 0 AND value <= rule) OR
     (rule > 0 AND value >= rule)
   )
   THEN

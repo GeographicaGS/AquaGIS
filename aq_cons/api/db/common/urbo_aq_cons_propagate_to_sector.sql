@@ -31,7 +31,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_sector(
 
     _q := format('
       WITH urbo_aq_cons_const_measurand_per_sector_and_usage AS (
-        SELECT sl.id_entity, MAX(cm."TimeInstant") AS "TimeInstant",
+        SELECT sl.id_entity, ''%s''::timestamp AS "TimeInstant",
             SUM(COALESCE(cm.flow, 0)) AS flow,
             SUM(COALESCE(cm.pressure, 0)) AS pressure, cl.usage
           FROM %s sl
@@ -87,9 +87,14 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_sector(
       INSERT INTO %s
           (id_entity, "TimeInstant", flow, pressure, usage)
         SELECT id_entity, "TimeInstant", flow, pressure, usage
-          FROM urbo_aq_cons_sector_measurand;
+          FROM urbo_aq_cons_sector_measurand
+        ON CONFLICT (id_entity, "TimeInstant")
+          DO UPDATE SET
+            flow = EXCLUDED.flow,
+            pressure = EXCLUDED.pressure,
+            usage = EXCLUDED.usage;
       ',
-      _t_sector_ld, _t_const_ld, _t_const_ms, moment, moment, minutes,
+      moment, _t_sector_ld, _t_const_ld, _t_const_ms, moment, moment, minutes,
       id_scope, moment,
       _t_sector_ld,
       _t_sector_ms
