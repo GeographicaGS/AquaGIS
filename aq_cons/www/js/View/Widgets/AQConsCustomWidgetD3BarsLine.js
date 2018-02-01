@@ -64,7 +64,7 @@ App.View.Widgets.Aq_cons.D3BarsLineCustom = App.View.Widgets.Charts.D3.BarsLine.
     var allLinesPaths = d3.selectAll(this.$('g[key] > path'));
     allLinesPaths.classed('out',!allLinesPaths.classed('out'));
 
-    var hoverLine = d3.selectAll(this.$('g[key=\"' + realKey + '\"] > path'));
+    var hoverLine = d3.selectAll(this.$('g[key="' + realKey + '"] > path'));
     hoverLine.classed('in',!hoverLine.classed('in')).classed('out',false);    
   },
 
@@ -73,7 +73,7 @@ App.View.Widgets.Aq_cons.D3BarsLineCustom = App.View.Widgets.Charts.D3.BarsLine.
     var allLinesPaths = d3.selectAll(this.$('g[key] > path'));
     allLinesPaths.classed('out',!allLinesPaths.classed('out'));
 
-    var hoverLine = d3.selectAll(this.$('g[key=\"' + realKey + '\"] > path'));
+    var hoverLine = d3.selectAll(this.$('g[key="' + realKey + '"] > path'));
     hoverLine.classed('in',!hoverLine.classed('in')).classed('out',false);    
   },
 

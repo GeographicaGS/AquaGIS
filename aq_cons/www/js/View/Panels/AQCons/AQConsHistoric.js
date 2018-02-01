@@ -78,9 +78,9 @@ App.View.Panels.Aq_cons.Historic = App.View.Panels.Splitted.extend({
   _onTopHidingToggled: function(e){
     if(this._mapView){
       this._mapView.$el.toggleClass('collapsed');
-    	setTimeout(function(){
-      	this._mapView.resetSize();
-    	}.bind(this), 300);
+      setTimeout(function(){
+        this._mapView.resetSize();
+      }.bind(this), 300);
     }
   } 
 });
