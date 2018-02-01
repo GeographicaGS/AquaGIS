@@ -7,6 +7,7 @@ import random
 import gc
 import multiprocessing
 import argparse
+import dateutil.parser
 from pathlib import Path
 from datetime import datetime, timedelta
 from scipy.interpolate import interp1d
@@ -21,7 +22,7 @@ def generate_static(data, type_entity):
         data_in_dict['id_entity'].append(entity['entity_name'])
 
         for static_attribute in entity['staticAttributes']:
-            if static_attribute['name'] == 'location' and type_entity == 'entities':
+            if static_attribute['name'] == 'location' and type_entity == 'constructions':
                 data_in_dict['x'].append(static_attribute['value']['coordinates'][0])
                 data_in_dict['y'].append(static_attribute['value']['coordinates'][1])
             elif static_attribute['name'] == 'location' and type_entity == 'plots':
@@ -94,15 +95,12 @@ def generate_simulations(data, from_timestamp, to_timestamp, frequency, chunk_si
 
 def generate_future_simulations(data, from_timestamp, to_timestamp, frequency, chunk_size=None):
 
-    date_format = '%d/%m/%Y %H:%M'
-
-    future_to_timestamp = datetime.strptime(to_timestamp, date_format)
-    future_to_timestamp = future_to_timestamp + timedelta(days=14)
+    future_to_timestamp = to_timestamp + timedelta(days=14)
 
     if not chunk_size:
-        generate_simulations(data, from_timestamp, future_to_timestamp.strftime(date_format), frequency, 2000000, name='future')
+        generate_simulations(data, from_timestamp, future_to_timestamp, frequency, 2000000, name='future')
     else:
-        generate_simulations(data, from_timestamp, future_to_timestamp.strftime(date_format), frequency, chunk_size*0.75, name='future')
+        generate_simulations(data, from_timestamp, future_to_timestamp, frequency, int(chunk_size//1.5), name='future')
 
 
 def calculate_simulation_in_multiprocess(dataframe, entities_to_active, parameters, name, index):
@@ -193,17 +191,20 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    from_date = dateutil.parser.parse(args.from_date)
+    to_date = dateutil.parser.parse(args.to_date)
+
     with open(args.simulation_file) as simulation_file:
         data_json = json.load(simulation_file)
 
-        generate_static(data_json, 'entities')
+        generate_static(data_json, 'constructions')
 
         if args.chunk:
-            generate_simulations(data_json, args.from_date, args.to_date, args.frequency, args.chunk)
-            generate_future_simulations(data_json, args.from_date, args.to_date, args.frequency, args.chunk)
+            generate_simulations(data_json, from_date, to_date, args.frequency, args.chunk)
+            generate_future_simulations(data_json, from_date, to_date, args.frequency, args.chunk)
         else:
-            generate_simulations(data_json, args.from_date, args.to_date, args.frequency)
-            generate_future_simulations(data_json, args.from_date, args.to_date, args.frequency, args.chunk)
+            generate_simulations(data_json, from_date, to_date, args.frequency)
+            generate_future_simulations(data_json, from_date, to_date, args.frequency)
 
     if args.plot:
         with open(args.plot) as plot_file:
