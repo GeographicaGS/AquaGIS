@@ -9,9 +9,26 @@ App.View.Panels.Aq_cons.LeakMap =App.View.Panels.Aq_cons.CurrentMap.extend({
   ' </div>' +
   '</div>'),
 
+  _back_template: _.template('<div class="close-details"></div>'),
+  _events: {
+    'click .close-details': '_closeDetails'
+  },
+
   _onMapLoaded: function() {
     this.layers = new App.View.Map.Layer.Aq_cons.SectorLeakLayer(this._options, this._payload, this);
+    this.events = _.extend({},this._events, this.events);
+    this.delegateEvents();
+    
     this.drawLegend();
+    this.listenTo(this.mapChanges,'change:clickedSector',function(e) {
+      if (!this.$el.find('.close-details').length) {
+        this.$el.append(this._back_template);
+      }
+    });
+  },
+
+  _closeDetails: function() {
+    this.mapChanges.set('closeDetails', true);
   },
 
   onClose: function() {
