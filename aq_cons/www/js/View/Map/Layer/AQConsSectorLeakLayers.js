@@ -177,7 +177,7 @@ App.View.Map.Layer.Aq_cons.SectorLeakLayer = Backbone.View.extend({
         }
       }],
       map: map
-    })
+    });
 
     // PLOT
     this._plotLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({

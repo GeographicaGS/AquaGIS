@@ -17,8 +17,7 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
       id_panel: 'leak',
       filteView: false,
     });
-    _.bindAll(this,'_openDetails');
-    _.bindAll(this,'_closeDetails');
+    _.bindAll(this,'_openDetails','_closeDetails');
     
     this.events = _.extend({},this._events, this.events);
     this.delegateEvents();
