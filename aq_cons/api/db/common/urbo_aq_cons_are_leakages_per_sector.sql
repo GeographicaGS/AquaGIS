@@ -22,12 +22,12 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_are_leakages_per_sector(
   $$
   DECLARE
     _t_leak text;
-    _t_sector text;
+    _t_sector_ld text;
     _q text;
   BEGIN
 
     _t_leak := urbo_get_table_name(id_scope, 'aq_aux_leak');
-    _t_sector := urbo_get_table_name(id_scope, 'aq_cons_sector');
+    _t_sector_ld := urbo_get_table_name(id_scope, 'aq_cons_sector', FALSE, TRUE);
 
     _q := format('
       SELECT acs.id_entity::varchar, COALESCE(aal.flow_perc, 0) AS flow_perc,
@@ -45,7 +45,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_are_leakages_per_sector(
           RIGHT JOIN %s acs
             ON aal.id_entity = acs.id_entity;
       ',
-      _t_leak, moment, _t_sector
+      _t_leak, moment, _t_sector_ld
     );
 
     RETURN QUERY EXECUTE _q;

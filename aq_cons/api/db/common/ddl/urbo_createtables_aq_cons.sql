@@ -21,6 +21,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_catalogue_sector text;
     _tb_lastdata_sector text;
     _tb_measurand_sector text;
+    _tb_leak_historic_sector text;
     _tb_agg_hour_sector text;
     _tb_catalogue_plot text;
     _tb_lastdata_plot text;
@@ -33,7 +34,6 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_aux_const_futu text;
     _tb_aux_leakage text;
     _tb_aux_leak_rules text;
-    _tb_aux_leak_historic text;
     _tb_arr_ld text[];
     _tb_arr_bsc text[];
     _tb_arr_vars text[];
@@ -47,6 +47,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _cr_tbs text;
     _time_idx text;
     _ld_unique text;
+    _id_entity_idx text;
     _usage_idx text;
     _extra_id_column text;
     _defaults_leak_rules text;
@@ -56,6 +57,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_catalogue_sector := urbo_get_table_name(id_scope, 'aq_cons_sector', iscarto);
     _tb_lastdata_sector := urbo_get_table_name(id_scope, 'aq_cons_sector', iscarto, TRUE);
     _tb_measurand_sector := urbo_get_table_name(id_scope, 'aq_cons_sector_measurand', iscarto);
+    _tb_leak_historic_sector = urbo_get_table_name(id_scope, 'aq_cons_sector_leak_historic', iscarto);
     _tb_agg_hour_sector := urbo_get_table_name(id_scope, 'aq_cons_sector_agg_hour', iscarto);
 
     _tb_catalogue_plot := urbo_get_table_name(id_scope, 'aq_cons_plot', iscarto);
@@ -71,7 +73,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_aux_const_futu = urbo_get_table_name(id_scope, 'aq_aux_const_futu', iscarto);
     _tb_aux_leakage = urbo_get_table_name(id_scope, 'aq_aux_leak', iscarto);
     _tb_aux_leak_rules = urbo_get_table_name(id_scope, 'aq_aux_leak_rules', iscarto);
-    _tb_aux_leak_historic = urbo_get_table_name(id_scope, 'aq_aux_leak_sector_historic', iscarto);
+
 
     _tb_arr_ld := ARRAY[
         _tb_lastdata_sector, _tb_lastdata_plot, _tb_lastdata_const
@@ -90,7 +92,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_arr_agg := array_cat(_tb_arr_vars,
       ARRAY[
         _tb_agg_hour_sector, _tb_agg_hour_plot, _tb_agg_hour_const, _tb_aux_const_futu,
-        _tb_aux_leakage, _tb_aux_leak_historic
+        _tb_aux_leakage, _tb_leak_historic_sector
       ]);
 
     IF iscarto IS TRUE THEN
@@ -148,6 +150,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         flow double precision,
         pressure double precision,
         leak_status smallint,
+        leak_rule text,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
@@ -159,9 +162,16 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         flow double precision,
         pressure double precision,
         usage text,
-        leak_status smallint,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+      );
+
+      -- LEAK HISTORIC
+      CREATE TABLE IF NOT EXISTS %s (
+        id_entity character varying(64) NOT NULL,
+        "TimeInstant" timestamp without time zone,
+        leak_status smallint,
+        leak_rule text
       );
 
       -- AGG HOURLY
@@ -304,15 +314,12 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
 
-      -- LEAKAGE
+      -- LEAK
       CREATE TABLE IF NOT EXISTS %s (
         id_entity character varying(64) NOT NULL,
         "TimeInstant" timestamp without time zone,
-        is_leakage boolean,
-        hours double precision,
         flow_perc double precision,
         pressure_perc double precision,
-        pressure_variability double precision,
         performance double precision,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
@@ -325,17 +332,9 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         time double precision,
         status integer
       );
-
-      -- LEAK HISTORIC
-      CREATE TABLE IF NOT EXISTS %s (
-        id_entity character varying(64) NOT NULL,
-        "TimeInstant" timestamp without time zone,
-        status integer,
-        rule text
-      );
       ',
       _tb_catalogue_sector, _geom_fld, _tb_lastdata_sector, _geom_fld,
-      _tb_measurand_sector,  _tb_agg_hour_sector,
+      _tb_measurand_sector,  _tb_leak_historic_sector, _tb_agg_hour_sector,
 
       _tb_catalogue_plot, _geom_fld, _tb_lastdata_plot, _geom_fld,
       _tb_measurand_plot, _tb_agg_hour_plot,
@@ -343,12 +342,13 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       _tb_catalogue_const, _geom_fld, _tb_lastdata_const, _geom_fld,
       _tb_measurand_const, _tb_agg_hour_const,
 
-      _tb_aux_const_futu, _tb_aux_leakage, _tb_aux_leak_rules, _tb_aux_leak_historic
+      _tb_aux_const_futu, _tb_aux_leakage, _tb_aux_leak_rules
     );
 
     _time_idx := urbo_time_idx_qry(_tb_arr_agg);
     _ld_unique := urbo_unique_lastdata_qry(_tb_arr_ld);
 
+    -- TODO: for
     _usage_idx := format('
       CREATE INDEX IF NOT EXISTS %s_us_idx
         ON %s USING btree (usage);
@@ -371,19 +371,77 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       replace(_tb_lastdata_const, '.', '_'), _tb_lastdata_const
     );
 
+    -- TODO: for
+    _id_entity_idx := format('
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      ',
+      replace(_tb_catalogue_sector, '.', '_'), _tb_catalogue_sector,
+      replace(_tb_lastdata_sector, '.', '_'), _tb_lastdata_sector,
+      replace(_tb_measurand_sector, '.', '_'), _tb_measurand_sector,
+      replace(_tb_leak_historic_sector, '.', '_'), _tb_leak_historic_sector,
+      replace(_tb_agg_hour_sector, '.', '_'), _tb_agg_hour_sector,
+      replace(_tb_catalogue_plot, '.', '_'), _tb_catalogue_plot,
+      replace(_tb_lastdata_plot, '.', '_'), _tb_lastdata_plot,
+      replace(_tb_measurand_plot, '.', '_'), _tb_measurand_plot,
+      replace(_tb_agg_hour_plot, '.', '_'), _tb_agg_hour_plot,
+      replace(_tb_catalogue_const, '.', '_'), _tb_catalogue_const,
+      replace(_tb_lastdata_const, '.', '_'), _tb_lastdata_const,
+      replace(_tb_measurand_const, '.', '_'), _tb_measurand_const,
+      replace(_tb_agg_hour_const, '.', '_'), _tb_agg_hour_const,
+      replace(_tb_aux_const_futu, '.', '_'), _tb_aux_const_futu,
+      replace(_tb_aux_leakage, '.', '_'), _tb_aux_leakage
+    );
+
     -- Those tables aren't created with an 'id' column, so...
+    -- TODO: for
     _extra_id_column := format('
       ALTER TABLE %s ADD COLUMN id SERIAL PRIMARY KEY;
       ALTER TABLE %s ADD COLUMN id SERIAL PRIMARY KEY;
       ALTER TABLE %s ADD COLUMN id SERIAL PRIMARY KEY;
       ALTER TABLE %s ADD COLUMN id SERIAL PRIMARY KEY;
       ',
-      _tb_aux_const_futu, _tb_aux_leakage, _tb_aux_leak_rules, _tb_aux_leak_historic
+      _tb_aux_const_futu, _tb_aux_leakage, _tb_aux_leak_rules,
+      _tb_leak_historic_sector
     );
 
     _defaults_leak_rules = format('
-      INSERT INTO %s(consumption, pressure, "time", status) VALUES (%s, %s, %s, %s);
-      INSERT INTO %s(consumption, "time", status) VALUES (%s, %s, %s);
+      INSERT INTO %s
+          (consumption, pressure, time, status)
+        VALUES
+          (%s, %s, %s, %s);
+      INSERT INTO %s
+          (consumption, time, status)
+        VALUES
+          (%s, %s, %s);
     ',
       _tb_aux_leak_rules, 50, -20, 3600, 2, _tb_aux_leak_rules, 20, 3600, 1
     );
@@ -394,8 +452,9 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         %s
         %s
         %s
+        %s
         %s',
-        _cr_tbs, _cartodbfy, _time_idx, _ld_unique, _usage_idx
+        _cr_tbs, _cartodbfy, _time_idx, _ld_unique, _usage_idx, _id_entity_idx
       );
     ELSE
       _ddl_qry := format('
@@ -407,9 +466,10 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         %s
         %s
         %s
+        %s
         %s',
         _cr_tbs, _pg_geom_idx, _pg_pk, _pg_tbowner, _time_idx, _ld_unique,
-        _usage_idx, _extra_id_column, _defaults_leak_rules
+        _usage_idx, _id_entity_idx, _extra_id_column, _defaults_leak_rules
       );
     END IF;
 

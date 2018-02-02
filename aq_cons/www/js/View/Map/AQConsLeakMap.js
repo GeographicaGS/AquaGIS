@@ -21,8 +21,14 @@ App.View.Panels.Aq_cons.LeakMap =App.View.Panels.Aq_cons.CurrentMap.extend({
     
     this.drawLegend();
     this.listenTo(this.mapChanges,'change:clickedSector',function(e) {
-      if (!this.$el.find('.close-details').length) {
+      if (!this.$('.close-details').length) {
         this.$el.append(this._back_template);
+      }
+    });
+
+    this.listenTo(this.mapChanges,'change:closeDetails',function(e) {
+      if (e.get('closeDetails')) {
+        this.$('.close-details').remove();
       }
     });
   },
