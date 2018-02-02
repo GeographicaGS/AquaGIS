@@ -86,9 +86,9 @@ App.View.Map.Layer.Aq_cons.SectorLeakLayer = Backbone.View.extend({
           'layout': {},
           'paint': {
             'line-color': '#165288',
-            'line-width': 2,
-            'line-opacity': 0.25,
-            'line-dasharray': [2,4]
+            'line-width': 1,
+            'line-opacity': 0.8,
+            'line-dasharray': [1,2]
           }
         },
         {
@@ -101,7 +101,7 @@ App.View.Map.Layer.Aq_cons.SectorLeakLayer = Backbone.View.extend({
             'line-opacity': 0.9,
             'line-width': 2,
           },
-          'filter': ['all']          
+          'filter': ["==", "id_entity",'']
         },
       ],
       map: map
@@ -118,30 +118,6 @@ App.View.Map.Layer.Aq_cons.SectorLeakLayer = Backbone.View.extend({
       map.mapChanges.set({'closeDetails': false});
     });
     
-    this._sectorLayerLabels = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
-      source: {
-        id: 'aqua_sectors_centroid',
-        model: sectorCentroid,
-        payload: this._payload,
-      },
-      layers:[
-        {
-          'id': 'sector_name',
-          'type': 'symbol',
-          'source': 'aqua_sectors_centroid',
-          'maxzoom': 16,
-          'layout': {
-            'symbol-placement': 'point',
-            'text-field': {
-              'property': 'name',
-              'type': 'identity'
-            }
-          },
-        },
-      ],
-      map: map
-    });
-
     // Sensor
     this._sensorLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
       source: {
@@ -180,6 +156,36 @@ App.View.Map.Layer.Aq_cons.SectorLeakLayer = Backbone.View.extend({
       map: map
     });
 
+    this._sectorLayerLabels = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
+      source: {
+        id: 'aqua_sectors_centroid',
+        model: sectorCentroid,
+        payload: this._payload,
+      },
+      layers:[
+        {
+          'id': 'sector_name',
+          'type': 'symbol',
+          'source': 'aqua_sectors_centroid',
+          'maxzoom': 15,
+          'layout': {
+            'symbol-placement': 'point',
+            'text-size': 12,
+            'text-field': {
+              'property': 'name',
+              'type': 'identity'
+            },
+          },
+          'paint': {
+            'text-color': '#165288',
+            'text-halo-color': '#fff',
+            'text-halo-width': 1,
+          }
+        },
+      ],
+      map: map
+    });
+
     // PLOT
     this._plotLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
       source: {
@@ -198,7 +204,18 @@ App.View.Map.Layer.Aq_cons.SectorLeakLayer = Backbone.View.extend({
         'type': 'line',
         'source': 'aqua_plots',
         'layout': {},
-        'minzoom': 14,
+        'minzoom': 15,
+        'maxzoom': 17,
+        'paint': {
+          'line-color': '#aaa',
+          'line-width': 1
+        }
+      }, {
+        'id': 'plot_line2',
+        'type': 'line',
+        'source': 'aqua_plots',
+        'layout': {},
+        'minzoom': 17,
         'paint': {
           'line-color': '#aaa',
           'line-width': 2
@@ -207,7 +224,7 @@ App.View.Map.Layer.Aq_cons.SectorLeakLayer = Backbone.View.extend({
         'id': 'plot_buildings',
         'type': 'fill-extrusion',
         'source': 'aqua_plots',
-        'minzoom': 14,
+        'minzoom': 15,
         'layout': {
           'visibility': 'none'          
         },
@@ -227,7 +244,7 @@ App.View.Map.Layer.Aq_cons.SectorLeakLayer = Backbone.View.extend({
       if(e.get('closeDetails')) {
         map._map.fitBounds(turf.bbox(sector.changed));
         map._map.setFilter("sector_selected", ["all"]);
-        map._map.setFilter("sector_line_selected", ["all"]);
+        map._map.setFilter("sector_line_selected", ["==", "id_entity",""]);
       }
     });
   },
