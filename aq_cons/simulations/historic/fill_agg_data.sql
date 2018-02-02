@@ -1,5 +1,8 @@
 BEGIN;
 
+CLUSTER aljarafe.aq_cons_const_measurand USING aljarafe_aq_cons_const_measurand_tm_idx;
+CLUSTER aljarafe.aq_aux_const_futu USING aljarafe_aq_aux_const_futu_tm_idx;
+
 DELETE FROM aljarafe.aq_cons_sector_measurand;
 DELETE FROM aljarafe.aq_cons_sector_leak_historic;
 DELETE FROM aljarafe.aq_cons_sector_agg_hour;
