@@ -20,31 +20,10 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_hourly(
   BEGIN
 
     _q := format('
-      SELECT urbo_aq_cons_agg_cons_fore_hourly(''%s'', ''%s'', ''aq_cons_const_agg_hour'', ''aq_cons_const_measurand'', NULL, ''consumption'');
-      SELECT urbo_aq_cons_agg_cons_fore_hourly(''%s'', ''%s'', ''aq_cons_plot_agg_hour'', ''aq_cons_plot_measurand'', NULL, ''consumption'');
-      SELECT urbo_aq_cons_agg_cons_fore_hourly(''%s'', ''%s'', ''aq_cons_sector_agg_hour'', ''aq_cons_sector_measurand'', NULL, ''consumption'');
-      SELECT urbo_aq_cons_agg_cons_fore_hourly(''%s'', ''%s'', ''aq_cons_const_agg_hour'', ''aq_cons_const_measurand'', NULL, ''pressure_agg'');
-      SELECT urbo_aq_cons_agg_cons_fore_hourly(''%s'', ''%s'', ''aq_cons_plot_agg_hour'', ''aq_cons_plot_measurand'', NULL, ''pressure_agg'');
-      SELECT urbo_aq_cons_agg_cons_fore_hourly(''%s'', ''%s'', ''aq_cons_sector_agg_hour'', ''aq_cons_sector_measurand'', NULL, ''pressure_agg'');
-      SELECT urbo_aq_cons_agg_cons_fore_hourly(''%s'', ''%s'', ''aq_cons_const_agg_hour'', ''aq_aux_const_futu'', NULL, ''forecast'');
-      SELECT urbo_aq_cons_agg_cons_fore_hourly(''%s'', ''%s'', ''aq_cons_plot_agg_hour'', ''aq_aux_const_futu'', ''aq_cons_const'', ''forecast'');
-      SELECT urbo_aq_cons_agg_cons_fore_hourly(''%s'', ''%s'', ''aq_cons_sector_agg_hour'', ''aq_aux_const_futu'', ''aq_cons_const'', ''forecast'');
-      SELECT urbo_aq_cons_agg_cons_fore_hourly(''%s'', ''%s'', ''aq_cons_const_agg_hour'', ''aq_aux_const_futu'', NULL, ''pressure_forecast'');
-      SELECT urbo_aq_cons_agg_cons_fore_hourly(''%s'', ''%s'', ''aq_cons_plot_agg_hour'', ''aq_aux_const_futu'', ''aq_cons_const'', ''pressure_forecast'');
-      SELECT urbo_aq_cons_agg_cons_fore_hourly(''%s'', ''%s'', ''aq_cons_sector_agg_hour'', ''aq_aux_const_futu'', ''aq_cons_const'', ''pressure_forecast'');
-      SELECT urbo_aq_cons_leak_detection(''%s'', ''%s'');
+      SELECT urbo_aq_cons_agg_realtime_hourly(''%s'', ''%s'');
+      SELECT urbo_aq_cons_agg_forecast_hourly(''%s'', ''%s'');
+      SELECT urbo_aq_cons_leak_detection_hourly(''%s'', ''%s'');
       ',
-      id_scope, moment,
-      id_scope, moment,
-      id_scope, moment,
-      id_scope, moment,
-      id_scope, moment,
-      id_scope, moment,
-      id_scope, moment,
-      id_scope, moment,
-      id_scope, moment,
-      id_scope, moment,
-      id_scope, moment,
       id_scope, moment,
       id_scope, moment
     );

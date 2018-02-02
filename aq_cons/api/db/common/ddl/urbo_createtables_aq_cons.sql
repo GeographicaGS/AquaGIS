@@ -21,6 +21,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_catalogue_sector text;
     _tb_lastdata_sector text;
     _tb_measurand_sector text;
+    _tb_leak_historic_sector text;
     _tb_agg_hour_sector text;
     _tb_catalogue_plot text;
     _tb_lastdata_plot text;
@@ -33,7 +34,6 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_aux_const_futu text;
     _tb_aux_leakage text;
     _tb_aux_leak_rules text;
-    _tb_leak_historic_sector text;
     _tb_arr_ld text[];
     _tb_arr_bsc text[];
     _tb_arr_vars text[];
@@ -47,6 +47,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _cr_tbs text;
     _time_idx text;
     _ld_unique text;
+    _id_entity_idx text;
     _usage_idx text;
     _extra_id_column text;
     _defaults_leak_rules text;
@@ -347,6 +348,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _time_idx := urbo_time_idx_qry(_tb_arr_agg);
     _ld_unique := urbo_unique_lastdata_qry(_tb_arr_ld);
 
+    -- TODO: for
     _usage_idx := format('
       CREATE INDEX IF NOT EXISTS %s_us_idx
         ON %s USING btree (usage);
@@ -369,7 +371,58 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       replace(_tb_lastdata_const, '.', '_'), _tb_lastdata_const
     );
 
+    -- TODO: for
+    _id_entity_idx := format('
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      ',
+      replace(_tb_catalogue_sector, '.', '_'), _tb_catalogue_sector,
+      replace(_tb_lastdata_sector, '.', '_'), _tb_lastdata_sector,
+      replace(_tb_measurand_sector, '.', '_'), _tb_measurand_sector,
+      replace(_tb_leak_historic_sector, '.', '_'), _tb_leak_historic_sector,
+      replace(_tb_agg_hour_sector, '.', '_'), _tb_agg_hour_sector,
+      replace(_tb_catalogue_plot, '.', '_'), _tb_catalogue_plot,
+      replace(_tb_lastdata_plot, '.', '_'), _tb_lastdata_plot,
+      replace(_tb_measurand_plot, '.', '_'), _tb_measurand_plot,
+      replace(_tb_agg_hour_plot, '.', '_'), _tb_agg_hour_plot,
+      replace(_tb_catalogue_const, '.', '_'), _tb_catalogue_const,
+      replace(_tb_lastdata_const, '.', '_'), _tb_lastdata_const,
+      replace(_tb_measurand_const, '.', '_'), _tb_measurand_const,
+      replace(_tb_agg_hour_const, '.', '_'), _tb_agg_hour_const,
+      replace(_tb_aux_const_futu, '.', '_'), _tb_aux_const_futu,
+      replace(_tb_aux_leakage, '.', '_'), _tb_aux_leakage
+    );
+
     -- Those tables aren't created with an 'id' column, so...
+    -- TODO: for
     _extra_id_column := format('
       ALTER TABLE %s ADD COLUMN id SERIAL PRIMARY KEY;
       ALTER TABLE %s ADD COLUMN id SERIAL PRIMARY KEY;
@@ -399,8 +452,9 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         %s
         %s
         %s
+        %s
         %s',
-        _cr_tbs, _cartodbfy, _time_idx, _ld_unique, _usage_idx
+        _cr_tbs, _cartodbfy, _time_idx, _ld_unique, _usage_idx, _id_entity_idx
       );
     ELSE
       _ddl_qry := format('
@@ -412,9 +466,10 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         %s
         %s
         %s
+        %s
         %s',
         _cr_tbs, _pg_geom_idx, _pg_pk, _pg_tbowner, _time_idx, _ld_unique,
-        _usage_idx, _extra_id_column, _defaults_leak_rules
+        _usage_idx, _id_entity_idx, _extra_id_column, _defaults_leak_rules
       );
     END IF;
 

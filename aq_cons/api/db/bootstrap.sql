@@ -3,12 +3,13 @@
  */
 
 -- AquaGIS Consumption functions
-\ir common/urbo_aq_cons_agg_cons_fore_hourly.sql
 \ir common/urbo_aq_cons_agg_hourly.sql
+\ir common/urbo_aq_cons_agg_realtime_hourly.sql
+\ir common/urbo_aq_cons_agg_forecast_hourly.sql
 \ir common/urbo_aq_cons_are_leakages_per_sector.sql
-\ir common/urbo_aq_cons_propagate_to_plot_hourly.sql
-\ir common/urbo_aq_cons_propagate_to_sector.sql
+\ir common/urbo_aq_cons_leak_detection_hourly.sql
 \ir common/urbo_aq_cons_propagate_to_plot.sql
+\ir common/urbo_aq_cons_propagate_to_sector.sql
 \ir common/urbo_aq_cons_propagate.sql
 
 -- DDL & DML

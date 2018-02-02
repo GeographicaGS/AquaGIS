@@ -34,8 +34,8 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_plot(
         SELECT sl.id_entity, ''%s''::timestamp AS "TimeInstant",
             SUM(COALESCE(cm.flow, 0)) AS flow,
             SUM(COALESCE(cm.pressure, 0)) AS pressure, cl.usage
-          FROM %s sl
-            LEFT JOIN %s cl
+          FROM (SELECT id_entity FROM %s) sl
+            LEFT JOIN (SELECT id_entity, usage, refplot FROM %s) cl
               on sl.id_entity = cl.refplot
             LEFT JOIN (
               SELECT id_entity, MAX("TimeInstant") AS "TimeInstant",

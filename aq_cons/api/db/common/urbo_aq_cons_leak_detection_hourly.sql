@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------------
 -- HOW TO USE:
--- SELECT urbo_aq_cons_leak_detection('aljarafe', '2018-01-22T07:00:00.000Z');
+-- SELECT urbo_aq_cons_leak_detection_hourly('aljarafe', '2018-01-22T07:00:00.000Z');
 --------------------------------------------------------------------------------
 
 DROP TYPE IF EXISTS aq_cons_rule;
@@ -26,9 +26,9 @@ CREATE TYPE aq_cons_sector_data AS (
   pressure_forecast double precision
 );
 
-DROP FUNCTION IF EXISTS urbo_aq_cons_leak_detection(varchar, timestamp);
+DROP FUNCTION IF EXISTS urbo_aq_cons_leak_detection_hourly(varchar, timestamp);
 
-CREATE OR REPLACE FUNCTION urbo_aq_cons_leak_detection(
+CREATE OR REPLACE FUNCTION urbo_aq_cons_leak_detection_hourly(
   id_scope varchar,
   moment timestamp
 )
