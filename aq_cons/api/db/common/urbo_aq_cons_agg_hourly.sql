@@ -25,6 +25,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_hourly(
       SELECT urbo_aq_cons_leak_detection_hourly(''%s'', ''%s'');
       ',
       id_scope, moment,
+      id_scope, moment,
       id_scope, moment
     );
 
