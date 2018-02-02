@@ -50,14 +50,9 @@ App.View.Widgets.Aq_cons.FlowEvolution = App.View.Widgets.Base.extend({
 
     var sectorFlowMetadata = App.mv().getVariable('aq_cons.sector.flow');
     var sectorKeys = {};
-    var colors = ['#4D7BD9','#9966CC','#199183','#269DEF', '#64B6D9', '#64B7A3'];
     this._chartModel = new App.Model.BaseChartConfigModel({
       colors: function(d,i){
-        var keysLength = Object.keys(sectorKeys).length;
-        if(!sectorKeys[d.realKey]) {
-          sectorKeys[d.realKey] = colors[keysLength % colors.length]
-        } 
-        return sectorKeys[d.realKey];
+        return '#63b7da';
       },
       classes: function(d,i) {
         if(d.realKey !== 'avg') {

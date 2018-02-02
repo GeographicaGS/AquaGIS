@@ -34,6 +34,15 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
 
     this._widgets.push(new App.View.Widgets.Aq_cons.AlertsWidget({
       id_scope: this.scopeModel.get('id'),
+      onclick: function(d) {
+        var entityId = d.currentTarget.getAttribute('data-id');
+        var selected = _.find(this._mapView.layers._sectorLayer.dataSource.features, function(ds) {
+          return ds.properties.id_entity === entityId;
+        });
+        this._mapView.mapChanges.set({'clickedSector': {features: [selected]}});
+        this._mapView.mapChanges.set('closeDetails', false);
+    
+      }.bind(this)
     }));
 
     this._widgets.push(new App.View.Widgets.Aq_cons.FlowSectorRanking({
@@ -130,6 +139,13 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
       '<a href="#" class="navElement back"></a>' +
       clickedSector.features[0].properties.name + '</h2>');
     }
+    this._mapView._map.setFilter("sector_selected", ["==", "id_entity", clickedSector.features[0].properties['id_entity']]);
+    this._mapView._map.setFilter("sector_line_selected", ["==", "id_entity", clickedSector.features[0].properties['id_entity']]);
+
+    let featureCollection = _.find(this._mapView.layers._sectorLayer.dataSource.features, function(ft) {
+      return ft.properties['id_entity'] === clickedSector.features[0].properties['id_entity'];
+    });
+    this._mapView._map.fitBounds(turf.bbox(featureCollection));
     this.subviews.push(new App.View.Widgets.Container({
       widgets: this._widgets,
       el: this.$('.bottom .widgetContainer')

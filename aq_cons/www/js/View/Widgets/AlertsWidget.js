@@ -4,12 +4,12 @@ App.View.Widgets.Aq_cons.AlertsWidget = App.View.Widgets.Base.extend({
 
   initialize: function(options) {
     options = _.defaults(options,{
-      title: __('Alertas por sector'),
+      title: '',
       timeMode:'historic',
       id_category: 'aq_cons',
-      dimension: 'allWidth bgTransparent noPadding',
+      dimension: 'allWidth reduced bgWhite scroll',
       publishable: true,
-      classname: 'App.View.Widgets.Aq_cons.AlertsWidget'
+      classname: 'App.View.Widgets.Aq_cons.AlertsWidget',
     });
     App.View.Widgets.Base.prototype.initialize.call(this,options);
     this._collection = new App.Collection.Base();
@@ -24,11 +24,8 @@ App.View.Widgets.Aq_cons.AlertsWidget = App.View.Widgets.Base.extend({
     
     this.subviews.push(new App.View.Widgets.AlertsVariable({
       collection: this._collection,
-      variables: [{
-        label: 'Análisis',
-        param: 'leak_rule',
-        type: 'text'
-      },
+      onclick: options.onclick,
+      variables: [
       {
         label: 'Caudal',
         param: 'flow',
@@ -36,8 +33,6 @@ App.View.Widgets.Aq_cons.AlertsWidget = App.View.Widgets.Base.extend({
         nbf: App.nbf,
         type: 'number',
         units: App.mv().getVariable('aq_cons.sector.flow').get('units')
-        
-        
       },
       {
         label: 'Presión',
