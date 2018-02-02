@@ -12,6 +12,7 @@ App.View.Map.Layer.Aq_cons.SectorLeakLayer = Backbone.View.extend({
     let sectorCentroid = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.sector'});
 
     plot.parse = function(e) {
+      // Calculated height is 4 meters per floor
       e.features = _.map(e.features, function(feature) {
         feature.properties['height'] = feature.properties['floors'] * 4;
         return feature;

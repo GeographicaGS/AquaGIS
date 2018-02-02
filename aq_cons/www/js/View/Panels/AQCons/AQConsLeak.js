@@ -32,6 +32,10 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
   customRender: function() {
     this._widgets = [];
 
+    this._widgets.push(new App.View.Widgets.Aq_cons.AlertsWidget({
+      id_scope: this.scopeModel.get('id'),
+    }));
+
     this._widgets.push(new App.View.Widgets.Aq_cons.FlowSectorRanking({
       id_scope: this.scopeModel.get('id'),
     }));
@@ -40,13 +44,13 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
       id_scope: this.scopeModel.get('id'),
     }));
 
-    this._widgets.push(new App.View.Widgets.Aq_cons.FlowEvolution({
-      id_scope: this.scopeModel.get('id'),
-    }));
+    // this._widgets.push(new App.View.Widgets.Aq_cons.FlowEvolution({
+    //   id_scope: this.scopeModel.get('id'),
+    // }));
 
-    this._widgets.push(new App.View.Widgets.Aq_cons.PressureEvolution({
-      id_scope: this.scopeModel.get('id'),
-    }));
+    // this._widgets.push(new App.View.Widgets.Aq_cons.PressureEvolution({
+    //   id_scope: this.scopeModel.get('id'),
+    // }));
 
     this.subviews.push(new App.View.Widgets.Container({
       widgets: this._widgets,
