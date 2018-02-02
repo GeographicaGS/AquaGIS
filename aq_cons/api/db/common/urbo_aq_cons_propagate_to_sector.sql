@@ -19,23 +19,23 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_sector(
   DECLARE
     _t_sector_ld text;
     _t_sector_ms text;
-    _t_const_ld text;
-    _t_const_ms text;
+    _t_plot_ld text;
+    _t_plot_ms text;
     _q text;
   BEGIN
 
     _t_sector_ld := urbo_get_table_name(id_scope, 'aq_cons_sector', FALSE, TRUE);
     _t_sector_ms := urbo_get_table_name(id_scope, 'aq_cons_sector_measurand');
-    _t_const_ld := urbo_get_table_name(id_scope, 'aq_cons_const', FALSE, TRUE);
-    _t_const_ms := urbo_get_table_name(id_scope, 'aq_cons_const_measurand');
+    _t_plot_ld := urbo_get_table_name(id_scope, 'aq_cons_plot', FALSE, TRUE);
+    _t_plot_ms := urbo_get_table_name(id_scope, 'aq_cons_plot_measurand');
 
     _q := format('
-      WITH urbo_aq_cons_const_measurand_per_sector_and_usage AS (
+      WITH urbo_aq_cons_plot_measurand_per_sector_and_usage AS (
         SELECT sl.id_entity, ''%s''::timestamp AS "TimeInstant",
             SUM(COALESCE(cm.flow, 0)) AS flow,
             SUM(COALESCE(cm.pressure, 0)) AS pressure, cl.usage
-          FROM %s sl
-            LEFT JOIN %s cl
+          FROM (SELECT id_entity FROM %s) sl
+            LEFT JOIN (SELECT id_entity, usage, refsector FROM %s) cl
               on sl.id_entity = cl.refsector
             LEFT JOIN (
               SELECT id_entity, MAX("TimeInstant") AS "TimeInstant",
@@ -58,12 +58,12 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_sector(
                 q11.usage
               FROM (
                 SELECT id_entity, SUM(flow) AS flow, SUM(pressure) AS pressure
-                  FROM urbo_aq_cons_const_measurand_per_sector_and_usage q00
+                  FROM urbo_aq_cons_plot_measurand_per_sector_and_usage q00
                   GROUP BY id_entity
               ) q01
                 INNER JOIN (
                   SELECT DISTINCT ON (id_entity) id_entity, "TimeInstant", usage
-                    FROM urbo_aq_cons_const_measurand_per_sector_and_usage q10
+                    FROM urbo_aq_cons_plot_measurand_per_sector_and_usage q10
                     ORDER BY id_entity ASC, flow DESC
                 ) q11
                   ON q01.id_entity = q11.id_entity
@@ -94,7 +94,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_sector(
             pressure = EXCLUDED.pressure,
             usage = EXCLUDED.usage;
       ',
-      moment, _t_sector_ld, _t_const_ld, _t_const_ms, moment, moment, minutes,
+      moment, _t_sector_ld, _t_plot_ld, _t_plot_ms, moment, moment, minutes,
       id_scope, moment,
       _t_sector_ld,
       _t_sector_ms

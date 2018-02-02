@@ -37,7 +37,8 @@ class AqConsXMinutelyJob extends BaseJob {
 
     let jobInfo = `job ${ job.id }: type '${ job.type }' - title '${ job.data.title }'`;
     let fromDate = new moment(job.data.date).subtract(job.data.magnitudeRange, job.data.unitRange).startOf(job.data.truncateToUnit).toISOString();
-    let sql = `SELECT urbo_aq_cons_propagate('${ job.data.idScope }', '${ fromDate }', ${ job.data.magnitudeRange });`;
+    // let sql = `SELECT urbo_aq_cons_propagate('${ job.data.idScope }', '${ fromDate }', ${ job.data.magnitudeRange });`;
+    let sql = `SELECT 1 AS nothing;`;  // Just not delete or deactivate the job
 
     let callback = function (err, data) {
       // TODO: Check error for constraints
