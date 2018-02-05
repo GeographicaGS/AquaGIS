@@ -24,7 +24,7 @@ SELECT urbo_aq_cons_agg_forecast_hourly('aljarafe', gs.moment)
 WITH gs AS (
   SELECT generate_series::timestamp without time zone AS moment
     FROM generate_series('2018-01-01T00:00:00Z',
-                         '2018-02-02T09:59:50Z',
+                         '2018-02-02T14:59:50Z',
                          interval '1 hour')
 )
 SELECT urbo_aq_cons_propagate('aljarafe', gs.moment, 60),
