@@ -4,14 +4,16 @@
 
 --------------------------------------------------------------------------------
 -- HOW TO USE:
--- SELECT urbo_aq_cons_agg_forecast_hourly('aljarafe', '2018-01-16T08:00:00.000Z');
+-- SELECT urbo_aq_cons_agg_forecast_hourly('scope', '2018-01-16T08:00:00.000Z');
+-- SELECT urbo_aq_cons_agg_forecast_hourly('scope', '2018-01-16T08:00:00.000Z', TRUE);
 --------------------------------------------------------------------------------
 
-DROP FUNCTION IF EXISTS urbo_aq_cons_agg_forecast_hourly(varchar, timestamp);
+DROP FUNCTION IF EXISTS urbo_aq_cons_agg_forecast_hourly(varchar, timestamp, boolean);
 
 CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_forecast_hourly(
     id_scope varchar,
-    moment timestamp
+    moment timestamp,
+    only_insert boolean DEFAULT FALSE
   )
   RETURNS void AS
   $$
@@ -24,6 +26,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_forecast_hourly(
     _t_sector_ag text;
     _t_aux_ft text;
     _t_aux_lk text;
+    _on_conflict text;
     _q text;
   BEGIN
 
@@ -39,6 +42,16 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_forecast_hourly(
     _t_aux_ft := urbo_get_table_name(id_scope, 'aq_aux_const_futu');
     _t_aux_lk := urbo_get_table_name(id_scope, 'aq_aux_leak');
 
+    IF only_insert IS TRUE THEN
+      _on_conflict := '';
+
+    ELSE
+      _on_conflict := 'ON CONFLICT (id_entity, "TimeInstant")
+          DO UPDATE SET
+            forecast = EXCLUDED.forecast,
+            pressure_forecast = EXCLUDED.pressure_forecast';
+    END IF;
+
     _q := format('
       -- CONSTRUCTION
       INSERT INTO %s
@@ -49,10 +62,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_forecast_hourly(
         WHERE "TimeInstant" >= ''%s''::timestamp + interval ''14 days''
           AND "TimeInstant" < ''%s''::timestamp + interval ''14 days'' + interval ''1 hour''
         GROUP BY id_entity
-      ON CONFLICT (id_entity, "TimeInstant")
-        DO UPDATE SET
-          forecast = EXCLUDED.forecast,
-          pressure_forecast = EXCLUDED.pressure_forecast;
+      %s;
 
       -- PLOT
       INSERT INTO %s
@@ -71,10 +81,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_forecast_hourly(
           ) q1
             ON q0.id_entity = q1.id_entity
         GROUP BY q1.refplot
-      ON CONFLICT (id_entity, "TimeInstant")
-        DO UPDATE SET
-          forecast = EXCLUDED.forecast,
-          pressure_forecast = EXCLUDED.pressure_forecast;
+      %s;
 
       -- SECTOR
       INSERT INTO %s
@@ -93,16 +100,13 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_forecast_hourly(
           ) q1
             ON q0.id_entity = q1.id_entity
         GROUP BY q1.refsector
-      ON CONFLICT (id_entity, "TimeInstant")
-        DO UPDATE SET
-          forecast = EXCLUDED.forecast,
-          pressure_forecast = EXCLUDED.pressure_forecast;
+      %s;
       ',
-      _t_const_ag, moment, _t_aux_ft, moment, moment,
+      _t_const_ag, moment, _t_aux_ft, moment, moment, _on_conflict,
 
-      _t_plot_ag, moment, _t_const_ag, moment, moment, _t_const_ld,
+      _t_plot_ag, moment, _t_const_ag, moment, moment, _t_const_ld, _on_conflict,
 
-      _t_sector_ag, moment, _t_plot_ag, moment, moment, _t_plot_ld
+      _t_sector_ag, moment, _t_plot_ag, moment, moment, _t_plot_ld, _on_conflict
     );
 
     EXECUTE _q;

@@ -112,13 +112,31 @@ BEGIN
   FOR _key IN SELECT * FROM json_object_keys(_leak_status)
   LOOP
     _q := format('
-      UPDATE %s SET leak_status=%s, leak_rule=''%s'' WHERE id_entity=''%s'';
-    ', _t_aq_cons_sector_lastdata, _leak_status->_key->>'status', _leak_status->_key->>'description', _key);
+      UPDATE %s SET
+          leak_status = %s,
+          leak_rule = ''%s''
+        WHERE id_entity = ''%s'';
+      ',
+      _t_aq_cons_sector_lastdata,
+      _leak_status->_key->>'status', _leak_status->_key->>'description',
+      _key
+    );
     EXECUTE _q;
 
     _q := format('
-      INSERT INTO %s (id_entity, "TimeInstant", leak_status, leak_rule) VALUES(''%s'', ''%s'', %s, ''%s'');
-    ', _tb_leak_historic_sector, _key, moment, _leak_status->_key->>'status', _leak_status->_key->>'description');
+      INSERT INTO %s
+          (id_entity, "TimeInstant", leak_status, leak_rule)
+        VALUES
+          (''%s'', ''%s'', %s, ''%s'')
+        ON CONFLICT (id_entity, "TimeInstant")
+            DO UPDATE SET
+              leak_status = %s,
+              leak_rule = ''%s'';
+      ',
+      _tb_leak_historic_sector,
+      _key, moment, _leak_status->_key->>'status', _leak_status->_key->>'description',
+      _leak_status->_key->>'status', _leak_status->_key->>'description'
+    );
     EXECUTE _q;
 
   END LOOP;
