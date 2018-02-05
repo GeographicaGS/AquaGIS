@@ -94,8 +94,8 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'layout': {},
         'paint': {
           'line-color': '#165288',
-          'line-width': 2,
-          'line-dasharray': [2,2]
+          'line-width': 1,
+          'line-dasharray': [1,2]
         }
       }
     ],
