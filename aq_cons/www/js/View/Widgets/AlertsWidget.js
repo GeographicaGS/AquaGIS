@@ -24,6 +24,10 @@ App.View.Widgets.Aq_cons.AlertsWidget = App.View.Widgets.Base.extend({
     
     this.subviews.push(new App.View.Widgets.AlertsVariable({
       collection: this._collection,
+      title: function(items) {
+        // Can be function or string and accept HTML
+        return '<strong>' + items.length + '</strong> ALERTAS DE CONSUMO';
+      },
       onclick: options.onclick,
       variables: [
       {
