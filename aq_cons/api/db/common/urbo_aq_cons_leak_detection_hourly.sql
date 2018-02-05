@@ -40,7 +40,8 @@ DECLARE
   _rule aq_cons_rule;
   _sector_data aq_cons_sector_data;
   _t_rules text;
-  _t_const_sector_agg_hour text;
+  _t_const_sector_agg_realtime_hour text;
+  _t_const_sector_agg_forecast_hour text;
   _tb_leak_historic_sector text;
   _t_aq_cons_sector_lastdata text;
   _t_aq_cons_sector_measurand text;
@@ -54,7 +55,8 @@ DECLARE
 BEGIN
 
   _t_rules := urbo_get_table_name(id_scope, 'aq_aux_leak_rules');
-  _t_const_sector_agg_hour := urbo_get_table_name(id_scope, 'aq_cons_sector_agg_hour');
+  _t_const_sector_agg_realtime_hour := urbo_get_table_name(id_scope, 'aq_cons_sector_agg_realtime_hour');
+  _t_const_sector_agg_forecast_hour := urbo_get_table_name(id_scope, 'aq_cons_sector_agg_forecast_hour');
   _t_aq_cons_sector_lastdata := urbo_get_table_name(id_scope, 'aq_cons_sector_lastdata');
   _tb_leak_historic_sector := urbo_get_table_name(id_scope, 'aq_cons_sector_leak_historic');
   _t_aq_cons_sector_measurand := urbo_get_table_name(id_scope, 'aq_cons_sector_measurand');
@@ -67,13 +69,26 @@ BEGIN
   FOR _rule IN EXECUTE _q
   LOOP
     _q := format('
-      SELECT id_entity, SUM(consumption) as consumption, SUM(forecast) as consumption_forecast, AVG(pressure_agg) as pressure, AVG(pressure_forecast) as pressure_forecast
-        FROM %s
-        WHERE "TimeInstant" > ''%s''::timestamp - interval ''%s second''
-        AND "TimeInstant" <= ''%s''::timestamp
-        GROUP BY id_entity
-    ', _t_const_sector_agg_hour, moment, _rule.time, moment)
-    ;
+      SELECT q0.id_entity, q0.consumption, q1.consumption_forecast, q0.pressure, q1.pressure_forecast
+        FROM (
+          SELECT id_entity, SUM(consumption) AS consumption, AVG(pressure_agg) AS pressure
+            FROM %s
+            WHERE "TimeInstant" > ''%s''::timestamp - interval ''%s second''
+              AND "TimeInstant" <= ''%s''::timestamp
+            GROUP BY id_entity
+        ) q0
+          INNER JOIN (
+            SELECT id_entity, SUM(forecast) AS consumption_forecast, AVG(pressure_forecast) as pressure_forecast
+              FROM %s
+              WHERE "TimeInstant" > ''%s''::timestamp - interval ''%s second''
+                AND "TimeInstant" <= ''%s''::timestamp
+              GROUP BY id_entity
+          ) q1
+          ON q0.id_entity = q1.id_entity
+      ',
+      _t_const_sector_agg_realtime_hour, moment, _rule.time, moment,
+      _t_const_sector_agg_forecast_hour, moment, _rule.time, moment
+    );
 
     FOR _sector_data IN EXECUTE _q
     LOOP

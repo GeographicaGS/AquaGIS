@@ -22,15 +22,18 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_lastdata_sector text;
     _tb_measurand_sector text;
     _tb_leak_historic_sector text;
-    _tb_agg_hour_sector text;
+    _tb_agg_realtime_hour_sector text;
+    _tb_agg_forecast_hour_sector text;
     _tb_catalogue_plot text;
     _tb_lastdata_plot text;
     _tb_measurand_plot text;
-    _tb_agg_hour_plot text;
+    _tb_agg_realtime_hour_plot text;
+    _tb_agg_forecast_hour_plot text;
     _tb_catalogue_const text;
     _tb_lastdata_const text;
     _tb_measurand_const text;
-    _tb_agg_hour_const text;
+    _tb_agg_realtime_hour_const text;
+    _tb_agg_forecast_hour_const text;
     _tb_aux_const_futu text;
     _tb_aux_leakage text;
     _tb_aux_leak_rules text;
@@ -58,17 +61,20 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_lastdata_sector := urbo_get_table_name(id_scope, 'aq_cons_sector', iscarto, TRUE);
     _tb_measurand_sector := urbo_get_table_name(id_scope, 'aq_cons_sector_measurand', iscarto);
     _tb_leak_historic_sector = urbo_get_table_name(id_scope, 'aq_cons_sector_leak_historic', iscarto);
-    _tb_agg_hour_sector := urbo_get_table_name(id_scope, 'aq_cons_sector_agg_hour', iscarto);
+    _tb_agg_realtime_hour_sector := urbo_get_table_name(id_scope, 'aq_cons_sector_agg_realtime_hour', iscarto);
+    _tb_agg_forecast_hour_sector := urbo_get_table_name(id_scope, 'aq_cons_sector_agg_forecast_hour', iscarto);
 
     _tb_catalogue_plot := urbo_get_table_name(id_scope, 'aq_cons_plot', iscarto);
     _tb_lastdata_plot := urbo_get_table_name(id_scope, 'aq_cons_plot', iscarto, TRUE);
     _tb_measurand_plot := urbo_get_table_name(id_scope, 'aq_cons_plot_measurand', iscarto);
-    _tb_agg_hour_plot := urbo_get_table_name(id_scope, 'aq_cons_plot_agg_hour', iscarto);
+    _tb_agg_realtime_hour_plot := urbo_get_table_name(id_scope, 'aq_cons_plot_agg_realtime_hour', iscarto);
+    _tb_agg_forecast_hour_plot := urbo_get_table_name(id_scope, 'aq_cons_plot_agg_forecast_hour', iscarto);
 
     _tb_catalogue_const := urbo_get_table_name(id_scope, 'aq_cons_const', iscarto);
     _tb_lastdata_const := urbo_get_table_name(id_scope, 'aq_cons_const', iscarto, TRUE);
     _tb_measurand_const := urbo_get_table_name(id_scope, 'aq_cons_const_measurand', iscarto);
-    _tb_agg_hour_const := urbo_get_table_name(id_scope, 'aq_cons_const_agg_hour', iscarto);
+    _tb_agg_realtime_hour_const := urbo_get_table_name(id_scope, 'aq_cons_const_agg_realtime_hour', iscarto);
+    _tb_agg_forecast_hour_const := urbo_get_table_name(id_scope, 'aq_cons_const_agg_forecast_hour', iscarto);
 
     _tb_aux_const_futu = urbo_get_table_name(id_scope, 'aq_aux_const_futu', iscarto);
     _tb_aux_leakage = urbo_get_table_name(id_scope, 'aq_aux_leak', iscarto);
@@ -91,8 +97,10 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
 
     _tb_arr_agg := array_cat(_tb_arr_vars,
       ARRAY[
-        _tb_agg_hour_sector, _tb_agg_hour_plot, _tb_agg_hour_const, _tb_aux_const_futu,
-        _tb_aux_leakage, _tb_leak_historic_sector
+        _tb_agg_realtime_hour_sector, _tb_agg_forecast_hour_sector,
+        _tb_agg_realtime_hour_plot, _tb_agg_forecast_hour_plot,
+        _tb_agg_realtime_hour_const, _tb_agg_forecast_hour_const,
+        _tb_aux_const_futu, _tb_aux_leakage, _tb_leak_historic_sector
       ]);
 
     IF iscarto IS TRUE THEN
@@ -174,12 +182,20 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         leak_rule text
       );
 
-      -- AGG HOURLY
+      -- AGG REALTIME HOURLY
       CREATE TABLE IF NOT EXISTS %s (
         id_entity character varying(64) NOT NULL,
         "TimeInstant" timestamp without time zone,
         consumption double precision,
         pressure_agg double precision,
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+      );
+
+      -- AGG FORECAST HOURLY
+      CREATE TABLE IF NOT EXISTS %s (
+        id_entity character varying(64) NOT NULL,
+        "TimeInstant" timestamp without time zone,
         forecast double precision,
         pressure_forecast double precision,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
@@ -230,12 +246,20 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
 
-      -- AGG HOURLY
+      -- AGG REALTIME HOURLY
       CREATE TABLE IF NOT EXISTS %s (
         id_entity character varying(64) NOT NULL,
         "TimeInstant" timestamp without time zone,
         consumption double precision,
         pressure_agg double precision,
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+      );
+
+      -- AGG FORECAST HOURLY
+      CREATE TABLE IF NOT EXISTS %s (
+        id_entity character varying(64) NOT NULL,
+        "TimeInstant" timestamp without time zone,
         forecast double precision,
         pressure_forecast double precision,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
@@ -288,12 +312,20 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
 
-      -- AGG HOURLY
+      -- AGG REALTIME HOURLY
       CREATE TABLE IF NOT EXISTS %s (
         id_entity character varying(64) NOT NULL,
         "TimeInstant" timestamp without time zone,
         consumption double precision,
         pressure_agg double precision,
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+      );
+
+      -- AGG FORECAST HOURLY
+      CREATE TABLE IF NOT EXISTS %s (
+        id_entity character varying(64) NOT NULL,
+        "TimeInstant" timestamp without time zone,
         forecast double precision,
         pressure_forecast double precision,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
@@ -334,13 +366,16 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       );
       ',
       _tb_catalogue_sector, _geom_fld, _tb_lastdata_sector, _geom_fld,
-      _tb_measurand_sector,  _tb_leak_historic_sector, _tb_agg_hour_sector,
+      _tb_measurand_sector,  _tb_leak_historic_sector,
+      _tb_agg_realtime_hour_sector, _tb_agg_forecast_hour_sector,
 
       _tb_catalogue_plot, _geom_fld, _tb_lastdata_plot, _geom_fld,
-      _tb_measurand_plot, _tb_agg_hour_plot,
+      _tb_measurand_plot, _tb_agg_realtime_hour_plot,
+      _tb_agg_forecast_hour_plot,
 
       _tb_catalogue_const, _geom_fld, _tb_lastdata_const, _geom_fld,
-      _tb_measurand_const, _tb_agg_hour_const,
+      _tb_measurand_const, _tb_agg_realtime_hour_const,
+      _tb_agg_forecast_hour_const,
 
       _tb_aux_const_futu, _tb_aux_leakage, _tb_aux_leak_rules
     );
@@ -403,20 +438,29 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         ON %s USING btree (id_entity);
       CREATE INDEX IF NOT EXISTS %s_ent_idx
         ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
       ',
       replace(_tb_catalogue_sector, '.', '_'), _tb_catalogue_sector,
       replace(_tb_lastdata_sector, '.', '_'), _tb_lastdata_sector,
       replace(_tb_measurand_sector, '.', '_'), _tb_measurand_sector,
       replace(_tb_leak_historic_sector, '.', '_'), _tb_leak_historic_sector,
-      replace(_tb_agg_hour_sector, '.', '_'), _tb_agg_hour_sector,
+      replace(_tb_agg_realtime_hour_sector, '.', '_'), _tb_agg_realtime_hour_sector,
+      replace(_tb_agg_forecast_hour_sector, '.', '_'), _tb_agg_forecast_hour_sector,
       replace(_tb_catalogue_plot, '.', '_'), _tb_catalogue_plot,
       replace(_tb_lastdata_plot, '.', '_'), _tb_lastdata_plot,
       replace(_tb_measurand_plot, '.', '_'), _tb_measurand_plot,
-      replace(_tb_agg_hour_plot, '.', '_'), _tb_agg_hour_plot,
+      replace(_tb_agg_realtime_hour_plot, '.', '_'), _tb_agg_realtime_hour_plot,
+      replace(_tb_agg_forecast_hour_plot, '.', '_'), _tb_agg_forecast_hour_plot,
       replace(_tb_catalogue_const, '.', '_'), _tb_catalogue_const,
       replace(_tb_lastdata_const, '.', '_'), _tb_lastdata_const,
       replace(_tb_measurand_const, '.', '_'), _tb_measurand_const,
-      replace(_tb_agg_hour_const, '.', '_'), _tb_agg_hour_const,
+      replace(_tb_agg_realtime_hour_const, '.', '_'), _tb_agg_realtime_hour_const,
+      replace(_tb_agg_forecast_hour_const, '.', '_'), _tb_agg_forecast_hour_const,
       replace(_tb_aux_const_futu, '.', '_'), _tb_aux_const_futu,
       replace(_tb_aux_leakage, '.', '_'), _tb_aux_leakage
     );
