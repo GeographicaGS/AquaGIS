@@ -144,6 +144,11 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
     let featureCollection = _.find(this._mapView.layers._sectorLayer.dataSource.features, function(ft) {
       return ft.properties['id_entity'] === clickedSector.features[0].properties['id_entity'];
     });
+
+    this._widgets.push(new App.View.Widgets.Aq_cons.CurrentLeakStatus({
+      id_scope: this.scopeModel.get('id'),
+      id_entity: clickedSector.features[0].properties['id_entity']
+    }));
     this._mapView._map.fitBounds(turf.bbox(featureCollection));
     this.subviews.push(new App.View.Widgets.Container({
       widgets: this._widgets,

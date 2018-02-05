@@ -26,6 +26,7 @@ deps.JS = [
   srcJS + 'View/Widgets/AQConsCustomWidgetD3BarsLine.js',
   srcJS + 'View/Widgets/ConsumptionForecastByLandUse.js',
   srcJS + 'View/Widgets/ConsumptionForecastByLandUseTimeserie.js',
+  srcJS + 'View/Widgets/CurrentLeakStatusWidget.js',
   srcJS + 'View/Widgets/FlowEvolution.js',  
   srcJS + 'View/Widgets/PressureEvolution.js',  
   srcJS + 'View/Widgets/FlowSectorRanking.js',

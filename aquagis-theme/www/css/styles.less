@@ -276,6 +276,25 @@ body[layout='aquagis'] {
       background-color: @aquaGisAccentColor;
     }
 
+    .multipleVariableWidget {
+
+      .variable {
+
+        &.pressure {
+          .variable-title, .variable-unit {
+            color: #F8CA1C
+          }
+        }
+
+        &.flow {
+          .variable-title, .variable-unit {
+            color: #64B6D9
+          }
+        }
+        
+      }
+    }
+
     &.link {
       &:before {
         border-color: transparent @aquaGisAccentColor;
