@@ -108,14 +108,7 @@ App.View.Map.Layer.Aq_cons.SectorLeakLayer = Backbone.View.extend({
     })
     .setHoverable(true)
     .on('click','sector',function(e) {
-      let featureCollection = _.find(sector.changed.features, function(ft) {
-        return ft.properties['id_entity'] === e.features[0].properties['id_entity'];
-      });
-      map._map.fitBounds(turf.bbox(featureCollection));
-      map._map.setFilter("sector_selected", ["==", "id_entity", e.features[0].properties['id_entity']]);
-      map._map.setFilter("sector_line_selected", ["==", "id_entity", e.features[0].properties['id_entity']]);
-      map.mapChanges.set({'clickedSector': e});
-      map.mapChanges.set({'closeDetails': false});
+      map.mapChanges.set('clickedSector',e);
     });
     
     // Sensor
@@ -240,8 +233,8 @@ App.View.Map.Layer.Aq_cons.SectorLeakLayer = Backbone.View.extend({
       map: map
     }),
 
-    this.listenTo(map.mapChanges,'change:closeDetails',function(e) {
-      if(e.get('closeDetails')) {
+    this.listenTo(map.mapChanges,'change:clickedSector',function(e) {
+      if(e.get('clickedSector') === undefined) {
         map._map.fitBounds(turf.bbox(sector.changed));
         map._map.setFilter("sector_selected", ["all"]);
         map._map.setFilter("sector_line_selected", ["==", "id_entity",""]);
