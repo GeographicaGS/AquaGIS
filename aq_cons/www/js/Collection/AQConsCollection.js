@@ -19,7 +19,7 @@ App.Collection.Aq_cons.PanelList = Backbone.Collection.extend({
       },
       {
         id : 'leak',
-        title: __('Tiempo real'),
+        title: __('Fugas en tiempo real'),
         url:base + '/dashboard/leak',
       }
 
@@ -39,12 +39,12 @@ App.Static.Collection.Aq_cons.LandUses = new Backbone.Collection([
 App.Static.Collection.Aq_cons.ConsumeRangeNumeric =  Backbone.Collection.extend({
   initialize: function() {
     _.bindAll(this,'findColor');
-    this.add([{min: 0, max: 0.2, color: '#64B6D9'},
-    {min: 0.2, max: 0.4, color: '#4CA7D7'},
-    {min: 0.4, max: 0.6, color: '#3397D5'},
-    {min: 0.6, max: 0.8, color: '#1A88D3'},
-    {min: 0.8, max: 1, color: '#0278D1'},
-    {min: 1, max: null, color: '#D56780'}])
+    this.add([{min: 0, max: 100, color: '#64B6D9'},
+    {min: 100, max: 400, color: '#4CA7D7'},
+    {min: 400, max: 1000, color: '#3397D5'},
+    {min: 1000, max: 2000, color: '#1A88D3'},
+    {min: 2000, max: 2600, color: '#0278D1'},
+    {min: 2600, max: null, color: '#D56780'}])
   },
   findColor: function(d) {
     let color = undefined;

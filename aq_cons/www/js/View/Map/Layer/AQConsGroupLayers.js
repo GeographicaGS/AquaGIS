@@ -78,10 +78,10 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
             'default': 'transparent',
             'stops': [
               [0, '#64B6D9'],
-              [0.75, '#4CA7D7'],
-              [1.5, '#3397D5'],
-              [2.25, '#1A88D3'],
-              [3, '#0278D1']
+              [100, '#4CA7D7'],
+              [400, '#3397D5'],
+              [1000, '#1A88D3'],
+              [2000, '#0278D1']
             ]
           },
           'fill-opacity': 0.7
