@@ -38,9 +38,9 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
       ' <div class="btnLegend no_border inrow">' +
       '    <span class="text height12">0</span>' +
       '    <div class="ramp consume"></div>' +
-      '    <span class="text height12">1</span>' +
+      '    <span class="text height12">2600</span>' +
       '    <div class="max-value">' +
-      '     <div class="maxcolor"></div> <span>&gt; 1</span>' +
+      '     <div class="maxcolor"></div> <span>&gt; 2600</span>' +
       '    </div>' +
       ' </div>' +
       '</div>'
