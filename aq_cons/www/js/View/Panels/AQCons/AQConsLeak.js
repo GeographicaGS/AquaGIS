@@ -13,7 +13,7 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
       id_category: 'aq_leak',
       spatialFilter: false,
       master: false,
-      title: __('Tiempo real'),
+      title: __('Fugas en tiempo real'),
       id_panel: 'leak',
       filteView: false,
     });

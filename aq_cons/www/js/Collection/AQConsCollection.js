@@ -19,7 +19,7 @@ App.Collection.Aq_cons.PanelList = Backbone.Collection.extend({
       },
       {
         id : 'leak',
-        title: __('Tiempo real'),
+        title: __('Fugas en tiempo real'),
         url:base + '/dashboard/leak',
       }
 
