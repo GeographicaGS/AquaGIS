@@ -44,6 +44,7 @@ App.View.Widgets.Aq_cons.D3BarsLineCustom = App.View.Widgets.Charts.D3.BarsLine.
     }
     App.View.Widgets.Charts.D3.BarsLine.prototype._drawElements.call(this);
   },
+  
 
   _fetchData: function(){
     var requestData = this.collection.options.data;
@@ -168,6 +169,47 @@ App.View.Widgets.Aq_cons.D3BarsLineCustom = App.View.Widgets.Charts.D3.BarsLine.
 
     this._chart.areaGroup.push(areaGroup);
     
+  },
+
+  _drawTooltip: function(d, serie, index, _this){
+    var $tooltip = this.$('#chart_tooltip');
+    if(!$tooltip.length){
+      $tooltip = $('<div id="chart_tooltip" class="hidden"></div>');
+      this.$el.append($tooltip);
+    }
+    var data = {
+      value: d.x,
+      series: []
+    };
+    var key = d3.select(_this.parentNode).attr('key');
+    var dataHover = _.find(this.data, function(el){
+      return el.realKey === key;
+    });
+
+    data.series.push({
+      value: dataHover.values[serie].y,
+      key: dataHover.key,
+      realKey: dataHover.realKey,
+      color: this._getColor(dataHover, serie),
+      cssClass: this.options.has('classes') ? this.options.get('classes')(dataHover): '',
+      yAxisFunction: this.options.get('yAxisFunction')[dataHover.yAxis - 1]
+    });
+
+    $tooltip.html(this._template_tooltip({
+      data: data,
+      utils: {
+        xAxisFunction: this.xAxisFunction
+      }
+    }));
+    var cursorPos = d3.mouse(_this);
+    $tooltip.css({
+      position: 'absolute',
+      top: cursorPos[1],
+      left: cursorPos[0]
+    });
+
+    $tooltip.removeClass('hidden');
+
   }
 
 });
