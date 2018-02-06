@@ -39,7 +39,6 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
           return ds.properties.id_entity === entityId;
         });
         this._mapView.mapChanges.set({'clickedSector': {features: [selected]}});
-        this._mapView.mapChanges.set('closeDetails', false);
     
       }.bind(this)
     }));
@@ -52,13 +51,13 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
       id_scope: this.scopeModel.get('id'),
     }));
 
-    // this._widgets.push(new App.View.Widgets.Aq_cons.FlowEvolution({
-    //   id_scope: this.scopeModel.get('id'),
-    // }));
+    this._widgets.push(new App.View.Widgets.Aq_cons.FlowEvolution({
+      id_scope: this.scopeModel.get('id'),
+    }));
 
-    // this._widgets.push(new App.View.Widgets.Aq_cons.PressureEvolution({
-    //   id_scope: this.scopeModel.get('id'),
-    // }));
+    this._widgets.push(new App.View.Widgets.Aq_cons.PressureEvolution({
+      id_scope: this.scopeModel.get('id'),
+    }));
 
     this.subviews.push(new App.View.Widgets.Container({
       widgets: this._widgets,
@@ -74,8 +73,6 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
     }).render();
 
     this.listenTo(this._mapView.mapChanges,'change:clickedSector', this._openDetails);
-    this.listenTo(this._mapView.mapChanges,'change:closeDetails', this._closeDetails);
-    
 
     this.subviews.push(this._mapView);
   },
@@ -90,33 +87,15 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
   },
 
   _openDetails: function(e) {
-    // 1.- Cleaning widget container
-    this.$('.bottom .widgetContainer').html('');
-
-    // 2.- Calling to renderer for detail's widget
-    // this.customRender();
-    this._customRenderDetails(e.get('clickedSector'));
-    
-    // 3.- Reloading Masonry
-    this.$('.bottom .widgetContainer').masonry('reloadItems',{
-      gutter: 20,
-      columnWidth: 360
-    });
-  },
-
-  _clickClose: function(){
-    this._mapView.mapChanges.set('closeDetails', true);
-  },
-
-  _closeDetails: function(e) {
-    if (e.get('closeDetails')) {
+    if(e.get('clickedSector') === undefined) {
+      this._closeDetails();
+    } else {
       // 1.- Cleaning widget container
-      this._mapView.mapChanges.set('closeDetails',true);
-      this.$('.container > .row > div > .details-title').remove();
       this.$('.bottom .widgetContainer').html('');
   
       // 2.- Calling to renderer for detail's widget
-      this.customRender();
+      // this.customRender();
+      this._customRenderDetails(e.get('clickedSector'));
       
       // 3.- Reloading Masonry
       this.$('.bottom .widgetContainer').masonry('reloadItems',{
@@ -124,6 +103,26 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
         columnWidth: 360
       });
     }
+  },
+
+  _clickClose: function(){
+    this._mapView.mapChanges.set('clickedSector', undefined);
+  },
+
+  _closeDetails: function(e) {
+    // 1.- Cleaning widget container
+    this._mapView.mapChanges.set('clickedSector', undefined);
+    this.$('.container > .row > div > .details-title').remove();
+    this.$('.bottom .widgetContainer').html('');
+
+    // 2.- Calling to renderer for detail's widget
+    this.customRender();
+    
+    // 3.- Reloading Masonry
+    this.$('.bottom .widgetContainer').masonry('reloadItems',{
+      gutter: 20,
+      columnWidth: 360
+    });
   },
 
   _customRenderDetails: function(clickedSector) {
@@ -158,6 +157,18 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
       id_entity: clickedSector.features[0].properties['id_entity']
     }));
     this._mapView._map.fitBounds(turf.bbox(featureCollection));
+
+    this._widgets.push(new App.View.Widgets.Aq_cons.AlertsWidget({
+      id_scope: this.scopeModel.get('id'),
+      title: '',
+      dimension: 'allWidth reduced bgWhite',
+      detailed: true,
+      linked: false,
+      workOrder: true,
+      publishable: false,
+      filter: clickedSector.features[0].properties['id_entity']
+    }));
+
     this.subviews.push(new App.View.Widgets.Container({
       widgets: this._widgets,
       el: this.$('.bottom .widgetContainer')
