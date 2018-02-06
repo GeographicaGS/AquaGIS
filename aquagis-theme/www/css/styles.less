@@ -276,6 +276,67 @@ body[layout='aquagis'] {
       background-color: @aquaGisAccentColor;
     }
 
+    .multipleVariableWidget {
+      margin-top: 50px;
+      .variable {
+
+        &.pressure {
+          .variable-title, .variable-unit {
+            color: #F8CA1C
+          }
+        }
+
+        &.flow {
+          .variable-title, .variable-unit {
+            color: #64B6D9
+          }
+        }
+
+        &.agg {
+          .variable-title{
+            display: flex;
+            align-items: center;
+            &:before {
+              content: '';
+              width: 15px;
+              height: 15px;
+              display: block;
+              background-repeat: no-repeat;
+              background-position: center;
+            }
+          }
+          .variable-title, .variable-unit {
+            color: #98B2C9;
+          } 
+        }
+
+        &.max .variable-title:before {
+          background-image: url(/verticals/aquagis-theme/img/icons/color/valor-max.svg);              
+        }
+        &.min .variable-title:before {
+          background-image: url(/verticals/aquagis-theme/img/icons/color/valor-min.svg);              
+        }
+        &.avg .variable-title:before {
+          background-image: url(/verticals/aquagis-theme/img/icons/color/valor-med.svg);              
+        }
+
+        &.small {
+          margin-top: 14px;
+          padding-bottom: 14px;
+          .variable-value {
+            font-size: 48px;
+            font-weight: 200;
+            line-height: 40px;
+            .variable-unit  {
+              font-size: 24px;
+              font-weight: 200;
+              line-height: 31px;
+            }
+          }
+        }
+      }
+    }
+
     &.link {
       &:before {
         border-color: transparent @aquaGisAccentColor;

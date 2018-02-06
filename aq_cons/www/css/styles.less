@@ -220,30 +220,31 @@ a.co_fullscreen_toggle.restore {
   }
 }
 
-.chart.d3 .lineGroup path.line {
-  &.primary, &.in {
-    stroke: #fff !important;
-    stroke-width: 2px;
-    stroke-opacity: 1;
-    -webkit-transition: stroke-width 500ms; /* Safari */
-    transition: stroke-width 500ms;
+.chart.d3 .lineGroup {
+  circle {
+    mix-blend-mode: screen;
   }
-  &.secondary, &.out {
-    mix-blend-mode: screen;    
-    stroke: #aaa !important;    
-    stroke-width: 0.8px;
-    stroke-opacity: 0.4;
-    -webkit-transition: stroke-width 500ms; /* Safari */
-    transition: stroke-width 500ms;
-  }
-  &.in {
-    stroke: #fff !important;
-    stroke-width: 2px;
-    stroke-opacity: 1;
-  }
-  &.out {
-    stroke: #aaa !important;    
-    stroke-width: 0.8px;
-    stroke-opacity: 0.4;
+  path.line {
+    mix-blend-mode: screen;
+    &.primary, &.in {
+      stroke-width: 2px;
+      stroke-opacity: 1;
+      -webkit-transition: stroke-width 500ms; /* Safari */
+      transition: stroke-width 500ms;
+    }
+    &.secondary, &.out {
+      stroke-width: 0.6px;
+      stroke-opacity: 0.8;
+      -webkit-transition: stroke-width 500ms; /* Safari */
+      transition: stroke-width 500ms;
+    }
+    &.in {
+      stroke-width: 2px;
+      stroke-opacity: 1;
+    }
+    &.out {
+      stroke-width: 0.6px;
+      stroke-opacity: 0.8;
+    }
   }
 }
