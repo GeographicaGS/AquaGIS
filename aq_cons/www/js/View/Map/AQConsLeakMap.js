@@ -21,20 +21,16 @@ App.View.Panels.Aq_cons.LeakMap =App.View.Panels.Aq_cons.CurrentMap.extend({
     
     this.drawLegend();
     this.listenTo(this.mapChanges,'change:clickedSector',function(e) {
-      if (!this.$('.close-details').length) {
+      if (e.get('clickedSector') === undefined) {
+        this.$('.close-details').remove();        
+      } else if (this.$('.close-details').length === 0){
         this.$el.append(this._back_template);
-      }
-    });
-
-    this.listenTo(this.mapChanges,'change:closeDetails',function(e) {
-      if (e.get('closeDetails')) {
-        this.$('.close-details').remove();
       }
     });
   },
 
   _closeDetails: function() {
-    this.mapChanges.set('closeDetails', true);
+    this.mapChanges.set('clickedSector', undefined);
   },
 
   onClose: function() {

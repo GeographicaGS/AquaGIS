@@ -46,15 +46,9 @@ App.View.Widgets.Aq_cons.PressureEvolution = App.View.Widgets.Base.extend({
     this.collection.parse = App.Collection.Variables.Timeserie.prototype.parse;
 
     var sectorPressureMetadata = App.mv().getVariable('aq_cons.sector.pressure');
-    var sectorKeys = {};
-    var colors = ['#4D7BD9','#9966CC','#199183','#269DEF', '#64B6D9', '#64B7A3'];
     this._chartModel = new App.Model.BaseChartConfigModel({
       colors: function(d,i){
-        var keysLength = Object.keys(sectorKeys).length;
-        if(!sectorKeys[d.realKey]) {
-          sectorKeys[d.realKey] = colors[keysLength % colors.length]
-        } 
-        return sectorKeys[d.realKey];
+        return '#F8CA1C';
       },
       classes: function(d,i) {
         if(d.realKey !== 'avg') {
@@ -64,7 +58,7 @@ App.View.Widgets.Aq_cons.PressureEvolution = App.View.Widgets.Base.extend({
       },
       hideYAxis2: true,            
       legendNameFunc: function(key,d){
-        var label = this.sectorsNames[key] || __('Nivel de caudal');
+        var label = this.sectorsNames[key] || __('Presión media');
         return label;
       }.bind(this),
       xAxisFunction: function(d) { return App.formatDate(d,'DD/MM HH:mm'); },
