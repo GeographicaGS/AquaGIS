@@ -5,28 +5,30 @@
 --------------------------------------------------------------------------------
 -- HOW TO USE:
 -- SELECT urbo_aq_cons_agg_hourly('scope', '2018-01-10T08:00:00.000Z');
--- SELECT urbo_aq_cons_agg_hourly('scope', '2018-01-16T08:00:00.000Z', TRUE);
+-- SELECT urbo_aq_cons_agg_hourly('scope', '2018-01-10T08:00:00.000Z', TRUE);
+-- SELECT urbo_aq_cons_agg_hourly('scope', '2018-01-10T08:00:00.000Z', FALSE);
 --------------------------------------------------------------------------------
 
+DROP FUNCTION IF EXISTS urbo_aq_cons_agg_hourly(varchar, timestamp);
 DROP FUNCTION IF EXISTS urbo_aq_cons_agg_hourly(varchar, timestamp, boolean);
 
 CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_hourly(
     id_scope varchar,
     moment timestamp,
-    only_update_or_insert boolean DEFAULT FALSE
+    on_conflict boolean DEFAULT FALSE  -- IF FALSE THEN UPDATE (REALTIME) AND REGULAR INSERT (FORECAST)
   )
   RETURNS void AS
   $$
   DECLARE
-    _boolean text;
+    _on_conflict text;
     _q text;
   BEGIN
 
-    IF only_update_or_insert IS TRUE THEN
-      _boolean := 'TRUE';
+    IF on_conflict IS TRUE THEN
+      _on_conflict := 'TRUE';
 
     ELSE
-      _boolean := 'FALSE';
+      _on_conflict := 'FALSE';
     END IF;
 
     _q := format('
@@ -34,8 +36,8 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_hourly(
       SELECT urbo_aq_cons_agg_forecast_hourly(''%s'', ''%s'', %s);
       SELECT urbo_aq_cons_leak_detection_hourly(''%s'', ''%s'');
       ',
-      id_scope, moment, _boolean,
-      id_scope, moment, _boolean,
+      id_scope, moment, _on_conflict,
+      id_scope, moment, _on_conflict,
       id_scope, moment
     );
 

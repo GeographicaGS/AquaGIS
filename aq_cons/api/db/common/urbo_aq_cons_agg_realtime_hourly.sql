@@ -5,6 +5,7 @@
 --------------------------------------------------------------------------------
 -- HOW TO USE:
 -- SELECT urbo_aq_cons_agg_realtime_hourly('scope', '2018-01-16T08:00:00.000Z');
+-- SELECT urbo_aq_cons_agg_realtime_hourly('scope', '2018-01-16T08:00:00.000Z', FALSE);
 -- SELECT urbo_aq_cons_agg_realtime_hourly('scope', '2018-01-16T08:00:00.000Z', TRUE);
 --------------------------------------------------------------------------------
 
@@ -13,7 +14,7 @@ DROP FUNCTION IF EXISTS urbo_aq_cons_agg_realtime_hourly(varchar, timestamp, boo
 CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_realtime_hourly(
     id_scope varchar,
     moment timestamp,
-    only_update boolean DEFAULT FALSE
+    on_conflict boolean DEFAULT FALSE  -- IF FALSE THEN UPDATE
   )
   RETURNS void AS
   $$
@@ -118,8 +119,14 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_realtime_hourly(
           pressure_agg = qs.pressure_agg
         FROM (';
 
-    _update_where := ') qs
-        WHERE qu.id_entity = qs.id_entity AND qu."TimeInstant" = qs."TimeInstant"';
+    _update_where := format(
+      ') qs
+        WHERE qu."TimeInstant" >= ''%s''
+          AND qu."TimeInstant" < ''%s''::timestamp + interval ''1 hour''
+          AND qu.id_entity = qs.id_entity AND qu."TimeInstant" = qs."TimeInstant"
+      ',
+      moment, moment
+    );
 
     _insert_into := 'INSERT INTO';
 
@@ -130,38 +137,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_realtime_hourly(
           consumption = EXCLUDED.consumption,
           pressure_agg = EXCLUDED.pressure_agg';
 
-    IF only_update IS TRUE THEN
-      _q_const := format('
-        %s
-        %s
-        %s
-        %s
-        %s;
-        ',
-        _update, _t_const_ag, _update_columns, _q_const, _update_where
-      );
-
-      _q_plot := format('
-        %s
-        %s
-        %s
-        %s
-        %s;
-        ',
-        _update, _t_plot_ag, _update_columns, _q_plot, _update_where
-      );
-
-      _q_sector := format('
-        %s
-        %s
-        %s
-        %s
-        %s;
-        ',
-        _update, _t_sector_ag, _update_columns, _q_sector, _update_where
-      );
-
-    ELSE
+    IF on_conflict IS TRUE THEN
       _q_const := format('
         %s
         %s
@@ -191,6 +167,38 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_realtime_hourly(
         ',
         _insert_into, _t_sector_ag, _insert_columns, _q_sector, _insert_on_conflict
       );
+
+    ELSE
+    _q_const := format('
+      %s
+      %s
+      %s
+      %s
+      %s;
+      ',
+      _update, _t_const_ag, _update_columns, _q_const, _update_where
+    );
+
+    _q_plot := format('
+      %s
+      %s
+      %s
+      %s
+      %s;
+      ',
+      _update, _t_plot_ag, _update_columns, _q_plot, _update_where
+    );
+
+    _q_sector := format('
+      %s
+      %s
+      %s
+      %s
+      %s;
+      ',
+      _update, _t_sector_ag, _update_columns, _q_sector, _update_where
+    );
+
     END IF;
 
     _q := format('

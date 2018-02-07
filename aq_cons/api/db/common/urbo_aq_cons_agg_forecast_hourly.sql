@@ -5,6 +5,7 @@
 --------------------------------------------------------------------------------
 -- HOW TO USE:
 -- SELECT urbo_aq_cons_agg_forecast_hourly('scope', '2018-01-16T08:00:00.000Z');
+-- SELECT urbo_aq_cons_agg_forecast_hourly('scope', '2018-01-16T08:00:00.000Z', FALSE);
 -- SELECT urbo_aq_cons_agg_forecast_hourly('scope', '2018-01-16T08:00:00.000Z', TRUE);
 --------------------------------------------------------------------------------
 
@@ -13,7 +14,7 @@ DROP FUNCTION IF EXISTS urbo_aq_cons_agg_forecast_hourly(varchar, timestamp, boo
 CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_forecast_hourly(
     id_scope varchar,
     moment timestamp,
-    only_insert boolean DEFAULT FALSE
+    on_conflict boolean DEFAULT FALSE  -- IF FALSE THEN REGULAR INSERT
   )
   RETURNS void AS
   $$
@@ -42,14 +43,14 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_forecast_hourly(
     _t_aux_ft := urbo_get_table_name(id_scope, 'aq_aux_const_futu');
     _t_aux_lk := urbo_get_table_name(id_scope, 'aq_aux_leak');
 
-    IF only_insert IS TRUE THEN
-      _on_conflict := '';
-
-    ELSE
+    IF on_conflict IS TRUE THEN
       _on_conflict := 'ON CONFLICT (id_entity, "TimeInstant")
           DO UPDATE SET
             forecast = EXCLUDED.forecast,
             pressure_forecast = EXCLUDED.pressure_forecast';
+
+    ELSE
+      _on_conflict := '';
     END IF;
 
     _q := format('
