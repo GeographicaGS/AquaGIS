@@ -184,7 +184,7 @@ App.View.Map.Layer.Aq_cons.SectorLeakLayer = Backbone.View.extend({
       source: {
         id: 'aqua_plots',
         model: plot,
-        payload: this._payload
+        payload: {filters: {condition:{}}}
       },
       legend: {
         sectionId: 'plot',
