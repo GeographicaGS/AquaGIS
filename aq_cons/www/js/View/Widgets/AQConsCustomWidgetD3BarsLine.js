@@ -151,6 +151,7 @@ App.View.Widgets.Aq_cons.D3BarsLineCustom = App.View.Widgets.Charts.D3.BarsLine.
       return _this.xScaleBars.rangeBand() + 4;
     })
     .attr('height',function(d, idx) {
+      // Number '2' is leak
       if (d.y === 2 ) {
         // if d.y is leak 
         if (_this._tmpAreaData[idx - 1] === undefined || _this._tmpAreaData[idx - 1].y !== 2) {
