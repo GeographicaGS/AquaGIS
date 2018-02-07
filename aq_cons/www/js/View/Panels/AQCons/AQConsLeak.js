@@ -169,10 +169,10 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
       id_scope: this.scopeModel.get('id'),
       id_entity: clickedSector.features[0].properties['id_entity']
     }));
-    // this._widgets.push(new App.View.Widgets.Aq_cons.PressureFlowLeakEvolution({
-    //   id_scope: this.scopeModel.get('id'),
-    //   id_entity: clickedSector.features[0].properties['id_entity'] 
-    // }));
+    this._widgets.push(new App.View.Widgets.Aq_cons.PressureFlowLeakEvolution({
+      id_scope: this.scopeModel.get('id'),
+      id_entity: clickedSector.features[0].properties['id_entity'] 
+    }));
 
     this.subviews.push(new App.View.Widgets.Container({
       widgets: this._widgets,
