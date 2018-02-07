@@ -44,7 +44,7 @@ App.View.Widgets.Aq_cons.PressureFlowLeakEvolution = App.View.Widgets.Base.exten
         } else if(d.realKey === 'aq_cons.sector.flow') {
           return '#63b7da';
         }
-        return '#F8CA1C';
+        return '#FB4C62';
       },
       classes: function(d,i) {
       },
@@ -55,8 +55,18 @@ App.View.Widgets.Aq_cons.PressureFlowLeakEvolution = App.View.Widgets.Base.exten
       ],
       yAxisLabel: [
         __('Presión') + ' ('+ sectorPressureMetadata.get('units') +')',
+        __('Caudal') + ' ('+ App.mv().getVariable('aq_cons.sector.flow').get('units') +')',
       ],
+      legendNameFunc: function(key,d){
+        if (key === 'aq_cons.sector.pressure') {
+          return 'Presión'
+        } else if(key === 'aq_cons.sector.flow') {
+          return 'Caudal';
+        }
+        return 'Fuga';
+      },        
       currentStep: '1h',
+      originalTooltip: true,
       keysConfig: {
         'aq_cons.sector.pressure': {axis: 1, type: 'line'},
         'aq_cons.sector.flow': {axis: 2, type: 'line'},

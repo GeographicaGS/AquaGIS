@@ -139,16 +139,16 @@ App.View.Widgets.Aq_cons.D3BarsLineCustom = App.View.Widgets.Charts.D3.BarsLine.
       return 0;
     })
     .attr('stroke-width','1px')
-    .attr('stroke','red')    
+    .attr('stroke', function(d, idx) { return _this._getColor(this.__data__, idx); })    
     .style('stroke', '2');
 
     areaGroup.append('rect')
     .attr('x', function(d,idx) {
-      return _this.xScaleLine(idx)
+      return _this.xScaleLine(idx) + 1
     })
     .attr('y', 0)
     .attr('width',function(d, idx) {
-      return _this.xScaleBars.rangeBand() + 4 
+      return _this.xScaleBars.rangeBand() + 4;
     })
     .attr('height',function(d, idx) {
       if (d.y === 1 ) {
@@ -165,7 +165,8 @@ App.View.Widgets.Aq_cons.D3BarsLineCustom = App.View.Widgets.Charts.D3.BarsLine.
       }
       return 0;
     })
-    .attr('fill','rgba(255,0,0,0.4)')    
+    .attr('fill',function(d, idx) { return _this._getColor(this.__data__, idx); })
+    .attr('fill-opacity',0.2)
 
     this._chart.areaGroup.push(areaGroup);
     
@@ -181,20 +182,37 @@ App.View.Widgets.Aq_cons.D3BarsLineCustom = App.View.Widgets.Charts.D3.BarsLine.
       value: d.x,
       series: []
     };
-    var key = d3.select(_this.parentNode).attr('key');
-    var dataHover = _.find(this.data, function(el){
-      return el.realKey === key;
-    });
 
-    data.series.push({
-      value: dataHover.values[serie].y,
-      key: dataHover.key,
-      realKey: dataHover.realKey,
-      color: this._getColor(dataHover, serie),
-      cssClass: this.options.has('classes') ? this.options.get('classes')(dataHover): '',
-      yAxisFunction: this.options.get('yAxisFunction')[dataHover.yAxis - 1]
-    });
-
+    if (this.options.get('originalTooltip')) {
+      var that = this;
+      this.data.forEach(function(el){
+        if(!that._internalData.disabledList[el.realKey] && el.type !== 'alert'){
+          data.series.push({
+            value: el.values[serie].y,
+            key: el.key,
+            realKey: el.realKey,
+            color: that._getColor(el, serie),
+            cssClass: that.options.has('classes') ? that.options.get('classes')(el): '',
+            yAxisFunction: that.options.get('yAxisFunction')[el.yAxis - 1]
+          });
+        }
+      });
+    } else {
+      var key = d3.select(_this.parentNode).attr('key');
+      var dataHover = _.find(this.data, function(el){
+        return el.realKey === key;
+      });
+  
+      data.series.push({
+        value: dataHover.values[serie].y,
+        key: dataHover.key,
+        realKey: dataHover.realKey,
+        color: this._getColor(dataHover, serie),
+        cssClass: this.options.has('classes') ? this.options.get('classes')(dataHover): '',
+        yAxisFunction: this.options.get('yAxisFunction')[dataHover.yAxis - 1]
+      });
+    }
+  
     $tooltip.html(this._template_tooltip({
       data: data,
       utils: {
@@ -209,7 +227,6 @@ App.View.Widgets.Aq_cons.D3BarsLineCustom = App.View.Widgets.Charts.D3.BarsLine.
     });
 
     $tooltip.removeClass('hidden');
-
   }
 
 });
