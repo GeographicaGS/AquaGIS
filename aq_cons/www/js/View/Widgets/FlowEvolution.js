@@ -21,13 +21,11 @@ App.View.Widgets.Aq_cons.FlowEvolution = App.View.Widgets.Base.extend({
     // Getting sectors names
     this.sectorsNames = {};
     let sectorNamesCollection = new App.Collection.Base();
-    sectorNamesCollection.url = App.config.api_url + '/aljarafe/devices/mapentities?entities=aq_cons.sector';
+    sectorNamesCollection.url = App.config.api_url + '/aljarafe/entities/aq_cons.sector/elements';
     sectorNamesCollection.fetch({ async: false, success: function(e) {
       let tmp = e.toJSON();
       _.each(tmp, function(element) {
-        this.sectorsNames[element.device_id] = _.find(element.lastdata, function(ldata) {
-          return ldata.var === 'aq_cons.sector.name';
-        }).value;
+        this.sectorsNames[element.id] = element.name;
       }.bind(this));
     }.bind(this)});
 

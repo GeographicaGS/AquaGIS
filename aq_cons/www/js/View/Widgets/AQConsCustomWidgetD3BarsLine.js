@@ -117,17 +117,17 @@ App.View.Widgets.Aq_cons.D3BarsLineCustom = App.View.Widgets.Charts.D3.BarsLine.
     })
     .attr('y1', 0)
     .attr('y2', function(d, idx) {
-      if (d.y === 1 ) {
+      if (d.y === 2 ) {
         // if d.y is leak 
-        if (_this._tmpAreaData[idx - 1] === undefined || _this._tmpAreaData[idx - 1].y !== 1) {
+        if (_this._tmpAreaData[idx - 1] === undefined || _this._tmpAreaData[idx - 1].y !== 2) {
           // if prev.y is not leak or not prev draw red line
           return _this.yScales[0](_this.yAxisDomain[0][0])
-        } else if (_this._tmpAreaData[idx - 1].y === 1) {
+        } else if (_this._tmpAreaData[idx - 1].y === 2) {
           // if prev is leak nothing to do here. ONLY AREA
         }
       } else {
         // if current is not leak
-        if (_this._tmpAreaData[idx - 1] !== undefined && _this._tmpAreaData[idx - 1].y == 1) {
+        if (_this._tmpAreaData[idx - 1] !== undefined && _this._tmpAreaData[idx - 1].y === 2) {
           // if prev exists and is leak then draw line
           return _this.yScales[0](_this.yAxisDomain[0][0])
         } else {
@@ -151,12 +151,13 @@ App.View.Widgets.Aq_cons.D3BarsLineCustom = App.View.Widgets.Charts.D3.BarsLine.
       return _this.xScaleBars.rangeBand() + 4;
     })
     .attr('height',function(d, idx) {
-      if (d.y === 1 ) {
+      // Number '2' is leak
+      if (d.y === 2 ) {
         // if d.y is leak 
-        if (_this._tmpAreaData[idx - 1] === undefined || _this._tmpAreaData[idx - 1].y !== 1) {
+        if (_this._tmpAreaData[idx - 1] === undefined || _this._tmpAreaData[idx - 1].y !== 2) {
           // if prev.y is not leak or not prev draw red line
           return _this.yScales[0](_this.yAxisDomain[0][0])
-        } else if (_this._tmpAreaData[idx - 1].y === 1) {
+        } else if (_this._tmpAreaData[idx - 1].y === 2) {
           // ONLY AREA
           return _this.yScales[0](_this.yAxisDomain[0][0])          
         }
