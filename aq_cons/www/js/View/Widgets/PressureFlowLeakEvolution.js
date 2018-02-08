@@ -4,8 +4,8 @@ App.View.Widgets.Aq_cons.PressureFlowLeakEvolution = App.View.Widgets.Base.exten
 
   initialize: function(options) {
     options = _.defaults(options,{
-      title: __('Presión media'),
-      timeMode:'historic',
+      title: __('Peligro de fuga'),
+      timeMode:'now',
       id_category: 'aq_cons',
       exportable: true,
       dimension: 'allWidth',

@@ -156,10 +156,10 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
             'default': 'transparent',
             'stops': [
               [0, '#64B6D9'],
-              [0.125, '#4CA7D7'],
-              [0.250, '#3397D5'],
-              [0.375, '#1A88D3'],
-              [0.5, '#0278D1']
+              [1, '#4CA7D7'],
+              [2, '#3397D5'],
+              [4, '#1A88D3'],
+              [10, '#0278D1']
             ]
           },
           'fill-opacity': 0.7,
@@ -193,10 +193,10 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
             'default': 'transparent',
             'stops': [
               [0, '#64B6D9'],
-              [0.125, '#4CA7D7'],
-              [0.250, '#3397D5'],
-              [0.375, '#1A88D3'],
-              [0.5, '#0278D1']
+              [1, '#4CA7D7'],
+              [2, '#3397D5'],
+              [4, '#1A88D3'],
+              [10, '#0278D1']
             ]
           },
           'fill-extrusion-opacity': 0.8,
@@ -698,7 +698,11 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     this._sectorLayer.updatePaintOptions(payload.var);
     
     this._plotLayer.updateData(plotPayload);
-    this._plotLayer.updatePaintOptions(plotPayload.var);    
+    this._plotLayer.updatePaintOptions(plotPayload.var);   
+    this._plotLayer.layers[2].paint['fill-extrusion-color']['property'] = plotPayload.var;
+    this._plotLayer._map._map
+      .setPaintProperty('plot_buildings', 'fill-extrusion-color', this._plotLayer.layers[2].paint['fill-extrusion-color']);
+    
 
     this._supplyLineLayer.updateData(payload);
     this._wellLineLayer.updateData(payload);
