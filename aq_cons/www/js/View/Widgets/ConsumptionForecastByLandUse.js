@@ -18,13 +18,13 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse = App.View.Widgets.Base.ex
 
     this.collection = new App.Collection.Variables.Historic([], {
       id_scope: this.options.id_scope,
-      id_variable: 'aq_cons.const.forecast',
+      id_variable: 'aq_cons.sector.forecast',
       agg: 'SUM',
       start: nextWeek[0],
       finish: nextWeek[1],
       filters: {
         condition: {},
-        group: "aq_cons.const.usage"
+        group: "aq_cons.sector.usage"
       }
     });
     this.collection.parse = function(response) {
@@ -55,7 +55,7 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse = App.View.Widgets.Base.ex
         tickFormat: function (d) {
           var unit = 'm³';
           // var value = App.nbf(d / 1000, {decimals:0});
-          var value = App.nbf(d, {decimals:2});
+          var value = App.nbf(d, {decimals:2, compactK: true});
           return value + 'm³';
         }
       }
