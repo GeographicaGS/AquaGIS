@@ -1,25 +1,37 @@
 'use strict';
 
-App.View.Widgets.Aq_cons.CurrentLeakStatus = App.View.Widgets.Base.extend({
+App.View.Widgets.Aq_cons.CurrentLeakStatusAllSectors = App.View.Widgets.Base.extend({
 
   initialize: function(options) {
     options = _.defaults(options,{
-      title: 'Estado actual del sector',
+      title: 'Estado actual',
       timeMode:'now',
       id_category: 'aq_cons',
       publishable: true,
-      classname: 'App.View.Widgets.Aq_cons.CurrentLeakStatus',
+      classname: 'App.View.Widgets.Aq_cons.CurrentLeakStatusAllSectors',
     });
     App.View.Widgets.Base.prototype.initialize.call(this,options);
 
-    this._model = new App.Model.Base();
+    this._model = new App.Model.Post();
     // /aljarafe/devices/aq_cons.sector/sector_id:19/lastdata
-    this._model.url = App.config.api_url + '/' + options.id_scope + '/devices/aq_cons.sector/' + options.id_entity + '/lastdata';
+    this._model.url = App.config.api_url + '/' + options.id_scope + '/variables/timeserie';
+    this._model.fetch = function(options) {
+      options.type = 'POST';
+      options.data = {
+        "agg": ["SUM", "AVG"],
+        "vars": ["aq_cons.sector.flow", "aq_cons.sector.pressure"],
+        "time": {
+        "start": moment().startOf('hour').subtract(1,'hour').toDate(),
+        "finish": moment().startOf('hour').subtract(0,'hour').toDate(),
+        "step": "1d"
+        }
+      };
+      options.data = JSON.stringify(options.data);
+
+      this.constructor.__super__.fetch.call(this, options);
+    }
     this._model.parse = function(data) {
-      var _result = {};
-       _.each(data.lastdata, function(ld) {
-        _result[ld['var_id']] = ld['var_value'];
-      });
+      var _result = data[0].data;
       return _result;
     }
     
