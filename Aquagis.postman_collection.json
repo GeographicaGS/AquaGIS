@@ -1,0 +1,582 @@
+{
+	"info": {
+		"name": "Aquagis",
+		"_postman_id": "ea0be6ae-f84e-a0f3-0f1f-ac9f801d1ce6",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/auth/token/new",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"admin@geographica.gs\",\n  \"password\": \"1887bdac7743cc1d74bb2ab055f80050\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/auth/token/new",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"auth",
+						"token",
+						"new"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "/metadata",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Access-Token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{host}}/metadata",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"metadata"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Devices MapEntities",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Access-Token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"agg\": [\"avg\", \"sum\"]\n}"
+				},
+				"url": {
+					"raw": "{{host}}/aljarafe/devices/mapentities?entities=aq_cons.sector&geojson_collection=true",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"aljarafe",
+						"devices",
+						"mapentities"
+					],
+					"query": [
+						{
+							"key": "entities",
+							"value": "aq_cons.sector",
+							"equals": true
+						},
+						{
+							"key": "geojson_collection",
+							"value": "true",
+							"equals": true
+						}
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "/:scope/maps/:entity/now",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Access-Token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"filters\": {\r\n  \t\"condition\": {}\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{host}}/aljarafe/maps/aq_cons.sector/now",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"aljarafe",
+						"maps",
+						"aq_cons.sector",
+						"now"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "/:scope/maps/:entity/historic",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Access-Token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"agg\": \"SUM\",\r\n\t\"var\": \"aq_cons.plot.pressure_forecast\",\r\n\t\"time\": {\r\n    \t\"start\": \"2018-01-22T00:00:00Z\",\r\n    \t\"finish\": \"2018-01-29T23:59:59Z\"\r\n\t},\r\n\t\"filters\": {\r\n  \t\t\"condition\": {}\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{host}}/aljarafe/maps/aq_cons.plot/historic",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"aljarafe",
+						"maps",
+						"aq_cons.plot",
+						"historic"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "/:scope/variables/:variable/historic",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Access-Token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"agg\":\"AVG\",\n\t\"time\":{\n\t\t\"start\":\"2018-01-26T00:00:00Z\",\n\t\t\"finish\":\"2018-01-26T23:59:59Z\"\n\t\t\n\t},\n\t\"filters\":{\n\t\t\"condition\":{\n\t\t\t\"id_entity__eq\":\"sector_id:19\"\n\t\t}\n\t}\n}"
+				},
+				"url": {
+					"raw": "{{host}}/aljarafe/variables/aq_cons.sector.flow/now",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"aljarafe",
+						"variables",
+						"aq_cons.sector.flow",
+						"now"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "/:scope/variables/:id/weekserie",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Access-Token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"agg\": \"SUM\",\r\n  \"time\": {\r\n  \"start\": \"2018-01-01T00:00:00Z\",\r\n    \"finish\": \"2018-01-14T00:00:00Z\"\r\n  },\r\n  \"filters\": {}\r\n}"
+				},
+				"url": {
+					"raw": "{{host}}/aljarafe/variables/aq_cons.sector.pressure/weekserie",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"aljarafe",
+						"variables",
+						"aq_cons.sector.pressure",
+						"weekserie"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "/:scope/variables/:variable/historic",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Access-Token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"agg\": \"SUM\",\n  \"time\": {\n    \"start\": \"2018-01-01T00:00:00Z\",\n    \"finish\": \"2018-01-08T00:00:00Z\"\n  },\n  \"filters\": {\n    \"condition\": {},\n    \"group\": \"aq_cons.sector.usage\"\n  }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/aljarafe/variables/aq_cons.sector.forecast/historic",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"aljarafe",
+						"variables",
+						"aq_cons.sector.forecast",
+						"historic"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "/:scope/variables/timeserie con group",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Access-Token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"agg\": [\"SUM\"],\n  \"vars\": [\"aq_cons.sector.forecast\"],\n  \"time\": {\n    \"start\": \"2018-01-01T00:00:00Z\",\n    \"finish\": \"2018-01-08T00:00:00Z\",\n    \"step\": \"1d\"\n  },\n  \"filters\": {\n    \"condition\": {},\n    \"group\": \"aq_cons.sector.usage\"\n  }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/aljarafe/variables/timeserie",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"aljarafe",
+						"variables",
+						"timeserie"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "/:scope/aq_cons/plot/:id_plot/constructions",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Access-Token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{host}}/aljarafe/aq_cons/plot/plot_id:12/constructions",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"aljarafe",
+						"aq_cons",
+						"plot",
+						"plot_id:12",
+						"constructions"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "/:scope/devices/:id_entity/:id_device/lastdata",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Access-Token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"agg\": [\"avg\", \"sum\"]\n}"
+				},
+				"url": {
+					"raw": "{{host}}/aljarafe/devices/aq_cons.sector/sector_id:19/lastdata",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"aljarafe",
+						"devices",
+						"aq_cons.sector",
+						"sector_id:19",
+						"lastdata"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "/:scope/variables/:id_variable/devices_group_timeserie",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Access-Token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"agg\": \"SUM\",\n  \"time\": {\n    \"start\": \"2018-01-29T00:00:00Z\",\n    \"finish\": \"2018-01-29T23:59:59Z\",\n    \"step\": \"1h\"\n  },\n  \"filters\": {\n    \n  },\n  \"groupagg\": \"true\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/aljarafe/variables/aq_cons.sector.flow/devices_group_timeserie",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"aljarafe",
+						"variables",
+						"aq_cons.sector.flow",
+						"devices_group_timeserie"
+					],
+					"query": [
+						{
+							"key": "bbox",
+							"value": "",
+							"equals": false,
+							"disabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "/:scope/variables/timeserie",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Access-Token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"agg\": [\"AVG\",\"AVG\",\"MAX\"],\n  \"vars\": [\"aq_cons.sector.flow\",\"aq_cons.sector.pressure\",\"aq_cons.sector.leak_status\"],\n  \"time\": {\n    \"start\": \"2018-02-01T00:00:00Z\",\n    \"finish\": \"2018-02-01T23:59:59Z\",\n    \"step\": \"1h\"\n  },\n  \"filters\": {\n  \t\"id_entity__eq\":\"sector_id:19\"\n  }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/aljarafe/variables/timeserie",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"aljarafe",
+						"variables",
+						"timeserie"
+					],
+					"query": [
+						{
+							"key": "bbox",
+							"value": "",
+							"equals": false,
+							"disabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "/:scope/entities/:id/elements",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Access-Token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"agg\": [\"avg\", \"sum\"]\n}"
+				},
+				"url": {
+					"raw": "{{host}}/aljarafe/entities/aq_cons.sector/elements",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"aljarafe",
+						"entities",
+						"aq_cons.sector",
+						"elements"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "/:scope/variables/ranking/now",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Access-Token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"vars\": [\n    \"aq_cons.sector.id\",\n    \"aq_cons.sector.name\"\n  ],\n  \"var_order\": \"aq_cons.sector.id\",\n  \"filters\": {\n  }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/aljarafe/variables/ranking/now",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"aljarafe",
+						"variables",
+						"ranking",
+						"now"
+					],
+					"query": [
+						{
+							"key": "bbox",
+							"value": "",
+							"equals": false,
+							"disabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "/aljarafe/entities/:id/elements",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Access-Token",
+						"value": "{{token}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"agg\": [\"avg\", \"sum\"]\n}"
+				},
+				"url": {
+					"raw": "{{host}}/aljarafe/entities/aq_cons.sector/elements?variables=aq_cons.sector.leak_status,aq_cons.sector.leak_rule,aq_cons.sector.flow,aq_cons.sector.pressure",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"aljarafe",
+						"entities",
+						"aq_cons.sector",
+						"elements"
+					],
+					"query": [
+						{
+							"key": "variables",
+							"value": "aq_cons.sector.leak_status,aq_cons.sector.leak_rule,aq_cons.sector.flow,aq_cons.sector.pressure",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
