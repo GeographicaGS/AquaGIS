@@ -40,12 +40,12 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_tank_level(
       FROM (SELECT id_entity, (capacity - sum_consumption) AS level
       FROM %s tank
       INNER JOIN (
-        SELECT ref_tank, SUM(consumption) AS sum_consumption
+        SELECT reftank, SUM(consumption) AS sum_consumption
         FROM %s cat
         INNER JOIN (
           SELECT * FROM %s WHERE "TimeInstant" = %5$L) agg
-          ON cat.id_entity = agg.id_entity GROUP BY ref_tank) sect
-          ON tank.id_entity = sect.ref_tank) agg
+          ON cat.id_entity = agg.id_entity GROUP BY reftank) sect
+          ON tank.id_entity = sect.reftank) agg
       WHERE (measurand.id_entity = agg.id_entity AND measurand."TimeInstant" = %5$L);
       ',
       table_tank_measurand, table_tank, table_sector_lastdata, table_sector_agg, moment
