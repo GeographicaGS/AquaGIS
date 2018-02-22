@@ -9,12 +9,11 @@
 -- SELECT urbo_aq_cons_tank_level('scope', '2018-01-16T08:00:00.000Z', TRUE);
 --------------------------------------------------------------------------------
 
-DROP FUNCTION IF EXISTS urbo_aq_cons_tank_level(varchar, timestamp, boolean);
+DROP FUNCTION IF EXISTS urbo_aq_cons_tank_level(varchar, timestamp);
 
 CREATE OR REPLACE FUNCTION urbo_aq_cons_tank_level(
     id_scope varchar,
-    moment timestamp,
-    on_conflict boolean DEFAULT FALSE  -- IF FALSE THEN UPDATE
+    moment timestamp
   )
   RETURNS void AS
   $$
@@ -44,12 +43,12 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_tank_level(
         SELECT refTank, SUM(consumption) AS sum_consumption
         FROM %s cat
         INNER JOIN (
-          SELECT * FROM %s WHERE "TimeInstant" = ''%s'') agg
+          SELECT * FROM %s WHERE "TimeInstant" = %5$L) agg
           ON cat.id_entity = agg.id_entity GROUP BY refTank) sect
           ON tank.id_entity = sect.refTank) agg
-      WHERE (measurand.id_entity = agg.id_entity AND measurand."TimeInstant" = ''%s'');
+      WHERE (measurand.id_entity = agg.id_entity AND measurand."TimeInstant" = %5$L);
       ',
-      table_tank_measurand, table_tank, table_sector_lastdata, table_sector_agg, moment, moment
+      table_tank_measurand, table_tank, table_sector_lastdata, table_sector_agg, moment
     );
 
 
