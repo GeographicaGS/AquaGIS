@@ -140,7 +140,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         id_entity character varying(64) NOT NULL,
         "TimeInstant" timestamp without time zone,
         %I geometry(MultiPolygon, 4326),
-        ref_tank character varying(64) NOT NULL,
+        reftank character varying(64) NOT NULL,
         name text,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
