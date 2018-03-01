@@ -38,7 +38,8 @@ CREATE OR REPLACE FUNCTION urbo_createmetadata_aq_cons(
         VALUES
           (''aq_cons.sector'', ''Sector'', ''aq_cons'', ''aq_cons_sector'', TRUE, FALSE),
           (''aq_cons.plot'', ''Parcela'', ''aq_cons'', ''aq_cons_plot'', FALSE, FALSE),
-          (''aq_cons.const'', ''Construcción'', ''aq_cons'', ''aq_cons_const'', FALSE, FALSE);
+          (''aq_cons.const'', ''Construcción'', ''aq_cons'', ''aq_cons_const'', FALSE, FALSE),
+          (''aq_cons.tank'', ''Depósito'', ''aq_cons'', ''aq_cons_tank'', FALSE, FALSE);;
 
       -- STATIC ENTITIES
       INSERT INTO %s
@@ -54,7 +55,6 @@ CREATE OR REPLACE FUNCTION urbo_createmetadata_aq_cons(
           (''aq_cata.supply_point'', ''Abastecimiento'', ''aq_cons'', ''aq_cata_supply_point'', FALSE, FALSE),
           (''aq_cata.sector'', ''Sector'', ''aq_cons'', ''aq_cata_sector'', FALSE, FALSE),
           (''aq_cata.sensor'', ''Sensor'', ''aq_cons'', ''aq_cata_sensor'', FALSE, FALSE),
-          (''aq_cata.tank'', ''Depósito'', ''aq_cons'', ''aq_cata_tank'', FALSE, FALSE),
           (''aq_cata.valve_line'', ''Línea de válvula'', ''aq_cons'', ''aq_cata_valve_line'', FALSE, FALSE),
           (''aq_cata.valve_point'', ''Válvula'', ''aq_cons'', ''aq_cata_valve_point'', FALSE, FALSE),
           (''aq_cata.well_line'', ''Línea de pozo'', ''aq_cons'', ''aq_cata_well_line'', FALSE, FALSE),
@@ -95,7 +95,17 @@ CREATE OR REPLACE FUNCTION urbo_createmetadata_aq_cons(
           (''aq_cons.const.consumption'', ''aq_cons.const'', ''consumption'', ''Consumo'', ''m³'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_const_agg_hour'', ''aggregated'', TRUE, FALSE),
           (''aq_cons.const.pressure_agg'', ''aq_cons.const'', ''pressure_agg'', ''Presión'', ''kgf/cm²'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": false, "default": false}'', ''aq_cons_sector_agg_hour'', ''aggregated'', TRUE, FALSE),
           (''aq_cons.const.forecast'', ''aq_cons.const'', ''forecast'', ''Previsión de consumo'', ''m³'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_const_agg_hour'', ''aggregated'', TRUE, FALSE),
-          (''aq_cons.const.pressure_forecast'', ''aq_cons.const'', ''pressure_forecast'', ''Previsión de presión'', ''kgf/cm²'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": false, "default": false}'', ''aq_cons_const_agg_hour'', ''aggregated'', TRUE, FALSE);
+          (''aq_cons.const.pressure_forecast'', ''aq_cons.const'', ''pressure_forecast'', ''Previsión de presión'', ''kgf/cm²'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": false, "default": false}'', ''aq_cons_const_agg_hour'', ''aggregated'', TRUE, FALSE),
+
+          (''aq_cons.tank.location'', ''aq_cons.tank'', ''location'', ''Localización del depósito'', ''NULL'', ''{}'', ''{"NOAGG"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''NULL'', ''catalogue'', TRUE, FALSE),
+          (''aq_cons.tank.capacity'', ''aq_cons.tank'', ''capacity'', ''Capacidad'', ''m³'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''NULL'', ''catalogue'', TRUE, FALSE),
+          (''aq_cons.tank.min_level'', ''aq_cons.tank'', ''min_level'', ''Nivel mínimo de llenado'', ''m³'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''NULL'', ''catalogue'', TRUE, FALSE),
+          (''aq_cons.tank.max_level'', ''aq_cons.tank'', ''max_level'', ''Nivel máximo de llenado'', ''m³'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''NULL'', ''catalogue'', TRUE, FALSE),
+          (''aq_cons.tank.level'', ''aq_cons.tank'', ''level'', ''Nivel de llenado'', ''m³'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_tank_measurand'', ''variable'', TRUE, FALSE),
+          (''aq_cons.tank.status'', ''aq_cons.tank'', ''status'', ''Estado del depósito'', ''NULL'', ''{}'', ''{"NOAGG"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_tank_agg_hour'', ''aggregated'', TRUE, FALSE),
+          (''aq_cons.tank.electricity_consumption_agg'', ''aq_cons.tank'', ''electricity_consumption_agg'', ''Consumo de electricidad'', ''Kwh'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_tank_agg_hour'', ''aggregated'', TRUE, FALSE),
+          (''aq_cons.tank.electricity_consumption_forecast'', ''aq_cons.tank'', ''electricity_consumption_forecast'', ''Previsión de consumo de electricidad'', ''Kwh'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_tank_agg_hour'', ''aggregated'', TRUE, FALSE);
+          ;
       ',
       _tb_categories, _tb_entities, _tb_entities, _tb_variables
     );

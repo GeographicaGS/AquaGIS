@@ -70,6 +70,11 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_measurand_const := urbo_get_table_name(id_scope, 'aq_cons_const_measurand', iscarto);
     _tb_agg_hour_const := urbo_get_table_name(id_scope, 'aq_cons_const_agg_hour', iscarto);
 
+    _tb_catalogue_tank := urbo_get_table_name(id_scope, 'aq_cons_tank', iscarto);
+    _tb_lastdata_tank := urbo_get_table_name(id_scope, 'aq_cons_tank', iscarto, TRUE);
+    _tb_measurand_tank := urbo_get_table_name(id_scope, 'aq_cons_tank_measurand', iscarto);
+    _tb_agg_hour_tank := urbo_get_table_name(id_scope, 'aq_cons_tank_agg_hour', iscarto);
+
     _tb_aux_const_futu = urbo_get_table_name(id_scope, 'aq_aux_const_futu', iscarto);
     _tb_aux_leakage = urbo_get_table_name(id_scope, 'aq_aux_leak', iscarto);
     _tb_aux_leak_rules = urbo_get_table_name(id_scope, 'aq_aux_leak_rules', iscarto);
@@ -135,6 +140,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         id_entity character varying(64) NOT NULL,
         "TimeInstant" timestamp without time zone,
         %I geometry(MultiPolygon, 4326),
+        reftank character varying(64) NOT NULL,
         name text,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
@@ -145,6 +151,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         id_entity character varying(64) NOT NULL,
         "TimeInstant" timestamp without time zone,
         %I geometry(MultiPolygon, 4326),
+        reftank character varying(64) NOT NULL,
         usage text,
         name text,
         flow double precision,
@@ -300,6 +307,59 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
 
+
+      ------------------
+      ------ TANK ------
+      ------------------
+
+      -- CATALOGUE
+      CREATE TABLE IF NOT EXISTS %s (
+        id_entity character varying(64) NOT NULL,
+        "TimeInstant" timestamp without time zone,
+        %I geometry(Point, 4326),
+        location character varying,
+        capacity double precision,
+        min_level double precision,
+        max_level double precision,
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+      );
+
+      -- LASTDATA
+      CREATE TABLE IF NOT EXISTS %s (
+        id_entity character varying(64) NOT NULL,
+        "TimeInstant" timestamp without time zone,
+        %I geometry(Point, 4326),
+        location character varying,
+        capacity double precision,
+        min_level double precision,
+        max_level double precision,
+        status character varying,
+        level double precision,
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+      );
+
+      -- MEASURAND
+      CREATE TABLE IF NOT EXISTS %s (
+        id_entity character varying(64) NOT NULL,
+        "TimeInstant" timestamp without time zone,
+        level double precision,
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+      );
+
+      -- AGG HOURLY
+      CREATE TABLE IF NOT EXISTS %s (
+        id_entity character varying(64) NOT NULL,
+        "TimeInstant" timestamp without time zone,
+        status character varying,
+        electricity_consumption double precision,
+        electricity_consumption_forecast double precision,
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+      );
+
       ---------
       -- AUX --
       ---------
@@ -342,6 +402,9 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       _tb_catalogue_const, _geom_fld, _tb_lastdata_const, _geom_fld,
       _tb_measurand_const, _tb_agg_hour_const,
 
+      _tb_catalogue_tank, _geom_fld, _tb_lastdata_tank, _geom_fld,
+      _tb_measurand_tank, _tb_agg_hour_tank,
+
       _tb_aux_const_futu, _tb_aux_leakage, _tb_aux_leak_rules
     );
 
@@ -362,17 +425,31 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         ON %s USING btree (usage);
       CREATE INDEX IF NOT EXISTS %s_us_idx
         ON %s USING btree (usage);
+      CREATE INDEX IF NOT EXISTS %s_us_idx
+        ON %s USING btree (usage);
+      CREATE INDEX IF NOT EXISTS %s_us_idx
+        ON %s USING btree (usage);
       ',
       replace(_tb_lastdata_sector, '.', '_'), _tb_lastdata_sector,
       replace(_tb_measurand_sector, '.', '_'), _tb_measurand_sector,
       replace(_tb_lastdata_plot, '.', '_'), _tb_lastdata_plot,
       replace(_tb_measurand_plot, '.', '_'), _tb_measurand_plot,
       replace(_tb_catalogue_const, '.', '_'), _tb_catalogue_const,
-      replace(_tb_lastdata_const, '.', '_'), _tb_lastdata_const
+      replace(_tb_lastdata_const, '.', '_'), _tb_lastdata_const,
+      replace(_tb_catalogue_tank, '.', '_'), _tb_catalogue_tank,
+      replace(_tb_lastdata_tank, '.', '_'), _tb_lastdata_tank
     );
 
     -- TODO: for
     _id_entity_idx := format('
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
       CREATE INDEX IF NOT EXISTS %s_ent_idx
         ON %s USING btree (id_entity);
       CREATE INDEX IF NOT EXISTS %s_ent_idx
@@ -418,7 +495,11 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       replace(_tb_measurand_const, '.', '_'), _tb_measurand_const,
       replace(_tb_agg_hour_const, '.', '_'), _tb_agg_hour_const,
       replace(_tb_aux_const_futu, '.', '_'), _tb_aux_const_futu,
-      replace(_tb_aux_leakage, '.', '_'), _tb_aux_leakage
+      replace(_tb_aux_leakage, '.', '_'), _tb_aux_leakage,
+      replace(_tb_catalogue_tank, '.', '_'), _tb_catalogue_tank,
+      replace(_tb_lastdata_tank, '.', '_'), _tb_lastdata_tank,
+      replace(_tb_measurand_tank, '.', '_'), _tb_measurand_tank,
+      replace(_tb_agg_hour_tank, '.', '_'), _tb_agg_hour_tank
     );
 
     -- Those tables aren't created with an 'id' column, so...
