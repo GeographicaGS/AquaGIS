@@ -29,6 +29,7 @@
 const AqConsModel = require('./model.js');
 const express = require('express');
 const utils = require('../../utils.js');
+var _ = require('underscore');
 
 const router = express.Router();
 const log = utils.log();
@@ -48,5 +49,39 @@ router.get('/plot/:id/constructions',
       next(err);
     });
   });
+
+
+  router.post('/tank/:tank_id/plans',
+    function(req, res, next) {
+      var opts = {
+        scope: req.scope,
+        tank_id: req.params.tank_id,
+        time: req.body.time
+      };
+
+      var activations_time;
+      var aq_cons_model = new AqConsModel();
+
+      aq_cons_model.getTankActivationHours(opts)
+      .then(function(data) {
+        activations_time = data;
+        var emergency = false
+
+        if (_.some(_.map(activations_time, function(element) {return element['emergency']}))) {
+          emergency = true;
+        }
+
+        aq_cons_model.getPlansStatistics(opts, emergency)
+        .then(function(data) {
+          data['activations'] = activations_time
+
+          res.json(data)
+        });
+
+      })
+      .catch(function(err) {
+        next(err);
+      });
+    });
 
 module.exports = router;
