@@ -5,8 +5,11 @@ App.View.Widgets.Aq_cons.AlertsWidget = App.View.Widgets.Base.extend({
   initialize: function(options) {
     options = _.defaults(options,{
       title: function(items) {
+        let number = _.filter(items, function(item) {
+          return item.warning_level !== 0;
+        }).length;
         // Can be function or string and accept HTML
-        return '<strong>' + items.length + '</strong> ALERTAS DE CONSUMO';
+        return '<strong>' + number + '</strong> ALERTAS DE CONSUMO';
       },
       timeMode:'now',
       id_category: 'aq_cons',

@@ -30,6 +30,13 @@ App.View.Panels.Aq_cons.Master = App.View.Panels.Base.extend({
       timeMode:'now',
       titleLink: __('Previsión')
     });
+    this._widgets.push(new App.View.Widgets.Aq_cons.AlertsWidget({
+      id_scope: this.scopeModel.get('id'),
+      onclick: function(d) {
+        return App.router.navigate(this.scopeModel.get('id') + '/aq_cons/dashboard/leak', {trigger: true});
+      }.bind(this)
+    }));
+
     this._widgets.push(new App.View.WidgetDeviceMap({model: m}));
 
     this._widgets.push(new App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages({
