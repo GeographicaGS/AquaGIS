@@ -31,6 +31,10 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_lastdata_const text;
     _tb_measurand_const text;
     _tb_agg_hour_const text;
+    _tb_catalogue_tank text;
+    _tb_lastdata_tank text;
+    _tb_measurand_tank text;
+    _tb_agg_hour_tank text;
     _tb_aux_const_futu text;
     _tb_aux_leakage text;
     _tb_aux_leak_rules text;
