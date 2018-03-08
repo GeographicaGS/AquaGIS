@@ -105,6 +105,11 @@ BEGIN
 
           _leak_status := _leak_status::jsonb || format('{"%s":{"status":%s, "description":"%s"}}', _sector_data.id_entity, _rule.status, _rule_description)::jsonb;
         END IF;
+      ELSE
+        IF _leak_status->>_sector_data.id_entity IS NULL
+        THEN
+          _leak_status := _leak_status::jsonb || format('{"%s":{"status":%s, "description":null}}', _sector_data.id_entity, 0)::jsonb;
+        END IF;
       END IF;
     END LOOP;
   END LOOP;
@@ -114,7 +119,7 @@ BEGIN
     _q := format('
       UPDATE %s SET
           leak_status = %s,
-          leak_rule = ''%s''
+          leak_rule = %L
         WHERE id_entity = ''%s'';
       ',
       _t_aq_cons_sector_lastdata,
@@ -123,21 +128,24 @@ BEGIN
     );
     EXECUTE _q;
 
-    _q := format('
-      INSERT INTO %s
-          (id_entity, "TimeInstant", leak_status, leak_rule)
-        VALUES
-          (''%s'', ''%s'', %s, ''%s'')
-        ON CONFLICT (id_entity, "TimeInstant")
-            DO UPDATE SET
-              leak_status = %s,
-              leak_rule = ''%s'';
-      ',
-      _tb_leak_historic_sector,
-      _key, moment, _leak_status->_key->>'status', _leak_status->_key->>'description',
-      _leak_status->_key->>'status', _leak_status->_key->>'description'
-    );
-    EXECUTE _q;
+    IF (_leak_status->_key->>'status')::integer != 0
+    THEN
+      _q := format('
+        INSERT INTO %s
+            (id_entity, "TimeInstant", leak_status, leak_rule)
+          VALUES
+            (''%s'', ''%s'', %s, ''%s'')
+          ON CONFLICT (id_entity, "TimeInstant")
+              DO UPDATE SET
+                leak_status = %s,
+                leak_rule = ''%s'';
+        ',
+        _tb_leak_historic_sector,
+        _key, moment, _leak_status->_key->>'status', _leak_status->_key->>'description',
+        _leak_status->_key->>'status', _leak_status->_key->>'description'
+      );
+      EXECUTE _q;
+    END IF;
 
   END LOOP;
 

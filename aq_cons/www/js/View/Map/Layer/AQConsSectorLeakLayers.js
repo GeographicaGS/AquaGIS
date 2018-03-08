@@ -200,7 +200,7 @@ App.View.Map.Layer.Aq_cons.SectorLeakLayer = Backbone.View.extend({
         'minzoom': 15,
         'maxzoom': 17,
         'paint': {
-          'line-color': '#aaa',
+          'line-color': '#0278D1',
           'line-width': 1
         }
       }, {
@@ -210,7 +210,7 @@ App.View.Map.Layer.Aq_cons.SectorLeakLayer = Backbone.View.extend({
         'layout': {},
         'minzoom': 17,
         'paint': {
-          'line-color': '#aaa',
+          'line-color': '#0278D1',
           'line-width': 2
         }
       }, {
@@ -226,7 +226,7 @@ App.View.Map.Layer.Aq_cons.SectorLeakLayer = Backbone.View.extend({
             'property': 'height',
             'type': 'identity'
           },
-          'fill-extrusion-color': '#aaa'
+          'fill-extrusion-color': '#0278D1'
         }
       }
     ],
