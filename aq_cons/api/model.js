@@ -108,6 +108,7 @@ class AqConsModel extends PGSQLModel {
     });
   }
 
+  // TODO: https://github.com/GeographicaGS/AquaGIS/issues/125#issuecomment-370883175
   getPlansStatistics(opts, emergency) {
 
     var selector = `SELECT energy_consumption_opt_sum.kWh_used,

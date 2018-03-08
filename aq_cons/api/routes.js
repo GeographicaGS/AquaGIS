@@ -59,21 +59,21 @@ router.get('/plot/:id/constructions',
         time: req.body.time
       };
 
-      var activations_time;
-      var aq_cons_model = new AqConsModel();
+      var activationsTime;
+      var aqConsModel = new AqConsModel();
 
-      aq_cons_model.getTankActivationHours(opts)
+      aqConsModel.getTankActivationHours(opts)
       .then(function(data) {
-        activations_time = data;
+        activationsTime = data;
         var emergency = false
 
-        if (_.some(_.map(activations_time, function(element) {return element['emergency']}))) {
+        if (_.some(_.map(activationsTime, function(element) {return element['emergency']}))) {
           emergency = true;
         }
 
-        aq_cons_model.getPlansStatistics(opts, emergency)
+        aqConsModel.getPlansStatistics(opts, emergency)
         .then(function(data) {
-          data['activations'] = activations_time
+          data['activations'] = activationsTime
 
           res.json(data)
         });
