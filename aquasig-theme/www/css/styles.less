@@ -1,9 +1,9 @@
-@aquaGisPrimaryColor: #6EBAFF;
-@aquaGisSecondaryColor: #165288;
-@aquaGisAccentColor: #64B6D9;
+@aquasigPrimaryColor: #6EBAFF;
+@aquasigSecondaryColor: #165288;
+@aquasigAccentColor: #64B6D9;
 
-@aquaGisComplementColor: #FF9908;
-@aquaGisGreyDark: #55555d;
+@aquasigComplementColor: #FF9908;
+@aquasigGreyDark: #55555d;
 
 
 body[layout='aquasig'] {
@@ -12,7 +12,7 @@ body[layout='aquasig'] {
   }
 
   .login {
-    background-color: @aquaGisSecondaryColor;
+    background-color: @aquasigSecondaryColor;
 
     &.error {
       form .content input[type=password]:-webkit-autofill,
@@ -23,7 +23,7 @@ body[layout='aquasig'] {
 
     form {
 
-      background-color: @aquaGisPrimaryColor;
+      background-color: @aquasigPrimaryColor;
 
       .header {
 
@@ -55,7 +55,7 @@ body[layout='aquasig'] {
         }
 
         input {
-          color: @aquaGisSecondaryColor;
+          color: @aquasigSecondaryColor;
         }
 
         input[type=text],
@@ -64,7 +64,7 @@ body[layout='aquasig'] {
           border: 1px solid #C5E3FF;
 
           &:-webkit-autofill {
-            -webkit-text-fill-color: @aquaGisSecondaryColor;
+            -webkit-text-fill-color: @aquasigSecondaryColor;
           }
 
           &::-webkit-input-placeholder,
@@ -73,7 +73,7 @@ body[layout='aquasig'] {
           &:-ms-input-placeholder,
           &::-ms-input-placeholder,
           &::placeholder {
-            color: @aquaGisSecondaryColor;
+            color: @aquasigSecondaryColor;
           }
         }
 
@@ -89,18 +89,18 @@ body[layout='aquasig'] {
   .genericPopup {
 
     li {
-      color: @aquaGisSecondaryColor;
+      color: @aquasigSecondaryColor;
       font-size: 14px;
       line-height: 18px;
 
       &.close_sesion {
-        color: @aquaGisComplementColor;
+        color: @aquasigComplementColor;
       }
     }
   }
 
   header {
-    background-color: @aquaGisPrimaryColor;
+    background-color: @aquasigPrimaryColor;
 
     & > a {
       margin-left: 24px;
@@ -113,7 +113,7 @@ body[layout='aquasig'] {
       .admin_popup {
 
         span.icon {
-          background-color: @aquaGisPrimaryColor;
+          background-color: @aquasigPrimaryColor;
         }
       }
 
@@ -187,18 +187,18 @@ body[layout='aquasig'] {
 
     &.active {
       background-image: url(/img/SC_ic_menu_panel-cerrar.svg);
-        background-color: @aquaGisSecondaryColor;
+        background-color: @aquasigSecondaryColor;
     }
   }
 
   nav.navbar .menuPanel,
   nav.navbar a.navElement.menu:hover {
-    background-color: @aquaGisSecondaryColor;
+    background-color: @aquasigSecondaryColor;
   }
 
   nav {
     &.navbar > ul > li {
-      color: @aquaGisSecondaryColor;
+      color: @aquasigSecondaryColor;
     }
     &.navbar a.navElement.back {
       background-image: url(/verticals/aquasig-theme/img/icons/positive/SC_flecha_atras.svg);
@@ -209,48 +209,48 @@ body[layout='aquasig'] {
 
     span, div {
       .font();
-      color: @aquaGisGreyDark;
+      color: @aquasigGreyDark;
       font-size: 12px;
       line-height: 15px;
 
       a {
-        color: @aquaGisAccentColor;
+        color: @aquasigAccentColor;
 
         &.black {
-          color: @aquaGisGreyDark;
+          color: @aquasigGreyDark;
         }
       }
     }
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: @aquaGisSecondaryColor;
+    background-color: @aquasigSecondaryColor;
 
     &:hover {
-      background-color: @aquaGisPrimaryColor;
+      background-color: @aquasigPrimaryColor;
     }
   }
 
   .popup_widget {
     &:not(:hover):after {
-      border-color: @aquaGisPrimaryColor transparent transparent;
+      border-color: @aquasigPrimaryColor transparent transparent;
     }
     &:hover{
       &:after{
         border-width: 0 4px 7px;
-        border-color: transparent transparent @aquaGisPrimaryColor;
+        border-color: transparent transparent @aquasigPrimaryColor;
       }
     }
   }
 
   .title_page, h6 {
-    color: @aquaGisSecondaryColor;
+    color: @aquasigSecondaryColor;
   }
 
   .loading {
     svg {
       path {
-        stroke: @aquaGisPrimaryColor;
+        stroke: @aquasigPrimaryColor;
       }
     }
   }
@@ -260,7 +260,7 @@ body[layout='aquasig'] {
   }
 
   .widget {
-    background-color: @aquaGisSecondaryColor;
+    background-color: @aquasigSecondaryColor;
     border: 2px solid transparent;
 
     &.bgWhite {
@@ -273,7 +273,7 @@ body[layout='aquasig'] {
     }
     
     .viewMore {
-      background-color: @aquaGisAccentColor;
+      background-color: @aquasigAccentColor;
     }
 
     .multipleVariableWidget {
@@ -339,19 +339,19 @@ body[layout='aquasig'] {
 
     &.link {
       &:before {
-        border-color: transparent @aquaGisAccentColor;
+        border-color: transparent @aquasigAccentColor;
       }
 
       &:hover {
         &.shadow,
         &:not(.shadow) {
-          border: 2px solid @aquaGisAccentColor;
+          border: 2px solid @aquasigAccentColor;
         }
 
         .widget_header .title,
         &.map_device .widget_header > span,
         &.reduced .widget_header > h4 {
-          color: @aquaGisAccentColor;
+          color: @aquasigAccentColor;
         }
       }
     }
@@ -379,7 +379,7 @@ body[layout='aquasig'] {
   }
 
   .split_vertical .split_handler:before {
-    background: url(/verticals/aquasig-theme/img/icons/positive/SM_desplazar.svg) center no-repeat @aquaGisPrimaryColor;
+    background: url(/verticals/aquasig-theme/img/icons/positive/SM_desplazar.svg) center no-repeat @aquasigPrimaryColor;
     background-size: contain;
   }
 
@@ -388,20 +388,20 @@ body[layout='aquasig'] {
   .mapLegend .legendContainer .legendLink,
   .linkLeft,
   .linkRight {
-    color: @aquaGisPrimaryColor;
+    color: @aquasigPrimaryColor;
   }
 
   #spatial_filter_map .button_filter.active {
-    background-color: @aquaGisAccentColor;
+    background-color: @aquasigAccentColor;
     background-image: url(/verticals/aquasig-theme/img/icons/positive/SC_ic_boundingbox-on.svg);
   }
 
   #ui-datepicker-div .ui-datepicker-next, #ui-datepicker-div .ui-datepicker-prev {
-    background-color: @aquaGisPrimaryColor;
+    background-color: @aquasigPrimaryColor;
   }
 
   #category_list .content .box {
-    background-color: @aquaGisSecondaryColor;
+    background-color: @aquasigSecondaryColor;
   }
 
   #scope_list .content .box {
@@ -413,7 +413,7 @@ body[layout='aquasig'] {
 
     .header {
       span {
-        color: @aquaGisSecondaryColor;
+        color: @aquasigSecondaryColor;
       }
     }
   }
@@ -424,7 +424,7 @@ body[layout='aquasig'] {
         .content_top {
           .counter {
             .font(bold);
-            color: @aquaGisPrimaryColor;
+            color: @aquasigPrimaryColor;
 
             &:before {
               background-image: url(/verticals/aquasig-theme/img/icons/positive/SC_ic_ambito-contador.svg)
@@ -440,7 +440,7 @@ body[layout='aquasig'] {
   .admin .box ul.list li .containerEditAndDelete,
   .admin .box ul.list li .onlyOnHover,
   .containerEditAndDelete .editUserElementList {
-    color: @aquaGisPrimaryColor;
+    color: @aquasigPrimaryColor;
 
     &.remove {
       color: #f30;
@@ -449,14 +449,14 @@ body[layout='aquasig'] {
 
   .button {
     &:not(.empty) {
-      background-color: @aquaGisPrimaryColor;
+      background-color: @aquasigPrimaryColor;
     }
   }
 
   .mapboxgl-popup-content{
     padding: 0 !important;
     padding-right: 10px !important;
-    background-color: @aquaGisSecondaryColor;
+    background-color: @aquasigSecondaryColor;
   }
   .mapboxgl-popup.mapboxgl-popup-anchor-bottom,
   .mapboxgl-popup.mapboxgl-popup-anchor-top,
@@ -465,15 +465,15 @@ body[layout='aquasig'] {
   .mapboxgl-popup-anchor-top-right,
   .mapboxgl-popup-anchor-bottom-right {
     .mapboxgl-popup-tip {
-      border-top-color: @aquaGisSecondaryColor;
-      border-bottom-color: @aquaGisSecondaryColor;
+      border-top-color: @aquasigSecondaryColor;
+      border-bottom-color: @aquasigSecondaryColor;
     }
   }
   .mapboxgl-popup.mapboxgl-popup-anchor-right,
   .mapboxgl-popup.mapboxgl-popup-anchor-left {
     .mapboxgl-popup-tip {
-      border-left-color: @aquaGisSecondaryColor;
-      border-right-color: @aquaGisSecondaryColor;
+      border-left-color: @aquasigSecondaryColor;
+      border-right-color: @aquasigSecondaryColor;
     }
   }
 
