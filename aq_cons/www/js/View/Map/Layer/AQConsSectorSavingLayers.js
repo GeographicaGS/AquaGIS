@@ -1,13 +1,13 @@
 
 App.View.Map.Layer.Aq_cons.SectorSavingLayer = Backbone.View.extend({
-  iconsFolder: '/verticals/aquagis-theme/img/icons/map',
+  iconsFolder: '/verticals/aquasig-theme/img/icons/map',
 
   initialize: function(options, payload, map) {
     this._payload = payload;
 
     // Modelos
     let sector = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.sector'});
-    let sensor = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.sensor'});
+    let sensor = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.tank'});
     
     sensor.parse = function(e) {
       _.each(e.features, function(f,i) {

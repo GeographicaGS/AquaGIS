@@ -35,9 +35,8 @@ App.View.Panels.Aq_cons.Saving = App.View.Panels.Splitted.extend({
       scope: this.scopeModel.get('id'),
       type: 'historic'
     }).render();
-
     this.listenTo(this._mapView.mapChanges,'change:clickedSector', this._openDetails);
-
+    
     this.subviews.push(this._mapView);
   },
 
