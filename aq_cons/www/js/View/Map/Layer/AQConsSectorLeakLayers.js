@@ -1,6 +1,6 @@
 
 App.View.Map.Layer.Aq_cons.SectorLeakLayer = Backbone.View.extend({
-  iconsFolder: '/verticals/aquagis-theme/img/icons/map',
+  iconsFolder: '/verticals/aquasig-theme/img/icons/map',
 
   initialize: function(options, payload, map) {
     this._payload = payload;

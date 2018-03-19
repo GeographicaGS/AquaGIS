@@ -3,16 +3,16 @@
 App.View.Panels.Aq_cons.SavingMap = App.View.Panels.Aq_cons.CurrentMap.extend({
 
   dataLoaded: function(e) {
-    setTimeout(function() {
-      if(e.isSourceLoaded && e.sourceId === 'sensors_datasource') {
-        let defaultSelected = _.find(e.source.data.features, function(f) { 
-          return f.properties.index === 0
-        });
+    if(e.isSourceLoaded && e.sourceId === 'sensors_datasource') {
+      let defaultSelected = _.find(e.source.data.features, function(f) { 
+        return f.properties.index === 0
+      });
+      if(defaultSelected) {
         this.mapChanges.set('clickedSector', defaultSelected);
         this._map
-          .off('sourcedata', this.dataLoaded.bind(this));
+          .off('dataloading', this.dataLoaded);
       }
-    }.bind(this),200)
+    }
   },
 
   _onMapLoaded: function() {
