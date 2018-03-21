@@ -110,7 +110,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_arr_agg := array_cat(_tb_arr_vars,
       ARRAY[
         _tb_agg_hour_sector, _tb_agg_hour_plot, _tb_agg_hour_const, _tb_aux_const_futu,
-        _tb_aux_leakage, _tb_leak_historic_sector, _tb_aux_energy_prices
+        _tb_aux_leakage, _tb_leak_historic_sector,
         _tb_plan_tank_no_opt, _tb_plan_tank_opt, _tb_plan_tank_emergency
       ]);
 
