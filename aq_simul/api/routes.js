@@ -46,7 +46,7 @@ var timeValidator = function(req, res, next) {
   return next();
 }
 
-router.post('/simulation/count'), bboxValidator, function (req, res, next) {
+router.post('/simulation/count', bboxValidator, function (req, res, next) {
   var opts = {
     scope: req.scope,
     bbox: req.body.filters.bbox
@@ -60,7 +60,7 @@ router.post('/simulation/count'), bboxValidator, function (req, res, next) {
     next(error);
   });
 
-};
+});
 
 router.post('/map/historic', timeValidator, function (req, res, next) {
   var opts = {

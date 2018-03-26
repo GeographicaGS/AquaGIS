@@ -19,7 +19,8 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_simul(
   $$
   BEGIN
 
-    # DO NOTHING
+    -- DO NOTHING
+    -- MUST CREATE STATIC TABLES
 
   END;
   $$ LANGUAGE plpgsql;

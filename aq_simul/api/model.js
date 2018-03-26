@@ -26,6 +26,7 @@
 
 'use strict';
 
+const MetadataInstanceModel = require('../../models/metadatainstancemodel.js');
 const GeoJSONFormatter = require('../../protools/geojsonformatter.js');
 const PGSQLModel = require('../../models/pgsqlmodel.js');
 const utils = require('../../utils.js');
@@ -43,41 +44,71 @@ class AqSimulModel extends PGSQLModel {
   }
 
   getSimulationCount(opts) {
+
     if (opts.bbox) {
-      bbox_filter = 'AND b.position && ST_MakeEnvelope('+opts.bbox+', 4326)';
+      var bbox_filter = 'AND (a.position && ST_MakeEnvelope('+opts.bbox+', 4326) OR a.position IS NULL)';
     }
 
-    let sql = `
-      SELECT type_name,
-        count(type_name),
-        (SELECT array_to_json(array_agg(DATA)) AS ROWS
-         FROM
-             ( SELECT a.type_id,
-                      a.type_value,
-                      c.type_parameter,
-                      count(a.type_id)
-              FROM ${opts.scope}.aq_cons_const_simulation a,
-                   ${opts.scope}.aq_cata_const_type c
-              WHERE a.type_name=b.type_name
-                  AND a.type_name=c.type_name
-                  AND a.type_value=c.type_value
-              GROUP BY a.type_id,
-                       a.type_value,
-                       c.type_parameter
-              ORDER BY a.type_id ) AS DATA)
-    FROM ${opts.scope}.aq_cons_const_simulation b
-    WHERE TRUE ${bbox_filter}
-    GROUP BY type_name
-    ORDER BY type_name ;
+    let sql1 = `
+      SELECT b.type_name, COUNT(a.type_name)
+      FROM ${opts.scope}.aq_cata_const_simulation a
+      RIGHT JOIN ${opts.scope}.aq_cata_const_type b 
+      ON a.type_id=b.type_id
+      AND a.type_name=b.type_name
+      GROUP BY b.type_name;
     `;
 
-    return this.promise_query(sql)
-    .then(function(data) {
-      return Promise.resolve(data);
-    })
+    let sql2 = `
+      SELECT b.type_id,
+             b.type_value,
+             b.type_parameter,
+             b.type_name,
+             COUNT(a.type_id)
+      FROM ${opts.scope}.aq_cata_const_simulation a
+      RIGHT JOIN ${opts.scope}.aq_cata_const_type b
+      ON a.type_id=b.type_id
+      AND a.type_name=b.type_name
+      WHERE TRUE ${bbox_filter}
+      GROUP BY b.type_id,
+               b.type_value,
+               b.type_parameter,
+               b.type_name;
+    `;
 
-    .catch(function(err) {
-      return Promise.reject(err);
+    var parent = this;
+    return this.promise_query(sql1)
+    .then(function (data1) {
+      return parent.promise_query(sql2)
+      .then(function (data2) {
+        var classified = {};
+        for (var i = 0; i < data2.rows.length; i++) {
+          if (Object.keys(classified).includes(data2.rows[i].type_name)) {
+            var key = data2.rows[i].type_name;
+            delete data2.rows[i].type_name;
+            classified[key].push(data2.rows[i]);
+          } else {
+            var key = data2.rows[i].type_name;
+            delete data2.rows[i].type_name;
+            classified[key] = [data2.rows[i]];
+          }
+        }
+
+        var response = []
+        for (var i = 0; i < data1.rows.length; i++) {
+          var type = {
+            'type_name': data1.rows[i].type_name,
+            'count' : data1.rows[i].count,
+            'rows' : classified[data1.rows[i].type_name]
+          };
+          response.push(type);
+        }
+
+        return Promise.resolve(response);
+      }).catch(function(err2) {
+        return Promise.reject(err2);
+      });
+    }).catch(function(err1) {
+      return Promise.reject(err1);
     });
 
   }
@@ -87,14 +118,14 @@ class AqSimulModel extends PGSQLModel {
     let sql = `
     SELECT agg.id_entity,
        ST_AsGeoJSON(cat.position) AS geometry,
-       SUM(consumption),
+       SUM(consumption) AS consumption,
        calibre,
        tipo,
        n_personas
     FROM ${opts.scope}.aq_cons_plot_agg_hour agg
-    INNER JOIN ${opts.scope}.aq_cons_plot_simulation sim ON agg.id_entity=sim.id_entity
+    INNER JOIN ${opts.scope}.aq_cata_plot_simulation sim ON agg.id_entity=sim.id_entity
     INNER JOIN ${opts.scope}.aq_cons_plot cat ON agg.id_entity=cat.id_entity
-    WHERE agg."TimeInstant" >= ${opts.start} AND agg."TimeInstant" < ${opts.finish}
+    WHERE agg."TimeInstant" >= '${opts.start}'::timestamp AND agg."TimeInstant" < '${opts.finish}'::timestamp
     GROUP BY agg.id_entity,
              cat.position,
              calibre,
