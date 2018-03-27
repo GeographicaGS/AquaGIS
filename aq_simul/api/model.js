@@ -49,7 +49,7 @@ class AqSimulModel extends PGSQLModel {
       var bbox_filter = 'AND (a.position && ST_MakeEnvelope('+opts.bbox+', 4326) OR a.position IS NULL)';
     }
 
-    let sql1 = `
+    let sql_1 = `
       SELECT b.type_name, COUNT(a.type_name)
       FROM ${opts.scope}.aq_cata_const_simulation a
       RIGHT JOIN ${opts.scope}.aq_cata_const_type b 
@@ -58,7 +58,7 @@ class AqSimulModel extends PGSQLModel {
       GROUP BY b.type_name;
     `;
 
-    let sql2 = `
+    let sql_2 = `
       SELECT b.type_id,
              b.type_value,
              b.type_parameter,
@@ -75,40 +75,37 @@ class AqSimulModel extends PGSQLModel {
                b.type_name;
     `;
 
-    var parent = this;
-    return this.promise_query(sql1)
-    .then(function (data1) {
-      return parent.promise_query(sql2)
-      .then(function (data2) {
-        var classified = {};
-        for (var i = 0; i < data2.rows.length; i++) {
-          if (Object.keys(classified).includes(data2.rows[i].type_name)) {
-            var key = data2.rows[i].type_name;
-            delete data2.rows[i].type_name;
-            classified[key].push(data2.rows[i]);
+    var promises = [this.promise_query(sql_1), this.promise_query(sql_2)];
+    return Promise.all(promises)
+    .then((data) => {
+
+      var classified = {};
+        for (var i = 0; i < data[1].rows.length; i++) {
+          if (Object.keys(classified).includes(data[1].rows[i].type_name)) {
+            var key = data[1].rows[i].type_name;
+            delete data[1].rows[i].type_name;
+            classified[key].push(data[1].rows[i]);
           } else {
-            var key = data2.rows[i].type_name;
-            delete data2.rows[i].type_name;
-            classified[key] = [data2.rows[i]];
+            var key = data[1].rows[i].type_name;
+            delete data[1].rows[i].type_name;
+            classified[key] = [data[1].rows[i]];
           }
         }
 
-        var response = []
-        for (var i = 0; i < data1.rows.length; i++) {
-          var type = {
-            'type_name': data1.rows[i].type_name,
-            'count' : data1.rows[i].count,
-            'rows' : classified[data1.rows[i].type_name]
-          };
-          response.push(type);
-        }
+      var response = []
+      for (var i = 0; i < data[0].rows.length; i++) {
+        var type = {
+          'type_name': data[0].rows[i].type_name,
+          'count' : data[0].rows[i].count,
+          'rows' : classified[data[0].rows[i].type_name]
+        };
+        response.push(type);
+      }
 
-        return Promise.resolve(response);
-      }).catch(function(err2) {
-        return Promise.reject(err2);
-      });
-    }).catch(function(err1) {
-      return Promise.reject(err1);
+      return Promise.resolve(response);
+
+    }).catch(function(err) {
+      return Promise.reject(err);
     });
 
   }
