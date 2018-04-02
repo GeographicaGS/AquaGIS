@@ -30,14 +30,14 @@ CREATE OR REPLACE FUNCTION urbo_createmetadata_aq_simul(
       INSERT INTO %s
           (id_category, category_name, nodata, config)
         VALUES
-          (''aq_simul'', ''Simulación'', FALSE, ''{"carto": {"account": "urbo-default"}}'');
+          (''aq_simul'', ''Escenarios futuros'', FALSE, ''{"carto": {"account": "urbo-default"}}'');
 
       -- STATIC ENTITIES
       INSERT INTO %s
           (id_entity, entity_name, id_category, table_name, mandatory, editable)
         VALUES
-          (''aq_cata.plot_simulation'', ''Simulación de parcelas'', ''aq_simul'', ''aq_cata_plot_simulation'', FALSE, FALSE),
-          (''aq_cata.const_simulation'', ''Simulación de construcciones'', ''aq_simul'', ''aq_cata_const_simulation'', FALSE, FALSE),
+          (''aq_cata.plot_simulation'', ''Escenarios futuros de parcelas'', ''aq_simul'', ''aq_cata_plot_simulation'', FALSE, FALSE),
+          (''aq_cata.const_simulation'', ''Escenarios futuros de construcciones'', ''aq_simul'', ''aq_cata_const_simulation'', FALSE, FALSE),
           (''aq_cata.const_type'', ''Tipos de contrucciones'', ''aq_simul'', ''aq_cata_const_type'', FALSE, FALSE);
 
       -- STATIC VARIABLES
