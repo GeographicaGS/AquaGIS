@@ -483,19 +483,13 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         ON %s USING btree (usage);
       CREATE INDEX IF NOT EXISTS %s_us_idx
         ON %s USING btree (usage);
-      CREATE INDEX IF NOT EXISTS %s_us_idx
-        ON %s USING btree (usage);
-      CREATE INDEX IF NOT EXISTS %s_us_idx
-        ON %s USING btree (usage);
       ',
       replace(_tb_lastdata_sector, '.', '_'), _tb_lastdata_sector,
       replace(_tb_measurand_sector, '.', '_'), _tb_measurand_sector,
       replace(_tb_lastdata_plot, '.', '_'), _tb_lastdata_plot,
       replace(_tb_measurand_plot, '.', '_'), _tb_measurand_plot,
       replace(_tb_catalogue_const, '.', '_'), _tb_catalogue_const,
-      replace(_tb_lastdata_const, '.', '_'), _tb_lastdata_const,
-      replace(_tb_catalogue_tank, '.', '_'), _tb_catalogue_tank,
-      replace(_tb_lastdata_tank, '.', '_'), _tb_lastdata_tank
+      replace(_tb_lastdata_const, '.', '_'), _tb_lastdata_const
     );
 
     -- TODO: for
