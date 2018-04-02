@@ -45,9 +45,7 @@ class AqSimulModel extends PGSQLModel {
 
   getSimulationCount(opts) {
 
-    if (opts.bbox) {
-      var bbox_filter = 'AND (a.position && ST_MakeEnvelope('+opts.bbox+', 4326) OR a.position IS NULL)';
-    }
+    var bbox_filter = opts.bbox ? `AND (a.position && ST_MakeEnvelope('${opts.bbox}', 4326) OR a.position IS NULL)` : '';
 
     let sql_1 = `
       SELECT b.type_name, COUNT(a.type_name)
@@ -113,22 +111,22 @@ class AqSimulModel extends PGSQLModel {
   getMap(opts) {
 
     let sql = `
-    SELECT agg.id_entity,
-       ST_AsGeoJSON(cat.position) AS geometry,
-       SUM(consumption) AS consumption,
-       calibre,
-       tipo,
-       n_personas
-    FROM ${opts.scope}.aq_cons_plot_agg_hour agg
-    INNER JOIN ${opts.scope}.aq_cata_plot_simulation sim ON agg.id_entity=sim.id_entity
-    INNER JOIN ${opts.scope}.aq_cons_plot cat ON agg.id_entity=cat.id_entity
-    WHERE agg."TimeInstant" >= '${opts.start}'::timestamp AND agg."TimeInstant" < '${opts.finish}'::timestamp
-    GROUP BY agg.id_entity,
-             cat.position,
-             calibre,
-             tipo,
-             n_personas
-    ORDER BY id_entity;
+    SELECT Q2.id_entity, geometry, consumption, calibre, tipo, n_personas FROM
+    ( SELECT id_entity, ST_AsGeoJSON(position) AS geometry
+      FROM ${opts.scope}.aq_cons_plot) Q1
+    LEFT JOIN
+    ( SELECT id_entity,
+             sum(consumption) as consumption
+     FROM ${opts.scope}.aq_cons_plot_agg_hour
+     WHERE "TimeInstant" >= '${opts.start}'::TIMESTAMP
+         AND "TimeInstant" < '${opts.finish}'::TIMESTAMP
+     GROUP BY id_entity) Q2 ON Q1.id_entity = Q2.id_entity
+    LEFT JOIN
+    (SELECT id_entity,
+            calibre,
+            tipo,
+            n_personas
+     FROM ${opts.scope}.aq_cata_plot_simulation) Q3 ON Q2.id_entity = Q3.id_entity;
     `;
 
     return this.promise_query(sql)
