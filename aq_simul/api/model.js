@@ -45,9 +45,7 @@ class AqSimulModel extends PGSQLModel {
 
   getSimulationCount(opts) {
 
-    if (opts.bbox) {
-      var bbox_filter = 'AND (a.position && ST_MakeEnvelope('+opts.bbox+', 4326) OR a.position IS NULL)';
-    }
+    var bbox_filter = opts.bbox ? `AND (a.position && ST_MakeEnvelope('${opts.bbox}', 4326) OR a.position IS NULL)` : '';
 
     let sql_1 = `
       SELECT b.type_name, COUNT(a.type_name)
