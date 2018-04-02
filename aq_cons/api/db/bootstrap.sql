@@ -16,5 +16,3 @@
 \ir common/ddl/urbo_createtables_aq_cons.sql
 \ir common/dml/urbo_createmetadata_aq_cons.sql
 
--- Energy Price Simulations
-\ir common/urbo_aq_cons_energy_prices_insert.sql
