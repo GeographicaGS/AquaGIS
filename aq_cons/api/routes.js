@@ -30,58 +30,56 @@ const AqConsModel = require('./model.js');
 const express = require('express');
 const utils = require('../../utils.js');
 var _ = require('underscore');
-
+var check = require('./check.js');
 const router = express.Router();
 const log = utils.log();
 
-router.get('/plot/:id/constructions',
-  function(req, res, next) {
-    var opts = {
-      scope: req.scope,
-      plot: req.params.id
-    };
+router.get('/plot/:id_plot/constructions', check.plotConstructionsValidator, function(req, res, next) {
+  var opts = {
+    scope: req.scope,
+    id_plot: req.params.id_plot
+  };
 
-    new AqConsModel().getPlotConstructions(opts)
-    .then(function(data) {
-      res.json(data)
-    })
-    .catch(function(err) {
-      next(err);
-    });
+  new AqConsModel().getPlotConstructions(opts)
+  .then(function(data) {
+    res.json(data)
+  })
+  .catch(function(err) {
+    next(err);
   });
+});
 
 
-  router.post('/tank/:tank_id/plans',
-    function(req, res, next) {
-      var opts = {
-        scope: req.scope,
-        tank_id: req.params.tank_id,
-        time: req.body.time
-      };
+router.post('/tank/:tank_id/plans', check.tankPlansValidator, function(req, res, next) {
+  var opts = {
+    scope: req.scope,
+    id_entity: req.params.tank_id,
+    time: req.body.time
+  };
 
-      var activationsTime;
-      var aqConsModel = new AqConsModel();
+  var activationsTime;
+  var aqConsModel = new AqConsModel();
 
-      aqConsModel.getTankActivationHours(opts)
-      .then(function(data) {
-        activationsTime = data;
-        var emergency = false
+  aqConsModel.getTankActivationHours(opts)
+  .then(function(data) {
+    activationsTime = data;
+    var emergency = false
 
-        if (_.some(_.map(activationsTime, function(element) {return element['emergency']}))) {
-          emergency = true;
-        }
+    if (_.some(_.map(activationsTime, function(element) {return element['emergency']}))) {
+      emergency = true;
+    }
 
-        aqConsModel.getPlansStatistics(opts, emergency)
-        .then(function(data) {
-          data['activations'] = activationsTime
+    aqConsModel.getPlansStatistics(opts, emergency)
+    .then(function(data) {
+      data['activations'] = activationsTime
 
-          res.json(data)
-        });
-
-      })
-      .catch(function(err) {
-        next(err);
-      });
+      res.json(data)
     });
+
+  })
+  .catch(function(err) {
+    next(err);
+  });
+});
 
 module.exports = router;
