@@ -10,12 +10,10 @@
     "ngsiVersion": "1.0"
   },
   "exports": {
-    "leakage": "0 0 6-17 * * 1",
-    "NoLeakageMonday": "0 0 0-5,18-23 * * 1",
-    "NoLeakageRestWeek": "0 0 * * * 0,2-6",
-    "anomaly": "0 0 12-20 * * 4",
-    "NoAnomalyThursday": "0 0 0-11,21-23 * * 4",
-    "NoAnomalyRestWeek": "0 0 * * * 0,1-3,5-6",
+    "leakage": "0 * 7-19 * * *",
+    "no-leakage": "0 * 0-6,20-23 * * *",
+    "anomaly": "0 * 7-19 * * *",
+    "no-anomaly": "0 * 0-6,20-23 * * *",
     "NormalBehaviour": "0 0 * * * *",
     "now": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})"
   },
@@ -35,12 +33,7 @@
           "name": "dateModified",
           "type": "DateTime",
           "value": "import(now)",
-          "schedule": "import(NoLeakageMonday)"
-        }, {
-          "name": "dateModified",
-          "type": "DateTime",
-          "value": "import(now)",
-          "schedule": "import(NoLeakageRestWeek)"
+          "schedule": "import(no-leakage)"
         }, {
           "name": "flowPerc",
           "type": "Number",
@@ -50,12 +43,7 @@
           "name": "flowPerc",
           "type": "Number",
           "value": "0",
-          "schedule": "import(NoLeakageMonday)"
-        }, {
-          "name": "flowPerc",
-          "type": "Number",
-          "value": "0",
-          "schedule": "import(NoLeakageRestWeek)"
+          "schedule": "import(no-leakage)"
         }, {
           "name": "pressurePerc",
           "type": "Number",
@@ -65,12 +53,7 @@
           "name": "pressurePerc",
           "type": "Number",
           "value": "0",
-          "schedule": "import(NoLeakageMonday)"
-        }, {
-          "name": "pressurePerc",
-          "type": "Number",
-          "value": "0",
-          "schedule": "import(NoLeakageRestWeek)"
+          "schedule": "import(no-leakage)"
         }, {
           "name": "performance",
           "type": "Number",
@@ -80,12 +63,7 @@
           "name": "performance",
           "type": "Number",
           "value": "20",
-          "schedule": "import(NoLeakageMonday)"
-        }, {
-          "name": "performance",
-          "type": "Number",
-          "value": "20",
-          "schedule": "import(NoLeakageRestWeek)"
+          "schedule": "import(no-leakage)"
         }
       ]
     }, {
@@ -103,12 +81,7 @@
           "name": "dateModified",
           "type": "DateTime",
           "value": "import(now)",
-          "schedule": "import(NoAnomalyThursday)"
-        }, {
-          "name": "dateModified",
-          "type": "DateTime",
-          "value": "import(now)",
-          "schedule": "import(NoAnomalyRestWeek)"
+          "schedule": "import(no-anomaly)"
         }, {
           "name": "flowPerc",
           "type": "Number",
@@ -118,12 +91,7 @@
           "name": "flowPerc",
           "type": "Number",
           "value": "0",
-          "schedule": "import(NoAnomalyThursday)"
-        }, {
-          "name": "flowPerc",
-          "type": "Number",
-          "value": "0",
-          "schedule": "import(NoAnomalyRestWeek)"
+          "schedule": "import(no-anomaly)"
         }, {
           "name": "pressurePerc",
           "type": "Number",
@@ -133,12 +101,7 @@
           "name": "pressurePerc",
           "type": "Number",
           "value": "0",
-          "schedule": "import(NoAnomalyThursday)"
-        }, {
-          "name": "pressurePerc",
-          "type": "Number",
-          "value": "0",
-          "schedule": "import(NoAnomalyRestWeek)"
+          "schedule": "import(no-anomaly)"
         }, {
           "name": "performance",
           "type": "Number",
@@ -148,12 +111,7 @@
           "name": "performance",
           "type": "Number",
           "value": "20",
-          "schedule": "import(NoAnomalyThursday)"
-        }, {
-          "name": "performance",
-          "type": "Number",
-          "value": "20",
-          "schedule": "import(NoAnomalyRestWeek)"
+          "schedule": "import(no-anomaly)"
         }
       ]
     }, {
