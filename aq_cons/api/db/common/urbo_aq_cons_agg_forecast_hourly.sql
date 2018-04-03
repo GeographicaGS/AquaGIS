@@ -88,7 +88,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_forecast_hourly(
       INSERT INTO %s
         (id_entity, "TimeInstant", forecast, pressure_forecast)
       SELECT q1.refsector AS id_entity, ''%s''::timestamp + interval ''14 days'' AS "TimeInstant",
-          SUM(q0.forecast) AS forecast, AVG(q0.pressure_forecast) AS pressure_forecast
+          SUM(q0.forecast) + (SUM(q0.forecast) / 100 * AVG(q2.performance)) AS forecast, AVG(q0.pressure_forecast) AS pressure_forecast
         FROM (
           SELECT id_entity, "TimeInstant", forecast, pressure_forecast
             FROM %s
@@ -100,6 +100,14 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_forecast_hourly(
               FROM %s
           ) q1
             ON q0.id_entity = q1.id_entity
+            INNER JOIN (
+              SELECT id_entity, AVG(performance) AS performance
+                FROM %s
+                WHERE "TimeInstant" >= ''%s''::timestamp + interval ''14 days''
+              AND "TimeInstant" < ''%s''::timestamp + interval ''14 days'' + interval ''1 hour''
+                GROUP BY id_entity
+            ) q2
+            ON q1.refsector = q2.id_entity
         GROUP BY q1.refsector
       %s;
       ',
@@ -107,7 +115,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_forecast_hourly(
 
       _t_plot_ag, moment, _t_const_ag, moment, moment, _t_const_ld, _on_conflict,
 
-      _t_sector_ag, moment, _t_plot_ag, moment, moment, _t_plot_ld, _on_conflict
+      _t_sector_ag, moment, _t_plot_ag, moment, moment, _t_plot_ld, _t_aux_lk, moment, moment, on_conflict
     );
 
     EXECUTE _q;
