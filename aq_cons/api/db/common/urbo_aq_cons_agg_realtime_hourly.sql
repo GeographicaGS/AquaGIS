@@ -89,7 +89,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_realtime_hourly(
     _q_sector := format('
       -- SECTOR
       SELECT q1.refsector AS id_entity, ''%s''::timestamp AS "TimeInstant",
-          SUM(q0.consumption) + (SUM(q0.consumption) / 100 * AVG(q2.performance)) AS consumption, AVG(q0.pressure_agg + (q0.pressure_agg / 100 * q2.pressure_perc)) AS pressure_agg
+          SUM(q0.consumption) + (SUM(q0.consumption) / 100 * AVG(q2.performance)) AS consumption, AVG(q0.pressure_agg - (q0.pressure_agg / 100 * q2.pressure_perc)) AS pressure_agg
         FROM (
           SELECT id_entity, "TimeInstant", consumption, pressure_agg
             FROM %s
