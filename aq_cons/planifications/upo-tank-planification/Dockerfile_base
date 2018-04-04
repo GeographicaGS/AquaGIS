@@ -1,0 +1,6 @@
+FROM debian:latest
+
+COPY sbt-1.1.1.deb /
+
+RUN apt-get update && apt-get install -y openjdk-8-jdk-headless cron && dpkg -i /sbt-1.1.1.deb
+
