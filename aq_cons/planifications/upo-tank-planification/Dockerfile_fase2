@@ -1,0 +1,36 @@
+FROM aquasig_base:latest
+
+# Variables de entorno con los datos de conexión a la BD de UPO:
+#ENV URL 'jdbc:postgresql://52.210.216.50:5432/aquasig_energy'
+#ENV USERNAME 'aquasig_energy'
+#ENV PASSWORD 'mesopausa2018'
+#ENV SCHEMA 'phase2_v1'
+
+# Variables de entorno para la conexión a Urbo.
+ENV URL 'jdbc:postgresql://172.17.0.1:5432/urbo'
+ENV USERNAME 'urbo_admin'
+ENV PASSWORD 'termopausa2099'
+ENV SCHEMA 'aljarafe'
+
+RUN env > /root/environmentVariables.txt
+
+# Cargamos los ficheros del proyecto
+COPY ./project/ /usr/local/app/project/
+COPY ./src/ /usr/local/app/src/
+COPY build.sbt /usr/local/app/
+
+# Compilamos con dependencias
+RUN cd /usr/local/app/ && sbt assembly
+
+# Script con la instrucción de lanzamiento del programa
+COPY ./entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+
+# Creamos fichero de log
+RUN touch /var/log/fase2-cron.log && chmod +rw /var/log/fase2-cron.log
+
+# Cargamos el cron
+ADD fase2-cron /etc/cron.d/fase2-cron
+RUN chmod +x /etc/cron.d/fase2-cron && crontab -u root /etc/cron.d/fase2-cron
+
+CMD cron && tail -f /var/log/fase2-cron.log

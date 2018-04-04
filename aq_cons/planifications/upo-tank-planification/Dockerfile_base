@@ -1,0 +1,10 @@
+FROM debian:latest
+
+# Proxy de la Universidad Pablo de Olavide
+#ENV http_proxy 'http://193.147.185.18:8080'
+#ENV https_proxy 'https://193.147.185.18:8080'
+
+COPY sbt-1.1.1.deb /
+
+RUN apt-get update && apt-get install -y openjdk-8-jdk-headless cron && dpkg -i /sbt-1.1.1.deb
+
