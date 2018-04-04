@@ -60,7 +60,8 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_realtime_hourly(
           AND "TimeInstant" < ''%s''::timestamp + interval ''1 hour''
         GROUP BY id_entity
       ',
-      moment, _t_const_ms, moment, moment
+      moment, 
+      _t_const_ms, moment, moment
     );
 
     _q_plot := format('
@@ -80,13 +81,15 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_realtime_hourly(
             ON q0.id_entity = q1.id_entity
         GROUP BY q1.refplot
       ',
-      moment, _t_const_ag, moment, moment, _t_const_ld
+      moment, 
+      _t_const_ag, moment, moment, 
+      _t_const_ld
     );
 
     _q_sector := format('
       -- SECTOR
       SELECT q1.refsector AS id_entity, ''%s''::timestamp AS "TimeInstant",
-          SUM(q0.consumption) + (SUM(q0.consumption) / 100 * AVG(q2.performance)) AS consumption, AVG(q0.pressure_agg) AS pressure_agg
+          SUM(q0.consumption) + (SUM(q0.consumption) / 100 * AVG(q2.performance)) AS consumption, AVG(q0.pressure_agg + (q0.pressure_agg / 100 * q2.pressure_perc)) AS pressure_agg
         FROM (
           SELECT id_entity, "TimeInstant", consumption, pressure_agg
             FROM %s
@@ -99,7 +102,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_realtime_hourly(
           ) q1
             ON q0.id_entity = q1.id_entity
           INNER JOIN (
-            SELECT id_entity, AVG(performance) AS performance
+            SELECT id_entity, AVG(performance) AS performance, AVG(pressure_perc) as pressure_perc
               FROM %s
               WHERE "TimeInstant" >= ''%s''
                 AND "TimeInstant" < ''%s''::timestamp + interval ''1 hour''
@@ -108,8 +111,10 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_realtime_hourly(
             ON q1.refsector = q2.id_entity
         GROUP BY q1.refsector
       ',
-      moment, _t_plot_ag, moment, moment, _t_plot_ld, _t_aux_lk,
-      moment, moment
+      moment, 
+      _t_plot_ag, moment, moment, 
+      _t_plot_ld, 
+      _t_aux_lk, moment, moment
     );
 
     _update := 'UPDATE';
