@@ -100,9 +100,9 @@ class AqConsModel extends PGSQLModel {
           ${opts.scope}.aq_plan_tank_pump_opt
         WHERE
           activated = 'f'
-          AND id_entity='${opts.id_entity}
-          AND "TimeInstant" >= '${opts.time}::TIMESTAMP
-          AND "TimeInstant" <= '${opts.time}::TIMESTAMP + '23:59:59.999'
+          AND id_entity='${opts.id_entity}'
+          AND "TimeInstant" >= '${opts.time}'::TIMESTAMP
+          AND "TimeInstant" <= '${opts.time}'::TIMESTAMP + '23:59:59.999'
         ORDER BY "TimeInstant"
         ),
 
@@ -127,9 +127,9 @@ class AqConsModel extends PGSQLModel {
           ${opts.scope}.aq_plan_tank_pump_emergency
         WHERE
           activated = 't'
-          AND id_entity='${opts.id_entity}
-          AND "TimeInstant" >= '${opts.time}::TIMESTAMP
-          AND "TimeInstant" <= '${opts.time}::TIMESTAMP + '23:59:59.999'
+          AND id_entity='${opts.id_entity}'
+          AND "TimeInstant" >= '${opts.time}'::TIMESTAMP
+          AND "TimeInstant" <= '${opts.time}'::TIMESTAMP + '23:59:59.999'
         ORDER BY "TimeInstant"),
 
       finish_pump_emergency AS
@@ -140,9 +140,9 @@ class AqConsModel extends PGSQLModel {
         FROM ${opts.scope}.aq_plan_tank_pump_emergency
         WHERE
           activated = 'f'
-          AND id_entity='${opts.id_entity}
-          AND "TimeInstant" >= '${opts.time}::TIMESTAMP
-          AND "TimeInstant" <= '${opts.time}::TIMESTAMP + '23:59:59.999'
+          AND id_entity='${opts.id_entity}'
+          AND "TimeInstant" >= '${opts.time}'::TIMESTAMP
+          AND "TimeInstant" <= '${opts.time}'::TIMESTAMP + '23:59:59.999'
         ORDER BY "TimeInstant"),
 
       pump_time_opt_emergency AS
@@ -244,8 +244,8 @@ class AqConsModel extends PGSQLModel {
         ${opts.scope}.aq_plan_tank_pump_opt
       WHERE
         activated = 'f'
-        AND id_entity='${opts.id_entity} AND "TimeInstant" >= '${opts.time}
-        AND "TimeInstant" <= '${opts.time}::timestamp + '23:59:59.999' ORDER BY "TimeInstant"
+        AND id_entity='${opts.id_entity}' AND "TimeInstant" >= '${opts.time}'
+        AND "TimeInstant" <= '${opts.time}'::timestamp + '23:59:59.999' ORDER BY "TimeInstant"
       ),
 
     pump_time_opt AS 
@@ -307,9 +307,9 @@ class AqConsModel extends PGSQLModel {
         ${opts.scope}.aq_plan_tank_pump_no_opt
       WHERE
         activated = 't'
-        AND id_entity='${opts.id_entity}
-        AND "TimeInstant" >= '${opts.time}
-        AND "TimeInstant" <= '${opts.time}::timestamp + '23:59:59.999'
+        AND id_entity='${opts.id_entity}'
+        AND "TimeInstant" >= '${opts.time}'
+        AND "TimeInstant" <= '${opts.time}'::timestamp + '23:59:59.999'
       ORDER BY "TimeInstant"
     ),
 
@@ -322,9 +322,9 @@ class AqConsModel extends PGSQLModel {
         ${opts.scope}.aq_plan_tank_pump_no_opt
       WHERE
         activated = 'f'
-        AND id_entity='${opts.id_entity}
-        AND "TimeInstant" >= '${opts.time}
-        AND "TimeInstant" <= '${opts.time}::timestamp + '23:59:59.999'
+        AND id_entity='${opts.id_entity}'
+        AND "TimeInstant" >= '${opts.time}'
+        AND "TimeInstant" <= '${opts.time}'::timestamp + '23:59:59.999'
         ORDER BY "TimeInstant"
     ),
     
@@ -387,9 +387,9 @@ class AqConsModel extends PGSQLModel {
         ${opts.scope}.aq_plan_tank_pump_emergency 
       WHERE 
         activated = 't'
-        AND id_entity='${opts.id_entity}
-        AND "TimeInstant" >= '${opts.time}
-        AND "TimeInstant" <= '${opts.time}::timestamp + '23:59:59.999'
+        AND id_entity='${opts.id_entity}'
+        AND "TimeInstant" >= '${opts.time}'
+        AND "TimeInstant" <= '${opts.time}'::timestamp + '23:59:59.999'
       ORDER BY "TimeInstant"
     ),
 
@@ -402,9 +402,9 @@ class AqConsModel extends PGSQLModel {
         ${opts.scope}.aq_plan_tank_pump_emergency 
       WHERE
         activated = 'f'
-        AND id_entity='${opts.id_entity} 
-        AND "TimeInstant" >= '${opts.time}
-        AND "TimeInstant" <= '${opts.time}::timestamp + '23:59:59.999'
+        AND id_entity='${opts.id_entity}'
+        AND "TimeInstant" >= '${opts.time}'
+        AND "TimeInstant" <= '${opts.time}'::timestamp + '23:59:59.999'
       ORDER BY "TimeInstant"
     ),
     
