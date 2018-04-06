@@ -26,60 +26,57 @@
 
 'use strict';
 
-const AqConsModel = require('./model.js');
+const AqSimulModel = require('./model.js');
 const express = require('express');
 const utils = require('../../utils.js');
 var _ = require('underscore');
-var check = require('./check.js');
+
 const router = express.Router();
 const log = utils.log();
 
-router.get('/plot/:id_plot/constructions', check.plotConstructionsValidator, function(req, res, next) {
+var bboxValidator = function (req, res, next) {
+  req.checkBody('filters', 'A required Urbo\'s filters object').notEmpty();
+  req.checkBody('filters.bbox', 'An optional array with the bounding box').optional().isArray();
+  return next();
+}
+
+var timeValidator = function(req, res, next) {
+  req.checkBody('time.start', 'date, required').notEmpty().isDate();
+  req.checkBody('time.finish', 'date, required').notEmpty().isDate();
+  return next();
+}
+
+router.post('/simulation/count', bboxValidator, function (req, res, next) {
   var opts = {
     scope: req.scope,
-    id_plot: req.params.id_plot
+    bbox: req.body.filters.bbox
   };
 
-  new AqConsModel().getPlotConstructions(opts)
-  .then(function(data) {
-    res.json(data)
+  new AqSimulModel().getSimulationCount(opts)
+  .then(function (data) {
+    res.json(data);
   })
-  .catch(function(err) {
-    next(err);
+  .catch(function (error) {
+    next(error);
   });
+
 });
 
-
-router.post('/tank/:tank_id/plans', check.tankPlansValidator, function(req, res, next) {
+router.post('/map/historic', timeValidator, function (req, res, next) {
   var opts = {
     scope: req.scope,
-    id_entity: req.params.tank_id,
-    time: req.body.time
-  };
+    start: req.body.time.start,
+    finish: req.body.time.finish
+  }
 
-  var activationsTime;
-  var aqConsModel = new AqConsModel();
-
-  aqConsModel.getTankActivationHours(opts)
-  .then(function(data) {
-    activationsTime = data;
-    var emergency = false
-
-    if (_.some(_.map(activationsTime, function(element) {return element['emergency']}))) {
-      emergency = true;
-    }
-
-    aqConsModel.getPlansStatistics(opts, emergency)
-    .then(function(data) {
-      data['activations'] = activationsTime
-
-      res.json(data)
-    });
-
+  new AqSimulModel().getMap(opts)
+  .then(function (data) {
+    res.json(data);
   })
-  .catch(function(err) {
-    next(err);
+  .catch(function (error) {
+    next(error);
   });
+
 });
 
 module.exports = router;

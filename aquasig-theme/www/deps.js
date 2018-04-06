@@ -1,7 +1,7 @@
 var deps = {};
-var src = 'src/verticals/aquagis-theme/';
+var src = 'src/verticals/aquasig-theme/';
 var srcJS = src + 'js/';
-var public = 'verticals/aquagis-theme/';
+var public = 'verticals/aquasig-theme/';
 
 deps.templateFolder = [srcJS + 'template'];
 deps.JS = []

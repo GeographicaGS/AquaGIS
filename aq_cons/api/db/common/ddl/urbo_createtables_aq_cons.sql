@@ -31,9 +31,17 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_lastdata_const text;
     _tb_measurand_const text;
     _tb_agg_hour_const text;
+    _tb_catalogue_tank text;
+    _tb_lastdata_tank text;
+    _tb_measurand_tank text;
+    _tb_agg_hour_tank text;
     _tb_aux_const_futu text;
     _tb_aux_leakage text;
     _tb_aux_leak_rules text;
+    _tb_aux_energy_prices text;
+    _tb_plan_tank_no_opt text;
+    _tb_plan_tank_opt text;
+    _tb_plan_tank_emergency text;
     _tb_arr_ld text[];
     _tb_arr_bsc text[];
     _tb_arr_vars text[];
@@ -78,6 +86,11 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_aux_const_futu = urbo_get_table_name(id_scope, 'aq_aux_const_futu', iscarto);
     _tb_aux_leakage = urbo_get_table_name(id_scope, 'aq_aux_leak', iscarto);
     _tb_aux_leak_rules = urbo_get_table_name(id_scope, 'aq_aux_leak_rules', iscarto);
+    _tb_aux_energy_prices = urbo_get_table_name(id_scope, 'aq_aux_energy_prices', iscarto);
+
+    _tb_plan_tank_no_opt = urbo_get_table_name(id_scope, 'aq_plan_tank_pump_no_opt', iscarto);
+    _tb_plan_tank_opt = urbo_get_table_name(id_scope, 'aq_plan_tank_pump_opt', iscarto);
+    _tb_plan_tank_emergency = urbo_get_table_name(id_scope, 'aq_plan_tank_pump_emergency', iscarto);
 
 
     _tb_arr_ld := ARRAY[
@@ -97,7 +110,8 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_arr_agg := array_cat(_tb_arr_vars,
       ARRAY[
         _tb_agg_hour_sector, _tb_agg_hour_plot, _tb_agg_hour_const, _tb_aux_const_futu,
-        _tb_aux_leakage, _tb_leak_historic_sector
+        _tb_aux_leakage, _tb_leak_historic_sector,
+        _tb_plan_tank_no_opt, _tb_plan_tank_opt, _tb_plan_tank_emergency
       ]);
 
     IF iscarto IS TRUE THEN
@@ -321,6 +335,8 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         capacity double precision,
         min_level double precision,
         max_level double precision,
+        pump_flow double precision,
+        pump_power double precision,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
@@ -334,6 +350,8 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         capacity double precision,
         min_level double precision,
         max_level double precision,
+        pump_flow double precision,
+        pump_power double precision,
         status character varying,
         level double precision,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
@@ -392,6 +410,44 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         time double precision,
         status integer
       );
+
+      -- ENERGY PRICES
+      CREATE TABLE IF NOT EXISTS %s (
+        "TimeInstant" timestamp without time zone,
+        price double precision
+      );
+
+      ----------
+      -- PLAN --
+      ----------
+
+      -- TANK PUMP NO OPT
+      CREATE TABLE IF NOT EXISTS %s (
+        id_entity character varying(64) NOT NULL,
+        "TimeInstant" timestamp without time zone,
+        activated boolean NOT NULL,
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+      );
+
+      -- TANK PUMP OPT
+      CREATE TABLE IF NOT EXISTS %s (
+        id_entity character varying(64) NOT NULL,
+        "TimeInstant" timestamp without time zone,
+        activated boolean NOT NULL,
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+      );
+
+      -- TANK PUMP EMERGENCY
+      CREATE TABLE IF NOT EXISTS %s (
+        id_entity character varying(64) NOT NULL,
+        "TimeInstant" timestamp without time zone,
+        activated boolean NOT NULL,
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+      );
+
       ',
       _tb_catalogue_sector, _geom_fld, _tb_lastdata_sector, _geom_fld,
       _tb_measurand_sector,  _tb_leak_historic_sector, _tb_agg_hour_sector,
@@ -405,7 +461,9 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       _tb_catalogue_tank, _geom_fld, _tb_lastdata_tank, _geom_fld,
       _tb_measurand_tank, _tb_agg_hour_tank,
 
-      _tb_aux_const_futu, _tb_aux_leakage, _tb_aux_leak_rules
+      _tb_aux_const_futu, _tb_aux_leakage, _tb_aux_leak_rules, _tb_aux_energy_prices,
+
+      _tb_plan_tank_no_opt, _tb_plan_tank_opt, _tb_plan_tank_emergency
     );
 
     _time_idx := urbo_time_idx_qry(_tb_arr_agg);
@@ -425,23 +483,23 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         ON %s USING btree (usage);
       CREATE INDEX IF NOT EXISTS %s_us_idx
         ON %s USING btree (usage);
-      CREATE INDEX IF NOT EXISTS %s_us_idx
-        ON %s USING btree (usage);
-      CREATE INDEX IF NOT EXISTS %s_us_idx
-        ON %s USING btree (usage);
       ',
       replace(_tb_lastdata_sector, '.', '_'), _tb_lastdata_sector,
       replace(_tb_measurand_sector, '.', '_'), _tb_measurand_sector,
       replace(_tb_lastdata_plot, '.', '_'), _tb_lastdata_plot,
       replace(_tb_measurand_plot, '.', '_'), _tb_measurand_plot,
       replace(_tb_catalogue_const, '.', '_'), _tb_catalogue_const,
-      replace(_tb_lastdata_const, '.', '_'), _tb_lastdata_const,
-      replace(_tb_catalogue_tank, '.', '_'), _tb_catalogue_tank,
-      replace(_tb_lastdata_tank, '.', '_'), _tb_lastdata_tank
+      replace(_tb_lastdata_const, '.', '_'), _tb_lastdata_const
     );
 
     -- TODO: for
     _id_entity_idx := format('
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
+      CREATE INDEX IF NOT EXISTS %s_ent_idx
+        ON %s USING btree (id_entity);
       CREATE INDEX IF NOT EXISTS %s_ent_idx
         ON %s USING btree (id_entity);
       CREATE INDEX IF NOT EXISTS %s_ent_idx
@@ -499,7 +557,10 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       replace(_tb_catalogue_tank, '.', '_'), _tb_catalogue_tank,
       replace(_tb_lastdata_tank, '.', '_'), _tb_lastdata_tank,
       replace(_tb_measurand_tank, '.', '_'), _tb_measurand_tank,
-      replace(_tb_agg_hour_tank, '.', '_'), _tb_agg_hour_tank
+      replace(_tb_agg_hour_tank, '.', '_'), _tb_agg_hour_tank,
+      replace(_tb_plan_tank_no_opt, '.', '_'), _tb_plan_tank_no_opt,
+      replace(_tb_plan_tank_opt, '.', '_'), _tb_plan_tank_opt,
+      replace(_tb_plan_tank_emergency, '.', '_'), _tb_plan_tank_emergency
     );
 
     -- Those tables aren't created with an 'id' column, so...

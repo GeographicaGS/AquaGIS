@@ -32,3 +32,78 @@ Example response:
   }
 ]
 ```
+
+### POST /:scope/aq_cons/tank/:tank_id/plans
+
+It returns the plan for saving and emergency if exists.
+
+Path's params:
+  - scope (mandatory)
+  - tank_id (mandatory)
+
+Payload
+```
+{
+ "time": "YYYY-mm-dd"
+}
+```
+
+Payload's params:
+  - time (mandatory)
+
+Example request URL:
+```text
+/aljarafe/aq_cons/tank/1/plans
+```
+
+Payload:
+```
+{
+ "time": "2018-01-04"
+}
+```
+
+Example response:
+```json
+{
+    "saving": {
+        "kwh_used": 540,
+        "price_by_litre": 0.0911111111111111,
+        "money_saved": 40.1266666666667,
+        "energy_saved_ratio": 28.9473684210527
+    },
+    "emergency": {
+        "kwh_used": 573.333333333333,
+        "price_by_litre": 0.0693333333333333,
+        "money_saved": 36.86,
+        "energy_saved_ratio": 24.5614035087719
+    },
+    "activations": [
+        {
+            "start": "2018-01-04T00:00:00.000Z",
+            "finish": "2018-01-04T00:32:00.000Z",
+            "emergency": false
+        },
+        {
+            "start": "2018-01-04T02:59:00.000Z",
+            "finish": "2018-01-04T03:00:00.000Z",
+            "emergency": false
+        },
+        {
+            "start": "2018-01-04T05:59:00.000Z",
+            "finish": "2018-01-04T06:00:00.000Z",
+            "emergency": false
+        },
+        {
+            "start": "2018-01-04T06:53:00.000Z",
+            "finish": "2018-01-04T07:00:00.000Z",
+            "emergency": false
+        },
+        {
+            "start": "2018-01-04T21:00:00.000Z",
+            "finish": "2018-01-04T21:13:00.000Z",
+            "emergency": true
+        }
+    ]
+}
+```

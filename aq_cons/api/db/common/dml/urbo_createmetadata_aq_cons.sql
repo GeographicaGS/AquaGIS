@@ -30,7 +30,7 @@ CREATE OR REPLACE FUNCTION urbo_createmetadata_aq_cons(
       INSERT INTO %s
           (id_category, category_name, nodata, config)
         VALUES
-          (''aq_cons'', ''Patrones de consumo'', FALSE, ''{"carto": {"account": "urbo-default"}}'');
+          (''aq_cons'', ''Consumo de agua'', FALSE, ''{"carto": {"account": "urbo-default"}}'');
 
       -- ENTITIES
       INSERT INTO %s
@@ -39,7 +39,7 @@ CREATE OR REPLACE FUNCTION urbo_createmetadata_aq_cons(
           (''aq_cons.sector'', ''Sector'', ''aq_cons'', ''aq_cons_sector'', TRUE, FALSE),
           (''aq_cons.plot'', ''Parcela'', ''aq_cons'', ''aq_cons_plot'', FALSE, FALSE),
           (''aq_cons.const'', ''Construcción'', ''aq_cons'', ''aq_cons_const'', FALSE, FALSE),
-          (''aq_cons.tank'', ''Depósito'', ''aq_cons'', ''aq_cons_tank'', FALSE, FALSE);;
+          (''aq_cons.tank'', ''Depósito'', ''aq_cons'', ''aq_cons_tank'', FALSE, FALSE);
 
       -- STATIC ENTITIES
       INSERT INTO %s
@@ -101,6 +101,8 @@ CREATE OR REPLACE FUNCTION urbo_createmetadata_aq_cons(
           (''aq_cons.tank.capacity'', ''aq_cons.tank'', ''capacity'', ''Capacidad'', ''m³'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''NULL'', ''catalogue'', TRUE, FALSE),
           (''aq_cons.tank.min_level'', ''aq_cons.tank'', ''min_level'', ''Nivel mínimo de llenado'', ''m³'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''NULL'', ''catalogue'', TRUE, FALSE),
           (''aq_cons.tank.max_level'', ''aq_cons.tank'', ''max_level'', ''Nivel máximo de llenado'', ''m³'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''NULL'', ''catalogue'', TRUE, FALSE),
+          (''aq_cons.tank.pump_flow'', ''aq_cons.tank'', ''pump_flow'', ''Potencia de caudal'', ''m³/h'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''NULL'', ''catalogue'', TRUE, FALSE),
+          (''aq_cons.tank.pump_power'', ''aq_cons.tank'', ''pump_power'', ''Potencia necesaria'', ''MW'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''NULL'', ''catalogue'', TRUE, FALSE),
           (''aq_cons.tank.level'', ''aq_cons.tank'', ''level'', ''Nivel de llenado'', ''m³'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_tank_measurand'', ''variable'', TRUE, FALSE),
           (''aq_cons.tank.status'', ''aq_cons.tank'', ''status'', ''Estado del depósito'', ''NULL'', ''{}'', ''{"NOAGG"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_tank_agg_hour'', ''aggregated'', TRUE, FALSE),
           (''aq_cons.tank.electricity_consumption_agg'', ''aq_cons.tank'', ''electricity_consumption_agg'', ''Consumo de electricidad'', ''Kwh'', ''{}'', ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, ''{"active": true, "widget": "variable", "default": true}'', ''aq_cons_tank_agg_hour'', ''aggregated'', TRUE, FALSE),
