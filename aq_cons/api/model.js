@@ -217,7 +217,7 @@ class AqConsModel extends PGSQLModel {
       FROM
         ${opts.scope}.aq_cons_tank
       WHERE
-        id_entity='${opts.id_entity}
+        id_entity='${opts.id_entity}'
       ),
 
     -- Optimized tables
@@ -279,7 +279,7 @@ class AqConsModel extends PGSQLModel {
         (hours_activated * pump_power)*1000 AS kWh_used
       FROM
         pump_time_opt,
-        tank_propertie s
+        tank_properties
     ),
 
     price_cost_opt AS (
