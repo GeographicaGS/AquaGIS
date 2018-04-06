@@ -6,7 +6,7 @@
 </div>
 <% if (properties.length > 0) {%>
 <div class="content">
-  <% for(var property of properties) { debugger;%>
+  <% for(var property of properties) {%>
   <div class="info-block">
     <h4><%= __(property.label) %></h4>
     <span><%= property.value + ' ' + (property.units) %></span>
