@@ -26,8 +26,6 @@ App.View.Panels.Aq_simul.Rates = App.View.Panels.Map.extend({
       type: 'now'
     }).render();
 
-    this.listenTo(this._mapView.mapChanges,'change:clickedSector', this._openDetails);
-
     this.subviews.push(this._mapView);
   }
 
