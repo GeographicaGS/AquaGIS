@@ -50,6 +50,5 @@ App.View.Panels.Aq_simul.RatesMap = App.View.Map.MapboxView.extend({
       this._map.easeTo({zoom: 16});
     }
     this._map.setLayoutProperty('plot_buildings', 'visibility', this._is3dActive ? 'visible' : 'none');
-    this._map.setLayoutProperty('text-font', 'Source Sans Pro')
   }
 });
