@@ -181,6 +181,9 @@ body[layout='aquasig'] {
   }
   nav.navbar {
     z-index: 6;
+    .button.dropdown .icon {
+      padding: 7px;
+    }
   }
   nav.navbar a.navElement.menu {
     background-image: url(/verticals/aquasig-theme/img/icons/positive/SC_ic_menu_panel.svg);
@@ -224,7 +227,7 @@ body[layout='aquasig'] {
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: @aquasigSecondaryColor;
+    background-color: fade(@aquasigPrimaryColor, 20%);
 
     &:hover {
       background-color: @aquasigPrimaryColor;
@@ -402,6 +405,17 @@ body[layout='aquasig'] {
 
   #category_list .content .box {
     background-color: @aquasigSecondaryColor;
+    background-size: 60px;
+    &.aq_cons {
+      background-color: #5476BB;
+      background-image: url('/verticals/aq_cons/img/menuPanel/SC_ic_vertical_AQCons_M.svg');
+
+    }
+    &.aq_simul {
+      background-color: #E15757;
+      background-image: url('/verticals/aq_simul/img/menuPanel/SC_ic_vertical_AQSimul_M.svg');
+
+    }
   }
 
   #scope_list .content .box {
@@ -478,19 +492,19 @@ body[layout='aquasig'] {
   }
 
   .mapboxgl-popup {
-    max-width: 260px;
+    max-width: 560px;
+    font-family: 'Source Sans Pro';
     .header {
       padding: 10px 14px;
-      // color: #5B84D7;
       color: #fff;
       h4 {
-        font-size: 14px;
-        line-height: 15px;
+        font-size: 12px;
+        margin-bottom: 6px;
         text-transform: uppercase;
+        color: #E15757;
       }
       .containerId {
-        font-size: 14px;
-        line-height: 20px;
+        font-size: 18px;
       }
     }
     .content {
@@ -498,6 +512,12 @@ body[layout='aquasig'] {
       padding: 10px 14px;
       max-height: 200px;
       overflow-y: scroll;
+      h3 {
+        color: #98B2C9;
+        font-size: 14px;
+        margin-bottom: 6px;
+        font-weight: 400;
+      }
       .info-block {
         margin-bottom: 12px;
         h4 {
@@ -508,6 +528,10 @@ body[layout='aquasig'] {
         }
         span {
           color: #98B2C9;
+          margin-bottom: 10px;
+        }
+        &.child {
+          padding-left: 10px;
         }
       }
     }
