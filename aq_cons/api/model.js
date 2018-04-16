@@ -556,7 +556,6 @@ class AqConsModel extends PGSQLModel {
 
     `;
 
-    console.log(sql);
 
     return this.promise_query(sql)
     .then(function(data) {
