@@ -10,10 +10,10 @@
     "ngsiVersion": "1.0"
   },
   "exports": {
-    "leakage": "0 * 7-19 * * *",
-    "no-leakage": "0 * 0-6,20-23 * * *",
-    "anomaly": "0 * 7-19 * * *",
-    "no-anomaly": "0 * 0-6,20-23 * * *",
+    "leakage": "0 0 7-19 * * *",
+    "no-leakage": "0 0 0-6,20-23 * * *",
+    "anomaly": "0 0 7-19 * * *",
+    "no-anomaly": "0 0 0-6,20-23 * * *",
     "NormalBehaviour": "0 0 * * * *",
     "now": "date-increment-interpolator({\"origin\": \"now\", \"increment\": 0})"
   },
