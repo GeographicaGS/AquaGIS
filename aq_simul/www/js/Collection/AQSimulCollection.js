@@ -13,9 +13,9 @@ App.Collection.Aq_simul.PanelList = Backbone.Collection.extend({
         url:base + '/dashboard/rates',
       },
       {
-        id : 'future',
+        id : 'futureConsumption',
         title: __('Consumo futuro'),
-        url:base + '/dashboard/future',
+        url:base + '/dashboard/futureconsumption',
       }
     ];
     this.set(_verticalOptions);

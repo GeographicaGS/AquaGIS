@@ -12,7 +12,10 @@ App.View.Panels.Aq_simul.Master = App.View.Panels.Base.extend({
     });
 
     App.View.Panels.Base.prototype.initialize.call(this, options);
-    this.render();
+
+    this.getConstructionTypesModel().then(() => {
+      this.render();
+    });
   },
 
   customRender: function() {
@@ -33,11 +36,35 @@ App.View.Panels.Aq_simul.Master = App.View.Panels.Base.extend({
 
     this._widgets.push(new App.View.WidgetDeviceMap({model: m}));
 
+
+    this._widgets.push(new App.View.Widgets.Aq_simul.WaterUseTypes(this.constructionTypesData, {
+      id_scope: this.scopeModel.get('id'),
+      title: __('Usos del agua del ámbito'),
+      timeMode:'historic',
+      extended: false,
+      editable: false,
+      link : '/' + this.scopeModel.get('id') + '/' + this.id_category + '/dashboard/futureconsumption',      
+      titleLink: __('Consumo futuro')
+    }));
+
     this.subviews.push(new App.View.Widgets.Container({
       widgets: this._widgets,
       el: this.$(".widgets")
     }));
     
     this.$('#dateSelector').addClass('disabled');
-  }
+  },
+
+  getConstructionTypesModel: function () {
+    return new Promise((resolve, reject) => {
+      this.constructionTypesModel = new App.Model.Aq_simul.ConstructionTypesModel({
+        scope : this.scopeModel.get('id')
+      });
+      this.constructionTypesModel.fetch({data: {filters: {}}});
+      this.constructionTypesModel.parse = (data) => {
+        this.constructionTypesData = data;
+        resolve();
+      }
+    });
+  },
 });
