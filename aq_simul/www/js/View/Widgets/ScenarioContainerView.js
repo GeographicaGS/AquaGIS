@@ -21,6 +21,7 @@
 'use strict';
 
 App.View.Widgets.Aq_simul.ScenariosContainer = Backbone.View.extend({
+  className: 'wrapper-plugin',
   initialize: function(options) {
     for (var i in options)
       this[i] = options[i];
@@ -48,20 +49,17 @@ App.View.Widgets.Aq_simul.ScenariosContainer = Backbone.View.extend({
 
   render: function(){
     var _this = this;
-
+    //_this.$el.append("<div class='header-plugins'>Header widgets</div>")
     _.each(this.widgets,function(widget){
       _this.$el.append(widget.render().$el);
     });
+  },
 
-    if(!this.disableMasonry){
-      setTimeout(function(){
-        _this.$el.masonry({
-          gutter: 20,
-          columnWidth: 360,
-          transitionDuration: 0
-        });
-        _this.$('.widget').addClass('active');
-      }, 1);
-    }
+  addWidgets: function(widget) {
+    var _this = this;
+    _this.$el.append("<div class='header-plugins'>Header widgets</div>")
+    _.each(this.widgets,function(widget){
+      _this.$el.append(widget.render().$el);
+    });
   }
 });

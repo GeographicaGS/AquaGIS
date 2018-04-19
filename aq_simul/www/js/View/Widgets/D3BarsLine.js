@@ -1,6 +1,7 @@
 'use strict';
 
 App.View.Widgets.Aq_simul.D3BarsLineCustom = App.View.Widgets.Charts.D3.BarsLine.extend({
+  _template: _.template( $('#AQSimul-chart-future-consumption').html() ),
   _events: {
     'mouseenter .btnLegend .text.first': '_hoverLegend',
     'mouseleave .btnLegend .text.first': '_hoverOut',

@@ -128,7 +128,7 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
       position: siblingChartPosition
     }));
 
-    this.subviews.push(new App.View.Widgets.Container({
+    this.subviews.push(new App.View.Widgets.Aq_simul.ScenariosContainer({
       widgets: this._scenarios,
       el: this.$('.bottom .scenariosContainer')
     }));
@@ -205,10 +205,7 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
       el: this.$('.bottom .scenariosContainer')
     }));
 
-    $('.bottom .scenariosContainer').masonry('reloadItems',{
-      gutter: 20,
-      columnWidth: 360
-    });
+
   
 
   },

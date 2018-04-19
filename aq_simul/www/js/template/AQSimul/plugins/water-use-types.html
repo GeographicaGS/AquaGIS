@@ -18,7 +18,7 @@
                                 <span class="total"><%= construction.count %></span>
                                 <span class="type"><%= construction.type_name %></span>
                             </div>
-                            <div class="total-types"><%= construction.count %> <%= __('tipos') %></div>
+                            <div class="total-types"><%= construction.rows.length %> <%= __('tipos') %></div>
                         </div>
                         <% if(data.extended) { %>
                             <div class="collapse-body">

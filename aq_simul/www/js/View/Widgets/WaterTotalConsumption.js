@@ -1,20 +1,20 @@
 'use strict';
 
 App.View.Widgets.Aq_simul.WaterTotalConsumption = App.View.Widgets.Base.extend({
-
+  className: 'plugin-water-consumption',
   initialize: function(modelData, options) {
     options = _.defaults(options,{
       title: __('Total de consumo de agua'),
       id_category: 'aq_simul',
       publishable: false,
-      classname: 'App.View.Widgets.Aq_simul.WaterTotalConsumption'
     });
 
     App.View.Widgets.Base.prototype.initialize.call(this,options);
 
     this.collection = modelData;
    
-    this.collection.parse = function(response) {
+    this.collection.parse = (response) => {
+      this.$(".total-consumption-quantity").text(response.consumo)
       let tempData = {
         disabled: false,
         key: 'consumption',

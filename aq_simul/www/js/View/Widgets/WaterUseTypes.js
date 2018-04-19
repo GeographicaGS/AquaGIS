@@ -3,7 +3,7 @@
 App.View.Widgets.Aq_simul.WaterUseTypes = Backbone.View.extend({
 
   _template: _.template( $('#AQSimul-plugins-water-use-types').html() ),
-
+  className: 'plugin-water-types',
   initialize: function(data, options) {
     options = _.defaults(options,{
       title: __('Tipos de uso de agua'),
@@ -11,7 +11,6 @@ App.View.Widgets.Aq_simul.WaterUseTypes = Backbone.View.extend({
       id_category: 'aq_simul',
       mode: 'view'
     });
-    
 
     this.model = {
       title: options.title,
@@ -25,8 +24,6 @@ App.View.Widgets.Aq_simul.WaterUseTypes = Backbone.View.extend({
         constructionTypesModel: data
       }
     }
-
-    this.defaultTotalConsumption = _.clone(data);
   },
 
   events: {
