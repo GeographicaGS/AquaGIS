@@ -5,10 +5,9 @@ App.View.Widgets.Aq_simul.WaterTotalConsumption = App.View.Widgets.Base.extend({
   initialize: function(modelData, options) {
     options = _.defaults(options,{
       title: __('Total de consumo de agua'),
-      timeMode: 'now',
       id_category: 'aq_simul',
-      publishable: true,
-      classname: 'App.View.Widgets.Aq_cons.WaterTotalConsumption'
+      publishable: false,
+      classname: 'App.View.Widgets.Aq_simul.WaterTotalConsumption'
     });
 
     App.View.Widgets.Base.prototype.initialize.call(this,options);
