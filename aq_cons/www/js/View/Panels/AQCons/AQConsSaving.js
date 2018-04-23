@@ -33,7 +33,7 @@ App.View.Panels.Aq_cons.Saving = App.View.Panels.Splitted.extend({
     this._mapView = new App.View.Panels.Aq_cons.SavingMap({
       el: this.$('.top'),
       scope: this.scopeModel.get('id'),
-      type: 'historic'
+      type: 'now'
     }).render();
     this.listenTo(this._mapView.mapChanges,'change:clickedSector', this._openDetails);
     
@@ -49,8 +49,7 @@ App.View.Panels.Aq_cons.Saving = App.View.Panels.Splitted.extend({
       this.$('.bottom .widgetContainer').html('');
   
       // 2.- Calling to renderer for detail's widget
-      this.$('.bottom .widgetContainer').html('ID Sector: ' + clicked.properties.id_sector + ' - ID Sensor:' + clicked.properties.id_sensor);
-      
+      this._customRenderDetails(clicked);      
       
       // 3.- Reloading Masonry
       this.$('.bottom .widgetContainer').masonry('reloadItems',{
@@ -67,5 +66,23 @@ App.View.Panels.Aq_cons.Saving = App.View.Panels.Splitted.extend({
         this._mapView.resetSize();
       }.bind(this), 300);
     }
-  } 
+  },
+
+  _customRenderDetails: function(tank) {
+    this._widgets = [];
+    this._widgets.push(new App.View.Widgets.Aq_cons.TankSize({
+      id_scope: this.scopeModel.get('id'),
+      timeMode:'now',
+    }));
+
+    this._widgets.push(new App.View.Widgets.Aq_cons.EnergySavingInfo({
+      id_scope: this.scopeModel.get('id'),
+      timeMode:'now',
+    }));
+
+    this.subviews.push(new App.View.Widgets.Container({
+      widgets: this._widgets,
+      el: this.$('.bottom .widgetContainer')
+    }));
+  }
 });
