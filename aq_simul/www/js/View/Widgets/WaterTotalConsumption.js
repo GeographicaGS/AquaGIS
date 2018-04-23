@@ -12,9 +12,15 @@ App.View.Widgets.Aq_simul.WaterTotalConsumption = App.View.Widgets.Base.extend({
     App.View.Widgets.Base.prototype.initialize.call(this,options);
 
     this.collection = modelData;
-   
+
     this.collection.parse = (response) => {
-      this.$(".total-consumption-quantity").text(response.consumo)
+      
+      if (comparativeData){
+        this.$(".total-consumption-quantity").text(comparativeData.consumo);
+      } else {
+        this.$(".total-consumption-quantity").text(response.consumo);  
+      }
+
       let tempData = [{
         disabled: false,
         key: 'consumption',
@@ -51,6 +57,14 @@ App.View.Widgets.Aq_simul.WaterTotalConsumption = App.View.Widgets.Base.extend({
 
     this._chartModel = new App.Model.BaseChartConfigModel({
       colors: function(d,i){
+        if(comparativeData) {
+          if (d.realKey === "consumption") {
+            return '#3B7DB9';
+          }
+          if (d.realKey === "consumptionComparative") {
+            return '#63b7da';
+          }
+        }
         return '#63b7da';
       },
       classes: function(d,i) {
@@ -61,8 +75,15 @@ App.View.Widgets.Aq_simul.WaterTotalConsumption = App.View.Widgets.Base.extend({
       },
       hideYAxis2: true,            
       legendNameFunc: function(key,d){
-        var label = __('Consumo de agua');
-        return label;
+        if(comparativeData) {
+          if (d.realKey === "consumption") {
+            return __('Consumo de agua original');
+          }
+          if (d.realKey === "consumptionComparative") {
+            return __('Consumo de agua simulado');;
+          }
+        }
+        return __('Consumo de agua');
       }.bind(this),
       xAxisFunction: function(d) { return App.formatDate(d,'HH:mm'); },
       yAxisFunction: [
@@ -76,7 +97,7 @@ App.View.Widgets.Aq_simul.WaterTotalConsumption = App.View.Widgets.Base.extend({
       keysConfig: {
         '*': {axis: 1, type: 'line'}
       },
-      showLineDots: false,
+      showLineDots: true,
     });
 
     this.subviews.push(new App.View.Widgets.Aq_simul.D3BarsLineCustom({

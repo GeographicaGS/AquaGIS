@@ -45,9 +45,6 @@ App.View.Widgets.Aq_simul.D3BarsLineCustom = App.View.Widgets.Charts.D3.BarsLine
   _fetchData: function(){
     var requestData = this.collection.options.data;
 
-    // Step
-    // requestData.time.step = this.options.get('currentStep');
-
     // Aggregation
     if(this._aggregationInfo){
       var _this = this;
@@ -88,7 +85,6 @@ App.View.Widgets.Aq_simul.D3BarsLineCustom = App.View.Widgets.Charts.D3.BarsLine
       .classed('in',false)
       .classed('out',false);
   },
-
 
   _drawArea: function(data) {
     var _this = this;
