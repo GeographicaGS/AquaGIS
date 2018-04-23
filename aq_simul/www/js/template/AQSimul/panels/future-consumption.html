@@ -13,8 +13,14 @@
     </div>
     <div class="container widgetContainer"></div>
     <div class="container centered-contents">
-      <button class="button" id="btCreateScenario"><%= __('Crear escenarios') %></button>
-    </div>    
+      <button class="button add" id="btCreateScenario"><%= __('Crear escenario') %></button>
+    </div>
+    <div class="container">
+      <div class="scenarios-header hide">
+          <div class="title"><%= __('Simularción de escenario') %></div>
+          <div><button class="bt-delete-scenario" id="btDeleteScenario">Delete</button></div>
+      </div>
+    </div>   
     <div class="container scenariosContainer"></div>
   </div>
 	<a class='co_fullscreen_toggle'><%= __('Pantalla completa') %></a>

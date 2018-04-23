@@ -110,6 +110,7 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
       'click .split_handler': 'toggleTopHiding',
       'click .co_fullscreen_toggle': 'toggleTopFullScreen',
       'click #btCreateScenario': 'createNewScenario',
+      'click #btDeleteScenario': 'deleteScenario',
       'updateScenario': 'updateScenario'
     },
     App.View.Panels.Base.prototype.events
@@ -205,10 +206,18 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
       el: this.$('.bottom .scenariosContainer')
     }));
 
-
-  
-
+    $(".panel-future-consumption button.add").addClass('hide')
+    $(".panel-future-consumption .scenarios-header").removeClass('hide');
   },
+
+
+  deleteScenario: function() {
+    this._scenarios = [];
+    $(".scenariosContainer > div").remove();
+    $(".panel-future-consumption button.add").removeClass('hide')
+    $(".panel-future-consumption .scenarios-header").addClass('hide');
+  },
+
   // Actions to perform when the top panel full screen mode is toggled
   _onTopFullScreenToggled: function(){
     var _this = this;
