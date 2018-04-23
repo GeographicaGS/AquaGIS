@@ -152,8 +152,6 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
           widgets: this._scenarios,
           el: this.$('.bottom .scenariosContainer')
         }));
-
-        console.log("comparative data", comparativeData);
       })
     });
   },
