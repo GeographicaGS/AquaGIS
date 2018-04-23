@@ -17,7 +17,6 @@ App.View.Widgets.Aq_simul.WaterUseTypes = Backbone.View.extend({
       editable: options.editable,
       link: options.link,
       titleLink: options.titleLink,
-      position: options.position,
       data: {
         mode: options.mode,
         extended: options.extended,
@@ -63,6 +62,5 @@ App.View.Widgets.Aq_simul.WaterUseTypes = Backbone.View.extend({
     });
 
     $(this.el).trigger('updateScenario', [this.model]);
-    // console.log(this.model.data.constructionTypesModel)
   }
 });

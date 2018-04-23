@@ -16,66 +16,72 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
     
     this.model = {};
 
-    this.getConstructionTypesModel().then((data) => {
-      this.FutureScenario = this.getFutureScenarioModel(data);
-      this.FutureScenario.parse = function(response) {
-        console.log("klsdsgjklsdfg")
-      }
-      this.render();
-    });
+    this.render();
     
   },
 
   customRender: function() {
     this._widgets = [];
     this._scenarios = [];
-
-    this._widgets.push(new App.View.Widgets.Aq_simul.WaterUseTypes(this.constructionTypesData, {
-      id_scope: this.scopeModel.get('id'),
-      title: __('Tipos de uso de agua'),
-      extended: true,
-      editable: false,
-      dimension: 'allHeight'
-    }));
     
-    this._widgets.push(new App.View.Widgets.Aq_simul.WaterTotalConsumption(this.FutureScenario, {
-      id_scope: this.scopeModel.get('id'),
-      dimension: 'double',
-    }));
+    this.getConstructionTypesData().then((data) => {
+      let constructionTypesData = data;
+      let FutureScenarioModel = this.getFutureScenarioModel(constructionTypesData);
 
-    this.subviews.push(new App.View.Widgets.Container({
-      widgets: this._widgets,
-      el: this.$('.bottom .widgetContainer')
-    }));
+      this._widgets.push(new App.View.Widgets.Aq_simul.WaterUseTypes(constructionTypesData, {
+        id_scope: this.scopeModel.get('id'),
+        title: __('Tipos de uso de agua'),
+        extended: true,
+        editable: false,
+        dimension: 'allHeight'
+      }));
+      
+      this._widgets.push(new App.View.Widgets.Aq_simul.WaterTotalConsumption(FutureScenarioModel, {
+        id_scope: this.scopeModel.get('id'),
+        dimension: 'double',
+      }));
 
-    this._mapView = new App.View.Panels.Aq_simul.FutureConsumptionMap({
-      el: this.$('.top'),
-      scope: this.scopeModel.get('id'),
-      type: 'now'
-    }).render();
-    this.subviews.push(this._mapView);
+      this.subviews.push(new App.View.Widgets.Container({
+        widgets: this._widgets,
+        el: this.$('.bottom .widgetContainer')
+      }));
+
+      this._mapView = new App.View.Panels.Aq_simul.FutureConsumptionMap({
+        el: this.$('.top'),
+        scope: this.scopeModel.get('id'),
+        type: 'now'
+      }).render();
+      this.subviews.push(this._mapView);
+    });
 
   },
 
-  getConstructionTypesModel: function () {
+  getConstructionTypesData: function () {
     return new Promise((resolve, reject) => {
-      this.constructionTypesModel = new App.Model.Aq_simul.ConstructionTypesModel({
+      let constructionTypesModel = new App.Model.Aq_simul.ConstructionTypesModel({
         scope : this.scopeModel.get('id')
       });
-      this.constructionTypesModel.fetch({data: {filters: {}}});
-      this.constructionTypesModel.parse = (data) => {
+      constructionTypesModel.fetch({data: {filters: {}}});
+      constructionTypesModel.parse = (data) => {
         _.each(data, function(e) {
           e.rows = _.sortBy(e.rows, 'type_id')
           e.rowsCol1 = e.rows.slice(0, Math.ceil(e.rows.length/2))
           e.rowsCol2 = e.rows.slice(Math.ceil(e.rows.length/2))
         })
-        this.constructionTypesData = data;
         resolve(data);
       }
     });
   },
 
   getFutureScenarioModel: function(data) {
+    let paramsData = this.getParamsDataForFutureScenarioModel(data)
+    return new App.Collection.Aq_simul.FutureScenario({
+      scope : this.scopeModel.get('id'),
+      data: paramsData
+    });
+  },
+
+  getParamsDataForFutureScenarioModel: function (data)  {
     let paramsData = {
       tipo: 1
     };
@@ -94,13 +100,9 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
         paramsData["cantidadPiscinas"] = Number(construction.count);
       }
     })
-
-    return new App.Collection.Aq_simul.FutureScenario({
-      scope : this.scopeModel.get('id'),
-      data: paramsData
-    });
+    return paramsData;
   },
-
+  
   _template: _.template($('#AQSimul-panels-future-consumption').html()),
   
   className: 'fill_height flex',
@@ -116,29 +118,56 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
     App.View.Panels.Base.prototype.events
   ),
 
+
   updateScenario: function(e, model) {
-    let newModel = this.getFutureScenarioModel(model.data.constructionTypesModel)
-    let siblingChartPosition = model.position + 1;
+    let comparativeModel = this.getFutureScenarioModel(model.data.constructionTypesModel)
+    
+    this.getConstructionTypesData().then((data) => {
+      let constructionTypesData = data;
+      let FutureScenarioModel = this.getFutureScenarioModel(constructionTypesData);
 
-    this._scenarios.splice(siblingChartPosition, 1);
-    $(".scenariosContainer > div")[siblingChartPosition].remove();
+      // Get data from new scenario
+      this.getComparativeFutureScenario(comparativeModel, model.data.constructionTypesModel).then((comparativeData) => {
 
-    this._scenarios.push(new App.View.Widgets.Aq_simul.WaterTotalConsumption(newModel, {
-      id_scope: this.scopeModel.get('id'),
-      dimension: 'double',
-      position: siblingChartPosition
-    }));
+        // Remove scenarios first
+        this._scenarios = [];
+        $(".scenariosContainer > div").remove();
 
-    this.subviews.push(new App.View.Widgets.Aq_simul.ScenariosContainer({
-      widgets: this._scenarios,
-      el: this.$('.bottom .scenariosContainer')
-    }));
+        // Re-build construction type widget
+        this._scenarios.push(new App.View.Widgets.Aq_simul.WaterUseTypes(model.data.constructionTypesModel, {
+          id_scope: this.scopeModel.get('id'),
+          title: __('Tipos de uso de agua'),
+          extended: true,
+          editable: true,
+          dimension: 'allHeight'
+        }));
 
-    $('.bottom .scenariosContainer').masonry('reloadItems',{
-      gutter: 20,
-      columnWidth: 360
+        // Re-build water consumption widget with new data
+        this._scenarios.push(new App.View.Widgets.Aq_simul.WaterTotalConsumption(FutureScenarioModel, {
+          id_scope: this.scopeModel.get('id'),
+          dimension: 'double',
+        }, comparativeData));
+
+        this.subviews.push(new App.View.Widgets.Container({
+          widgets: this._scenarios,
+          el: this.$('.bottom .scenariosContainer')
+        }));
+
+        console.log("comparative data", comparativeData);
+      })
     });
+  },
 
+  getComparativeFutureScenario: function(comparativeModel, constructionTypesData) {
+    return new Promise((resolve, reject) => {
+      let paramsData = this.getParamsDataForFutureScenarioModel(constructionTypesData);
+      comparativeModel.fetch({ 
+        data: paramsData, 
+        success: function(model, response){
+          resolve(response)
+        }
+      });
+    })
   },
 
   toggleTopHiding: function(e){
@@ -184,32 +213,33 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
   },
 
   createNewScenario: function () {
-    let constructionTypesData = _.clone(this.constructionTypesData);    
     
-    this._scenarios.push(new App.View.Widgets.Aq_simul.WaterUseTypes(constructionTypesData, {
-      id_scope: this.scopeModel.get('id'),
-      title: __('Tipos de uso de agua'),
-      extended: true,
-      editable: true,
-      dimension: 'allHeight',
-      position: this._scenarios.length
-    }));
+    this.getConstructionTypesData().then((data) => {
+      let constructionTypesData = data;
+      let FutureScenarioModel = this.getFutureScenarioModel(constructionTypesData);
 
-    this._scenarios.push(new App.View.Widgets.Aq_simul.WaterTotalConsumption(this.FutureScenario, {
-      id_scope: this.scopeModel.get('id'),
-      dimension: 'double',
-      position: this._scenarios.length
-    }));
+      this._scenarios.push(new App.View.Widgets.Aq_simul.WaterUseTypes(constructionTypesData, {
+        id_scope: this.scopeModel.get('id'),
+        title: __('Tipos de uso de agua'),
+        extended: true,
+        editable: true,
+        dimension: 'allHeight'
+      }));
 
-    this.subviews.push(new App.View.Widgets.Aq_simul.ScenariosContainer({
-      widgets: this._scenarios,
-      el: this.$('.bottom .scenariosContainer')
-    }));
+      this._scenarios.push(new App.View.Widgets.Aq_simul.WaterTotalConsumption(FutureScenarioModel, {
+        id_scope: this.scopeModel.get('id'),
+        dimension: 'double'
+      }));
 
-    $(".panel-future-consumption button.add").addClass('hide')
-    $(".panel-future-consumption .scenarios-header").removeClass('hide');
+      this.subviews.push(new App.View.Widgets.Aq_simul.ScenariosContainer({
+        widgets: this._scenarios,
+        el: this.$('.bottom .scenariosContainer')
+      }));
+
+      $(".panel-future-consumption button.add").addClass('hide')
+      $(".panel-future-consumption .scenarios-header").removeClass('hide');
+    });
   },
-
 
   deleteScenario: function() {
     this._scenarios = [];
@@ -217,6 +247,7 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
     $(".panel-future-consumption button.add").removeClass('hide')
     $(".panel-future-consumption .scenarios-header").addClass('hide');
   },
+
 
   // Actions to perform when the top panel full screen mode is toggled
   _onTopFullScreenToggled: function(){

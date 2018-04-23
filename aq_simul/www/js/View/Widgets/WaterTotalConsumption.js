@@ -2,7 +2,7 @@
 
 App.View.Widgets.Aq_simul.WaterTotalConsumption = App.View.Widgets.Base.extend({
   className: 'plugin-water-consumption',
-  initialize: function(modelData, options) {
+  initialize: function(modelData, options, comparativeData) {
     options = _.defaults(options,{
       title: __('Total de consumo de agua'),
       id_category: 'aq_simul',
@@ -15,20 +15,37 @@ App.View.Widgets.Aq_simul.WaterTotalConsumption = App.View.Widgets.Base.extend({
    
     this.collection.parse = (response) => {
       this.$(".total-consumption-quantity").text(response.consumo)
-      let tempData = {
+      let tempData = [{
         disabled: false,
         key: 'consumption',
         values: []
-      }
+      }];
       _.each(response.consumoPorHoras, function(e, i) {
         if ((i+2) % 2 == 0) {
-          tempData.values.push ({
+          tempData[0].values.push ({
             x: moment().startOf('day').add(e,'hour').toDate(),
           });
         } else {
-          tempData.values[tempData.values.length - 1]["y"] = response.consumoPorHoras[i]
+          tempData[0].values[tempData[0].values.length - 1]["y"] = response.consumoPorHoras[i]
         }
       })
+      if(comparativeData) {
+        let tempComparativeData = {
+          disabled: false, 
+          key: 'consumptionComparative',
+          values: []
+        }
+        _.each(comparativeData.consumoPorHoras, function(e, i) {
+          if ((i+2) % 2 == 0) {
+            tempComparativeData.values.push ({
+              x: moment().startOf('day').add(e,'hour').toDate(),
+            });
+          } else {
+            tempComparativeData.values[tempComparativeData.values.length - 1]["y"] = comparativeData.consumoPorHoras[i]
+          }
+        })
+        tempData.push(tempComparativeData);
+      }
       return tempData;
     };
 
