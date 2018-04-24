@@ -82,6 +82,7 @@ App.View.Map.Layer.Aq_simul.PlotsLayer = Backbone.View.extend({
         success: function(response) {
           if (response.attributes.codigo && response.attributes.codigo == 500) {
           } else {
+            response.attributes.consumption = data.consumo;
             let html = _this.bindData(__('Tarificación'),response.attributes,e);
             popup.setHTML(html);
           }
