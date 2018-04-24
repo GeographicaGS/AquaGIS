@@ -11,6 +11,7 @@ App.View.Map.Layer.Aq_cons.SectorSavingLayer = Backbone.View.extend({
     
     sensor.parse = function(e) {
       _.each(e.features, function(f,i) {
+        console.log("sensor", f);
         f.properties.index = i;
       });
       return e;
@@ -25,9 +26,9 @@ App.View.Map.Layer.Aq_cons.SectorSavingLayer = Backbone.View.extend({
       },
       legend: {
         sectionId: 'sector',
-        sectionIcon: this.iconsFolder + '/sectores.svg',
-        sectionName: __('Sectores'),
-        name: __('Sectores')
+        sectionIcon: this.iconsFolder + '/deposito.svg',
+        sectionName: __('Depósitos'),
+        name: __('Depósitos')
       },
       layers:[
         {
@@ -55,19 +56,13 @@ App.View.Map.Layer.Aq_cons.SectorSavingLayer = Backbone.View.extend({
         model: sensor,
         payload: this._payload
       },
-      legend: {
-        sectionId: 'sensor',
-        sectionIcon: this.iconsFolder + '/sensor-agua.svg',
-        sectionName: __('Sensores'),
-        name: __('Sensores')
-      },
       layers:[{
         'id': 'sensors_circle',
         'type': 'circle',
         'source': 'sensors_datasource',
         'paint': {
           'circle-radius': 20,
-          'circle-color': '#8672D2',
+          'circle-color': '#68BEE2',
           'circle-opacity': 0.5
         },
         'filter': ['==','index',0]
@@ -76,7 +71,7 @@ App.View.Map.Layer.Aq_cons.SectorSavingLayer = Backbone.View.extend({
         'type': 'symbol',
         'source': 'sensors_datasource',
         'layout': {
-          'icon-image': 'sensor-agua',
+          'icon-image': 'deposito',
           'icon-allow-overlap': true,
           'icon-size': 0.8,
         }

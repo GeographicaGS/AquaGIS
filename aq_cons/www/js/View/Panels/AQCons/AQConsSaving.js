@@ -21,7 +21,6 @@ App.View.Panels.Aq_cons.Saving = App.View.Panels.Splitted.extend({
   customRender: function() {
     this._widgets = [];
 
-
     this.subviews.push(new App.View.Widgets.Container({
       widgets: this._widgets,
       el: this.$('.bottom .widgetContainer')
@@ -35,6 +34,7 @@ App.View.Panels.Aq_cons.Saving = App.View.Panels.Splitted.extend({
       scope: this.scopeModel.get('id'),
       type: 'now'
     }).render();
+    
     this.listenTo(this._mapView.mapChanges,'change:clickedSector', this._openDetails);
     
     this.subviews.push(this._mapView);

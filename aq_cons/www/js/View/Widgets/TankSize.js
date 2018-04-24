@@ -12,57 +12,111 @@ App.View.Widgets.Aq_cons.TankSize = App.View.Widgets.Base.extend({
       publishable: true,
       classname: 'App.View.Widgets.Aq_cons.TankSize'
     });
+
     App.View.Widgets.Base.prototype.initialize.call(this,options);
-    let prevWeek = App.Utils.getPrevWeek();
+
+    let nextWeek = App.Utils.getNextWeek();
+
     if(!this.hasPermissions()) return;
-    this.dataModel = new App.Model.Variables({
-      scope: this.options.id_scope,
-      variable: 'aq_cons.sector.consumption',
-      data: {
-        "agg": "SUM",
-        "time": {
-          "start": prevWeek[0],
-          "finish": prevWeek[1]
-        }
-      },
-      mode: 'historic'
-    });
 
-    var variableMetadata = App.mv().getVariable('aq_cons.sector.consumption');
-    if (variableMetadata.get('config') && variableMetadata.get('config').global_domain) {
-      var domain = variableMetadata.get('config').global_domain;
-    }
+    // Get min level, capacity and current level of tank
+    let tankMinLevelPromise = new Promise((resolve, reject) => {
+      let tankMinLevelModel = new App.Model.Variables({
+        scope: this.options.id_scope,
+        variable: 'aq_cons.tank.min_level',
+        mode: 'now'
+      });
 
-    this._chartModel = new App.Model.BaseChartConfigModel({
-      colors: ['#64B6D9'],
-      xAxisFunction: function (d) {
-        return __('Todos los sectores');
-      },
-      // yAxisFunction: function(d){
-      //   return App.nbf(d, {decimals:0});
-      // },
-      yAxisLabel: __('Consumo (m³)'),
-      legendNameFunc: function (d) {
-        return __('Consumo (m³)');
-      },
-      legendTemplate: this._template_legend,
-      formatYAxis: {
-        // numberOfValues: 4,
-        tickFormat: function (d) {
-          return App.nbf(d, {decimals:0});
-        }
+      tankMinLevelModel.fetch({data: {
+        "agg": "SUM"
+      }});
+      tankMinLevelModel.parse = (data) => {
+        this.tankMinLevelData = data.value;
+        resolve();
       }
     });
+    let tankCapacityPromise = new Promise((resolve, reject) => {
+      let nextWeek = App.Utils.getNextWeek();
+      let tankCapacityModel = new App.Model.Variables({
+        scope: this.options.id_scope,
+        variable: 'aq_cons.tank.capacity',
+        mode: 'now'
+      });
 
-    // this._chartModel.set({yAxisDomain: [0,100]});
-    this._chartModel.set({yAxisDomain: [0,100]});
+      tankCapacityModel.fetch({data: {
+        "agg": "SUM"
+      }});
+      tankCapacityModel.parse = (data) => {
+        this.tankCapacityData = data.value;
+        resolve();
+      }
+    })
+    let tankLevelPromise = new Promise((resolve, reject) => {
+      let nextWeek = App.Utils.getNextWeek();
+      let tankLevelModel = new App.Model.Variables({
+        scope: this.options.id_scope,
+        variable: 'aq_cons.tank.level',
+        mode: 'now'
+      });
 
-    this.subviews.push(new App.View.Widgets.Charts.FillBar({
-      opts: this._chartModel,
-      data: this.dataModel
-    }));
+      tankLevelModel.fetch({data: {
+        "agg": "SUM"
+      }});
+      tankLevelModel.parse = (data) => {
+        this.tankLevelData = data.value;
+        resolve();
+      }
+    })
+    
+    Promise.all([tankMinLevelPromise, tankCapacityPromise, tankLevelPromise]).then(() => { 
 
-    this.filterables = [this.dataModel];
+      // Preparing data-model and options for tank capacity bar chart
+      this.dataModel = new App.Model.Variables({
+        scope: this.options.id_scope,
+        variable: 'aq_cons.tank.level',
+        data: {
+          "agg": "SUM",
+          "time": {
+            "start": nextWeek[0],
+            "finish": nextWeek[1]
+          }
+        },
+        mode: 'now'
+      });
+  
+      var variableMetadata = App.mv().getVariable('aq_cons.tank.capacity');
+      if (variableMetadata.get('config') && variableMetadata.get('config').global_domain) {
+        var domain = variableMetadata.get('config').global_domain;
+      }
+  
+      this._chartModel = new App.Model.BaseChartConfigModel({
+        xAxisFunction: function (d) {
+          return "";
+        },
+        yAxisLabel: __('Capacidad (m³)'),
+        legendNameFunc: function (d) {
+          return __('Capacidad (m³)');
+        },
+        legendTemplate: this._template_legend,
+        formatYAxis: {
+          tickFormat: function (d) {
+            return App.nbf(d, {decimals:0});
+          }
+        }
+      });
+      
+      let colors = this.tankLevelData > this.tankMinLevelData ? '#64B6D9' : '#FB4C62';
+      this._chartModel.set({colors: [colors]});
+      this._chartModel.set({yAxisDomain: [0, this.tankCapacityData]});
+  
+      this.subviews.push(new App.View.Widgets.Charts.FillBar({
+        opts: this._chartModel,
+        data: this.dataModel
+      }));
+      
+      this.filterables = [this.dataModel];
+      this.render();
+    });
   },
 
   render: function(){
