@@ -1,0 +1,81 @@
+
+<%if(link){%>
+    <a jslink href="<%=link%>" class="noOutline">
+<%}%>
+    <div class="widget-water-use-types widget active scroll <%=link && titleLink ? 'link':'' %>">
+        <div class="widget_header main">
+            <div class="title">
+                <%=title%>
+            </div>
+        </div>
+        <div class="widget_content">
+            <% if(data.constructionTypesModel) { %>
+                <% for(var construction of data.constructionTypesModel) {%>
+                    <div class="collapse-row">
+                        <div class="collapse-header">
+                            <div class="title">
+                                <% if(data.extended) { %><div class="caret"></div><% } %>
+                                <span class="total"><%= construction.count %></span>
+                                <span class="type"><%= construction.type_name %></span>
+                            </div>
+                            <div class="total-types"><%= construction.rows.length %> <%= __('tipos') %></div>
+                        </div>
+                        <% if(data.extended) { %>
+                            <div class="collapse-body">
+                                <div class="col">
+                                    <div class="col-header">
+                                        <span class="qt"><%= __('CANT.') %></span>
+                                        <span><%= __('TIPO') %></span>
+                                    </div>
+                                    <% for(var type of construction.rowsCol1) {%>
+                                        <div class="type-item">
+                                            <div class="quantity">
+                                                <% if(editable) { %>
+                                                    <input class="quantity-edit" type="number" data-subtype="<%= type.type_id %>" value="<%= type.count %>" min="0">
+                                                <% } else { %>
+                                                    <div class="quantity-view"><%= type.count %></div>
+                                                <% } %>
+                                            </div> 
+                                            <span class="persons"><%= type.type_id %> <%= __('Personas') %></span>
+                                        </div>
+                                    <% } %>
+                                </div>
+                                <% if(construction.rowsCol2.length) {%>
+                                    <div class="col">
+                                        <div class="col-header">
+                                            <span class="qt"><%= __('CANT.') %></span>
+                                            <span><%= __('TIPO') %></span>
+                                        </div>
+                                        <% for(var type of construction.rowsCol2) {%>
+                                            <div class="type-item">
+                                                <div class="quantity">
+                                                    <% if(editable) { %>
+                                                        <input class="quantity-edit" type="number"  data-subtype="<%= type.type_id %>" value="<%= type.count %>" min="0">
+                                                    <% } else { %>
+                                                        <div class="quantity-view"><%= type.count %></div>                                                
+                                                    <% } %>
+                                                </div> 
+                                                <span class="persons"><%= type.type_id %> <%= __('Personas') %></span>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                <% } %>
+                                <% if(editable) { %>
+                                <div class="editable-buttons">
+                                    <button class="button small empty noBorder btCancelChanges"><%= __('Cancelar') %></button>
+                                    <button class="button small btApplyChanges" data-type="<%= construction.type_name %>"><%= __('Aplicar') %></button>
+                                </div>
+                                <% } %>
+                            </div>
+                        <% } %>
+                    </div>
+                <% } %>
+            <% } %>  
+        </div>
+<%if(link){%>
+    <div class="viewMore"><%=__('Ver más en')%>&nbsp;<span><%=titleLink%></span></div>
+    </div>
+    </a>
+<%}else{%>
+    </div>
+<%}%>

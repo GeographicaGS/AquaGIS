@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>icons/accent/trash</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="icons/accent/trash" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle-23-Copy-3" fill="#64B6D9" transform="translate(10.000000, 4.500000) rotate(-270.000000) translate(-10.000000, -4.500000) " x="9.5" y="-1.5" width="1" height="12" rx="0.5"></rect>
+        <rect id="Rectangle-24" stroke="#64B6D9" x="8.5" y="2.5" width="3" height="2"></rect>
+        <path d="M5.5,6.5 L5.5,16 C5.5,16.8284271 6.17157288,17.5 7,17.5 L13,17.5 C13.8284271,17.5 14.5,16.8284271 14.5,16 L14.5,6.5 L5.5,6.5 Z" id="Rectangle-25" stroke="#64B6D9"></path>
+        <rect id="Rectangle-2" fill="#64B6D9" x="11" y="9" width="1" height="6"></rect>
+        <rect id="Rectangle-2-Copy" fill="#64B6D9" x="8" y="9" width="1" height="6"></rect>
+    </g>
+</svg>

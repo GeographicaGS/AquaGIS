@@ -18,12 +18,22 @@ deps.JS = [
   // VIEWS - PANELS
   srcJS + 'View/Panels/AQSimul/AQSimulMasterPanelView.js',
   srcJS + 'View/Panels/AQSimul/AQSimulRates.js',
+  srcJS + 'View/Panels/AQSimul/AQSimulFutureConsumption.js',
 
   // VIEWS - MAPS
   srcJS + 'View/Map/AQSimulMapboxGLPopup.js',
   srcJS + 'View/Map/AQSimulRatesMap.js',
+  srcJS + 'View/Map/AQSimulFutureConsumptionMap.js',
   srcJS + 'View/Map/Layer/AQSimulGeoJSONLayer.js',
-  srcJS + 'View/Map/Layer/AQSimulPlotsLayers.js'
+  srcJS + 'View/Map/Layer/AQSimulPlotsLayers.js',
+  srcJS + 'View/Map/Layer/AQSimulFutureConsumptionLayer.js',
+
+  // WIDGETS
+  srcJS + 'View/Widgets/ScenarioContainerView.js',
+  srcJS + 'View/Widgets/WaterUseTypes.js',
+  srcJS + 'View/Widgets/WaterTotalConsumption.js',
+  srcJS + 'View/Widgets/D3BarsLine.js'
+
 ];
 
 deps.lessFile = [ src + 'css/styles.less' ];
