@@ -9,7 +9,7 @@ App.View.Widgets.Aq_cons.TankSize = App.View.Widgets.Base.extend({
       timeMode: 'now',
       id_category: 'aq_cons',
       permissions: {'variables': ['aq_cons.sector.consumption']},
-      publishable: true,
+      publishable: false,
       classname: 'App.View.Widgets.Aq_cons.TankSize', 
     });
 
@@ -71,7 +71,6 @@ App.View.Widgets.Aq_cons.TankSize = App.View.Widgets.Base.extend({
     Promise.all([tankMinLevelPromise, tankCapacityPromise, tankLevelPromise]).then(() => { 
 
       let percentageMinLevelData = this.tankMinLevelData * this.tankCapacityData / 100;
-      console.log("percentageMinLevelData", percentageMinLevelData)
 
       // Preparing data-model and options for tank capacity bar chart
       this.dataModel = new App.Model.Variables({
@@ -112,7 +111,7 @@ App.View.Widgets.Aq_cons.TankSize = App.View.Widgets.Base.extend({
           { value: 100, color: this.tankLevelData > percentageMinLevelData ? '#64B6D9' : '#FB4C62' },
         ]
       });
-      
+
      
       this._chartModel.set({yAxisDomain: [0, this.tankCapacityData]});
   

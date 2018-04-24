@@ -41,7 +41,8 @@ deps.JS = [
   srcJS + 'View/Widgets/PressureSectorRanking.js',
   srcJS + 'View/Widgets/TankSize.js',
   srcJS + 'View/Widgets/WidgetTotalConsumeLastWeek.js',
-  srcJS + 'View/Widgets/WidgetTotalConsumeWeeklyAverages.js'
+  srcJS + 'View/Widgets/WidgetTotalConsumeWeeklyAverages.js',
+  srcJS + 'View/Widgets/EnergyConsumptionForecast.js',
 ];
 
 deps.lessFile = [ src + 'css/styles.less' ];

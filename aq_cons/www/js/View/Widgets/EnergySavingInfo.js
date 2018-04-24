@@ -22,8 +22,12 @@ App.View.Widgets.Aq_cons.EnergySavingInfo = App.View.Widgets.Base.extend({
       filter: 'all',
     });
     App.View.Widgets.Base.prototype.initialize.call(this,options);
-    this._collection = new App.Collection.Post({},{data:{"time": new Date()}});
-    this._collection.url = App.config.api_url + '/' + options.id_scope + '/aq_cons/tank/tank:1/plans';
+    this._collection = new App.Collection.Post({},{
+      data:{
+        "time": "2018-01-04"
+      }
+    });
+    this._collection.url = App.config.api_url + '/' + options.id_scope + '/aq_cons/tank/1/plans';
     this._collection.parse = function(data) {
       console.log(data);
       return data;
