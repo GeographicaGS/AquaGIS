@@ -1,12 +1,15 @@
 'use strict';
 
 App.View.Panels.Aq_simul.RatesMap = App.View.Map.MapboxView.extend({
-
+  
   initialize: function (options) {
+
+    var center = App.mv().getScope(App.currentScope).get('location');
+
     options = _.defaults(options, {
       defaultBasemap: 'positron',
       sprites: '/verticals/aquasig-theme/mapstyle/sprite',      
-      center: [-6.058731999113434, 37.34176929299322],
+      center: [center[1], center[0]],
       type: 'now',
     });
 

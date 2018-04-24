@@ -6,10 +6,12 @@ App.View.Panels.Aq_simul.FutureConsumptionMap = App.View.Map.MapboxView.extend({
 		
 		this.constructionTypesModel = new App.Model.Aq_simul.ConstructionTypesModel({scope: options.scope});
 
+    var center = App.mv().getScope(App.currentScope).get('location');
+
     options = _.defaults(options, {
       defaultBasemap: 'positron',
       sprites: '/verticals/aquasig-theme/mapstyle/sprite',      
-      center: [-6.058731999113434, 37.34176929299322],
+      center: [center[1], center[0]],
       type: 'now',
     });
 
@@ -30,13 +32,13 @@ App.View.Panels.Aq_simul.FutureConsumptionMap = App.View.Map.MapboxView.extend({
     App.View.Map.MapboxView.prototype.initialize.call(this, options);
   },
 
-  _onMapLoaded: function(bbox) {
+  _onMapLoaded: function() {
     this.layers = new App.View.Map.Layer.Aq_simul.FutureConsumptionLayer(this._options, this._payload, this);
-    if (this.getBbbox(bbox)) this.getConstructionTypesModel(bbox);
+    this.getConstructionTypesModel(this.getBBox());
   },
 
   _onBBoxChange: function(bbox) {
-    if (this.getBbbox(bbox)) this.getConstructionTypesModel(bbox);
+    this.getConstructionTypesModel(this.getBBox());
   },
 
   onClose: function() {

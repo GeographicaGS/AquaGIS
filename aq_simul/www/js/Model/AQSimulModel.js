@@ -31,7 +31,6 @@ App.Model.Aq_simul.RatesModel = App.Model.Post.extend({
   initialize: function(options) {
     this.options = options;
     this.__disableBackboneSyncInterceptor = true;
-    this.__allowCrossOrigin = true;
   },
 
   url: function(options) {
