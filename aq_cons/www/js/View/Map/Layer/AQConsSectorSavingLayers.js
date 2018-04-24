@@ -11,7 +11,6 @@ App.View.Map.Layer.Aq_cons.SectorSavingLayer = Backbone.View.extend({
     
     sensor.parse = function(e) {
       _.each(e.features, function(f,i) {
-        console.log("sensor", f);
         f.properties.index = i;
       });
       return e;

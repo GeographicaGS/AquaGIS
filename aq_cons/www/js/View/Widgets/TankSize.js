@@ -10,7 +10,7 @@ App.View.Widgets.Aq_cons.TankSize = App.View.Widgets.Base.extend({
       id_category: 'aq_cons',
       permissions: {'variables': ['aq_cons.sector.consumption']},
       publishable: true,
-      classname: 'App.View.Widgets.Aq_cons.TankSize'
+      classname: 'App.View.Widgets.Aq_cons.TankSize', 
     });
 
     App.View.Widgets.Base.prototype.initialize.call(this,options);
@@ -70,6 +70,9 @@ App.View.Widgets.Aq_cons.TankSize = App.View.Widgets.Base.extend({
     
     Promise.all([tankMinLevelPromise, tankCapacityPromise, tankLevelPromise]).then(() => { 
 
+      let percentageMinLevelData = this.tankMinLevelData * this.tankCapacityData / 100;
+      console.log("percentageMinLevelData", percentageMinLevelData)
+
       // Preparing data-model and options for tank capacity bar chart
       this.dataModel = new App.Model.Variables({
         scope: this.options.id_scope,
@@ -90,6 +93,7 @@ App.View.Widgets.Aq_cons.TankSize = App.View.Widgets.Base.extend({
       }
   
       this._chartModel = new App.Model.BaseChartConfigModel({
+        colors: [this.tankLevelData > percentageMinLevelData ? '#64B6D9' : '#FB4C62'],
         xAxisFunction: function (d) {
           return "";
         },
@@ -102,11 +106,14 @@ App.View.Widgets.Aq_cons.TankSize = App.View.Widgets.Base.extend({
           tickFormat: function (d) {
             return App.nbf(d, {decimals:0});
           }
-        }
+        },
+        divisorLines: [
+          { value: percentageMinLevelData, color: "#FB4C62" },
+          { value: 100, color: this.tankLevelData > percentageMinLevelData ? '#64B6D9' : '#FB4C62' },
+        ]
       });
       
-      let colors = this.tankLevelData > this.tankMinLevelData ? '#64B6D9' : '#FB4C62';
-      this._chartModel.set({colors: [colors]});
+     
       this._chartModel.set({yAxisDomain: [0, this.tankCapacityData]});
   
       this.subviews.push(new App.View.Widgets.Charts.FillBar({
