@@ -2,6 +2,7 @@
 
 App.View.Widgets.Aq_simul.WaterTotalConsumption = App.View.Widgets.Base.extend({
   className: 'plugin-water-consumption',
+
   initialize: function(modelData, options, comparativeData) {
     options = _.defaults(options,{
       title: __('Total de consumo de agua'),
@@ -11,14 +12,13 @@ App.View.Widgets.Aq_simul.WaterTotalConsumption = App.View.Widgets.Base.extend({
 
     App.View.Widgets.Base.prototype.initialize.call(this,options);
 
-    this.collection = modelData;
-
+    this.collection = modelData;    
     this.collection.parse = (response) => {
-      
+
       if (comparativeData){
-        this.$(".total-consumption-quantity").text(comparativeData.consumo);
+        this.$(".total-consumption-quantity").text(this.formatNumber(comparativeData.consumo.toFixed(2)));
       } else {
-        this.$(".total-consumption-quantity").text(response.consumo);  
+        this.$(".total-consumption-quantity").text(this.formatNumber(response.consumo.toFixed(2)));  
       }
 
       let tempData = [{
@@ -106,5 +106,9 @@ App.View.Widgets.Aq_simul.WaterTotalConsumption = App.View.Widgets.Base.extend({
     }));
 
     this.filterables = [this.collection];
+  },
+
+  formatNumber: (x) => {
+    return x.toString().replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
 });

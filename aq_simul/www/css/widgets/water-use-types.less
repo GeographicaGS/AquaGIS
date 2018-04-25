@@ -19,6 +19,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            &.collapsable {
+                cursor: pointer;
+                .title-item::selection  {
+                    background: transparent;
+                }
+            }
             &.opened {
                 + .collapse-body {
                     display: flex;

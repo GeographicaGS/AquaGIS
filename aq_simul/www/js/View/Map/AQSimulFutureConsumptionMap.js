@@ -13,6 +13,7 @@ App.View.Panels.Aq_simul.FutureConsumptionMap = App.View.Map.MapboxView.extend({
       sprites: '/verticals/aquasig-theme/mapstyle/sprite',      
       center: [center[1], center[0]],
       type: 'now',
+      legendOpened: true
     });
 
     var prevWeek = App.Utils.getPrevWeek();   
