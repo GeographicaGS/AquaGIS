@@ -64,7 +64,7 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
       constructionTypesModel.fetch({data: {filters: {}}});
       constructionTypesModel.parse = (data) => {
         _.each(data, function(e) {
-          e.rows = _.sortBy(e.rows, 'type_id')
+          e.rows = _.sortBy(e.rows, 'type_value')
           e.rowsCol1 = e.rows.slice(0, Math.ceil(e.rows.length/2))
           e.rowsCol2 = e.rows.slice(Math.ceil(e.rows.length/2))
         })

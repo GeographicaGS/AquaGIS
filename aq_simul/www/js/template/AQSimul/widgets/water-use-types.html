@@ -12,13 +12,13 @@
             <% if(data.constructionTypesModel) { %>
                 <% for(var construction of data.constructionTypesModel) {%>
                     <div class="collapse-row">
-                        <div class="collapse-header">
+                        <div class="collapse-header <%= data.extended ? 'collapsable' : '' %>">
                             <div class="title">
                                 <% if(data.extended) { %><div class="caret"></div><% } %>
-                                <span class="total"><%= construction.count %></span>
-                                <span class="type"><%= construction.type_name %></span>
+                                <span class="total title-item"><%= formatNumber(construction.count) %></span>
+                                <span class="type title-item"><%= construction.type_name %></span>
                             </div>
-                            <div class="total-types"><%= construction.rows.length %> <%= __('tipos') %></div>
+                            <div class="total-types title-item"><%= construction.rows.length %> <%= __('tipos') %></div>
                         </div>
                         <% if(data.extended) { %>
                             <div class="collapse-body">
@@ -36,7 +36,7 @@
                                                     <div class="quantity-view"><%= type.count %></div>
                                                 <% } %>
                                             </div> 
-                                            <span class="persons"><%= type.type_id %> <%= __('Personas') %></span>
+                                            <span class="persons"><%= type.type_value %> <%= type.type_parameter %></span>
                                         </div>
                                     <% } %>
                                 </div>
@@ -55,7 +55,7 @@
                                                         <div class="quantity-view"><%= type.count %></div>                                                
                                                     <% } %>
                                                 </div> 
-                                                <span class="persons"><%= type.type_id %> <%= __('Personas') %></span>
+                                                <span class="persons"><%= type.type_value %> <%= type.type_parameter %></span>
                                             </div>
                                         <% } %>
                                     </div>

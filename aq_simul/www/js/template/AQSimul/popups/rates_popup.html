@@ -7,43 +7,48 @@
 
   <div class="content">
 
-    <h3>Factura parte fija</h3>
-    <div class="info-block child">
-      <h4>General</h4>
-      <span><%= facturaParteFija.general %></span>
-      <h4>Vertido</h4>
-      <span><%= facturaParteFija.vertido %></span>
-      <h4>Depuración</h4>
-      <span><%= facturaParteFija.depuracion %></span>
-      <h4>Autonómica</h4>
-      <span><%= facturaParteFija.autonomica %></span>
-      <h4>Total</h4>
-      <span><%= facturaParteFija.total %></span>
+    <div class="info-block">
+      <h4><%= __('Consumo') %></h4>
+      <span><%= (consumption).toFixed(2) %> <%= __('m³') %></span>
     </div>
     
-    <h3>Factura parte fija</h3>
+    <h3><%= __('Factura parte fija') %></h3>
     <div class="info-block child">
-      <h4>Abastecimiento</h4>
-      <span><%= facturaParteVariable.abastecimiento %></span>
-      <h4>Vertido</h4>
-      <span><%= facturaParteVariable.vertido %></span>
-      <h4>Depuración</h4>
-      <span><%= facturaParteVariable.depuracion %></span>
-      <h4>Canon local</h4>
-      <span><%= facturaParteVariable.canonLocal %></span>
-      <h4>Canon autonómico</h4>
-      <span><%= facturaParteVariable.canonAutonomico %></span>
-      <h4>Total</h4>
-      <span><%= facturaParteVariable.total %></span>
+      <h4><%= __('General') %></h4>
+      <span><%= (facturaParteFija.general).toFixed(2) %> <%= __('€') %></span>
+      <h4><%= __('Vertido') %></h4>
+      <span><%= (facturaParteFija.vertido).toFixed(2) %> <%= __('€') %></span>
+      <h4><%= __('Depuración') %></h4>
+      <span><%= (facturaParteFija.depuracion).toFixed(2) %> <%= __('€') %></span>
+      <h4><%= __('Autonómica') %></h4>
+      <span><%= (facturaParteFija.autonomica).toFixed(2) %> <%= __('€') %></span>
+      <h4><%= __('Total') %></h4>
+      <span><%= (facturaParteFija.total).toFixed(2) %> <%= __('€') %></span>
+    </div>
+    
+    <h3><%= __('Factura parte fija') %></h3>
+    <div class="info-block child">
+      <h4><%= __('Abastecimiento') %></h4>
+      <span><%= (facturaParteVariable.abastecimiento.toFixed(2)) %> <%= __('€') %></span>
+      <h4><%= __('Vertido') %></h4>
+      <span><%= (facturaParteVariable.vertido).toFixed(2) %> <%= __('€') %></span>
+      <h4><%= __('Depuración') %></h4>
+      <span><%= (facturaParteVariable.depuracion).toFixed(2) %> <%= __('€') %></span>
+      <h4><%= __('Canon local') %></h4>
+      <span><%= (facturaParteVariable.canonLocal).toFixed(2) %> <%= __('€') %></span>
+      <h4><%= __('Canon autonómico') %></h4>
+      <span><%= (facturaParteVariable.canonAutonomico).toFixed(2) %> <%= __('€') %></span>
+      <h4><%= __('Total') %></h4>
+      <span><%= (facturaParteVariable.total).toFixed(2) %> <%= __('€') %></span>
     </div>
 
     <div class="info-block">
-      <h4>Total neto</h4>
-      <span><%= totalneto %></span>
-      <h4>Iva</h4>
-      <span><%= iva %></span>
-      <h4>Total</h4>
-      <span><%= total %></span>
+      <h4><%= __('Total neto') %></h4>
+      <span><%= (totalneto).toFixed(2) %> <%= __('€') %></span>
+      <h4><%= __('Iva') %></h4>
+      <span><%= (iva).toFixed(2) %> <%= __('€') %></span>
+      <h4><%= __('Total') %></h4>
+      <span><%= (total).toFixed(2) %> <%= __('€') %></span>
     </div>
   </div>
 <% } %>  
