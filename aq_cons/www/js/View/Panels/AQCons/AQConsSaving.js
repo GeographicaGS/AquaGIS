@@ -20,12 +20,10 @@ App.View.Panels.Aq_cons.Saving = App.View.Panels.Splitted.extend({
 
   customRender: function() {
     this._widgets = [];
-
     this.subviews.push(new App.View.Widgets.Container({
       widgets: this._widgets,
       el: this.$('.bottom .widgetContainer')
     }));
-
   },
 
   onAttachToDOM: function() {
@@ -80,14 +78,15 @@ App.View.Panels.Aq_cons.Saving = App.View.Panels.Splitted.extend({
       timeMode:'now',
     }));
 
-    this._widgets.push(new App.View.Widgets.Aq_cons.EnergyConsumptionForecast({
-      id_scope:this.scopeModel.get('id'),
-      id_entity: tank.properties.id_entity
-    }))
+    // this._widgets.push(new App.View.Widgets.Aq_cons.EnergyConsumptionForecast({
+    //   id_scope:this.scopeModel.get('id'),
+    //   id_entity: tank.properties.id_entity
+    // }))
 
     this.subviews.push(new App.View.Widgets.Container({
       widgets: this._widgets,
       el: this.$('.bottom .widgetContainer')
     }));
   }
+
 });

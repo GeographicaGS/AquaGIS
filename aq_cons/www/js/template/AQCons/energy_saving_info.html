@@ -1,0 +1,27 @@
+<%if(link){%>
+    <a jslink href="<%=link%>" class="noOutline">
+  <%}%>
+    <div class="widget active widget-energy-saving-info <%=dimension%> <%=type%> <%=link && titleLink ? 'link':'' %>">
+      <div class="widget_header main">
+        <div class="title <%=correlationTitle ? 'correlation_title':'' %> <%= bigTitle ? 'big':'' %>">
+          <%=title%>
+        </div>
+      </div>
+      <div class="message">
+        <p>El plan de ahorro mantiene el depósito pro encima del 30% de su capacidad. Las bombas se encenderán según la demanda de consumo y el precio más bajo del agua.</p>
+      </div>
+      <div class="">
+        <div class="">Ahorro de energía <%= saving.kwh_used %></div>
+        <div class="">Ahorro aproximado</div>
+        <div class="">Consumo energético</div>
+        <div class="">Precio medio del agua</div>
+      </div>
+      <div class="widget_content"></div>
+    </div>
+  <%if(link){%>
+    <div class="viewMore"><%=__('Ver más en')%>&nbsp;<span><%=titleLink%></span></div>
+    </div>
+    </a>
+  <%}else{%>
+    </div>
+  <%}%>

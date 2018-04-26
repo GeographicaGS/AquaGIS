@@ -1,0 +1,32 @@
+<%if(link){%>
+  <a jslink href="<%=link%>" class="noOutline">
+<%}%>
+  <div class="widget active widget-energy-saving-info <%=dimension%> <%=type%> <%=link && titleLink ? 'link':'' %>">
+    
+    <div class="widget_header main saving hide">
+      <div class="title">
+        <span><%= __('Plan de ahorro') %></span>
+        <button class="btn-speak" data-target="saving-description"><img src="/verticals/aquasig-theme/img/icons/accent/speak.svg"></button>
+      </div>
+      <p class="message" id="saving-description">El plan de ahorro mantiene el depósito pro encima del 30% de su capacidad. Las bombas se encenderán según la <b>demanda de consumo</b> y el <b>precio más bajo del agua.</b></p>
+    </div>
+
+    <div class="widget_header main emergency hide">
+      <div class="title">
+        <img class="alert-icon" src="/verticals/aquasig-theme/img/icons/color/warning-low.svg">
+        <span><%= __('Anomalía de consumo') %></span>
+        <button id="btnSpeak" data-target="emergency-description" class="btn-speak"><img src="/verticals/aquasig-theme/img/icons/accent/speak.svg"></button>
+      </div>
+      <p class="message" id="emergency-description">Se ha detectado una anomalía en el <b>patrón de consumo de agua</b> previsto. El encendido de las bombas se ha producido por seguridad a una hora no prevista.</p>
+    </div>
+
+    <div class="widget_content"></div>
+
+  </div>
+  <%if(link){%>
+    <div class="viewMore"><%=__('Ver más en')%>&nbsp;<span><%=titleLink%></span></div>
+    </div>
+    </a>
+  <%}else{%>
+  </div>
+<%}%>
