@@ -2,6 +2,13 @@
 
 App.View.Panels.Aq_cons.SavingMap = App.View.Panels.Aq_cons.CurrentMap.extend({
 
+  _template_legend: _.template('<div class="tags textleft">' +
+  ' <div class="btnLegend no_border inrow">' +
+  '    <span class="legend-map no-incidences">' + __('Sin incidencias') + '</span>' +
+  '    <span class="legend-map leak">' + __('< Mínimo recomendado') + '</span>' +
+  ' </div>' +
+  '</div>'),
+
   dataLoaded: function(e) {
     if(e.isSourceLoaded && e.sourceId === 'sensors_datasource') {
       let defaultSelected = _.find(e.source.data.features, function(f) { 
