@@ -26,7 +26,6 @@ App.View.Panels.Aq_cons.SavingMap = App.View.Panels.Aq_cons.CurrentMap.extend({
     this.layers = new App.View.Map.Layer.Aq_cons.SectorSavingLayer(this._options, this._payload, this);
     this.events = _.extend({},this._events, this.events);
     this.delegateEvents();
-    this.drawLegend();
   },
 
   _closeDetails: function() {

@@ -24,12 +24,6 @@ App.View.Map.Layer.Aq_cons.SectorSavingLayer = Backbone.View.extend({
         model: sector,
         payload: this._payload,
       },
-      legend: {
-        sectionId: 'sector',
-        sectionIcon: this.iconsFolder + '/deposito.svg',
-        sectionName: __('Depósitos'),
-        name: __('Depósitos')
-      },
       layers:[
         {
           'id': 'sector_line',
