@@ -117,7 +117,7 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
   _closeDetails: function(e) {
     // 1.- Cleaning widget container
     this._mapView.mapChanges.set('clickedSector', undefined);
-    this.$('.container > .row > div > .details-title').remove();
+    this.$('.container .title_selection .details-title').remove();
     this.$('.bottom .widgetContainer').html('');
 
     // 2.- Calling to renderer for detail's widget
@@ -138,7 +138,7 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
         '<a href="#" class="navElement back"></a>' +    
         clickedSector.features[0].properties.name);
     } else {
-      this.$('.container > .row > div').append('<h2 class="details-title">' +
+      this.$('.container .title_selection').append('<h2 class="details-title">' +
       '<a href="#" class="navElement back"></a>' +
       clickedSector.features[0].properties.name + '</h2>');
     }

@@ -42,6 +42,7 @@ App.View.Panels.Aq_cons.Saving = App.View.Panels.Splitted.extend({
     if(e.get('clickedSector') === undefined) {
       this._closeDetails();
     } else {
+
       // 1.- Cleaning widget container
       let clicked = e.toJSON().clickedSector;
       this.$('.bottom .widgetContainer').html('');
@@ -54,6 +55,17 @@ App.View.Panels.Aq_cons.Saving = App.View.Panels.Splitted.extend({
         gutter: 20,
         columnWidth: 360
       });
+
+      setTimeout(() => {
+        this.$('.bottom .widgetContainer').masonry();
+      }, 300);
+
+
+      // 4 - Set title of selection
+      var $title_selection = $('.title_selection');
+      var $title_selection_id = $('.title_selection_id');
+      $title_selection.text(__('Depósito'));
+      $title_selection_id.text(e.get('clickedSector').properties.id_entity);
     }
   },
 
@@ -78,10 +90,10 @@ App.View.Panels.Aq_cons.Saving = App.View.Panels.Splitted.extend({
       timeMode:'now',
     }));
 
-    // this._widgets.push(new App.View.Widgets.Aq_cons.EnergyConsumptionForecast({
-    //   id_scope:this.scopeModel.get('id'),
-    //   id_entity: tank.properties.id_entity
-    // }))
+    this._widgets.push(new App.View.Widgets.Aq_cons.EnergyConsumptionForecast({
+      id_scope:this.scopeModel.get('id'),
+      id_entity: tank.properties.id_entity
+    }))
 
     this.subviews.push(new App.View.Widgets.Container({
       widgets: this._widgets,

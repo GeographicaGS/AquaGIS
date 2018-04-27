@@ -7,11 +7,12 @@ App.View.Map.Layer.Aq_cons.SectorSavingLayer = Backbone.View.extend({
 
     // Modelos
     let sector = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.sector'});
-    let sensor = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.tank'});
+    let tank = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.tank'});
     
-    sensor.parse = function(e) {
+    tank.parse = function(e) {
       _.each(e.features, function(f,i) {
         f.properties.index = i;
+        f.properties.status = f.properties.level < f.properties.min_level ? 'emergency' : 'saving';
       });
       return e;
     }
@@ -52,7 +53,7 @@ App.View.Map.Layer.Aq_cons.SectorSavingLayer = Backbone.View.extend({
     this._sensorLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
       source: {
         id: 'sensors_datasource',
-        model: sensor,
+        model: tank,
         payload: this._payload
       },
       layers:[{
@@ -70,7 +71,7 @@ App.View.Map.Layer.Aq_cons.SectorSavingLayer = Backbone.View.extend({
         'type': 'symbol',
         'source': 'sensors_datasource',
         'layout': {
-          'icon-image': 'deposito',
+          'icon-image': 'deposito-{status}',
           'icon-allow-overlap': true,
           'icon-size': 0.8,
         }
@@ -82,7 +83,6 @@ App.View.Map.Layer.Aq_cons.SectorSavingLayer = Backbone.View.extend({
       map.mapChanges.set('clickedSector', e.features[0]);
       map._map.setFilter("sensors_circle", ["==", "index",e.features[0].properties.index]);
     });
-
   },
 
   onClose: function() {

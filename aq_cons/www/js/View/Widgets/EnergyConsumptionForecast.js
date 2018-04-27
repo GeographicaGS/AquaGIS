@@ -46,10 +46,10 @@ App.View.Widgets.Aq_cons.EnergyConsumptionForecast = App.View.Widgets.Base.exten
     this.collection = new App.Collection.Post([],{
       data: {
         agg: ["SUM","AVG","AVG","MIN"],
-        vars: ["aq_cons.tank.capacity"],
+        vars: ["aq_cons.tank.level"],
         time: {
-          start: moment().startOf('hour').subtract(1,'day').toDate(),
-          finish: moment().startOf('hour').toDate(),
+          start: "2018-04-03T00:00:00Z", // moment().startOf('hour').subtract(1,'day').toDate(),
+          finish: "2018-04-05T09:00:59Z", // moment().startOf('hour').toDate(),
           step: '1h'
         },
         filters: { id_entity__eq: this.options.id_entity }
@@ -62,34 +62,29 @@ App.View.Widgets.Aq_cons.EnergyConsumptionForecast = App.View.Widgets.Base.exten
     this._chartModel = new App.Model.BaseChartConfigModel({
       colors: function(d,i){
         switch(d.realKey){
-          case 'occupancy': return '#0066ff';
-          case 'available': return App.Utils.rangeColor(App.Utils.RANGES.OK);
-          case 'occupied': return App.Utils.rangeColor(App.Utils.RANGES.ERROR);
+          case 'aq_cons.tank.level': return '#64B6D9';
         }
       },
       legendNameFunc: function(d){
         var map = {
-          'occupancy': __('Ocupación (%)'),
-          'available': __('Plazas libres'),
-          'occupied': __('Plazas ocupadas'),
+          'aq_cons.tank.level': __('Nivel del tanque (m³)')
         }
         return map[d];
       },
-      xAxisFunction: function(d) { return App.formatDate(d,'DD/MM HH:mm'); },
+      xAxisFunction: function(d) { return App.formatDate(d,'HH:mm'); },
       yAxisFunction: [
         function(d) { return App.nbf(d, {decimals: 0})},
         function(d) { return App.nbf(d, {decimals: 0})}
       ],
-      yAxisLabel: [__('Ocupación (%)'),__('Plazas de aparcamiento')],
+      yAxisLabel: [__('Consumo energético (Kw/h)'),__('Capacidad (m³)')],
       yAxisDomain: [[0,100],[0,1]],
       
       keysConfig: {
-        'occupancy': {type: 'line', axis: 1},
-        'available': {type: 'bar', axis: 2},
-        'occupied': {type: 'bar', axis: 2}
+        '*': {type: 'line', axis: 1 },
+        'aq_cons.tank.level': {type: 'bar', axis: 1},
       },
       legendOrderFunc: function(d){
-        var idx = ['occupancy','occupied','available'].indexOf(d);
+        var idx = ['consumption','occupied','available'].indexOf(d);
         if(idx === -1) idx = 99;
         return idx;
       },
