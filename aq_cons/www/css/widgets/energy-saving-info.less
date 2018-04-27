@@ -1,0 +1,112 @@
+.widget-energy-saving-info {
+    padding: 16px 30px;
+    height: auto;
+    .widget_header.main {
+        position: static;
+        top: 0;
+        width: 100%;
+        margin-bottom: 10px;
+        .title {
+            display: inline-block;
+            span {
+                font-size: 24px;
+                font-weight: 300;
+                color: #165288;
+            }
+            .alert-icon, .btn-speak {
+                display: inline-block;
+                vertical-align: text-top;
+            }
+            .btn-speak {
+                background-color: transparent;
+            }
+        }
+        .message {
+            font-size: 14px;
+            color: #808086;
+            b  {
+                font-weight: 400;
+                color: #165288;
+            }
+        }
+    }
+   
+    .widget_content {
+        &_header {
+            font-size: 24px;
+            font-weight: 300;
+            color: #165288;
+            margin-bottom: 16px;
+        }
+        .alertWidget {
+            background: transparent;
+            margin-top: 30px;
+            padding: 0;
+            margin-bottom: 45px;
+            cursor: default;
+            .alert-body {
+                margin: 0;
+                justify-content: space-between;
+                .variable {
+                    height: auto;
+                    .variable-content {
+                        &.number {
+                            color: #165288;
+                            font-size: 35px;
+                            font-weight: 300;
+                            line-height: 41px;
+                            > span {
+                                display: block;
+                                color: #98B2C9;
+                                font-size: 16px;
+                                line-height: 16px;
+                            }
+                        }
+                        &.percent {
+                            color: #165288;
+                            font-size: 52px;
+                            font-weight: 300;
+                            line-height: 58px;
+                            > span {
+                                color: #98B2C9;
+                                font-size: 36px;
+                                line-height: 16px;
+                            }
+                        }
+                        .down {
+                            font-size: 10px;
+                            color: #FB4C62;
+                        }
+                    }
+                }
+            }
+        }
+        .pumps-ignition {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #ccc;
+            .title {
+                text-transform: uppercase;
+                color: #165288;
+                font-size: 12px;
+                font-weight: 600;
+                line-height: 12px;
+            }
+            .hours {
+                display: flex;
+                > span  {
+                    margin: 10px 40px 20px 0;
+                    padding: 0 20px;
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: #98B2C9;
+                    border-radius: 99px;
+                    &.emergency {
+                        color: #FB4C62;
+                        background-color: rgba(251, 76, 98, 0.1)
+                    }
+                }
+            }
+        }
+    }
+}
