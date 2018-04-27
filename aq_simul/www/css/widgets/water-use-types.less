@@ -1,0 +1,123 @@
+.widget.widget-water-use-types {
+    color: #fff;
+    height: 360px;
+    padding: 16px 10px 16px 16px;
+    .widget_header {
+        margin-bottom: 46px;
+    }
+    .widget_content {
+        padding-right: 10px;
+    }
+    .collapse-row {
+        border-bottom: 1px solid rgba(255,255,255, 0.2);
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        &:last-child {
+            border-bottom: 0;
+        }
+        .collapse-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            &.collapsable {
+                cursor: pointer;
+                .title-item::selection  {
+                    background: transparent;
+                }
+            }
+            &.opened {
+                + .collapse-body {
+                    display: flex;
+                    
+                }
+                .caret {
+                    transform: rotate(180deg)
+                }
+            }
+            .title {
+                display: flex;
+                align-items: center;
+            }
+            .caret {
+                width: 0px;
+                height: 0px;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-top: 7px solid #FFF;
+                border-radius: 2px;
+                margin-right: 10px;
+            }
+            .total {
+                font-size: 24px;
+                font-weight: 200;
+                color: #98B2C9;
+                margin-right: 10px;
+            }
+            .type {
+                font-size: 14px;
+                text-transform: uppercase;
+            }
+            .total-types {
+                font-size: 14px;
+                color: #98B2C9;
+            }
+        }
+        .collapse-body {
+            display: none;
+            flex-wrap: wrap;
+            .col {
+                margin: 15px;
+                &-header {
+                    margin-bottom: 10px;
+                    color: @aquasigPrimaryColor;
+                    font-size: 12px;
+                    font-weight: 600;
+                    .qt {
+                        width: 40px; 
+                        display: inline-block;
+                        text-align: center;
+                    }
+                }
+            }
+            .editable-buttons {
+                flex-grow: 1;
+                display: flex;
+                justify-content: flex-end;
+            }
+            .type-item {
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px;
+                .quantity {
+                    width: 40px;
+                    margin-right: 5px;
+                    text-align: center;
+                    &-view {
+                        background-color: rgba(255, 255, 255, 0.2);
+                        border-radius: 2px;
+                    }
+                    &-edit {
+                        width: 100%;
+                        background: transparent;
+                        border: 1px solid  @aquasigPrimaryColor;
+                        border-radius: 2px;
+                        color: white;
+                        text-align: center;
+                        &::-webkit-inner-spin-button, 
+                        &::-webkit-outer-spin-button { 
+                            -webkit-appearance: none; 
+                            margin: 0; 
+                        }
+                        &:focus, &:active:focus {
+                            outline: none;
+                            background-color: @aquasigPrimaryColor;;
+                        }
+                    }
+                }
+                .persons { font-size: 14px; }
+            }
+            
+            // display: none;
+        }
+    }
+}

@@ -53,13 +53,13 @@ Payload's params:
 
 Example request URL:
 ```text
-/aljarafe/aq_cons/tank/1/plans
+/aljarafe/aq_cons/tank/tank:1/plans
 ```
 
 Payload:
 ```
 {
- "time": "2018-01-04"
+ "time": "2018-04-11"
 }
 ```
 

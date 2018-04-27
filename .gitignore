@@ -3,3 +3,5 @@ scripts/
 migrations/*
 !migrations/.gitkeep
 .DS_Store
+*.sublime-project
+*.sublime-workspace

@@ -43,11 +43,11 @@ class AqConsModel extends PGSQLModel {
 
   getPlotConstructions(opts) {
     let sql = `
-      SELECT 
+      SELECT
         *
-      FROM 
+      FROM
         ${opts.scope}.aq_cons_const_lastdata
-      WHERE 
+      WHERE
         refplot = '${opts.id_plot}'
       `;
 
@@ -77,13 +77,13 @@ class AqConsModel extends PGSQLModel {
       WITH
 
       start_pump_opt AS
-        (SELECT 
+        (SELECT
           id_entity,
           "TimeInstant",
           row_number() OVER () AS rnum
-        FROM 
+        FROM
           ${opts.scope}.aq_plan_tank_pump_opt
-        WHERE 
+        WHERE
           activated = 't'
           AND id_entity='${opts.id_entity}'
           AND "TimeInstant" >= '${opts.time}'::TIMESTAMP
@@ -92,11 +92,11 @@ class AqConsModel extends PGSQLModel {
         ),
 
       finish_pump_opt AS
-        (SELECT 
+        (SELECT
           id_entity,
           "TimeInstant",
           row_number() OVER () AS rnum
-        FROM 
+        FROM
           ${opts.scope}.aq_plan_tank_pump_opt
         WHERE
           activated = 'f'
@@ -107,7 +107,7 @@ class AqConsModel extends PGSQLModel {
         ),
 
       pump_time_opt AS
-        (SELECT 
+        (SELECT
           start_pump_opt."TimeInstant" AS START,
           finish_pump_opt."TimeInstant" AS FINISH,
           'false'::boolean AS emergency
@@ -119,7 +119,7 @@ class AqConsModel extends PGSQLModel {
         ),
 
       start_pump_emergency AS
-        (SELECT 
+        (SELECT
           id_entity,
           "TimeInstant",
           row_number() OVER () AS rnum
@@ -146,7 +146,7 @@ class AqConsModel extends PGSQLModel {
         ORDER BY "TimeInstant"),
 
       pump_time_opt_emergency AS
-        (SELECT 
+        (SELECT
           START,
           FINISH,
           emergency
@@ -161,7 +161,7 @@ class AqConsModel extends PGSQLModel {
                 start_pump_emergency),
               TRUE
             )
-          UNION ALL 
+          UNION ALL
             SELECT
               start_pump_emergency."TimeInstant" AS START,
               finish_pump_emergency."TimeInstant" AS FINISH,
@@ -191,7 +191,7 @@ class AqConsModel extends PGSQLModel {
   getPlansStatistics(opts, emergency) {
 
     var selector = `
-        SELECT 
+        SELECT
           energy_consumption_opt_sum.kWh_used,
           average_price_water_opt.price_by_litre,
           price_cost_no_opt_sum.money_spent - price_cost_opt_sum.money_spent AS money_saved,
@@ -199,7 +199,7 @@ class AqConsModel extends PGSQLModel {
         `;
 
     if (emergency == true) {
-      selector = selector + `, 
+      selector = selector + `,
       energy_consumption_emergency_sum.kWh_used AS kWh_used_emergency,
       average_price_water_emergency.price_by_litre AS price_by_litre_emergency,
       price_cost_no_opt_sum.money_spent - price_cost_emergency_sum.money_spent AS money_saved_emergency,
@@ -209,10 +209,10 @@ class AqConsModel extends PGSQLModel {
 
 
     let sql = `
-    WITH 
+    WITH
 
-    tank_properties AS 
-      (SELECT 
+    tank_properties AS
+      (SELECT
         *
       FROM
         ${opts.scope}.aq_cons_tank
@@ -235,7 +235,7 @@ class AqConsModel extends PGSQLModel {
         AND "TimeInstant" <= '${opts.time}'::timestamp + '23:59:59.999' ORDER BY "TimeInstant"
       ),
 
-    finish_pump_opt AS 
+    finish_pump_opt AS
       (SELECT
         id_entity,
         "TimeInstant",
@@ -244,24 +244,24 @@ class AqConsModel extends PGSQLModel {
         ${opts.scope}.aq_plan_tank_pump_opt
       WHERE
         activated = 'f'
-        AND id_entity='${opts.id_entity}' AND "TimeInstant" >= '${opts.time}'
+        AND id_entity='${opts.id_entity}' AND "TimeInstant" >= '${opts.time}'::timestamp
         AND "TimeInstant" <= '${opts.time}'::timestamp + '23:59:59.999' ORDER BY "TimeInstant"
       ),
 
-    pump_time_opt AS 
+    pump_time_opt AS
       (SELECT
         start_pump_opt."TimeInstant" AS start,
         finish_pump_opt."TimeInstant" AS finish,
         EXTRACT(
-          MINUTES FROM finish_pump_opt."TimeInstant" - start_pump_opt."TimeInstant")/60 AS hours_activated
+          EPOCH FROM finish_pump_opt."TimeInstant" - start_pump_opt."TimeInstant")/3600 AS hours_activated
           FROM
             start_pump_opt
           INNER JOIN
             finish_pump_opt
-          ON 
+          ON
           start_pump_opt.rnum = finish_pump_opt.rnum
       ),
-    
+
     pump_water_opt AS (
       SELECT
         start,
@@ -271,7 +271,7 @@ class AqConsModel extends PGSQLModel {
         pump_time_opt,
         tank_properties
     ),
-          
+
     energy_consumption_opt AS (
       SELECT
         start,
@@ -287,13 +287,13 @@ class AqConsModel extends PGSQLModel {
         start,
         finish,
         (kWh_used * price) AS money_spent
-      FROM 
+      FROM
         energy_consumption_opt
-      INNER JOIN 
+      INNER JOIN
         ${opts.scope}.aq_aux_energy_prices
-      ON 
+      ON
         energy_consumption_opt.start >= aq_aux_energy_prices."TimeInstant"
-        AND energy_consumption_opt.finish <= aq_aux_energy_prices."TimeInstant"+'1h'::interval
+        AND energy_consumption_opt.start < aq_aux_energy_prices."TimeInstant"+'1h'::interval
     ),
 
     -- Not optimized tables
@@ -327,13 +327,13 @@ class AqConsModel extends PGSQLModel {
         AND "TimeInstant" <= '${opts.time}'::timestamp + '23:59:59.999'
         ORDER BY "TimeInstant"
     ),
-    
+
     pump_time_no_opt AS (
       SELECT
         start_pump_no_opt."TimeInstant" AS start,
         finish_pump_no_opt."TimeInstant" AS finish,
         EXTRACT(
-          MINUTES FROM finish_pump_no_opt."TimeInstant" - start_pump_no_opt."TimeInstant")/60 AS hours_activated
+          EPOCH FROM finish_pump_no_opt."TimeInstant" - start_pump_no_opt."TimeInstant")/3600 AS hours_activated
       FROM
         start_pump_no_opt
       INNER JOIN
@@ -341,7 +341,7 @@ class AqConsModel extends PGSQLModel {
       ON
         start_pump_no_opt.rnum = finish_pump_no_opt.rnum
     ),
-    
+
     pump_water_no_opt AS (
       SELECT
         start,
@@ -351,7 +351,7 @@ class AqConsModel extends PGSQLModel {
         pump_time_no_opt,
         tank_properties
     ),
-    
+
     energy_consumption_no_opt AS (
       SELECT
         start,
@@ -361,31 +361,31 @@ class AqConsModel extends PGSQLModel {
         pump_time_no_opt,
         tank_properties
     ),
-    
+
     price_cost_no_opt AS (
       SELECT
         start,
         finish,
         (kWh_used * price) AS money_spent
-      FROM 
-        energy_consumption_no_opt 
+      FROM
+        energy_consumption_no_opt
       INNER JOIN
         ${opts.scope}.aq_aux_energy_prices
       ON
         energy_consumption_no_opt.start >= aq_aux_energy_prices."TimeInstant"
-        AND energy_consumption_no_opt.finish <= aq_aux_energy_prices."TimeInstant"+'1h'::interval
+        AND energy_consumption_no_opt.start < aq_aux_energy_prices."TimeInstant"+'1h'::interval
     ),
 
     -- Emergency tables
 
     start_pump_emergency AS (
-      SELECT 
-        id_entity, 
-        "TimeInstant", 
+      SELECT
+        id_entity,
+        "TimeInstant",
         row_number() OVER () AS rnum
-      FROM 
-        ${opts.scope}.aq_plan_tank_pump_emergency 
-      WHERE 
+      FROM
+        ${opts.scope}.aq_plan_tank_pump_emergency
+      WHERE
         activated = 't'
         AND id_entity='${opts.id_entity}'
         AND "TimeInstant" >= '${opts.time}'
@@ -395,11 +395,11 @@ class AqConsModel extends PGSQLModel {
 
     finish_pump_emergency AS (
       SELECT
-        id_entity, 
+        id_entity,
         "TimeInstant",
         row_number() OVER () AS rnum
-      FROM 
-        ${opts.scope}.aq_plan_tank_pump_emergency 
+      FROM
+        ${opts.scope}.aq_plan_tank_pump_emergency
       WHERE
         activated = 'f'
         AND id_entity='${opts.id_entity}'
@@ -407,9 +407,9 @@ class AqConsModel extends PGSQLModel {
         AND "TimeInstant" <= '${opts.time}'::timestamp + '23:59:59.999'
       ORDER BY "TimeInstant"
     ),
-    
+
     pump_time_emergency AS (
-      SELECT 
+      SELECT
         start,
         finish,
         hours_activated
@@ -423,14 +423,14 @@ class AqConsModel extends PGSQLModel {
             start_pump_emergency
           )
           UNION ALL
-            SELECT 
+            SELECT
               start_pump_emergency."TimeInstant" AS start,
               finish_pump_emergency."TimeInstant" AS finish,
               EXTRACT(
-                MINUTES FROM finish_pump_emergency."TimeInstant" - start_pump_emergency."TimeInstant")/60 AS hours_activated
-              FROM 
+                EPOCH FROM finish_pump_emergency."TimeInstant" - start_pump_emergency."TimeInstant")/3600 AS hours_activated
+              FROM
                 start_pump_emergency
-              INNER JOIN 
+              INNER JOIN
                 finish_pump_emergency
               ON
               start_pump_emergency.rnum = finish_pump_emergency.rnum
@@ -449,7 +449,7 @@ class AqConsModel extends PGSQLModel {
     energy_consumption_emergency AS (
       SELECT
         start,
-        finish, 
+        finish,
         (hours_activated * pump_power)*1000 AS kWh_used
       FROM
         pump_time_emergency,
@@ -463,11 +463,11 @@ class AqConsModel extends PGSQLModel {
         (kWh_used * price) AS money_spent
       FROM
         energy_consumption_emergency
-      INNER JOIN 
+      INNER JOIN
         ${opts.scope}.aq_aux_energy_prices
       ON
         energy_consumption_emergency.start >= aq_aux_energy_prices."TimeInstant"
-        AND energy_consumption_emergency.finish <= aq_aux_energy_prices."TimeInstant"+'1h'::interval
+        AND energy_consumption_emergency.start < aq_aux_energy_prices."TimeInstant"+'1h'::interval
     ),
 
     -- Optimized calculations
@@ -481,13 +481,13 @@ class AqConsModel extends PGSQLModel {
 
     price_cost_opt_sum AS (
       SELECT
-        sum(money_spent) AS money_spent 
+        sum(money_spent) AS money_spent
       FROM
         price_cost_opt
     ),
 
     average_price_water_opt AS (
-      SELECT 
+      SELECT
         SUM(price_cost_opt.money_spent/pump_water_opt.litres_filled) AS price_by_litre
       FROM
         price_cost_opt
@@ -501,50 +501,50 @@ class AqConsModel extends PGSQLModel {
     -- Not optimized calculations
 
     energy_consumption_no_opt_sum AS (
-      SELECT 
-        SUM(kWh_used) AS kWh_used 
-      FROM 
+      SELECT
+        SUM(kWh_used) AS kWh_used
+      FROM
         energy_consumption_no_opt
     ),
 
     price_cost_no_opt_sum AS (
-      SELECT 
+      SELECT
         SUM(money_spent) AS money_spent
-      FROM 
+      FROM
         price_cost_no_opt
     ),
 
     -- Emergency calculations
 
     energy_consumption_emergency_sum AS (
-      SELECT 
-        SUM(kWh_used) AS kWh_used 
-      FROM 
+      SELECT
+        SUM(kWh_used) AS kWh_used
+      FROM
         energy_consumption_emergency
     ),
 
     price_cost_emergency_sum AS (
-      SELECT 
+      SELECT
         SUM(money_spent) AS money_spent
-      FROM 
+      FROM
         price_cost_emergency
     ),
 
     average_price_water_emergency AS (
       SELECT
         SUM(price_cost_emergency.money_spent/pump_water_emergency.litres_filled) AS price_by_litre
-      FROM 
+      FROM
         price_cost_emergency
       INNER JOIN
         pump_water_emergency
-      ON 
+      ON
         price_cost_emergency.start = pump_water_emergency.start
         AND price_cost_emergency.finish = pump_water_emergency.finish
     )
 
     ${selector}
 
-    FROM 
+    FROM
       energy_consumption_opt_sum,
       energy_consumption_no_opt_sum,
       average_price_water_opt,
