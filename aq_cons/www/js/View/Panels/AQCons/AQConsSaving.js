@@ -60,7 +60,6 @@ App.View.Panels.Aq_cons.Saving = App.View.Panels.Splitted.extend({
         this.$('.bottom .widgetContainer').masonry();
       }, 300);
 
-
       // 4 - Set title of selection
       var $title_selection = $('.title_selection');
       var $title_selection_id = $('.title_selection_id');
@@ -88,6 +87,7 @@ App.View.Panels.Aq_cons.Saving = App.View.Panels.Splitted.extend({
     this._widgets.push(new App.View.Widgets.Aq_cons.EnergySavingInfo({
       id_scope: this.scopeModel.get('id'),
       timeMode:'now',
+      tank: tank
     }));
 
     this._widgets.push(new App.View.Widgets.Aq_cons.EnergyConsumptionForecast({

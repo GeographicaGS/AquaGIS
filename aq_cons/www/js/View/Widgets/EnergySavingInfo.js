@@ -24,7 +24,7 @@ App.View.Widgets.Aq_cons.EnergySavingInfo = App.View.Widgets.Base.extend({
     App.View.Widgets.Base.prototype.initialize.call(this,options);
     
     this._collection = new App.Collection.Post({}, {});
-    this._collection.url = App.config.api_url + '/' + options.id_scope + '/aq_cons/tank/tank:1/plans';
+    this._collection.url = App.config.api_url + '/' + options.id_scope + '/aq_cons/tank/' + options.tank.properties.id_entity + '/plans';
     this._collection.parse = function(data) {
       this.options.data = data;
       return data;

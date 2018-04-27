@@ -44,16 +44,16 @@ App.View.Map.Layer.Aq_cons.SectorSavingLayer = Backbone.View.extend({
     });
     
     // Sensor
-    this._sensorLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
+    this._tanksLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
       source: {
-        id: 'sensors_datasource',
+        id: 'tanks_datasource',
         model: tank,
         payload: this._payload
       },
       layers:[{
         'id': 'sensors_circle',
         'type': 'circle',
-        'source': 'sensors_datasource',
+        'source': 'tanks_datasource',
         'paint': {
           'circle-radius': 20,
           'circle-color': '#68BEE2',
@@ -63,7 +63,7 @@ App.View.Map.Layer.Aq_cons.SectorSavingLayer = Backbone.View.extend({
       },{
         'id': 'sensors_symbol',
         'type': 'symbol',
-        'source': 'sensors_datasource',
+        'source': 'tanks_datasource',
         'layout': {
           'icon-image': 'deposito-{status}',
           'icon-allow-overlap': true,
@@ -80,5 +80,14 @@ App.View.Map.Layer.Aq_cons.SectorSavingLayer = Backbone.View.extend({
   },
 
   onClose: function() {
+  },
+
+  updatePayload: function(payload) {
+    this._payload = payload;
+    let plotPayload = JSON.parse(JSON.stringify(payload));
+    plotPayload.var = plotPayload.var.replace(/(.*\.).*(\..*)/,'$1plot$2');
+
+    this._sectorLayer.updateData(payload);
+    this._tanksLayer.updateData(payload);
   }
 });
