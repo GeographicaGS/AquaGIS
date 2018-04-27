@@ -10,7 +10,7 @@ App.View.Panels.Aq_cons.SavingMap = App.View.Panels.Aq_cons.CurrentMap.extend({
   '</div>'),
 
   dataLoaded: function(e) {
-    if(e.isSourceLoaded && e.sourceId === 'sensors_datasource') {
+    if(e.sourceId === 'sensors_datasource') {
       let defaultSelected = _.find(e.source.data.features, function(f) { 
         return f.properties.index === 0
       });
