@@ -6,7 +6,7 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
     options = _.defaults(options, {
       dateView: false,
       id_category: 'aq_simul',
-      spatialFilter: false,
+      spatialFilter: true,
       master: false,
       title: __('Consumo futuro'),
       id_panel: 'futureConsumption'

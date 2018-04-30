@@ -35,11 +35,11 @@ App.View.Panels.Aq_simul.FutureConsumptionMap = App.View.Map.MapboxView.extend({
 
   _onMapLoaded: function() {
     this.layers = new App.View.Map.Layer.Aq_simul.FutureConsumptionLayer(this._options, this._payload, this);
-    this.getConstructionTypesModel(this.getBBox());
+    this.getConstructionTypesModel();
   },
 
   _onBBoxChange: function(bbox) {
-    this.getConstructionTypesModel(this.getBBox());
+    this.getConstructionTypesModel();
   },
 
   onClose: function() {
@@ -64,8 +64,8 @@ App.View.Panels.Aq_simul.FutureConsumptionMap = App.View.Map.MapboxView.extend({
     }
   },
 
-	getConstructionTypesModel: function(bboxCoords) {
-		this.constructionTypesModel.fetch({data: {filters: {}}});
+	getConstructionTypesModel: function() {
+		this.constructionTypesModel.fetch({data: {filters:  App.ctx.get('bbox_status') && App.ctx.get('bbox') ? { bbox: App.ctx.get('bbox') } : {} }});
 		this.clearLegend();
 		this.constructionTypesModel.parse = (e) => {
       _.each(e, (f,i) => {
