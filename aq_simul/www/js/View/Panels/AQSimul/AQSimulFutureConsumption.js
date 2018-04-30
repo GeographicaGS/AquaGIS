@@ -21,6 +21,16 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
   },
 
   customRender: function() {
+    this._mapView = new App.View.Panels.Aq_simul.FutureConsumptionMap({
+      el: this.$('.top'),
+      scope: this.scopeModel.get('id'),
+      type: 'now'
+    }).render();
+    this.subviews.push(this._mapView);
+  },
+
+  renderWidgets: function(e, bbox) {
+    this.setBbbox(bbox);
     this._widgets = [];
     this._scenarios = [];
     
@@ -42,18 +52,18 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
       }));
 
       this.subviews.push(new App.View.Widgets.Container({
+        disableMasonry:true,
         widgets: this._widgets,
         el: this.$('.bottom .widgetContainer')
       }));
-
-      this._mapView = new App.View.Panels.Aq_simul.FutureConsumptionMap({
-        el: this.$('.top'),
-        scope: this.scopeModel.get('id'),
-        type: 'now'
-      }).render();
-      this.subviews.push(this._mapView);
     });
+  },
 
+  setBbbox: function(bbox) {
+    if (App.ctx.get('bbox_status')) {
+      let __bbox = [bbox.getNorthEast().lng,bbox.getNorthEast().lat,bbox.getSouthWest().lng,bbox.getSouthWest().lat]
+      App.ctx.set('bbox', __bbox);
+    }
   },
 
   getConstructionTypesData: function () {
@@ -61,13 +71,13 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
       let constructionTypesModel = new App.Model.Aq_simul.ConstructionTypesModel({
         scope : this.scopeModel.get('id')
       });
-      constructionTypesModel.fetch({data: {filters: {}}});
+      constructionTypesModel.fetch({data: {filters: App.ctx.get('bbox_status') && App.ctx.get('bbox') ? { bbox: App.ctx.get('bbox') } : {} }});
       constructionTypesModel.parse = (data) => {
         _.each(data, function(e) {
           e.rows = _.sortBy(e.rows, 'type_value')
           e.rowsCol1 = e.rows.slice(0, Math.ceil(e.rows.length/2))
           e.rowsCol2 = e.rows.slice(Math.ceil(e.rows.length/2))
-        })
+        });
         resolve(data);
       }
     });
@@ -81,7 +91,60 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
     });
   },
 
+  fixSimulationCountParams: function(data, type, number, parameter) {
+    
+    let obj = _.filter(data, ele => {
+      return ele.type_name == type;
+    })[0];
+
+    let getRowsForNewObj = function(number, type) {
+      let arr =  [];
+      _.each(_.range(number), i => { arr.push({ count: "0", type_id: i + 1, type_parameter: type, type_value: 0}) });
+      return arr;
+    }
+
+    if (obj) {
+      let rows = _.filter(data, ele => {
+        return ele.type_name == type;
+      })[0].rows;
+  
+      _.each(_.range(number), i => {
+        let objRow = _.filter(rows, e => {
+          return e.type_id == i + 1;
+        })[0];
+        if (!objRow) {
+          rows.push(
+            { count: "0", type_id: i + 1, type_parameter: parameter, type_value: 0},
+          );
+        }
+      });
+
+      obj.rows = rows;
+
+    } else {
+      let newObj = {
+        type_name: type, 
+        count: "0", 
+        rows: getRowsForNewObj(number, type), 
+      };
+        newObj.rows = _.sortBy(newObj.rows, 'type_value')
+        newObj.rowsCol1 = newObj.rows.slice(0, Math.ceil(newObj.rows.length/2))
+        newObj.rowsCol2 = newObj.rows.slice(Math.ceil(newObj.rows.length/2))
+      data.push(newObj);
+    }
+
+  },
+  
   getParamsDataForFutureScenarioModel: function (data)  {
+    
+    this.fixSimulationCountParams(data, "Edificio", 6, "Habitantes");
+    this.fixSimulationCountParams(data, "Hospedaje", 3, "Camas");
+    this.fixSimulationCountParams(data, "Industria", 6, "m3/día");
+    this.fixSimulationCountParams(data, "Instalación deportiva", 3, "Usuarios");
+    this.fixSimulationCountParams(data, "Piscina", 1, "Piscina");
+    this.fixSimulationCountParams(data, "Uso terciario", 3, "m2");
+    this.fixSimulationCountParams(data, "Vivienda", 6, "Personas");
+      
     let paramsData = {
       tipo: 1
     };
@@ -99,7 +162,8 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
       } else {
         paramsData["cantidadPiscinas"] = Number(construction.count);
       }
-    })
+    });
+
     return paramsData;
   },
   
@@ -113,11 +177,44 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
       'click .co_fullscreen_toggle': 'toggleTopFullScreen',
       'click #btCreateScenario': 'createNewScenario',
       'click #btDeleteScenario': 'deleteScenario',
-      'updateScenario': 'updateScenario'
+      'updateScenario': 'updateScenario',
+      'bboxChanged': 'updateWidgetsWithBbox',
+      'mapLoaded': 'renderWidgets'
     },
     App.View.Panels.Base.prototype.events
   ),
 
+  updateWidgetsWithBbox: function()  {
+
+    this.getConstructionTypesData().then((data) => { 
+      let constructionTypesData = data;
+      let FutureScenarioModel = this.getFutureScenarioModel(constructionTypesData);
+
+      this._widgets = [];
+      $(".widgetContainer > div").remove();
+
+      this._widgets.push(new App.View.Widgets.Aq_simul.WaterUseTypes(constructionTypesData, {
+        id_scope: this.scopeModel.get('id'),
+        title: __('Tipos de uso de agua'),
+        extended: true,
+        editable: false,
+        dimension: 'allHeight'
+      }));
+      
+      this._widgets.push(new App.View.Widgets.Aq_simul.WaterTotalConsumption(FutureScenarioModel, {
+        id_scope: this.scopeModel.get('id'),
+        dimension: 'double',
+      }));
+
+      this.subviews.push(new App.View.Widgets.Container({
+        disableMasonry:true,
+        widgets: this._widgets,
+        el: this.$('.bottom .widgetContainer')
+      }));
+
+
+    });
+  },
 
   updateScenario: function(e, model) {
     let comparativeModel = this.getFutureScenarioModel(model.data.constructionTypesModel)
@@ -199,7 +296,7 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
 
     this.$('.co_fullscreen_toggle').toggleClass('hide');
   },
-
+  
   toggleTopFullScreen: function(e){
     e.preventDefault();
     $(e.currentTarget).toggleClass('restore');

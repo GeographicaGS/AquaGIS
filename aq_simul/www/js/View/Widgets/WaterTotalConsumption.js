@@ -15,44 +15,48 @@ App.View.Widgets.Aq_simul.WaterTotalConsumption = App.View.Widgets.Base.extend({
     this.collection = modelData;    
     this.collection.parse = (response) => {
 
-      if (comparativeData){
-        this.$(".total-consumption-quantity").text(this.formatNumber(comparativeData.consumo.toFixed(2)));
-      } else {
-        this.$(".total-consumption-quantity").text(this.formatNumber(response.consumo.toFixed(2)));  
-      }
-
-      let tempData = [{
-        disabled: false,
-        key: 'consumption',
-        values: []
-      }];
-      _.each(response.consumoPorHoras, function(e, i) {
-        if ((i+2) % 2 == 0) {
-          tempData[0].values.push ({
-            x: moment().startOf('day').add(e,'hour').toDate(),
-          });
+      
+        if (comparativeData){
+          this.$(".total-consumption-quantity").text(this.formatNumber(comparativeData.consumo.toFixed(2)));
         } else {
-          tempData[0].values[tempData[0].values.length - 1]["y"] = response.consumoPorHoras[i]
+          this.$(".total-consumption-quantity").text(this.formatNumber(response.consumo.toFixed(2)));  
         }
-      })
-      if(comparativeData) {
-        let tempComparativeData = {
-          disabled: false, 
-          key: 'consumptionComparative',
+  
+        let tempData = [{
+          disabled: false,
+          key: 'consumption',
           values: []
-        }
-        _.each(comparativeData.consumoPorHoras, function(e, i) {
+        }];
+        _.each(response.consumoPorHoras, function(e, i) {
           if ((i+2) % 2 == 0) {
-            tempComparativeData.values.push ({
+            tempData[0].values.push ({
               x: moment().startOf('day').add(e,'hour').toDate(),
             });
           } else {
-            tempComparativeData.values[tempComparativeData.values.length - 1]["y"] = comparativeData.consumoPorHoras[i]
+            tempData[0].values[tempData[0].values.length - 1]["y"] = response.consumoPorHoras[i]
           }
         })
-        tempData.push(tempComparativeData);
-      }
-      return tempData;
+        if(comparativeData) {
+          let tempComparativeData = {
+            disabled: false, 
+            key: 'consumptionComparative',
+            values: []
+          }
+          _.each(comparativeData.consumoPorHoras, function(e, i) {
+            if ((i+2) % 2 == 0) {
+              tempComparativeData.values.push ({
+                x: moment().startOf('day').add(e,'hour').toDate(),
+              });
+            } else {
+              tempComparativeData.values[tempComparativeData.values.length - 1]["y"] = comparativeData.consumoPorHoras[i]
+            }
+          })
+          tempData.push(tempComparativeData);
+        }
+        return tempData;
+      
+
+      
     };
 
     this._chartModel = new App.Model.BaseChartConfigModel({
