@@ -53,6 +53,7 @@ class AqSimulModel extends PGSQLModel {
       RIGHT JOIN ${opts.scope}.aq_cata_const_type b 
       ON a.type_id=b.type_id
       AND a.type_name=b.type_name
+      WHERE TRUE ${bbox_filter}
       GROUP BY b.type_name;
     `;
 
