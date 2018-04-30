@@ -41,8 +41,8 @@ App.View.Widgets.Aq_cons.AlertsVariable = Backbone.View.extend({
         }
 
         _.each(responseData.activations, (el) => {
-          el.start = App.Utils.toHoursAndMinutes(el.start);
-          el.finish = App.Utils.toHoursAndMinutes(el.finish);
+          el.start = moment(el.start).format('HH:mm');
+          el.finish = moment(el.finish).format('HH:mm');
         });
 
         _this.$el.closest(".widget").find('div.widget_header.' + items[0].label).removeClass("hide");

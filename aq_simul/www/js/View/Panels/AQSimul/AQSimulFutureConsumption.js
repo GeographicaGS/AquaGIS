@@ -219,8 +219,8 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
   updateScenario: function(e, model) {
     let comparativeModel = this.getFutureScenarioModel(model.data.constructionTypesModel)
     
-    this.getConstructionTypesData().then((data) => {
-      let constructionTypesData = data;
+   
+      let constructionTypesData = this.originalConstructionTypesData;
       let FutureScenarioModel = this.getFutureScenarioModel(constructionTypesData);
 
       // Get data from new scenario
@@ -239,7 +239,7 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
           dimension: 'allHeight'
         }));
 
-        // Re-build water consumption widget with new data
+        // Re-build water consumption widget with new datadata
         this._scenarios.push(new App.View.Widgets.Aq_simul.WaterTotalConsumption(FutureScenarioModel, {
           id_scope: this.scopeModel.get('id'),
           dimension: 'double',
@@ -250,7 +250,7 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
           el: this.$('.bottom .scenariosContainer')
         }));
       })
-    });
+   
   },
 
   getComparativeFutureScenario: function(comparativeModel, constructionTypesData) {
@@ -312,6 +312,7 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
     this.getConstructionTypesData().then((data) => {
       let constructionTypesData = data;
       let FutureScenarioModel = this.getFutureScenarioModel(constructionTypesData);
+      this.originalConstructionTypesData = JSON.parse(JSON.stringify(data));
 
       this._scenarios.push(new App.View.Widgets.Aq_simul.WaterUseTypes(constructionTypesData, {
         id_scope: this.scopeModel.get('id'),

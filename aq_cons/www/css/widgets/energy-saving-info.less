@@ -1,5 +1,5 @@
 .widget-energy-saving-info {
-    padding: 16px 30px;
+    padding: 16px 30px 25px 30px;
     height: auto;
     .widget_header.main {
         position: static;
@@ -67,6 +67,7 @@
                             font-size: 52px;
                             font-weight: 300;
                             line-height: 58px;
+                            white-space: nowrap;
                             > span {
                                 color: #98B2C9;
                                 font-size: 36px;
@@ -85,6 +86,7 @@
             margin-top: 40px;
             padding-top: 30px;
             border-top: 1px solid #ccc;
+            margin-bottom: 25px;
             .title {
                 text-transform: uppercase;
                 color: #165288;
@@ -94,10 +96,11 @@
             }
             .hours {
                 display: flex;
+                flex-wrap: wrap;
                 > span  {
-                    margin: 10px 40px 20px 0;
+                    margin: 10px 20px 5px 0;
                     padding: 0 20px;
-                    font-size: 32px;
+                    font-size: 20px;
                     font-weight: 300;
                     color: #98B2C9;
                     border-radius: 99px;

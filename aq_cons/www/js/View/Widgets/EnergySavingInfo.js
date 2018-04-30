@@ -72,7 +72,7 @@ App.View.Widgets.Aq_cons.EnergySavingInfo = App.View.Widgets.Base.extend({
         units: "€/litro" // No metadata unit App.mv().getVariable('aq_cons.sector.pressure').get('units')
       }],
       searchParams: {
-        time: "2018-04-15"
+        time: "2018-01-18"
       }
     }));
   },
