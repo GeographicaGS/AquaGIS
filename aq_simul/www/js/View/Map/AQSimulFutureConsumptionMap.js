@@ -35,11 +35,16 @@ App.View.Panels.Aq_simul.FutureConsumptionMap = App.View.Map.MapboxView.extend({
 
   _onMapLoaded: function() {
     this.layers = new App.View.Map.Layer.Aq_simul.FutureConsumptionLayer(this._options, this._payload, this);
+    this.setBbbox(this._map.getBounds());
     this.getConstructionTypesModel();
+
+    $(this.el).trigger('mapLoaded', [this.getBBox()]);
   },
 
   _onBBoxChange: function(bbox) {
+    this.setBbbox(bbox);
     this.getConstructionTypesModel();
+    $(this.el).trigger('bboxChanged', [this.model]);
   },
 
   onClose: function() {
@@ -56,11 +61,10 @@ App.View.Panels.Aq_simul.FutureConsumptionMap = App.View.Map.MapboxView.extend({
     this._map.setLayoutProperty('plot_buildings', 'visibility', this._is3dActive ? 'visible' : 'none');
 	},
   
-  getBbbox: function(bbox) {
+  setBbbox: function(bbox) {
     if (App.ctx.get('bbox_status')) {
       let __bbox = [bbox.getNorthEast().lng,bbox.getNorthEast().lat,bbox.getSouthWest().lng,bbox.getSouthWest().lat]
-      // Recover when backend accepts bbox: App.ctx.set('bbox', __bbox);
-      return __bbox;
+      App.ctx.set('bbox', __bbox);
     }
   },
 
