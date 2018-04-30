@@ -29,7 +29,7 @@
   <div class="title"><%= __('Hora de encendido de las bombas') %></div>
   <div class="hours">
       <% for(var activation of activations) { %>
-        <span class="<%= activation.emergency ? 'emergency':'' %>"><%= activation.start %></span>
+        <span class="<%= activation.emergency ? 'emergency':'' %>"><%= activation.start %> - <%= activation.finish %></span>
       <% } %>
   </div>
 </div>
