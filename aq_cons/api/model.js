@@ -488,7 +488,7 @@ class AqConsModel extends PGSQLModel {
 
     average_price_water_opt AS (
       SELECT
-        SUM(price_cost_opt.money_spent/pump_water_opt.litres_filled) AS price_by_litre
+        SUM(price_cost_opt.money_spent)/SUM(pump_water_opt.litres_filled) AS price_by_litre
       FROM
         price_cost_opt
       INNER JOIN
@@ -532,7 +532,7 @@ class AqConsModel extends PGSQLModel {
 
     average_price_water_emergency AS (
       SELECT
-        SUM(price_cost_emergency.money_spent/pump_water_emergency.litres_filled) AS price_by_litre
+        SUM(price_cost_emergency.money_spent)/SUM(pump_water_emergency.litres_filled) AS price_by_litre
       FROM
         price_cost_emergency
       INNER JOIN
