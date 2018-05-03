@@ -48,8 +48,8 @@ App.View.Widgets.Aq_cons.EnergyConsumptionForecast = App.View.Widgets.Base.exten
         agg: ["SUM","AVG","AVG","MIN"],
         vars: ["aq_cons.tank.level"],
         time: {
-          start: "2018-04-03T00:00:00Z", // moment().startOf('hour').subtract(1,'day').toDate(),
-          finish: "2018-04-05T09:00:59Z", // moment().startOf('hour').toDate(),
+          start: "2018-01-18T00:00:00Z", // moment().startOf('hour').subtract(1,'day').toDate(),
+          finish: "2018-01-18T23:59:59Z", // moment().startOf('hour').toDate(),
           step: '1h'
         },
         filters: { id_entity__eq: this.options.id_entity }
