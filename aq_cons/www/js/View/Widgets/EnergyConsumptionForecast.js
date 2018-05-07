@@ -30,7 +30,7 @@ App.View.Widgets.Aq_cons.EnergyConsumptionForecast = App.View.Widgets.Base.exten
 
   initialize: function(options) {
     options = _.defaults(options,{
-      title: __('Consumo energético'),
+      title: __('Nivel de depósito'),
       timeMode: 'historic',
       id_category: 'tank',
       dimension: 'allWidth',
@@ -76,9 +76,9 @@ App.View.Widgets.Aq_cons.EnergyConsumptionForecast = App.View.Widgets.Base.exten
         function(d) { return App.nbf(d, {decimals: 0})},
         function(d) { return App.nbf(d, {decimals: 0})}
       ],
-      yAxisLabel: [__('Consumo energético (Kw/h)'),__('Capacidad (m³)')],
+      yAxisLabel: [__('Capacidad (m³)')],
       yAxisDomain: [[0,100],[0,1]],
-      
+      hideYAxis2: true,
       keysConfig: {
         '*': {type: 'line', axis: 1 },
         'aq_cons.tank.level': {type: 'bar', axis: 1},

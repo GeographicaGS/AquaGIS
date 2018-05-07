@@ -608,7 +608,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         });
         prop.push({
           feature: 'aq_cons.sector.pressure',
-          label: 'Caudal actual',
+          label: 'Presión actual',
           units: 'kgf/cm²',
           nbf: App.nbf
         });
