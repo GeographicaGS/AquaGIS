@@ -208,7 +208,13 @@ body[layout='aquasig'] {
     }
   }
 
+  main.navbar{
+    flex-basis: calc(~'100% - 140px');
+    max-height: calc(~'100% - 140px');
+  }
+
   .footer {
+    flex-basis: 40px;
 
     span, div {
       .font();
@@ -222,6 +228,12 @@ body[layout='aquasig'] {
         &.black {
           color: @aquasigGreyDark;
         }
+      }
+    }
+
+    .mc15 {
+      img {
+        max-height: 35px;
       }
     }
   }
