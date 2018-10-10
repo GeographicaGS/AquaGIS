@@ -93,6 +93,7 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
 
   _openDetails: function(e) {
     if(e.get('clickedSector') === undefined) {
+      $("#titledetail").addClass('invisible');    
       this._closeDetails();
     } else {
       // 1.- Cleaning widget container
@@ -100,6 +101,7 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
   
       // 2.- Calling to renderer for detail's widget
       // this.customRender();
+      $("#titledetail").removeClass('invisible');          
       this._customRenderDetails(e.get('clickedSector'));
       
       // 3.- Reloading Masonry
