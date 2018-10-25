@@ -34,81 +34,88 @@
     "x": 48,
     "y": 0
   },
-  "deposito": {
+  "deposito-emergency": {
     "height": 24,
     "pixelRatio": 1,
     "width": 24,
     "x": 72,
     "y": 0
   },
-  "domestico": {
+  "deposito-saving": {
     "height": 24,
     "pixelRatio": 1,
     "width": 24,
     "x": 48,
+    "y": 24
+  },
+  "domestico": {
+    "height": 24,
+    "pixelRatio": 1,
+    "width": 24,
+    "x": 72,
     "y": 24
   },
   "hidrante": {
     "height": 24,
     "pixelRatio": 1,
     "width": 24,
-    "x": 72,
-    "y": 24
+    "x": 0,
+    "y": 48
   },
   "industrial": {
     "height": 24,
     "pixelRatio": 1,
     "width": 24,
-    "x": 0,
+    "x": 24,
     "y": 48
   },
   "pozo": {
     "height": 24,
     "pixelRatio": 1,
     "width": 24,
-    "x": 24,
+    "x": 48,
     "y": 48
   },
   "publico": {
     "height": 24,
     "pixelRatio": 1,
     "width": 24,
-    "x": 48,
+    "x": 72,
     "y": 48
   },
   "sectores": {
     "height": 20,
     "pixelRatio": 1,
     "width": 20,
-    "x": 72,
-    "y": 72
+    "x": 96,
+    "y": 0
   },
   "sensor-agua": {
-    "height": 24,
-    "pixelRatio": 1,
-    "width": 24,
-    "x": 72,
-    "y": 48
-  },
-  "supply": {
     "height": 24,
     "pixelRatio": 1,
     "width": 24,
     "x": 0,
     "y": 72
   },
-  "valvula": {
+  "supply": {
     "height": 24,
     "pixelRatio": 1,
     "width": 24,
     "x": 24,
     "y": 72
   },
-  "warning": {
+  "valvula": {
     "height": 24,
     "pixelRatio": 1,
     "width": 24,
     "x": 48,
+    "y": 72
+  },
+  "warning": {
+    "height": 24,
+    "pixelRatio": 1,
+    "width": 24,
+    "x": 72,
     "y": 72
   }
 }

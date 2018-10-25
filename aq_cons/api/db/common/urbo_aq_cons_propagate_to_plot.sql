@@ -33,7 +33,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_plot(
       WITH urbo_aq_cons_const_measurand_per_plot_and_usage AS (
         SELECT sl.id_entity, ''%s''::timestamp AS "TimeInstant",
             SUM(COALESCE(cm.flow, 0)) AS flow,
-            SUM(COALESCE(cm.pressure, 0)) AS pressure, cl.usage
+            AVG(COALESCE(cm.pressure, 0)) AS pressure, cl.usage
           FROM (SELECT id_entity FROM %s) sl
             LEFT JOIN (SELECT id_entity, usage, refplot FROM %s) cl
               on sl.id_entity = cl.refplot
@@ -52,7 +52,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_plot(
         SELECT q0.id_entity, q1."TimeInstant", q0.flow, q0.pressure,
             q1.usage
           FROM (
-            SELECT id_entity, SUM(flow) AS flow, SUM(pressure) AS pressure
+            SELECT id_entity, SUM(flow) AS flow, AVG(pressure) AS pressure
               FROM urbo_aq_cons_const_measurand_per_plot_and_usage q00
               GROUP BY id_entity
           ) q0

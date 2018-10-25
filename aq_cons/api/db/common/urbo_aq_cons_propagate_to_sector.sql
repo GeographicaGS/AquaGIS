@@ -33,7 +33,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_sector(
       WITH urbo_aq_cons_plot_measurand_per_sector_and_usage AS (
         SELECT sl.id_entity, ''%s''::timestamp AS "TimeInstant",
             SUM(COALESCE(cm.flow, 0)) AS flow,
-            SUM(COALESCE(cm.pressure, 0)) AS pressure, cl.usage
+            AVG(COALESCE(cm.pressure, 0)) AS pressure, cl.usage
           FROM (SELECT id_entity FROM %s) sl
             LEFT JOIN (SELECT id_entity, usage, refsector FROM %s) cl
               on sl.id_entity = cl.refsector
@@ -57,7 +57,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_sector(
             SELECT q01.id_entity, q11."TimeInstant", q01.flow, q01.pressure,
                 q11.usage
               FROM (
-                SELECT id_entity, SUM(flow) AS flow, SUM(pressure) AS pressure
+                SELECT id_entity, SUM(flow) AS flow, AVG(pressure) AS pressure
                   FROM urbo_aq_cons_plot_measurand_per_sector_and_usage q00
                   GROUP BY id_entity
               ) q01

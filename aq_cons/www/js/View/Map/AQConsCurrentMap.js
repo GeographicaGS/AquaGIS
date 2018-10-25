@@ -15,7 +15,7 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
   initialize: function (options) {
     options = _.defaults(options, {
       defaultBasemap: 'positron',
-      sprites: '/verticals/aquasig-theme/mapstyle/sprite',      
+      sprites: '/verticals/aquasig-theme/mapstyle/sprite',
       center: [-6.058731999113434, 37.34176929299322],
       type: 'now'
     });

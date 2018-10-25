@@ -7,11 +7,12 @@ App.View.Map.Layer.Aq_cons.SectorSavingLayer = Backbone.View.extend({
 
     // Modelos
     let sector = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.sector'});
-    let sensor = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.tank'});
+    let tank = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.tank'});
     
-    sensor.parse = function(e) {
+    tank.parse = function(e) {
       _.each(e.features, function(f,i) {
         f.properties.index = i;
+        f.properties.status = f.properties.level < f.properties.min_level ? 'emergency' : 'saving';
       });
       return e;
     }
@@ -22,12 +23,6 @@ App.View.Map.Layer.Aq_cons.SectorSavingLayer = Backbone.View.extend({
         id: 'aqua_sectors',
         model: sector,
         payload: this._payload,
-      },
-      legend: {
-        sectionId: 'sector',
-        sectionIcon: this.iconsFolder + '/sectores.svg',
-        sectionName: __('Sectores'),
-        name: __('Sectores')
       },
       layers:[
         {
@@ -49,34 +44,28 @@ App.View.Map.Layer.Aq_cons.SectorSavingLayer = Backbone.View.extend({
     });
     
     // Sensor
-    this._sensorLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
+    this._tanksLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
       source: {
-        id: 'sensors_datasource',
-        model: sensor,
+        id: 'tanks_datasource',
+        model: tank,
         payload: this._payload
-      },
-      legend: {
-        sectionId: 'sensor',
-        sectionIcon: this.iconsFolder + '/sensor-agua.svg',
-        sectionName: __('Sensores'),
-        name: __('Sensores')
       },
       layers:[{
         'id': 'sensors_circle',
         'type': 'circle',
-        'source': 'sensors_datasource',
+        'source': 'tanks_datasource',
         'paint': {
           'circle-radius': 20,
-          'circle-color': '#8672D2',
+          'circle-color': '#68BEE2',
           'circle-opacity': 0.5
         },
         'filter': ['==','index',0]
       },{
         'id': 'sensors_symbol',
         'type': 'symbol',
-        'source': 'sensors_datasource',
+        'source': 'tanks_datasource',
         'layout': {
-          'icon-image': 'sensor-agua',
+          'icon-image': 'deposito-{status}',
           'icon-allow-overlap': true,
           'icon-size': 0.8,
         }
@@ -88,9 +77,17 @@ App.View.Map.Layer.Aq_cons.SectorSavingLayer = Backbone.View.extend({
       map.mapChanges.set('clickedSector', e.features[0]);
       map._map.setFilter("sensors_circle", ["==", "index",e.features[0].properties.index]);
     });
-
   },
 
   onClose: function() {
+  },
+
+  updatePayload: function(payload) {
+    this._payload = payload;
+    let plotPayload = JSON.parse(JSON.stringify(payload));
+    plotPayload.var = plotPayload.var.replace(/(.*\.).*(\..*)/,'$1plot$2');
+
+    this._sectorLayer.updateData(payload);
+    this._tanksLayer.updateData(payload);
   }
 });

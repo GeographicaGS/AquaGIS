@@ -1,0 +1,37 @@
+<% for(var item of items) {%>
+  
+  <% if (item.label == 'saving' && items.length > 1) { %>
+    <div class="widget_content_header">Plan de ahorro previsto</div>
+  <% } %>
+
+  <div class="alertWidget <%= options.detailed ? 'detailed':'' %>">   
+    <div class="alert-body">
+      <% for(var variable of variables) { %>
+        <div class="variable" style="border-color: <%= item.label == 'emergency' && variable.param == 'energy_saved_ratio' ? '#FB4C62' : variable.color %>">
+          <div class="variable-title"><%= variable.label %></div>
+          <div class="variable-content <%= variable.type %>">
+            <% if (item.label == 'emergency' && variable.param == 'energy_saved_ratio') { %> 
+              <span class="down"><img src="/verticals/aquasig-theme/img/icons/bad/arrow-raise-down.svg"></span>
+            <% } %>
+            <% if (variable.type == "percent" ) { %> 
+              <%= App.nbf(item.data[variable.param], {decimals: 0}) %>
+            <% } else { %> 
+              <%= App.nbf(item.data[variable.param]) %><% } %>
+            <span><%= variable.units %></span>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+<% } %>
+
+<div class="pumps-ignition">
+  <div class="title"><%= __('Hora de encendido de las bombas') %></div>
+  <div class="hours">
+      <% for(var activation of activations) { %>
+        <span class="<%= activation.emergency ? 'emergency':'' %>"><%= activation.start %> - <%= activation.finish %></span>
+      <% } %>
+  </div>
+</div>
+
+<span class="fade"></span>

@@ -45,7 +45,7 @@ class AqSimulModel extends PGSQLModel {
 
   getSimulationCount(opts) {
 
-    var bbox_filter = opts.bbox ? `AND (a.position && ST_MakeEnvelope('${opts.bbox}', 4326) OR a.position IS NULL)` : '';
+    var bbox_filter = opts.bbox ? `AND (a.position && ST_MakeEnvelope('${opts.bbox[0]}','${opts.bbox[1]}','${opts.bbox[2]}','${opts.bbox[3]}', 4326) OR a.position IS NULL)` : '';
 
     let sql_1 = `
       SELECT b.type_name, COUNT(a.type_name)
@@ -53,6 +53,7 @@ class AqSimulModel extends PGSQLModel {
       RIGHT JOIN ${opts.scope}.aq_cata_const_type b 
       ON a.type_id=b.type_id
       AND a.type_name=b.type_name
+      WHERE TRUE ${bbox_filter}
       GROUP BY b.type_name;
     `;
 

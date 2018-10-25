@@ -26,11 +26,13 @@ deps.JS = [
   srcJS + 'View/Panels/AQCons/AQConsLeak.js',
   srcJS + 'View/Panels/AQCons/AQConsSaving.js',
   srcJS + 'View/Widgets/AlertsWidget.js',
+  srcJS + 'View/Widgets/WidgetAlertsVariable.js',
   srcJS + 'View/Widgets/AQConsCustomWidgetD3BarsLine.js',
   srcJS + 'View/Widgets/ConsumptionForecastByLandUse.js',
   srcJS + 'View/Widgets/ConsumptionForecastByLandUseTimeserie.js',
   srcJS + 'View/Widgets/CurrentLeakStatusWidget.js',
   srcJS + 'View/Widgets/CurrentLeakStatusWidgetAllSectors.js',
+  srcJS + 'View/Widgets/EnergySavingInfo.js',
   srcJS + 'View/Widgets/FlowEvolution.js',  
   srcJS + 'View/Widgets/FlowLastHours.js',  
   srcJS + 'View/Widgets/PressureFlowLeakEvolution.js',  
@@ -38,8 +40,10 @@ deps.JS = [
   srcJS + 'View/Widgets/PressureLastHours.js',  
   srcJS + 'View/Widgets/FlowSectorRanking.js',
   srcJS + 'View/Widgets/PressureSectorRanking.js',
+  srcJS + 'View/Widgets/TankSize.js',
   srcJS + 'View/Widgets/WidgetTotalConsumeLastWeek.js',
-  srcJS + 'View/Widgets/WidgetTotalConsumeWeeklyAverages.js'
+  srcJS + 'View/Widgets/WidgetTotalConsumeWeeklyAverages.js',
+  srcJS + 'View/Widgets/EnergyConsumptionForecast.js',
 ];
 
 deps.lessFile = [ src + 'css/styles.less' ];
