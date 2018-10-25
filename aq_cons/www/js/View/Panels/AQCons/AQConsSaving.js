@@ -40,6 +40,7 @@ App.View.Panels.Aq_cons.Saving = App.View.Panels.Splitted.extend({
 
   _openDetails: function(e) {
     if(e.get('clickedSector') === undefined) {
+      $("#titledetail").addClass('invisible');          
       this._closeDetails();
     } else {
 
@@ -48,6 +49,9 @@ App.View.Panels.Aq_cons.Saving = App.View.Panels.Splitted.extend({
       this.$('.bottom .widgetContainer').html('');
   
       // 2.- Calling to renderer for detail's widget
+      $("#titledetail").removeClass('invisible');          
+      this.$('.bottom .widgetContainer').html('ID Sector: ' + clicked.properties.id_sector + ' - ID Sensor:' + clicked.properties.id_sensor);
+
       this._customRenderDetails(clicked);      
       
       // 3.- Reloading Masonry
