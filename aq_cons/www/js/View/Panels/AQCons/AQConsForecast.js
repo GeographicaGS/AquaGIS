@@ -53,6 +53,7 @@ App.View.Panels.Aq_cons.Consume = App.View.Panels.Splitted.extend({
 
   onClose: function() {
     this._mapView.close();
-    this.$('#dateSelector').removeClass('disabled')    
+    this.$('#dateSelector').removeClass('disabled');
+    App.View.Panels.Splitted.prototype.onClose.call(this);    
   }
 });
