@@ -53,18 +53,18 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_forecast_hourly(
       _on_conflict := '';
     END IF;
 
-    _q := format('
-      -- CONSTRUCTION
-      -- INSERT INTO %s
-      --   (id_entity, "TimeInstant", forecast, pressure_forecast)
-      -- SELECT id_entity, ''%s''::timestamp + interval ''14 days'' AS "TimeInstant",
-      --     AVG(flow) AS forecast, AVG(pressure) AS pressure_forecast
-      --   FROM %s
-      --   WHERE "TimeInstant" >= ''%s''::timestamp + interval ''14 days''
-      --     AND "TimeInstant" < ''%s''::timestamp + interval ''14 days'' + interval ''1 hour''
-      --   GROUP BY id_entity
-      -- %s;
+    -- CONSTRUCTION (previously inside format string)
+    -- INSERT INTO %s
+    --   (id_entity, "TimeInstant", forecast, pressure_forecast)
+    -- SELECT id_entity, ''%s''::timestamp + interval ''14 days'' AS "TimeInstant",
+    --     AVG(flow) AS forecast, AVG(pressure) AS pressure_forecast
+    --   FROM %s
+    --   WHERE "TimeInstant" >= ''%s''::timestamp + interval ''14 days''
+    --     AND "TimeInstant" < ''%s''::timestamp + interval ''14 days'' + interval ''1 hour''
+    --   GROUP BY id_entity
+    -- %s;
 
+    _q := format('
       -- PLOT
       INSERT INTO %s
         (id_entity, "TimeInstant", forecast, pressure_forecast)
@@ -103,7 +103,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_forecast_hourly(
         GROUP BY q1.refsector
       %s;
       ',
-      -- _t_const_ag, moment, _t_aux_ft, moment, moment, _on_conflict,
+    --  _t_const_ag, moment, _t_aux_ft, moment, moment, _on_conflict,
 
       _t_plot_ag, moment, _t_const_ag, moment, moment, _t_const_ld, _on_conflict,
 
