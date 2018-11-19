@@ -1,10 +1,10 @@
 FROM aquasig_base:latest
 
-# Variables de entorno para la conexión a Urbo.
-ENV URL 'jdbc:postgresql://XXXX:XXXX/XXXX'
-ENV USERNAME 'XXXX'
-ENV PASSWORD 'XXXX'
-ENV SCHEMA 'XXXX'
+# Variables de entorno con los datos de conexión a la BD:
+ENV URL 'jdbc:postgresql://######:5432/urbo'
+ENV USERNAME '####'
+ENV PASSWORD '###'
+ENV SCHEMA '####'
 
 RUN env > /root/environmentVariables.txt
 
@@ -21,10 +21,8 @@ COPY ./entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
 # Creamos fichero de log
-RUN touch /var/log/fase2-cron.log && chmod +rw /var/log/fase2-cron.log
+RUN touch /var/log/ahorro-fase3-cron.log && chmod +rw /var/log/ahorro-fase3-cron.log
 
 # Cargamos el cron
-ADD fase2-cron /etc/cron.d/fase2-cron
-RUN chmod +x /etc/cron.d/fase2-cron && crontab -u root /etc/cron.d/fase2-cron
-
-CMD cron && tail -f /var/log/fase2-cron.log
+ADD ahorro-fase3-cron /etc/cron.d/ahorro-fase3-cron
+RUN chmod +x /etc/cron.d/ahorro-fase3-cron && crontab -u root /etc/cron.d/ahorro-fase3-cron

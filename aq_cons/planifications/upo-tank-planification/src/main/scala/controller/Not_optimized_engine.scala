@@ -115,15 +115,13 @@ object Not_optimized_engine {
       // FIN PROCESAMIENTO DEL REGISTRO
     }
 
-    // nos aseguramos que al terminar el día se detenga el llenado si permanece activo, añadiendo una acción más a lista de planificaciones "tank_no_opt"
+    // nos aseguramos que al terminar el día se detenga el llenado si permanece activo, añadiendo una acción más a lista de planificaciones "aq_plan_tank_pump_no_opt"
     // conseguimos que cada día, la planificación comience sobre parado
     if (tank_no_opt.nonEmpty && tank_no_opt.last._2 != false) {
       tank_no_opt = tank_no_opt :+ (Time_utils.addMinutesToString(tank_no_opt.last._1, 60), false)
     }
 
     // Persistencia de la planificación en BD
-    println("Guardando planificación no optimizada")
-    println(tank_no_opt)
-    tankDAO.saveForecast(tank.id, tank_no_opt, "aq_plan_tank_pump_no_opt")
+    tankDAO.saveForecast(tank.id_entity, tank_no_opt, table = "aq_plan_tank_pump_no_opt")
   }
 }

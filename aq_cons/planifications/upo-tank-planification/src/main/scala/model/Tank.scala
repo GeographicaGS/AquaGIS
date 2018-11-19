@@ -2,7 +2,7 @@ package model
 
 /** Clase principal que representa un depósito.
   *
-  * @param id         identificador del depósito.
+  * @param id_entity         identificador del depósito.
   * @param capacity   capacidad en m3.
   * @param min_level  porcentaje mínimo del nivel de llenado.
   * @param max_level  porcentaje máximo del nivel de llenado.
@@ -10,7 +10,7 @@ package model
   * @param pump_power potencia en MW que la bomba necesita.
   */
 case class Tank(
-                 id: String,
+                 id_entity: String,
                  capacity: Double,
                  min_level: Double,
                  max_level: Double,

@@ -19,7 +19,7 @@ object Emergency_engine {
     val max_m3: Double = tank.max_level * tank.capacity / 100
 
     // Consultamos la BD para obtener las emergencias del día en curso
-    val pumpEmergencies = tankDAO.loadPumpEmergenciesUntilCurrentTimeByTankId(tank.id)
+    val pumpEmergencies = tankDAO.loadPumpEmergenciesUntilCurrentTimeByTankId(tank.id_entity)
     val lastEmergency: (String, Boolean) = if (pumpEmergencies.nonEmpty) {
       pumpEmergencies.last
     } else {
@@ -33,7 +33,7 @@ object Emergency_engine {
       if (lastEmergency._2 != false) {
         val minutosBomba = ((max_m3 - tank.currentLevel_m3._2) / (tank.pump_flow / 60.0)).toInt
         if (minutosBomba <= 60) {
-          tankDAO.saveEmergency(tank.id, Time_utils.addMinutesToString(Time_utils.currentTimestamp, minutosBomba), false)
+          tankDAO.saveEmergency(tank.id_entity, Time_utils.addMinutesToString(Time_utils.currentTimestamp, minutosBomba), activated = false)
         }
       }
     }
@@ -41,10 +41,10 @@ object Emergency_engine {
     // De todas formas, se comprueba si el nivel actual ha rebasado el umbral mínimo, implicando una nueva emergencia para llenar hasta max_m3.
     // Si el llenado tarda menos de 60min se registra la acción de detener la bomba. Si no, se gestionará el apagado en la siguiente hora.
     if (tank.currentLevel_m3._2 < min_m3) {
-      tankDAO.saveEmergency(tank.id, Time_utils.currentTimestamp, true)
+      tankDAO.saveEmergency(tank.id_entity, Time_utils.currentTimestamp, activated = true)
       val minutosBomba = ((max_m3 - tank.currentLevel_m3._2) / (tank.pump_flow / 60.0)).toInt
       if (minutosBomba <= 60) {
-        tankDAO.saveEmergency(tank.id, Time_utils.addMinutesToString(Time_utils.currentTimestamp, minutosBomba), false)
+        tankDAO.saveEmergency(tank.id_entity, Time_utils.addMinutesToString(Time_utils.currentTimestamp, minutosBomba), activated = false)
       }
     }
   }

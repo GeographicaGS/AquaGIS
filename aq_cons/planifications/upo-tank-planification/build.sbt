@@ -1,8 +1,8 @@
 lazy val root = (project in file(".")).
   settings(
-    name := "AquaSIG_fase2_v2",
+    name := "ahorro_fase3",
     version := "0.1",
-    scalaVersion := "2.12.4",
+    scalaVersion := "2.12.7",
     mainClass in Compile := Some("Main")
   )
 

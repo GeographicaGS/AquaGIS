@@ -193,8 +193,6 @@ object Optimized_engine {
     }
 
     // Persistencia de la planificación en BD
-    println("Guardando planificación optimizada")
-    println(tank_opt)
-    tankDAO.saveForecast(tank.id, tank_opt, "aq_plan_tank_pump_opt")
+    tankDAO.saveForecast(tank.id_entity, tank_opt, table = "aq_plan_tank_pump_opt")
   }
 }
