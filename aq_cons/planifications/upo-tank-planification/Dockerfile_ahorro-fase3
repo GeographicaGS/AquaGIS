@@ -1,9 +1,9 @@
 FROM aquasig_base:latest
 
 # Variables de entorno con los datos de conexión a la BD:
-ENV URL 'jdbc:postgresql://######:5432/urbo'
+ENV URL 'jdbc:postgresql://###:5432/urbo'
 ENV USERNAME '####'
-ENV PASSWORD '###'
+ENV PASSWORD '####'
 ENV SCHEMA '####'
 
 RUN env > /root/environmentVariables.txt
@@ -25,4 +25,10 @@ RUN touch /var/log/ahorro-fase3-cron.log && chmod +rw /var/log/ahorro-fase3-cron
 
 # Cargamos el cron
 ADD ahorro-fase3-cron /etc/cron.d/ahorro-fase3-cron
+
+# Give execution rights on the cron job
+RUN chmod 0644 /etc/cron.d/ahorro-fase3-cron
+
 RUN chmod +x /etc/cron.d/ahorro-fase3-cron && crontab -u root /etc/cron.d/ahorro-fase3-cron
+
+ENTRYPOINT service cron start && /bin/bash

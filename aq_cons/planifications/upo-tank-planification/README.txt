@@ -32,9 +32,5 @@ Por tanto, pasos para ejecutar:
 
 2) $ docker build . -f Dockerfile_ahorro-fase3 -t aquasig_ahorro-fase3
 
-3) $ docker run -it aquasig_ahorro-fase3 bash
-
-4) Dentro del Docker, levantamos el cron con el siguiente comando
-
-    $ cron
+3) $ docker run -dit aquasig_ahorro-fase3
 
