@@ -4,7 +4,10 @@ var srcJS = src + 'js/';
 var public = 'verticals/aquasig-theme/';
 
 deps.templateFolder = [srcJS + 'template'];
-deps.JS = []
+deps.JS = [
+  srcJS + 'AppOverride.js',
+  srcJS + 'Router.js'
+];
 
 deps.lessFile = [ src + 'css/styles.less' ];
 
