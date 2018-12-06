@@ -1,0 +1,31 @@
+FROM aquasig_base:latest
+
+# Variables de entorno con los datos de conexión a la BD:
+ENV URL 'jdbc:postgresql://###:5432/urbo'
+ENV USERNAME '####'
+ENV PASSWORD '####'
+ENV SCHEMA '####'
+
+
+RUN env > /root/environmentVariables.txt
+
+# Cargamos los ficheros del proyecto
+COPY ./project/ /usr/local/app/project/
+COPY ./src/ /usr/local/app/src/
+COPY build.sbt /usr/local/app/
+
+# Compilamos con dependencias
+RUN cd /usr/local/app/ && sbt assembly
+
+# Script con la instrucción de lanzamiento del programa
+COPY ./entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+
+# Creamos fichero de log
+RUN touch /var/log/prevision-fase2-cron.log && chmod +rw /var/log/prevision-fase2-cron.log
+
+# Cargamos el cron
+ADD prevision-fase2-cron /etc/cron.d/prevision-fase2-cron
+RUN chmod +x /etc/cron.d/prevision-fase2-cron && crontab -u root /etc/cron.d/prevision-fase2-cron
+
+ENTRYPOINT service cron start && /bin/bash
