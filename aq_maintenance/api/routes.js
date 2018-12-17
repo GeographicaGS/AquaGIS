@@ -41,46 +41,6 @@ router.get('/:id_scope/maintenance/orders', function(req, res, next) {
     finish: req.query.finish,
     type: req.query.type,
     assigned_user: req.query.assigned_user,
-    state: req.query.assigned_user,
-    order_number: req.query.order_number
-  };
-
-  new AqMaintenanceModel().getOrdersList(opts)
-  .then(function(data) {
-    res.json(data)
-  })
-  .catch(function(err) {
-    next(err);
-  });
-});
-
-router.get('/:id_scope/maintenance/orders', function(req, res, next) {
-  var opts = {
-    scope: req.id_scope,
-    start: req.query.start,
-    finish: req.query.finish,
-    type: req.query.type,
-    assigned_user: req.query.assigned_user,
-    status: req.query.status,
-    order_number: req.query.order_number
-  };
-
-  new AqMaintenanceModel().getOrdersList(opts)
-  .then(function(data) {
-    res.json(data)
-  })
-  .catch(function(err) {
-    next(err);
-  });
-});
-
-router.get('/:id_scope/maintenance/orders', function(req, res, next) {
-  var opts = {
-    scope: req.id_scope,
-    start: req.query.start,
-    finish: req.query.finish,
-    type: req.query.type,
-    assigned_user: req.query.assigned_user,
     status: req.query.status,
     order_number: req.query.order_number
   };
