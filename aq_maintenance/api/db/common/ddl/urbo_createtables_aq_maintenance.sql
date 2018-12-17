@@ -49,8 +49,19 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_maintenance(
     _pg_tbowner = urbo_tbowner_qry(_tb_arr);
 
 
-    CREATE TYPE order_type AS ENUM ('actualización de infraestructuras', 'mantenimiento', 'avería', 'fuga');
-    CREATE TYPE status_type AS ENUM ('registrada', 'en proceso', 'incidencia', 'fuga');
+    CREATE TYPE order_type AS ENUM (
+      'infrastructure update', -- 'actualización de infraestructuras',
+      'maintenance', -- mantenimiento
+      'fault', -- avería
+      'leak' -- fuga
+    );
+
+    CREATE TYPE status_type AS ENUM (
+      'registered', -- registrada
+      'in progress', -- en proceso
+      'incident', -- incidencia
+      'fuga' -- fuga
+    );
 
     _create_tbs = format('
 
