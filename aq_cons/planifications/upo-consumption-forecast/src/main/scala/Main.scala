@@ -10,9 +10,10 @@ object Main {
   var username: String = null
   var password: String = null
   var schema: String = null
+  var predecirSemanas: String = null
 
-  val h: Int = 24 * 7 * 2 // 336 valores a predecir
-  val w: Int = 24 * 7     // 168 valores del patrón de comportamiento
+  var h: Int = 24 * 7
+  val w: Int = 24 * 7  // 168 valores del patrón de comportamiento
   val d: Int = 24 * 7
   val k: Int = 1
 
@@ -26,6 +27,9 @@ object Main {
   def main(args: Array[String]): Unit = {
 
     parseEnvVar()
+
+
+
     run()
 
   }
@@ -39,7 +43,7 @@ object Main {
     // Consultamos la tabla "aq_cons_const_lastdata" para obtener las principales características de las construcciones
     // @val all_constructions: Colección que contiene todas las construcciones
     // Para preprodición, y trabajar sobre una única construcción, se puede añadir al final de la línea ".filter(_.id_entity == "construction_id:1534_0")"
-    var all_constructions: Set[Construction] = constructionDAO.findAll()//.filter(_.id_entity == "construction_id:1013_0")
+    var all_constructions: Set[Construction] = constructionDAO.findAll()//.filter(_.id_entity == "construction_id:5952_1")
 
     // Para cada construcción de la colección de construcciones, consultamos su histórico de la tabla "aq_cons_const_agg_hour"
     // y se lo establecemos a la construcción.
@@ -89,14 +93,17 @@ object Main {
     username = System.getenv.get("USERNAME")
     password = System.getenv.get("PASSWORD")
     schema = System.getenv.get("SCHEMA")
+    predecirSemanas = System.getenv.get("PREDECIRSEMANAS")
 
-    val envVarEmpty: Boolean = url.isEmpty || username.isEmpty || password.isEmpty || schema.isEmpty
+    val envVarEmpty: Boolean = url.isEmpty || username.isEmpty || password.isEmpty || schema.isEmpty || predecirSemanas.isEmpty
     if (envVarEmpty) {
-      val envVar: String = s"URL=$url,\nUSERNAME=$username,\nPASSWORD=$password,\nSCHEMA=$schema"
+      val envVar: String = s"URL=$url,\nUSERNAME=$username,\nPASSWORD=$password,\nSCHEMA=$schema,\nPREDECIRSEMANAS=$predecirSemanas"
       println(s"Your environmental variables are: \n$envVar\n")
 
       throw new IllegalArgumentException(s"Invalid environmental variables: \n$envVar\n")
     }
+
+    h = h * predecirSemanas.toInt
   }
 
 }

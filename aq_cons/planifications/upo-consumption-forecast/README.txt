@@ -11,10 +11,7 @@ Además, se realiza una instalación del manejador de dependencias SBT. Las nuev
 En el segundo Docker, de despliegue de la aplicación, se copian los fuentes, y se compilan con dependencias.
 
 Además, se establecen como variables de entorno los datos de conexión a la BD:
-ENV URL 'jdbc:postgresql://###:5432/urbo'
-ENV USERNAME '####'
-ENV PASSWORD '####'
-ENV SCHEMA '####'
+(ver Dockrefile_prevision-fase2)
 
 También se pasa el script de ejecucion "entrypoint.sh". La ejecución del programa se hace con el siguiente comando:
 $ java -jar /usr/local/app/target/scala-2.12/prevision_fase2-assembly-0.1.jar
@@ -33,4 +30,3 @@ Por tanto, pasos para ejecutar:
 2) $ docker build . -f Dockerfile_prevision-fase2 -t aquasig_prevision-fase2
 
 3) $ docker run -dit aquasig_prevision-fase2
-
