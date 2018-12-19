@@ -20,6 +20,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_maintenance(
   $$
   DECLARE
     _tb_arr text[];
+    _tb_geom_arr text[];
     _checktable text;
     _pg_geom_idx text;
     _geom_fld text;
@@ -43,7 +44,11 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_maintenance(
         _tb_issues,
         _tb_status,
         _tb_files
-      ];
+    ];
+
+    _tb_geom_arr = ARRAY[
+        _tb_issues
+    ];
 
     _checktable = urbo_checktable_ifexists_arr(id_scope,_tb_arr,TRUE);
 
@@ -53,7 +58,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_maintenance(
 
     _geom_fld = 'position';
 
-    _pg_geom_idx = urbo_geom_idx_qry('position', _tb_arr);
+    _pg_geom_idx = urbo_geom_idx_qry('position', _tb_geom_arr);
 
     _pg_pk = urbo_pk_qry(_tb_arr);
 
@@ -61,7 +66,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_maintenance(
 
     DROP TYPE IF EXISTS order_type;
     CREATE TYPE order_type AS ENUM (
-      'infrastructure update',
+      'infrastructure_update',
       'maintenance',
       'fault',
       'leak'
@@ -70,7 +75,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_maintenance(
     DROP TYPE IF EXISTS status_type;
     CREATE TYPE status_type AS ENUM (
       'registered',
-      'in progress',
+      'in_progress',
       'incident',
       'leak'
     );
@@ -98,6 +103,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_maintenance(
       --STATUS
       CREATE TABLE IF NOT EXISTS %s (
           type status_type NOT NULL,
+          id_issue character varying(64) NOT NULL,
           id_user text,
           id_entity character varying(64) NOT NULL,
           created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
@@ -106,6 +112,10 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_maintenance(
 
       --FILES
       CREATE TABLE IF NOT EXISTS %s (
+          id_issue character varying(64) NOT NULL,
+          name character varying(64) NOT NULL,
+          id_user text,
+          url text,
           id_entity character varying(64) NOT NULL,
           created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
           updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
