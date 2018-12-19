@@ -41,18 +41,227 @@ class AqMaintenanceModel extends PGSQLModel {
     return this;  // Because parent is not a strict class
   }
 
-  getOrdersList(opts) {
+  getIssuesList(opts) {
+
+
+    var date_flt = '  ';
+    var type_flt = '   ';
+    var user_flt = '   ';
+    var status_flt = '   ';
+    var id_flt = '   ';
+
+
+    if (opts.start && opts.finish)  {
+      var date_flt = `AND created_at between '${opts.finish}' and '${opts.start}'`;
+    }
+
+    if (opts.type)  {
+      var type_flt = `AND type = '${opts.type}'`;
+    }
+
+    if (opts.assigned_user)  {
+      var user_flt = `AND id_user = '${opts.assigned_user}'`;
+    }
+
+    if (opts.status)  {
+      var status_flt = `AND current_status = '${opts.status}'`;
+    }
+
+    if (opts.issue_number)  {
+      var id_flt = `AND id_entity = '${opts.issue_number}'`;
+    }
+
+
+    // let sql = `
+    //   WITH issues AS (
+    //     SELECT
+    //       *
+    //     FROM
+    //       ${opts.scope}.maintenance_issues
+    //     WHERE true
+    //       -- ${date_flt}
+    //       -- ${type_flt}
+    //       -- ${user_flt}
+    //       -- ${status_flt}
+    //       -- ${id_flt}
+    //   )
+    //   SELECT
+    //     *
+    //     -- (SELECT array_to_json(array_agg(row_to_json(t))) FROM ( select * from madrid.maintenance_status) t) as status,
+    //     -- (SELECT array_to_json(array_agg(row_to_json(t))) FROM ( select * from madrid.maintenance_files) t) as files
+    //   FROM issues
+
+    //   `;
+
+    let sql = `
+
+        SELECT
+          *,
+          ST_AsGeoJSON(position) as position
+        FROM
+          ${opts.scope}.maintenance_issues
+        WHERE true
+          -- ${date_flt}
+          -- ${type_flt}
+          -- ${user_flt}
+          -- ${status_flt}
+          -- ${id_flt}
+
+      `;
+
+    return this.promise_query(sql)
+    .then(function(data) {
+
+      log.info(typeof(data.rows[1]));
+
+      let features = [];
+
+      for (let key in data.rows) {
+        let position = JSON.parse(data.rows[key]["position"]);
+        delete data.rows[key]["position"];
+        let feature = {
+          "type": "Feature",
+          "geometry": position,
+          "properties": data.rows[key]
+        }
+        features.push(feature);
+      }
+
+      let geojson_wrapper = {
+        "type": "FeatureCollection",
+        "features": features
+      };
+
+      return Promise.resolve(geojson_wrapper);
+    })
+
+    .catch(function(err) {
+      return Promise.reject(err);
+    });
+  }
+
+
+  createIssue(opts) {
+
+    let sql = `
+      INSERT INTO
+        ${opts.scope}.maintenance_issues
+        (
+          id_entity,
+          "TimeInstant",
+          position,
+          type,
+          address,
+          budget,
+          description,
+          id_user,
+          current_status,
+          estimated_time
+        )
+      VALUES
+        (
+          'issue:${opts.type}_' || EXTRACT(MINUTE FROM now())::bigint::text || (EXTRACT(SECOND FROM now()) * 1000)::bigint::text,
+          timezone('utc'::text, now()),
+          ST_GeomFromText('POINT( ${opts.position[0]} ${opts.position[1]} )', 4326),
+          '${opts.type}',
+          '${opts.address}',
+          '${opts.budget}',
+          '${opts.description}',
+          '${opts.assigned_user}',
+          'registered',
+          '${opts.estimated_time}'
+        )
+      ;
+      `;
+
+    return this.promise_query(sql)
+    .then(function(data) {
+
+      return Promise.resolve({"message": "ok"});
+    })
+
+    .catch(function(err) {
+      return Promise.reject(err);
+    });
+  }
+
+
+  updateIssue(opts) {
+
+    let sql = `
+      UPDATE
+        ${opts.scope}.maintenance_issues
+      SET
+        (
+          "TimeInstant",
+          position,
+          type,
+          address,
+          budget,
+          description,
+          id_user,
+          estimated_time
+        )
+      =
+        (
+          timezone('utc'::text, now()),
+          ST_GeomFromText('POINT( ${opts.position[0]} ${opts.position[1]} )', 4326),
+          '${opts.type}',
+          '${opts.address}',
+          '${opts.budget}',
+          '${opts.description}',
+          '${opts.assigned_user}',
+          '${opts.estimated_time}'
+        )
+
+      WHERE id = ${opts.id}
+      ;
+      `;
+
+    log.info(sql);
+
+    return this.promise_query(sql)
+    .then(function(data) {
+
+      return Promise.resolve({"message": "ok"});
+    })
+
+    .catch(function(err) {
+      return Promise.reject(err);
+    });
+  }
+
+
+  deleteIssue(opts) {
+
+    let sql = `
+      DELETE FROM
+        ${opts.scope}.maintenance_issues
+        where id = ${opts.id}
+      ;
+      `;
+
+    return this.promise_query(sql)
+    .then(function(data) {
+
+      return Promise.resolve({"message": "ok"});
+    })
+
+    .catch(function(err) {
+      return Promise.reject(err);
+    });
+  }
+
+
+  getStatusList(opts) {
+
     let sql = `
       SELECT
         *
       FROM
-        ${opts.scope}.aq_maintenance
+        ${opts.scope}.maintenance_status
       WHERE true
-        AND id_entity = ${opts.order_number}
-        AND created_at between ${opts.finish} and ${opts.start}
-        AND type = ${opts.type}
-        AND id_user = ${opts.assigned_user}
-        AND current_status = ${opts.status}
+        AND id_issue = '${opts.id_issue}'
 
       `;
 
@@ -67,18 +276,49 @@ class AqMaintenanceModel extends PGSQLModel {
     });
   }
 
-  getOrdersList(opts) {
+
+  createStatus(opts) {
+
+    let sql = `
+      INSERT INTO
+        ${opts.scope}.maintenance_status
+        (
+          id_entity,
+          type,
+          id_issue,
+          id_user
+        )
+      VALUES
+        (
+          'status:${opts.type}_${opts.id_issue}_${opts.id_user}' || EXTRACT(MINUTE FROM now())::bigint::text || (EXTRACT(SECOND FROM now()) * 1000)::bigint::text,
+          '${opts.type}',
+          '${opts.id_issue}',
+          '${opts.id_user}'
+        )
+      ;
+      `;
+
+    return this.promise_query(sql)
+    .then(function(data) {
+
+      return Promise.resolve({"message": "ok"});
+    })
+
+    .catch(function(err) {
+      return Promise.reject(err);
+    });
+  }
+
+
+  getFilesList(opts) {
+
     let sql = `
       SELECT
         *
       FROM
-        ${opts.scope}.aq_maintenance
+        ${opts.scope}.maintenance_files
       WHERE true
-        AND id_entity = ${opts.order_number}
-        AND created_at between ${opts.finish} and ${opts.start}
-        AND type = ${opts.type}
-        AND id_user = ${opts.assigned_user}
-        AND current_status = ${opts.status}
+        AND id_issue = '${opts.id_issue}'
 
       `;
 
@@ -86,6 +326,60 @@ class AqMaintenanceModel extends PGSQLModel {
     .then(function(data) {
 
       return Promise.resolve(data.rows);
+    })
+
+    .catch(function(err) {
+      return Promise.reject(err);
+    });
+  }
+
+
+  createFile(opts) {
+
+    let sql = `
+      INSERT INTO
+        ${opts.scope}.maintenance_files
+        (
+          id_entity,
+          name,
+          id_issue,
+          id_user
+        )
+      VALUES
+        (
+          'file:${opts.id_issue}_${opts.id_user}',
+          '${opts.name}'
+          '${opts.id_issue}',
+          '${opts.id_user}'
+        )
+      ;
+      `;
+
+    return this.promise_query(sql)
+    .then(function(data) {
+
+      return Promise.resolve({"message": "ok"});
+    })
+
+    .catch(function(err) {
+      return Promise.reject(err);
+    });
+  }
+
+
+  deleteFile(opts) {
+
+    let sql = `
+      DELETE FROM
+        ${opts.scope}.maintenance_files
+        where id = ${opts.id}
+      ;
+      `;
+
+    return this.promise_query(sql)
+    .then(function(data) {
+
+      return Promise.resolve({"message": "ok"});
     })
 
     .catch(function(err) {

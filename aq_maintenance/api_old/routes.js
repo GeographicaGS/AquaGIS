@@ -29,49 +29,23 @@
 const AqMaintenanceModel = require('./model.js');
 const express = require('express');
 const utils = require('../../utils.js');
-const _ = require('underscore');
+var _ = require('underscore');
+var check = require('./check.js');
 const router = express.Router();
-const auth = require('../../auth.js');
 const log = utils.log();
 
-router.get('/issues', function(req, res, next) {
+router.get('/:id_scope/maintenance/orders', function(req, res, next) {
   var opts = {
-    scope: req.scope,
+    scope: req.id_scope,
     start: req.query.start,
     finish: req.query.finish,
     type: req.query.type,
     assigned_user: req.query.assigned_user,
     status: req.query.status,
-    issue_number: req.query.issue_number
+    order_number: req.query.order_number
   };
 
-  log.info(opts);
-
-  new AqMaintenanceModel().getIssuesList(opts)
-  .then(function(data) {
-    res.json(data)
-
-  })
-  .catch(function(err) {
-    next(err);
-  });
-});
-
-
-router.post('/issues', function(req, res, next) {
-  var opts = {
-    scope: req.scope,
-    id_entity: req.body.id_entity,
-    type: req.body.type,
-    budget: req.body.budget,
-    address: req.body.address,
-    position: req.body.position,
-    description: req.body.description,
-    assigned_user: req.body.assigned_user,
-    estimated_time: req.body.estimated_time
-  };
-
-  new AqMaintenanceModel().createIssue(opts)
+  new AqMaintenanceModel().getOrdersList(opts)
   .then(function(data) {
     res.json(data)
   })
@@ -80,22 +54,11 @@ router.post('/issues', function(req, res, next) {
   });
 });
 
-
-router.put('/issues', function(req, res, next) {
+router.post('/:id_scope/maintenance/orders', function(req, res, next) {
   var opts = {
-    scope: req.scope,
-    id: req.body.id,
-    id_entity: req.body.id_entity,
-    type: req.body.type,
-    budget: req.body.budget,
-    address: req.body.address,
-    position: req.body.position,
-    description: req.body.description,
-    assigned_user: req.body.assigned_user,
-    estimated_time: req.body.estimated_time
   };
 
-  new AqMaintenanceModel().updateIssue(opts)
+  new AqMaintenanceModel().createOrder(opts)
   .then(function(data) {
     res.json(data)
   })
@@ -104,14 +67,11 @@ router.put('/issues', function(req, res, next) {
   });
 });
 
-
-router.delete('/issues', function(req, res, next) {
+router.put('/:id_scope/maintenance/orders', function(req, res, next) {
   var opts = {
-    scope: req.scope,
-    id: req.body.id
   };
 
-  new AqMaintenanceModel().deleteIssue(opts)
+  new AqMaintenanceModel().updateOrder(opts)
   .then(function(data) {
     res.json(data)
   })
@@ -120,14 +80,11 @@ router.delete('/issues', function(req, res, next) {
   });
 });
 
-
-router.get('/status/:id_issue', function(req, res, next) {
+router.put('/:id_scope/maintenance/orders', function(req, res, next) {
   var opts = {
-    scope: req.scope,
-    id_issue: req.params.id_issue
   };
 
-  new AqMaintenanceModel().getStatusList(opts)
+  new AqMaintenanceModel().updateOrder(opts)
   .then(function(data) {
     res.json(data)
   })
@@ -136,16 +93,11 @@ router.get('/status/:id_issue', function(req, res, next) {
   });
 });
 
-
-router.post('/status', function(req, res, next) {
+router.delete('/:id_scope/maintenance/orders', function(req, res, next) {
   var opts = {
-    scope: req.scope,
-    id_issue: req.body.id_issue,
-    type: req.body.type,
-    id_user: req.body.id_user
   };
 
-  new AqMaintenanceModel().createStatus(opts)
+  new AqMaintenanceModel().deleteOrder(opts)
   .then(function(data) {
     res.json(data)
   })
@@ -154,35 +106,47 @@ router.post('/status', function(req, res, next) {
   });
 });
 
-
-router.get('/files/:id_issue', function(req, res, next) {
+router.get('/:id_scope/maintenance/status', function(req, res, next) {
   var opts = {
-    scope: req.scope,
-    id_issue: req.params.id_issue
   };
 
-
-  log.info(opts);
-
-
-  new AqMaintenanceModel().getFilesList(opts)
+  new AqMaintenanceModel().getStatus(opts)
   .then(function(data) {
     res.json(data)
-
   })
   .catch(function(err) {
     next(err);
   });
 });
 
-
-router.post('/files', function(req, res, next) {
+router.post('/:id_scope/maintenance/status', function(req, res, next) {
   var opts = {
-    scope: req.scope,
-    id_issue: req.body.id_issue,
-    id_user: req.body.id_user,
-    name: req.body.type,
-    file: req.body.file
+  };
+
+  new AqMaintenanceModel().getStatus(opts)
+  .then(function(data) {
+    res.json(data)
+  })
+  .catch(function(err) {
+    next(err);
+  });
+});
+
+router.get('/:id_scope/maintenance/files/:id_order', function(req, res, next) {
+  var opts = {
+  };
+
+  new AqMaintenanceModel().getFiles(opts)
+  .then(function(data) {
+    res.json(data)
+  })
+  .catch(function(err) {
+    next(err);
+  });
+});
+
+router.post('/:id_scope/maintenance/files', function(req, res, next) {
+  var opts = {
   };
 
   new AqMaintenanceModel().createFile(opts)
@@ -194,11 +158,8 @@ router.post('/files', function(req, res, next) {
   });
 });
 
-
-router.delete('/files', function(req, res, next) {
+router.delete('/:id_scope/maintenance/files', function(req, res, next) {
   var opts = {
-    scope: req.scope,
-    id: req.body.id
   };
 
   new AqMaintenanceModel().deleteFile(opts)
