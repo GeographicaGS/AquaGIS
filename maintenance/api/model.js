@@ -71,41 +71,26 @@ class AqMaintenanceModel extends PGSQLModel {
       var id_flt = `AND id_entity = '${opts.issue_number}'`;
     }
 
-
-    // let sql = `
-    //   WITH issues AS (
-    //     SELECT
-    //       *
-    //     FROM
-    //       ${opts.scope}.maintenance_issues
-    //     WHERE true
-    //       -- ${date_flt}
-    //       -- ${type_flt}
-    //       -- ${user_flt}
-    //       -- ${status_flt}
-    //       -- ${id_flt}
-    //   )
-    //   SELECT
-    //     *
-    //     -- (SELECT array_to_json(array_agg(row_to_json(t))) FROM ( select * from madrid.maintenance_status) t) as status,
-    //     -- (SELECT array_to_json(array_agg(row_to_json(t))) FROM ( select * from madrid.maintenance_files) t) as files
-    //   FROM issues
-
-    //   `;
-
     let sql = `
 
+      WITH issues as (
         SELECT
           *,
           ST_AsGeoJSON(position) as position
         FROM
           ${opts.scope}.maintenance_issues
         WHERE true
-          -- ${date_flt}
-          -- ${type_flt}
-          -- ${user_flt}
-          -- ${status_flt}
-          -- ${id_flt}
+          ${date_flt}
+          ${type_flt}
+          ${user_flt}
+          ${status_flt}
+          ${id_flt}
+      )
+      SELECT
+        *,
+        (SELECT array_to_json(array_agg(row_to_json(t))) FROM ( select * from madrid.maintenance_status) t) as status,
+        (SELECT array_to_json(array_agg(row_to_json(t))) FROM ( select * from madrid.maintenance_files) t) as files
+      FROM issues
 
       `;
 

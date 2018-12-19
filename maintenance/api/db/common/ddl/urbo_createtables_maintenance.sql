@@ -8,9 +8,9 @@
 --------------------------------------------------------------------------------
 
 
-DROP FUNCTION IF EXISTS urbo_createtables_aq_maintenance(text, boolean, boolean, text);
+DROP FUNCTION IF EXISTS urbo_createtables_maintenance(text, boolean, boolean, text);
 
-CREATE OR REPLACE FUNCTION urbo_createtables_aq_maintenance(
+CREATE OR REPLACE FUNCTION urbo_createtables_maintenance(
     id_scope text,
     isdebug boolean DEFAULT FALSE,
     iscarto boolean DEFAULT FALSE,
@@ -99,6 +99,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_maintenance(
           created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
           updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
+
 
       --STATUS
       CREATE TABLE IF NOT EXISTS %s (
