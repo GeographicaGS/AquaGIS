@@ -29,6 +29,7 @@
 const PGSQLModel = require('../../models/pgsqlmodel.js');
 const utils = require('../../utils.js');
 var _ = require('underscore');
+const request = require('request');
 
 const log = utils.log();
 
@@ -129,43 +130,45 @@ class AqMaintenanceModel extends PGSQLModel {
   createIssue(opts) {
 
     let sql = `
-      INSERT INTO
-        ${opts.scope}.maintenance_issues
-        (
-          id_entity,
-          "TimeInstant",
-          position,
-          type,
-          address,
-          budget,
-          description,
-          id_user,
-          current_status,
-          estimated_time
-        )
-      VALUES
-        (
-          'issue:${opts.type}_' || EXTRACT(MINUTE FROM now())::bigint::text || (EXTRACT(SECOND FROM now()) * 1000)::bigint::text,
-          timezone('utc'::text, now()),
-          ST_GeomFromText('POINT( ${opts.position[0]} ${opts.position[1]} )', 4326),
-          '${opts.type}',
-          '${opts.address}',
-          '${opts.budget}',
-          '${opts.description}',
-          '${opts.assigned_user}',
-          'registered',
-          '${opts.estimated_time}'
-        )
-      ;
-      `;
+    INSERT INTO
+      ${opts.scope}.maintenance_issues
+      (
+        id_entity,
+        "TimeInstant",
+        position,
+        type,
+        address,
+        budget,
+        description,
+        id_user,
+        current_status,
+        estimated_time
+      )
+    VALUES
+      (
+        'issue:${opts.type}_' || EXTRACT(MINUTE FROM now())::bigint::text || (EXTRACT(SECOND FROM now()) * 1000)::bigint::text,
+        timezone('utc'::text, now()),
+        ST_GeomFromText('POINT( ${opts.position[0]} ${opts.position[1]} )', 4326),
+        '${opts.type}',
+        '${opts.address}',
+        '${opts.budget}',
+        '${opts.description}',
+        '${opts.assigned_user}',
+        'registered',
+        '${opts.estimated_time}'
+      )
+    ;
+    `;
 
     return this.promise_query(sql)
     .then(function(data) {
+      log.info(data);
 
       return Promise.resolve({"message": "ok"});
     })
 
     .catch(function(err) {
+
       return Promise.reject(err);
     });
   }
@@ -372,6 +375,37 @@ class AqMaintenanceModel extends PGSQLModel {
     });
   }
 
+
+  getAddress(position) {
+
+    var options = {
+      url: `https://nominatim.openstreetmap.org/search?q=${position[0]},${position[1]}&format=json`,
+      headers: {
+          'User-Agent': 'request'
+      }
+    };
+    let address = new Promise(function(resolve, reject) {
+        request.get(options, function(err, resp, body) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(JSON.parse(body));
+            }
+        })
+    })
+
+    return address
+    .then(function(data) {
+
+      return Promise.resolve(data);
+    })
+    .catch(function(err) {
+
+      return Promise.reject(err);
+    });
+
+
+  }
 
 }
 

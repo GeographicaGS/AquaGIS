@@ -71,13 +71,27 @@ router.post('/issues', function(req, res, next) {
     estimated_time: req.body.estimated_time
   };
 
-  new AqMaintenanceModel().createIssue(opts)
-  .then(function(data) {
-    res.json(data)
+  let aqModel = new AqMaintenanceModel()
+  aqModel.getAddress(opts.position)
+  .then(function(data){
+
+    log.info(data);
+    opts.address = data[0]['display_name'];
+    aqModel.createIssue(opts)
+    .then(function(data) {
+      res.json(data)
+    })
+    .catch(function(err) {
+      next(err);
+    });
+
   })
   .catch(function(err) {
     next(err);
   });
+
+
+
 });
 
 
@@ -152,6 +166,7 @@ router.post('/status', function(req, res, next) {
   .catch(function(err) {
     next(err);
   });
+
 });
 
 
