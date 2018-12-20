@@ -29,10 +29,10 @@
 const AqMaintenanceModel = require('./model.js');
 const express = require('express');
 const utils = require('../../utils.js');
-const _ = require('underscore');
+const aq_maintenance_utils = require('./utils.js');
 const router = express.Router();
-const auth = require('../../auth.js');
 const log = utils.log();
+
 
 router.get('/issues', function(req, res, next) {
   var opts = {
@@ -71,31 +71,22 @@ router.post('/issues', function(req, res, next) {
     estimated_time: req.body.estimated_time
   };
 
-  let aqModel = new AqMaintenanceModel()
-  aqModel.getAddress(opts.position)
-  .then(function(data){
+  var aqModel = new AqMaintenanceModel()
+  aqModel.createIssue(opts)
+  .then(function(data) {
 
-    log.info(data);
-    opts.address = data[0]['display_name'];
-    aqModel.createIssue(opts)
+    var status_opts = {
+      scope: req.scope,
+      id_issue: data[0].id,
+      type: "registered",
+      id_user: req.body.assigned_user
+    };
+
+    aqModel.createStatus(status_opts)
     .then(function(data) {
 
-      var status_opts = {
-        scope: req.scope,
-        id_issue: data[0].id,
-        type: "registered",
-        id_user: req.body.assigned_user
-      };
-
-      aqModel.createStatus(status_opts)
-      .then(function(data) {
-
-        res.json(data);
-
-      })
-      .catch(function(err) {
-        next(err);
-      });
+      let response = { "id": data[0].id_issue, "created_at": data[0].created_at }
+      res.json(response);
 
     })
     .catch(function(err) {
@@ -106,8 +97,6 @@ router.post('/issues', function(req, res, next) {
   .catch(function(err) {
     next(err);
   });
-
-
 
 });
 
@@ -252,12 +241,25 @@ router.get('/files/:id_issue', function(req, res, next) {
 
 
 router.post('/files', function(req, res, next) {
+
+  var data = req.body.file.data;
+  if (!req.body.file.name) {
+    var name = aq_maintenance_utils.randomString();
+  } else {
+    var name = (req.body.file.name).replace(/ /g,"_");
+  }
+  var imageBuffer = aq_maintenance_utils.decodeBase64Image(data);
+  var fullName = `${name}.${imageBuffer.type}`;
+  var url = `uploads/${req.body.id_issue}/${fullName}`;
+  aq_maintenance_utils.writeFile(url, imageBuffer.data);
+
   var opts = {
     scope: req.scope,
     id_issue: req.body.id_issue,
     id_user: req.body.id_user,
-    name: req.body.type,
-    file: req.body.file
+    name: fullName,
+    name_ref: name,
+    url: url
   };
 
   new AqMaintenanceModel().createFile(opts)
@@ -286,6 +288,19 @@ router.delete('/files', function(req, res, next) {
 });
 
 
+router.post('/address', function(req, res, next) {
+  var opts = {
+    position: req.body.position,
+  };
+
+  new AqMaintenanceModel().getAddress(opts.position)
+  .then(function(data) {
+    res.json(data[0]['display_name'])
+  })
+  .catch(function(err) {
+    next(err);
+  });
+});
 
 
 

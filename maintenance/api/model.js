@@ -260,6 +260,7 @@ class AqMaintenanceModel extends PGSQLModel {
         ${opts.scope}.maintenance_status
       WHERE true
         AND id_issue = '${opts.id_issue}'
+      ORDER BY created_at desc
 
       `;
 
@@ -293,13 +294,14 @@ class AqMaintenanceModel extends PGSQLModel {
           '${opts.id_issue}',
           '${opts.id_user}'
         )
+      RETURNING id_issue, created_at
       ;
       `;
 
     return this.promise_query(sql)
     .then(function(data) {
 
-      return Promise.resolve({"message": "ok"});
+      return Promise.resolve(data.rows);
     })
 
     .catch(function(err) {
@@ -362,13 +364,15 @@ class AqMaintenanceModel extends PGSQLModel {
         (
           id_entity,
           name,
+          url,
           id_issue,
           id_user
         )
       VALUES
         (
-          'file:${opts.id_issue}_${opts.id_user}',
-          '${opts.name}'
+          'file:${opts.id_issue}_${opts.id_user}' || EXTRACT(MINUTE FROM now())::bigint::text || (EXTRACT(SECOND FROM now()) * 1000)::bigint::text,
+          '${opts.name}',
+          '${opts.url}',
           '${opts.id_issue}',
           '${opts.id_user}'
         )
