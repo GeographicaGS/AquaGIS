@@ -79,7 +79,24 @@ router.post('/issues', function(req, res, next) {
     opts.address = data[0]['display_name'];
     aqModel.createIssue(opts)
     .then(function(data) {
-      res.json(data)
+
+      var status_opts = {
+        scope: req.scope,
+        id_issue: data[0].id,
+        type: "registered",
+        id_user: req.body.assigned_user
+      };
+
+      aqModel.createStatus(status_opts)
+      .then(function(data) {
+
+        res.json(data);
+
+      })
+      .catch(function(err) {
+        next(err);
+      });
+
     })
     .catch(function(err) {
       next(err);
@@ -125,13 +142,43 @@ router.delete('/issues', function(req, res, next) {
     id: req.body.id
   };
 
-  new AqMaintenanceModel().deleteIssue(opts)
+  let aqModel = new AqMaintenanceModel()
+  aqModel.deleteIssue(opts)
+  .then(function(data) {
+
+    var status_opts = {
+      scope: req.scope,
+      id_issue: data[0].id,
+    };
+
+    aqModel.deleteStatus(status_opts)
+    .then(function(data) {
+
+      res.json(data);
+
+    })
+    .catch(function(err) {
+      next(err);
+    });
+
+  })
+  .catch(function(err) {
+    next(err);
+  });
+
+});
+
+
+router.get('/issues/types', function(req, res, next) {
+
+  new AqMaintenanceModel().getIssuesTypes()
   .then(function(data) {
     res.json(data)
   })
   .catch(function(err) {
     next(err);
   });
+
 });
 
 
@@ -160,6 +207,19 @@ router.post('/status', function(req, res, next) {
   };
 
   new AqMaintenanceModel().createStatus(opts)
+  .then(function(data) {
+    res.json(data)
+  })
+  .catch(function(err) {
+    next(err);
+  });
+
+});
+
+
+router.get('/status/types', function(req, res, next) {
+
+  new AqMaintenanceModel().getStatusTypes()
   .then(function(data) {
     res.json(data)
   })

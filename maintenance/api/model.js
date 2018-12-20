@@ -69,7 +69,7 @@ class AqMaintenanceModel extends PGSQLModel {
     }
 
     if (opts.issue_number)  {
-      var id_flt = `AND id_entity = '${opts.issue_number}'`;
+      var id_flt = `AND id = '${opts.issue_number}'`;
     }
 
     let sql = `
@@ -89,9 +89,19 @@ class AqMaintenanceModel extends PGSQLModel {
       )
       SELECT
         *,
-        (SELECT array_to_json(array_agg(row_to_json(t))) FROM ( select * from madrid.maintenance_status) t) as status,
-        (SELECT array_to_json(array_agg(row_to_json(t))) FROM ( select * from madrid.maintenance_files) t) as files
+        (SELECT array_to_json(array_agg(row_to_json(t))) FROM (
+          select *
+          from madrid.maintenance_status
+          group by created_at, type, id, id_issue, id_user, id_entity, updated_at
+          order by created_at desc
+        ) t WHERE id_issue = issues.id::varchar) as status,
+        (SELECT array_to_json(array_agg(row_to_json(t))) FROM (
+          select *
+          from madrid.maintenance_files
+          group by created_at, id, id_issue, id_user, id_entity, updated_at order by created_at desc
+        ) t WHERE id_issue = issues.id::varchar) as files
       FROM issues
+      ORDER BY issues.created_at desc
 
       `;
 
@@ -157,14 +167,14 @@ class AqMaintenanceModel extends PGSQLModel {
         'registered',
         '${opts.estimated_time}'
       )
+    RETURNING id
     ;
     `;
 
     return this.promise_query(sql)
     .then(function(data) {
-      log.info(data);
 
-      return Promise.resolve({"message": "ok"});
+      return Promise.resolve(data.rows);
     })
 
     .catch(function(err) {
@@ -182,7 +192,6 @@ class AqMaintenanceModel extends PGSQLModel {
       SET
         (
           "TimeInstant",
-          position,
           type,
           address,
           budget,
@@ -193,7 +202,6 @@ class AqMaintenanceModel extends PGSQLModel {
       =
         (
           timezone('utc'::text, now()),
-          ST_GeomFromText('POINT( ${opts.position[0]} ${opts.position[1]} )', 4326),
           '${opts.type}',
           '${opts.address}',
           '${opts.budget}',
@@ -225,14 +233,16 @@ class AqMaintenanceModel extends PGSQLModel {
     let sql = `
       DELETE FROM
         ${opts.scope}.maintenance_issues
-        where id = ${opts.id}
+      WHERE id = ${opts.id}
+      RETURNING id
       ;
       `;
 
     return this.promise_query(sql)
     .then(function(data) {
 
-      return Promise.resolve({"message": "ok"});
+      log.info("data from delete", data);
+      return Promise.resolve(data.rows);
     })
 
     .catch(function(err) {
@@ -295,6 +305,28 @@ class AqMaintenanceModel extends PGSQLModel {
     .catch(function(err) {
       return Promise.reject(err);
     });
+  }
+
+
+  deleteStatus(opts) {
+
+    let sql = `
+      DELETE FROM
+        ${opts.scope}.maintenance_status
+      WHERE id_issue = ${opts.id_issue}::text
+    ;
+    `;
+
+    return this.promise_query(sql)
+    .then(function(data) {
+
+      return Promise.resolve({"message": "ok"});
+    })
+
+    .catch(function(err) {
+      return Promise.reject(err);
+    });
+
   }
 
 
@@ -406,6 +438,43 @@ class AqMaintenanceModel extends PGSQLModel {
 
 
   }
+
+
+  getStatusTypes() {
+    let sql = `
+      SELECT unnest(enum_range(NULL::status_type))
+      ;
+      `;
+
+    return this.promise_query(sql)
+    .then(function(data) {
+
+      return Promise.resolve(data.rows);
+    })
+
+    .catch(function(err) {
+      return Promise.reject(err);
+    });
+  }
+
+
+  getIssuesTypes() {
+    let sql = `
+      SELECT unnest(enum_range(NULL::order_type))
+      ;
+      `;
+
+    return this.promise_query(sql)
+    .then(function(data) {
+
+      return Promise.resolve(data.rows);
+    })
+
+    .catch(function(err) {
+      return Promise.reject(err);
+    });
+  }
+
 
 }
 
