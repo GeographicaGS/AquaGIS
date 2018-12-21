@@ -260,41 +260,45 @@ router.get('/files/:id_issue', function(req, res, next) {
 
 router.post('/files', function(req, res, next) {
 
-  req.body.files.forEach(function (file) {
+    let promises = [];
 
-    log.info(file);
+    req.body.files.forEach(function (file) {
 
-    var data = file.data;
-    if (!file.name) {
-      var name = aq_maintenance_utils.randomString();
-    } else {
-      var name = (file.name).replace(/ /g,"_");
-    }
-    var imageBuffer = aq_maintenance_utils.decodeBase64Image(data);
-    var fullName = `${name}.${imageBuffer.type}`;
-    var url = `uploads/${req.body.id_issue}/${fullName}`;
-    aq_maintenance_utils.writeFile(url, imageBuffer.data);
+      var data = file.data;
+      if (!file.name) {
+        var name = aq_maintenance_utils.randomString();
+      } else {
+        var name = (file.name).replace(/ /g,"_");
+      }
+      var imageBuffer = aq_maintenance_utils.decodeBase64Image(data);
+      var fullName = `${name}.${imageBuffer.type}`;
+      var url = `uploads/${req.body.id_issue}/${fullName}`;
+      aq_maintenance_utils.writeFile(url, imageBuffer.data);
 
-    var opts = {
-      scope: req.scope,
-      id_issue: req.body.id_issue,
-      id_user: req.body.id_user,
-      name: fullName,
-      name_ref: name,
-      url: url
-    };
+      var opts = {
+        scope: req.scope,
+        id_issue: req.body.id_issue,
+        id_user: req.body.id_user,
+        name: fullName,
+        name_ref: name,
+        url: url
+      };
 
-    new AqMaintenanceModel().createFile(opts)
+      let promise = new AqMaintenanceModel().createFile(opts);
+      promises.push(promise);
+
+    });
+
+    Promise.all(promises)
     .then(function(data) {
-      next()
+      res.json({"message": "ok"})
+
     })
     .catch(function(err) {
       next(err);
     });
 
-  });
 
-  res.json({"message": "ok"})
 });
 
 
