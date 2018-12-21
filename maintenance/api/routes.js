@@ -162,7 +162,38 @@ router.get('/issues/types', function(req, res, next) {
 
   new AqMaintenanceModel().getIssuesTypes()
   .then(function(data) {
-    res.json(data)
+    log.info(data);
+    let res_data =  [];
+    data.forEach(function (arrayItem) {
+      log.info(arrayItem);
+      for (let value in arrayItem) {
+        let val = { "id": arrayItem[value] };
+        res_data.push(val);
+      }
+    });
+    res.json(res_data);
+  })
+  .catch(function(err) {
+    next(err);
+  });
+
+});
+
+
+router.get('/status/types', function(req, res, next) {
+
+  new AqMaintenanceModel().getStatusTypes()
+  .then(function(data) {
+    log.info(data);
+    let res_data =  [];
+    data.forEach(function (arrayItem) {
+      log.info(arrayItem);
+      for (let value in arrayItem) {
+        let val = { "id": arrayItem[value] };
+        res_data.push(val);
+      }
+    });
+    res.json(res_data);
   })
   .catch(function(err) {
     next(err);
@@ -206,19 +237,6 @@ router.post('/status', function(req, res, next) {
 });
 
 
-router.get('/status/types', function(req, res, next) {
-
-  new AqMaintenanceModel().getStatusTypes()
-  .then(function(data) {
-    res.json(data)
-  })
-  .catch(function(err) {
-    next(err);
-  });
-
-});
-
-
 router.get('/files/:id_issue', function(req, res, next) {
   var opts = {
     scope: req.scope,
@@ -242,33 +260,41 @@ router.get('/files/:id_issue', function(req, res, next) {
 
 router.post('/files', function(req, res, next) {
 
-  var data = req.body.file.data;
-  if (!req.body.file.name) {
-    var name = aq_maintenance_utils.randomString();
-  } else {
-    var name = (req.body.file.name).replace(/ /g,"_");
-  }
-  var imageBuffer = aq_maintenance_utils.decodeBase64Image(data);
-  var fullName = `${name}.${imageBuffer.type}`;
-  var url = `uploads/${req.body.id_issue}/${fullName}`;
-  aq_maintenance_utils.writeFile(url, imageBuffer.data);
+  req.body.files.forEach(function (file) {
 
-  var opts = {
-    scope: req.scope,
-    id_issue: req.body.id_issue,
-    id_user: req.body.id_user,
-    name: fullName,
-    name_ref: name,
-    url: url
-  };
+    log.info(file);
 
-  new AqMaintenanceModel().createFile(opts)
-  .then(function(data) {
-    res.json(data)
-  })
-  .catch(function(err) {
-    next(err);
+    var data = file.data;
+    if (!file.name) {
+      var name = aq_maintenance_utils.randomString();
+    } else {
+      var name = (file.name).replace(/ /g,"_");
+    }
+    var imageBuffer = aq_maintenance_utils.decodeBase64Image(data);
+    var fullName = `${name}.${imageBuffer.type}`;
+    var url = `uploads/${req.body.id_issue}/${fullName}`;
+    aq_maintenance_utils.writeFile(url, imageBuffer.data);
+
+    var opts = {
+      scope: req.scope,
+      id_issue: req.body.id_issue,
+      id_user: req.body.id_user,
+      name: fullName,
+      name_ref: name,
+      url: url
+    };
+
+    new AqMaintenanceModel().createFile(opts)
+    .then(function(data) {
+      next()
+    })
+    .catch(function(err) {
+      next(err);
+    });
+
   });
+
+  res.json({"message": "ok"})
 });
 
 
