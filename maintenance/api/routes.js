@@ -32,6 +32,7 @@ const utils = require('../../utils.js');
 const aq_maintenance_utils = require('./utils.js');
 const router = express.Router();
 const log = utils.log();
+const request = require('request-promise')
 
 
 router.get('/issues', function(req, res, next) {
@@ -110,7 +111,29 @@ router.post('/issues', function(req, res, next) {
       .then(function(data) {
 
         let response = data
-        res.json(response);
+
+        // idDistribuidora and tipo hardcoded until we get more information
+        let notification_options = {
+          method: 'POST',
+          uri: 'http://iatdev.isoin.es/aquasig-web/api/notificaciones/add',
+          body: {
+            "idDistribuidora" : "59db5a4700046e282e59c477",
+            "asunto" : data.type,
+            "contenido" : data.description,
+            "tipo" : 2,
+            "fechaInicio" : Math.round(new Date().getTime() / 1000),
+            "coordenadas" : req.body.position
+          },
+          json: true
+        };
+
+        request(notification_options)
+        .then(function (parsedBody) {
+          res.json(response)
+        })
+        .catch(function (err) {
+          next(err)
+        });
 
       })
       .catch(function(err) {
@@ -352,6 +375,7 @@ router.post('/address', function(req, res, next) {
     next(err);
   });
 });
+
 
 
 
