@@ -91,13 +91,13 @@ class AqMaintenanceModel extends PGSQLModel {
         *,
         (SELECT array_to_json(array_agg(row_to_json(t))) FROM (
           select *
-          from madrid.maintenance_status
+          from ${opts.scope}.maintenance_status
           group by created_at, type, id, id_issue, id_user, id_entity, updated_at
           order by created_at desc
         ) t WHERE id_issue = issues.id::varchar) as status,
         (SELECT array_to_json(array_agg(row_to_json(t))) FROM (
           select *
-          from madrid.maintenance_files
+          from ${opts.scope}.maintenance_files
           group by created_at, id, id_issue, id_user, id_entity, updated_at order by created_at desc
         ) t WHERE id_issue = issues.id::varchar) as files
       FROM issues
