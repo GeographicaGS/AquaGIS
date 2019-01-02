@@ -56,6 +56,24 @@ router.get('/issues', function(req, res, next) {
 });
 
 
+router.get('/issues/:id_issue', function(req, res, next) {
+  var opts = {
+    scope: req.scope,
+    id: req.params.id_issue
+  };
+
+  new AqMaintenanceModel().getIssue(opts)
+  .then(function(data) {
+
+    res.json(data)
+
+  })
+  .catch(function(err) {
+    next(err);
+  });
+});
+
+
 router.post('/issues', function(req, res, next) {
   var opts = {
     scope: req.scope,
@@ -83,8 +101,21 @@ router.post('/issues', function(req, res, next) {
     aqModel.createStatus(status_opts)
     .then(function(data) {
 
-      let response = { "id": data[0].id_issue, "created_at": data[0].created_at }
-      res.json(response);
+      var issue_opts = {
+        scope: req.scope,
+        id: data[0].id_issue
+      };
+
+      aqModel.getIssue(issue_opts)
+      .then(function(data) {
+
+        let response = data
+        res.json(response);
+
+      })
+      .catch(function(err) {
+        next(err);
+      });
 
     })
     .catch(function(err) {
