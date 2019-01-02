@@ -312,7 +312,7 @@ router.post('/files', function(req, res, next) {
 
     Promise.all(promises)
     .then(function(data) {
-      res.json({"message": "ok"})
+      res.json(data)
 
     })
     .catch(function(err) {
