@@ -7,9 +7,9 @@
 -- SELECT urbo_createmetadata_aq_cons(FALSE);
 --------------------------------------------------------------------------------
 
-DROP FUNCTION IF EXISTS urbo_createmetadata_dumps(boolean);
+DROP FUNCTION IF EXISTS urbo_createmetadata_maintenance(boolean);
 
-CREATE OR REPLACE FUNCTION urbo_createmetadata_dumps(
+CREATE OR REPLACE FUNCTION urbo_createmetadata_maintenance(
     isdebug boolean DEFAULT FALSE
   )
   RETURNS void AS
@@ -29,7 +29,7 @@ CREATE OR REPLACE FUNCTION urbo_createmetadata_dumps(
 
       -- CATEGORIES
       INSERT INTO %1$s
-          (id_category,                             category_name,              nodata,           config                                                      )
+          (id_category,                          category_name,              nodata,           config                                                      )
       VALUES
           (''maintenance'',                      ''Mantenimiento'',          false,            ''{"carto": {"account": "urbo-general"}, "provider": ""}''  )
       ;
@@ -55,7 +55,7 @@ CREATE OR REPLACE FUNCTION urbo_createmetadata_dumps(
 
   EXCEPTION WHEN unique_violation THEN
 
-    RAISE WARNING 'METADATA FOR aq_maintenance CATEGORY ALREADY EXISTS';
+    RAISE WARNING 'METADATA FOR maintenance CATEGORY ALREADY EXISTS';
 
   END;
   $$ LANGUAGE plpgsql;

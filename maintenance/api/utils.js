@@ -17,14 +17,12 @@ var decodeBase64Image = function (dataString) {
   response.type = matches[1];
   response.data = new Buffer(matches[2], 'base64');
 
-  log.info(response);
   return response;
 }
 
 var writeFile = function (path, contents, cb) {
   mkdirp(getDirName(path), function (err) {
     if (err) return cb(err);
-    log.info("Image Created!")
     fs.writeFile(path, contents, cb);
   });
 }

@@ -108,8 +108,6 @@ class AqMaintenanceModel extends PGSQLModel {
     return this.promise_query(sql)
     .then(function(data) {
 
-      log.info(typeof(data.rows[1]));
-
       let features = [];
 
       for (let key in data.rows) {
@@ -213,8 +211,6 @@ class AqMaintenanceModel extends PGSQLModel {
       WHERE id = ${opts.id}
       ;
       `;
-
-    log.info(sql);
 
     return this.promise_query(sql)
     .then(function(data) {
