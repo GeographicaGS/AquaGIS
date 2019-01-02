@@ -45,8 +45,6 @@ router.get('/issues', function(req, res, next) {
     issue_number: req.query.issue_number
   };
 
-  log.info(opts);
-
   new AqMaintenanceModel().getIssuesList(opts)
   .then(function(data) {
     res.json(data)
@@ -162,10 +160,8 @@ router.get('/issues/types', function(req, res, next) {
 
   new AqMaintenanceModel().getIssuesTypes()
   .then(function(data) {
-    log.info(data);
     let res_data =  [];
     data.forEach(function (arrayItem) {
-      log.info(arrayItem);
       for (let value in arrayItem) {
         let val = { "id": arrayItem[value] };
         res_data.push(val);
@@ -184,10 +180,8 @@ router.get('/status/types', function(req, res, next) {
 
   new AqMaintenanceModel().getStatusTypes()
   .then(function(data) {
-    log.info(data);
     let res_data =  [];
     data.forEach(function (arrayItem) {
-      log.info(arrayItem);
       for (let value in arrayItem) {
         let val = { "id": arrayItem[value] };
         res_data.push(val);
@@ -242,10 +236,6 @@ router.get('/files/:id_issue', function(req, res, next) {
     scope: req.scope,
     id_issue: req.params.id_issue
   };
-
-
-  log.info(opts);
-
 
   new AqMaintenanceModel().getFilesList(opts)
   .then(function(data) {
