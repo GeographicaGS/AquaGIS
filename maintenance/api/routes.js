@@ -57,6 +57,26 @@ router.get('/issues', function(req, res, next) {
 });
 
 
+router.get('/issues/types', function(req, res, next) {
+
+  new AqMaintenanceModel().getIssuesTypes()
+  .then(function(data) {
+    let res_data =  [];
+    data.forEach(function (arrayItem) {
+      for (let value in arrayItem) {
+        let val = { "id": arrayItem[value] };
+        res_data.push(val);
+      }
+    });
+    res.json(res_data);
+  })
+  .catch(function(err) {
+    next(err);
+  });
+
+});
+
+
 router.get('/issues/:id_issue', function(req, res, next) {
   var opts = {
     scope: req.scope,
@@ -136,6 +156,7 @@ router.post('/issues', function(req, res, next) {
         });
 
       })
+
       .catch(function(err) {
         next(err);
       });
@@ -202,26 +223,6 @@ router.delete('/issues', function(req, res, next) {
       next(err);
     });
 
-  })
-  .catch(function(err) {
-    next(err);
-  });
-
-});
-
-
-router.get('/issues/types', function(req, res, next) {
-
-  new AqMaintenanceModel().getIssuesTypes()
-  .then(function(data) {
-    let res_data =  [];
-    data.forEach(function (arrayItem) {
-      for (let value in arrayItem) {
-        let val = { "id": arrayItem[value] };
-        res_data.push(val);
-      }
-    });
-    res.json(res_data);
   })
   .catch(function(err) {
     next(err);
