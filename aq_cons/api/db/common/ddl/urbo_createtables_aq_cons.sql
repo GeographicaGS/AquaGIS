@@ -449,21 +449,35 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       );
 
       ',
-      _tb_catalogue_sector, _geom_fld, _tb_lastdata_sector, _geom_fld,
-      _tb_measurand_sector,  _tb_leak_historic_sector, _tb_agg_hour_sector,
+      _tb_catalogue_sector, _geom_fld,
+      _tb_lastdata_sector, _geom_fld,
+      _tb_measurand_sector,
+      _tb_leak_historic_sector,
+      _tb_agg_hour_sector,
 
-      _tb_catalogue_plot, _geom_fld, _tb_lastdata_plot, _geom_fld,
-      _tb_measurand_plot, _tb_agg_hour_plot,
+      _tb_catalogue_plot, _geom_fld,
+      _tb_lastdata_plot, _geom_fld,
+      _tb_measurand_plot,
+      _tb_agg_hour_plot,
 
-      _tb_catalogue_const, _geom_fld, _tb_lastdata_const, _geom_fld,
-      _tb_measurand_const, _tb_agg_hour_const,
+      _tb_catalogue_const, _geom_fld,
+      _tb_lastdata_const, _geom_fld,
+      _tb_measurand_const,
+      _tb_agg_hour_const,
 
-      _tb_catalogue_tank, _geom_fld, _tb_lastdata_tank, _geom_fld,
-      _tb_measurand_tank, _tb_agg_hour_tank,
+      _tb_catalogue_tank, _geom_fld,
+      _tb_lastdata_tank, _geom_fld,
+      _tb_measurand_tank,
+      _tb_agg_hour_tank,
 
-      _tb_aux_const_futu, _tb_aux_leakage, _tb_aux_leak_rules, _tb_aux_energy_prices,
+      _tb_aux_const_futu,
+      _tb_aux_leakage,
+      _tb_aux_leak_rules,
+      _tb_aux_energy_prices,
 
-      _tb_plan_tank_no_opt, _tb_plan_tank_opt, _tb_plan_tank_emergency
+      _tb_plan_tank_no_opt,
+      _tb_plan_tank_opt,
+      _tb_plan_tank_emergency
     );
 
     _time_idx := urbo_time_idx_qry(_tb_arr_agg);
