@@ -1,0 +1,99 @@
+baseURL: http://urbo-aquagis-backend.geographica.gs/connector/aljarafe/aquagis_cb
+
+logging:
+  level: WARN
+  output: dailyRotatingFile
+  file:
+    dir: /logs
+    name: aljarafe-aquagis-connector-cb
+    maxSize: 20
+    oldFiles: 5
+    separateError: true
+  access:
+    level: ERROR
+    format: false
+    nolog:
+      - ^/subscriptions/transport_vehicle
+
+# PostgreSQL configuration parameters
+pgsql:
+  host: 172.17.0.1
+  user: urbo_admin
+  password: termopausa2099
+  database: urbo
+  port: 5432
+
+# CartoDB configuration parameters
+cartodb:
+  apiKey: xxx
+  user: urbo-default
+  active: true
+  enterprise: true
+
+processing:
+  active: true
+  url: http://172.17.0.1:3001/job
+  requestAttempts: 5
+  psqlJob: connectorPsql
+  cartoJob: connectorCarto
+  jobAttempts: 3
+  priority: critical
+
+contextBrokerUrls:
+  urlCtxBrBase: http://iatdev.isoin.es/aquasig-orion
+
+recreateSubscriptions: none
+manageRepeatedAttributes: true
+
+subservices:
+  - id: aljarafe_aquagis_cb
+    service: aquasig
+    subservice: /quality
+    auth:
+      user: not_in_use
+      password: not_in_use
+
+subscriptions:
+  # Sensor lastdata
+  - id: aq_cons_sensor_lastdata
+    subservice_id: aljarafe_aquagis_cb
+    schemaname: aljarafe
+    subsduration: P8M
+    substhrottling: PT0S
+    recreateSubscription: false
+    fetchDataOnCreated: true
+    entityTypes:
+      - typeName: WaterStats
+    mode: update
+    attributes:
+      - name: dispositivo
+        namedb: id_entity
+        type: string
+        indexdb: true
+      - name: TimeInstant
+        namedb: TimeInstant
+        type: ISO8601
+        indexdb: true
+      - name: conductividad_electrica
+        namedb: electric_conductivity
+        type: float
+      - name: oxigeno_disuelto
+        namedb: dissolved_oxygen
+        type: float
+      - name: dispositivo
+        namedb: name
+        type: string
+      - name: ph
+        namedb: ph
+        type: float
+      - name: temperatura
+        namedb: temperature
+        type: float
+
+    trigger_attributes:
+      - TimeInstant
+      - dispositivo
+      - ph
+      - oxigeno_disuelto
+      - conductividad_electrica
+      - temperatura
