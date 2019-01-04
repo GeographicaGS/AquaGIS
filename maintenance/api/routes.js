@@ -124,10 +124,10 @@ router.post('/issues', function(req, res, next) {
 
       var issue_opts = {
         scope: req.scope,
-        id: data[0].id_issue
+        issue_number: data[0].id_issue
       };
 
-      aqModel.getIssue(issue_opts)
+      aqModel.getIssuesList(issue_opts)
       .then(function(data) {
 
         let response = data
