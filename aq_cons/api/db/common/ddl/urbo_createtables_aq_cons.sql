@@ -18,6 +18,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
   RETURNS void AS
   $$
   DECLARE
+
     _tb_catalogue_sector text;
     _tb_lastdata_sector text;
     _tb_measurand_sector text;
@@ -42,6 +43,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_plan_tank_no_opt text;
     _tb_plan_tank_opt text;
     _tb_plan_tank_emergency text;
+    _tb_lastdata_sensor text;
     _tb_arr_ld text[];
     _tb_arr_bsc text[];
     _tb_arr_vars text[];
@@ -92,9 +94,11 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_plan_tank_opt = urbo_get_table_name(id_scope, 'aq_plan_tank_pump_opt', iscarto);
     _tb_plan_tank_emergency = urbo_get_table_name(id_scope, 'aq_plan_tank_pump_emergency', iscarto);
 
+    _tb_lastdata_sensor := urbo_get_table_name(id_scope, 'aq_cons_sensor', iscarto, TRUE);
+
 
     _tb_arr_ld := ARRAY[
-        _tb_lastdata_sector, _tb_lastdata_plot, _tb_lastdata_const
+        _tb_lastdata_sector, _tb_lastdata_plot, _tb_lastdata_const, _tb_lastdata_sensor
       ];
 
     _tb_arr_bsc := array_cat(_tb_arr_ld,
@@ -448,7 +452,26 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
 
+
+      ------------
+      -- SENSOR --
+      ------------
+
+      -- LASTDATA
+      CREATE TABLE IF NOT EXISTS %s (
+        id_entity character varying(64) NOT NULL,
+        "TimeInstant" timestamp without time zone,
+        %I geometry(MultiPolygon, 4326),
+        name text,
+        electric_conductivity double precision,
+        dissolved_oxygen double precision,
+        ph double precision,
+        temperature double precision,
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+      );
       ',
+
       _tb_catalogue_sector, _geom_fld,
       _tb_lastdata_sector, _geom_fld,
       _tb_measurand_sector,
@@ -477,7 +500,10 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
 
       _tb_plan_tank_no_opt,
       _tb_plan_tank_opt,
-      _tb_plan_tank_emergency
+      _tb_plan_tank_emergency,
+
+      _tb_lastdata_sensor, _geom_fld
+
     );
 
     _time_idx := urbo_time_idx_qry(_tb_arr_agg);
@@ -503,7 +529,8 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       replace(_tb_lastdata_plot, '.', '_'), _tb_lastdata_plot,
       replace(_tb_measurand_plot, '.', '_'), _tb_measurand_plot,
       replace(_tb_catalogue_const, '.', '_'), _tb_catalogue_const,
-      replace(_tb_lastdata_const, '.', '_'), _tb_lastdata_const
+      replace(_tb_lastdata_const, '.', '_'), _tb_lastdata_const,
+      replace(_tb_lastdata_sensor, '.', '_'), _tb_lastdata_sensor
     );
 
     -- TODO: for
