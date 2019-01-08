@@ -40,9 +40,10 @@ processing:
   priority: critical
 
 contextBrokerUrls:
+  portCtxApi: 80
   urlCtxBrBase: http://iatdev.isoin.es/aquasig-orion
 
-recreateSubscriptions: none
+recreateSubscriptions: global
 manageRepeatedAttributes: true
 
 subservices:
@@ -60,16 +61,12 @@ subscriptions:
     schemaname: aljarafe
     subsduration: P8M
     substhrottling: PT0S
-    recreateSubscription: false
+    recreateSubscription: true
     fetchDataOnCreated: true
     entityTypes:
       - typeName: WaterStats
     mode: update
     attributes:
-      - name: dispositivo
-        namedb: id_entity
-        type: string
-        indexdb: true
       - name: TimeInstant
         namedb: TimeInstant
         type: ISO8601
@@ -92,8 +89,8 @@ subscriptions:
 
     trigger_attributes:
       - TimeInstant
-      - dispositivo
-      - ph
-      - oxigeno_disuelto
       - conductividad_electrica
+      - dispositivo
+      - oxigeno_disuelto
+      - ph
       - temperatura
