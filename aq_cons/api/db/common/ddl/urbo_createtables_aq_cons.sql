@@ -85,14 +85,14 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_measurand_tank := urbo_get_table_name(id_scope, 'aq_cons_tank_measurand', iscarto);
     _tb_agg_hour_tank := urbo_get_table_name(id_scope, 'aq_cons_tank_agg_hour', iscarto);
 
-    _tb_aux_const_futu = urbo_get_table_name(id_scope, 'aq_aux_const_futu', iscarto);
-    _tb_aux_leakage = urbo_get_table_name(id_scope, 'aq_aux_leak', iscarto);
-    _tb_aux_leak_rules = urbo_get_table_name(id_scope, 'aq_aux_leak_rules', iscarto);
-    _tb_aux_energy_prices = urbo_get_table_name(id_scope, 'aq_aux_energy_prices', iscarto);
+    _tb_aux_const_futu := urbo_get_table_name(id_scope, 'aq_aux_const_futu', iscarto);
+    _tb_aux_leakage := urbo_get_table_name(id_scope, 'aq_aux_leak', iscarto);
+    _tb_aux_leak_rules := urbo_get_table_name(id_scope, 'aq_aux_leak_rules', iscarto);
+    _tb_aux_energy_prices := urbo_get_table_name(id_scope, 'aq_aux_energy_prices', iscarto);
 
-    _tb_plan_tank_no_opt = urbo_get_table_name(id_scope, 'aq_plan_tank_pump_no_opt', iscarto);
-    _tb_plan_tank_opt = urbo_get_table_name(id_scope, 'aq_plan_tank_pump_opt', iscarto);
-    _tb_plan_tank_emergency = urbo_get_table_name(id_scope, 'aq_plan_tank_pump_emergency', iscarto);
+    _tb_plan_tank_no_opt := urbo_get_table_name(id_scope, 'aq_plan_tank_pump_no_opt', iscarto);
+    _tb_plan_tank_opt := urbo_get_table_name(id_scope, 'aq_plan_tank_pump_opt', iscarto);
+    _tb_plan_tank_emergency := urbo_get_table_name(id_scope, 'aq_plan_tank_pump_emergency', iscarto);
 
     _tb_lastdata_sensor := urbo_get_table_name(id_scope, 'aq_cons_sensor', iscarto, TRUE);
 
@@ -459,14 +459,14 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
 
       -- LASTDATA
       CREATE TABLE IF NOT EXISTS %s (
-        id_entity character varying(64) NOT NULL,
-        "TimeInstant" timestamp without time zone,
         %I geometry(MultiPolygon, 4326),
+        "TimeInstant" timestamp without time zone,
         name text,
         electric_conductivity double precision,
         dissolved_oxygen double precision,
         ph double precision,
         temperature double precision,
+        id_entity character varying(64) NOT NULL,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
