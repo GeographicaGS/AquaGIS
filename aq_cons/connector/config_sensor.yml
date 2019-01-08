@@ -67,6 +67,9 @@ subscriptions:
       - typeName: WaterStats
     mode: update
     attributes:
+      - name: location
+        namedb: position
+        type: geojson
       - name: TimeInstant
         namedb: TimeInstant
         type: ISO8601
