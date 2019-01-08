@@ -18,6 +18,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
   RETURNS void AS
   $$
   DECLARE
+
     _tb_catalogue_sector text;
     _tb_lastdata_sector text;
     _tb_measurand_sector text;
@@ -42,6 +43,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_plan_tank_no_opt text;
     _tb_plan_tank_opt text;
     _tb_plan_tank_emergency text;
+    _tb_lastdata_sensor text;
     _tb_arr_ld text[];
     _tb_arr_bsc text[];
     _tb_arr_vars text[];
@@ -83,18 +85,20 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
     _tb_measurand_tank := urbo_get_table_name(id_scope, 'aq_cons_tank_measurand', iscarto);
     _tb_agg_hour_tank := urbo_get_table_name(id_scope, 'aq_cons_tank_agg_hour', iscarto);
 
-    _tb_aux_const_futu = urbo_get_table_name(id_scope, 'aq_aux_const_futu', iscarto);
-    _tb_aux_leakage = urbo_get_table_name(id_scope, 'aq_aux_leak', iscarto);
-    _tb_aux_leak_rules = urbo_get_table_name(id_scope, 'aq_aux_leak_rules', iscarto);
-    _tb_aux_energy_prices = urbo_get_table_name(id_scope, 'aq_aux_energy_prices', iscarto);
+    _tb_aux_const_futu := urbo_get_table_name(id_scope, 'aq_aux_const_futu', iscarto);
+    _tb_aux_leakage := urbo_get_table_name(id_scope, 'aq_aux_leak', iscarto);
+    _tb_aux_leak_rules := urbo_get_table_name(id_scope, 'aq_aux_leak_rules', iscarto);
+    _tb_aux_energy_prices := urbo_get_table_name(id_scope, 'aq_aux_energy_prices', iscarto);
 
-    _tb_plan_tank_no_opt = urbo_get_table_name(id_scope, 'aq_plan_tank_pump_no_opt', iscarto);
-    _tb_plan_tank_opt = urbo_get_table_name(id_scope, 'aq_plan_tank_pump_opt', iscarto);
-    _tb_plan_tank_emergency = urbo_get_table_name(id_scope, 'aq_plan_tank_pump_emergency', iscarto);
+    _tb_plan_tank_no_opt := urbo_get_table_name(id_scope, 'aq_plan_tank_pump_no_opt', iscarto);
+    _tb_plan_tank_opt := urbo_get_table_name(id_scope, 'aq_plan_tank_pump_opt', iscarto);
+    _tb_plan_tank_emergency := urbo_get_table_name(id_scope, 'aq_plan_tank_pump_emergency', iscarto);
+
+    _tb_lastdata_sensor := urbo_get_table_name(id_scope, 'aq_cons_sensor', iscarto, TRUE);
 
 
     _tb_arr_ld := ARRAY[
-        _tb_lastdata_sector, _tb_lastdata_plot, _tb_lastdata_const
+        _tb_lastdata_sector, _tb_lastdata_plot, _tb_lastdata_const, _tb_lastdata_sensor
       ];
 
     _tb_arr_bsc := array_cat(_tb_arr_ld,
@@ -448,22 +452,58 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
       );
 
+
+      ------------
+      -- SENSOR --
+      ------------
+
+      -- LASTDATA
+      CREATE TABLE IF NOT EXISTS %s (
+        %I geometry(MultiPolygon, 4326),
+        "TimeInstant" timestamp without time zone,
+        name text,
+        electric_conductivity double precision,
+        dissolved_oxygen double precision,
+        ph double precision,
+        temperature double precision,
+        id_entity character varying(64) NOT NULL,
+        created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
+        updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
+      );
       ',
-      _tb_catalogue_sector, _geom_fld, _tb_lastdata_sector, _geom_fld,
-      _tb_measurand_sector,  _tb_leak_historic_sector, _tb_agg_hour_sector,
 
-      _tb_catalogue_plot, _geom_fld, _tb_lastdata_plot, _geom_fld,
-      _tb_measurand_plot, _tb_agg_hour_plot,
+      _tb_catalogue_sector, _geom_fld,
+      _tb_lastdata_sector, _geom_fld,
+      _tb_measurand_sector,
+      _tb_leak_historic_sector,
+      _tb_agg_hour_sector,
 
-      _tb_catalogue_const, _geom_fld, _tb_lastdata_const, _geom_fld,
-      _tb_measurand_const, _tb_agg_hour_const,
+      _tb_catalogue_plot, _geom_fld,
+      _tb_lastdata_plot, _geom_fld,
+      _tb_measurand_plot,
+      _tb_agg_hour_plot,
 
-      _tb_catalogue_tank, _geom_fld, _tb_lastdata_tank, _geom_fld,
-      _tb_measurand_tank, _tb_agg_hour_tank,
+      _tb_catalogue_const, _geom_fld,
+      _tb_lastdata_const, _geom_fld,
+      _tb_measurand_const,
+      _tb_agg_hour_const,
 
-      _tb_aux_const_futu, _tb_aux_leakage, _tb_aux_leak_rules, _tb_aux_energy_prices,
+      _tb_catalogue_tank, _geom_fld,
+      _tb_lastdata_tank, _geom_fld,
+      _tb_measurand_tank,
+      _tb_agg_hour_tank,
 
-      _tb_plan_tank_no_opt, _tb_plan_tank_opt, _tb_plan_tank_emergency
+      _tb_aux_const_futu,
+      _tb_aux_leakage,
+      _tb_aux_leak_rules,
+      _tb_aux_energy_prices,
+
+      _tb_plan_tank_no_opt,
+      _tb_plan_tank_opt,
+      _tb_plan_tank_emergency,
+
+      _tb_lastdata_sensor, _geom_fld
+
     );
 
     _time_idx := urbo_time_idx_qry(_tb_arr_agg);
@@ -489,7 +529,8 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
       replace(_tb_lastdata_plot, '.', '_'), _tb_lastdata_plot,
       replace(_tb_measurand_plot, '.', '_'), _tb_measurand_plot,
       replace(_tb_catalogue_const, '.', '_'), _tb_catalogue_const,
-      replace(_tb_lastdata_const, '.', '_'), _tb_lastdata_const
+      replace(_tb_lastdata_const, '.', '_'), _tb_lastdata_const,
+      replace(_tb_lastdata_sensor, '.', '_'), _tb_lastdata_sensor
     );
 
     -- TODO: for
