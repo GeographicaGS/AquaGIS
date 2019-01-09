@@ -32,6 +32,7 @@ const utils = require('../../utils.js');
 const aq_maintenance_utils = require('./utils.js');
 const router = express.Router();
 const log = utils.log();
+const request = require('request-promise')
 
 
 router.get('/issues', function(req, res, next) {
@@ -47,6 +48,44 @@ router.get('/issues', function(req, res, next) {
 
   new AqMaintenanceModel().getIssuesList(opts)
   .then(function(data) {
+    res.json(data)
+
+  })
+  .catch(function(err) {
+    next(err);
+  });
+});
+
+
+router.get('/issues/types', function(req, res, next) {
+
+  new AqMaintenanceModel().getIssuesTypes()
+  .then(function(data) {
+    let res_data =  [];
+    data.forEach(function (arrayItem) {
+      for (let value in arrayItem) {
+        let val = { "id": arrayItem[value] };
+        res_data.push(val);
+      }
+    });
+    res.json(res_data);
+  })
+  .catch(function(err) {
+    next(err);
+  });
+
+});
+
+
+router.get('/issues/:id_issue', function(req, res, next) {
+  var opts = {
+    scope: req.scope,
+    id: req.params.id_issue
+  };
+
+  new AqMaintenanceModel().getIssue(opts)
+  .then(function(data) {
+
     res.json(data)
 
   })
@@ -83,8 +122,44 @@ router.post('/issues', function(req, res, next) {
     aqModel.createStatus(status_opts)
     .then(function(data) {
 
-      let response = { "id": data[0].id_issue, "created_at": data[0].created_at }
-      res.json(response);
+      var issue_opts = {
+        scope: req.scope,
+        issue_number: data[0].id_issue
+      };
+
+      aqModel.getIssuesList(issue_opts)
+      .then(function(data) {
+
+        let response = data
+
+        // idDistribuidora and tipo hardcoded until we get more information
+        let notification_options = {
+          method: 'POST',
+          uri: 'http://iatdev.isoin.es/aquasig-web/api/notificaciones/add',
+          body: {
+            "idDistribuidora" : "59db5a4700046e282e59c477",
+            "asunto" : data.type,
+            "contenido" : data.description,
+            "tipo" : 2,
+            "fechaInicio" : Math.round(new Date().getTime() / 1000),
+            "coordenadas" : req.body.position
+          },
+          json: true
+        };
+
+        request(notification_options)
+        .then(function (parsedBody) {
+          res.json(response)
+        })
+        .catch(function (err) {
+          next(err)
+        });
+
+      })
+
+      .catch(function(err) {
+        next(err);
+      });
 
     })
     .catch(function(err) {
@@ -148,26 +223,6 @@ router.delete('/issues', function(req, res, next) {
       next(err);
     });
 
-  })
-  .catch(function(err) {
-    next(err);
-  });
-
-});
-
-
-router.get('/issues/types', function(req, res, next) {
-
-  new AqMaintenanceModel().getIssuesTypes()
-  .then(function(data) {
-    let res_data =  [];
-    data.forEach(function (arrayItem) {
-      for (let value in arrayItem) {
-        let val = { "id": arrayItem[value] };
-        res_data.push(val);
-      }
-    });
-    res.json(res_data);
   })
   .catch(function(err) {
     next(err);
@@ -281,7 +336,7 @@ router.post('/files', function(req, res, next) {
 
     Promise.all(promises)
     .then(function(data) {
-      res.json({"message": "ok"})
+      res.json(data)
 
     })
     .catch(function(err) {
@@ -321,6 +376,7 @@ router.post('/address', function(req, res, next) {
     next(err);
   });
 });
+
 
 
 

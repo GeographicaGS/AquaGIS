@@ -134,6 +134,29 @@ class AqMaintenanceModel extends PGSQLModel {
     });
   }
 
+  getIssue(opts) {
+
+    let sql = `
+      SELECT
+        *
+      FROM
+        ${opts.scope}.maintenance_issues
+      WHERE
+        id = ${opts.id}
+    `;
+
+    return this.promise_query(sql)
+    .then(function(data) {
+
+      return Promise.resolve(data.rows[0]);
+
+    })
+
+    .catch(function(err) {
+      return Promise.reject(err);
+    });
+  }
+
 
   createIssue(opts) {
 
@@ -372,13 +395,14 @@ class AqMaintenanceModel extends PGSQLModel {
           '${opts.id_issue}',
           '${opts.id_user}'
         )
+      RETURNING *
       ;
       `;
 
     return this.promise_query(sql)
     .then(function(data) {
 
-      return Promise.resolve({"message": "ok"});
+      return Promise.resolve(data.rows[0]);
     })
 
     .catch(function(err) {
