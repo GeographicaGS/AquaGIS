@@ -77,7 +77,8 @@ CREATE OR REPLACE FUNCTION urbo_createtables_maintenance(
       'registered',
       'in_progress',
       'incident',
-      'leak'
+      'leak',
+      'closed'
     );
 
     _create_tbs = format('
