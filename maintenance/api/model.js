@@ -246,6 +246,33 @@ class AqMaintenanceModel extends PGSQLModel {
     });
   }
 
+  updateIssueCurrentStatus(opts) {
+    let sql = `
+      UPDATE
+        ${opts.scope}.maintenance_issues
+      SET
+        (
+          current_status
+        )
+      =
+        (
+          '${opts.current_status}'
+        )
+
+      WHERE id = ${opts.id}
+      ;
+      `;
+
+    return this.promise_query(sql)
+    .then(function(data) {
+
+      return Promise.resolve({"message": "ok"});
+    })
+
+    .catch(function(err) {
+      return Promise.reject(err);
+    });
+  }
 
   deleteIssue(opts) {
 

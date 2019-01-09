@@ -277,7 +277,23 @@ router.post('/status', function(req, res, next) {
 
   new AqMaintenanceModel().createStatus(opts)
   .then(function(data) {
-    res.json(data)
+
+    res.json(data);
+
+    var issue_opts = {
+      scope: req.scope,
+      id: data[0].id_issue,
+      current_status: req.body.type
+    };
+
+    new AqMaintenanceModel().updateIssueCurrentStatus(issue_opts)
+    .then(function (issue_data) {
+      res.json(data);
+    })
+    .catch(function (err) {
+      next(err);
+    });
+
   })
   .catch(function(err) {
     next(err);
