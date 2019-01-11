@@ -275,3 +275,66 @@
     }
   }
 }
+
+/* CSS PRINT */
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print and (color) {
+  * {
+     -webkit-print-color-adjust: exact;
+     color-adjust: exact;
+  }
+}
+
+@media print {
+
+  html, body {
+    width: 210mm;
+    height: 297mm;
+  }
+
+  header,
+  nav,
+  .footer {
+    display: none !important;
+  }
+
+  body {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-content: flex-start;
+    main {
+      -ms-flex-preferred-size: 100% !important;
+      flex-basis: 100% !important;
+      max-height: 100% !important;
+      #dateSelector {
+        display: none;
+      }
+      #dashboard {
+        zoom: 0.68;  //Only for chrome
+        -ms-zoom: 0.68;
+        -webkit-zoom: 0.68;
+        -moz-transform: scale(0.68,0.68); // Only Firefox
+        -moz-transform-origin: left center;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        .goToVertical {
+          display: none;
+        }
+        .widgets {
+          float:none !important;
+          max-width: 100% !important;
+          margin: 33px 0 0;
+          .widget {
+            max-width: 100% !important;
+          }
+        }  
+      }
+    }
+  }
+}
