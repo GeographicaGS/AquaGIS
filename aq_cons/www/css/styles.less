@@ -2,22 +2,35 @@
 
 *[data-vertical='aq_cons'] {
 
+  #printButton {
+    position: fixed;
+    right:20px;
+    bottom: 60px;
+    background-image: url('/verticals/aquasig-theme/img/icons/negative/SC_ic_print_white.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 40px;
+    height: 40px;
+    min-width: auto;
+    border-radius: 50%;
+  }
+
   #map.collapsed {
     display: none;
   }
-  
+
   #map.expanded {
     .basemapselector, .tags {
       top: calc(~'100% - 28px') !important;
     }
   }
-  
+
   #widgetTotalConsumeWeeklyAverage {
     .text_axis[text-anchor='end'] {
       display: none;
     }
   }
-  
+
   a.co_fullscreen_toggle {
     top: calc(~'25%');
     transform: translateY(0);
@@ -25,14 +38,14 @@
     width: 33px;
     right: 16px;
   }
-  
+
   a.co_fullscreen_toggle.restore {
     background-image: url(/img/SC_ico_herram_reducir.svg);
     transform: translateY(0);
     top: calc(~'50%');
-    
+
   }
-  
+
   .close-details {
     position: absolute;
     top: 16px;
@@ -48,7 +61,7 @@
     background-size: 20px;
     background-repeat: no-repeat;
   }
-  
+
   .container {
     .details-title {
       display: flex;
@@ -58,10 +71,10 @@
       position: absolute;
       top: 0;
       color: #165288;
-      font-size: 24px;	
+      font-size: 24px;
       font-weight: 300;
       line-height: 31px;
-  
+
       a {
         display: block;
         margin-right: 20px;
@@ -74,20 +87,20 @@
       }
     }
   }
-  
+
   .widget {
-    
-  
+
+
     .table.transparent {
       margin-top: 40px;
-  
+
       table th {
           color: #98B2C9;
           height: auto;
           padding-top: 0;
           text-transform: none;
         }
-        
+
       table td {
         vertical-align: middle;
         height: 42px;
@@ -120,8 +133,8 @@
       }
     }
   }
-  
-  
+
+
   #map {
     // position: initial;
     position: relative;
@@ -167,15 +180,15 @@
             background-color: #165288;
           }
           &.anomaly:before {
-            background-color: #F8CA1C;        
+            background-color: #F8CA1C;
           }
           &.leak:before {
-            background-color: #F4455A;        
+            background-color: #F4455A;
           }
         }
       }
     }
-    
+
     .basemapselector {
       position: absolute !important;
       background-color: #fff;
@@ -205,7 +218,7 @@
         appearance: none;
       }
     }
-  
+
   }
   #variableselector {
     position: absolute;
@@ -229,7 +242,7 @@
       color: #55555D;
     }
   }
-  
+
   .chart.d3 .lineGroup {
     circle {
       mix-blend-mode: screen;
@@ -298,7 +311,8 @@
 
   header,
   nav,
-  .footer {
+  .footer,
+  #printButton {
     display: none !important;
   }
 
@@ -333,7 +347,7 @@
           .widget {
             max-width: 100% !important;
           }
-        }  
+        }
       }
     }
   }

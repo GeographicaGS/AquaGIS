@@ -30,6 +30,7 @@ App.View.Panels.Aq_cons.Master = App.View.Panels.Base.extend({
       timeMode:'now',
       titleLink: __('Previsión')
     });
+
     this._widgets.push(new App.View.Widgets.Aq_cons.AlertsWidget({
       id_scope: this.scopeModel.get('id'),
       onclick: function(d) {
@@ -42,28 +43,48 @@ App.View.Panels.Aq_cons.Master = App.View.Panels.Base.extend({
     this._widgets.push(new App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages({
       id_scope: this.scopeModel.get('id'),
       timeMode:'historic',
-      link : '/' + this.scopeModel.get('id') + '/' + this.id_category + '/dashboard/consume',      
-      titleLink: __('Previsión')      
+      link : '/' + this.scopeModel.get('id') + '/' + this.id_category + '/dashboard/consume',
+      titleLink: __('Previsión')
     }));
 
     this._widgets.push(new App.View.Widgets.Aq_cons.TotalConsumeLastWeek({
       id_scope: this.scopeModel.get('id'),
       timeMode:'historic',
-      link : '/' + this.scopeModel.get('id') + '/' + this.id_category + '/dashboard/historic',      
-      titleLink: __('Histórico')            
+      link : '/' + this.scopeModel.get('id') + '/' + this.id_category + '/dashboard/historic',
+      titleLink: __('Histórico')
     }));
 
     this._widgets.push(new App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse({
       id_scope: this.scopeModel.get('id'),
       timeMode:'historic',
-      link : '/' + this.scopeModel.get('id') + '/' + this.id_category + '/dashboard/consume',      
-      titleLink: __('Previsión')      
+      link : '/' + this.scopeModel.get('id') + '/' + this.id_category + '/dashboard/consume',
+      titleLink: __('Previsión')
     }));
 
     this.subviews.push(new App.View.Widgets.Container({
       widgets: this._widgets,
       el: this.$(".widgets")
     }));
+
     this.$('#dateSelector').addClass('disabled');
+
+    // Button Print
+    this.$('#dashboard').append(this.printButton())
+  },
+
+  /**
+   * Add Print button in  web
+   * @returns {Object} button object.
+   */
+  printButton: function () {
+    return $('<div/>')
+      .attr({
+        id: 'printButton',
+        class: 'button',
+        title: __('Imprimir')
+      })
+      .on('click', function () {
+        window.print();
+      })
   }
 });
