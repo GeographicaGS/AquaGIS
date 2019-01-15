@@ -40,7 +40,7 @@ CREATE OR REPLACE FUNCTION urbo_createmetadata_aq_cons(
           (''aq_cons.plot'',                ''Parcela'',                 ''aq_cons'',        ''aq_cons_plot'',                FALSE,            FALSE   ),
           (''aq_cons.const'',               ''Construcción'',            ''aq_cons'',        ''aq_cons_const'',               FALSE,            FALSE   ),
           (''aq_cons.tank'',                ''Depósito'',                ''aq_cons'',        ''aq_cons_tank'',                FALSE,            FALSE   ),
-          (''aq_cons.sensor'',              ''Sensor'',                  ''aq_cons'',        ''aq_cons_sensor'',              FALSE,            FALSE   );
+          (''aq_cons.sensor'',              ''Sensor'',                  ''aq_cons'',        ''aq_cons_sensor_lastdata'',              FALSE,            FALSE   );
 
 
       -- STATIC ENTITIES
