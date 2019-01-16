@@ -61,6 +61,13 @@ App.View.Panels.Aq_cons.Master = App.View.Panels.Base.extend({
       titleLink: __('Previsión')
     }));
 
+    this._widgets.push(new App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages({
+      id_scope: this.scopeModel.get('id'),
+      timeMode:'historic',
+      link : '/' + this.scopeModel.get('id') + '/' + this.id_category + '/dashboard/consume',
+      titleLink: __('Previsión')
+    }));
+
     this.subviews.push(new App.View.Widgets.Container({
       widgets: this._widgets,
       el: this.$(".widgets")

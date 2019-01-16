@@ -33,17 +33,18 @@ deps.JS = [
   srcJS + 'View/Widgets/CurrentLeakStatusWidget.js',
   srcJS + 'View/Widgets/CurrentLeakStatusWidgetAllSectors.js',
   srcJS + 'View/Widgets/EnergySavingInfo.js',
-  srcJS + 'View/Widgets/FlowEvolution.js',  
-  srcJS + 'View/Widgets/FlowLastHours.js',  
-  srcJS + 'View/Widgets/PressureFlowLeakEvolution.js',  
-  srcJS + 'View/Widgets/PressureEvolution.js',  
-  srcJS + 'View/Widgets/PressureLastHours.js',  
+  srcJS + 'View/Widgets/FlowEvolution.js',
+  srcJS + 'View/Widgets/FlowLastHours.js',
+  srcJS + 'View/Widgets/PressureFlowLeakEvolution.js',
+  srcJS + 'View/Widgets/PressureEvolution.js',
+  srcJS + 'View/Widgets/PressureLastHours.js',
   srcJS + 'View/Widgets/FlowSectorRanking.js',
   srcJS + 'View/Widgets/PressureSectorRanking.js',
   srcJS + 'View/Widgets/TankSize.js',
   srcJS + 'View/Widgets/WidgetTotalConsumeLastWeek.js',
   srcJS + 'View/Widgets/WidgetTotalConsumeWeeklyAverages.js',
   srcJS + 'View/Widgets/EnergyConsumptionForecast.js',
+  srcJS + 'View/Widgets/WidgetDissolvedOxygen.js',
 ];
 
 deps.lessFile = [ src + 'css/styles.less' ];
