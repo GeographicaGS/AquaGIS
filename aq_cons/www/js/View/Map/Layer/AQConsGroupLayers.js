@@ -557,7 +557,6 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'id': 'sensors_circle',
         'type': 'circle',
         'source': 'sensors_datasource',
-        'maxzoom': 16,
         'paint': {
           'circle-radius': 4,
           'circle-stroke-width': 1,
@@ -578,45 +577,31 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       map: map
     })
     .setHoverable(true)
-    .setInteractivity(__('Sensor'), function(e, popup, _this) {
-      debugger
-      let prop = [];
-      new App.Model.Aq_cons.SensorModel({
-        scope: options.scope,
-        entity: e.features[0].properties['id_sector']
-      }).fetch({success: function(response) {
-        let sensors = response.toJSON();
-        e.features[0].properties['aq_cons.sector.flow'] = _.find(sensors.lastdata, function(ld) {
-          return ld['var_id'] === 'aq_cons.sector.flow';
-        })['var_value'];
-        e.features[0].properties['aq_cons.sector.pressure'] = _.find(sensors.lastdata, function(ld) {
-          return ld['var_id'] === 'aq_cons.sector.pressure';
-        })['var_value'];
-        e.features[0].properties['aq_cons.sector.name'] = _.find(sensors.lastdata, function(ld) {
-          return ld['var_id'] === 'aq_cons.sector.name';
-        })['var_value'];
-
-        prop.push({
-          feature: 'aq_cons.sector.name',
-          label: 'Sector',
-          units: '',
-        });
-        prop.push({
-          feature: 'aq_cons.sector.flow',
-          label: 'Caudal actual',
-          units: 'm³/h',
-          nbf: App.nbf
-        });
-        prop.push({
-          feature: 'aq_cons.sector.pressure',
-          label: 'Presión actual',
-          units: 'kgf/cm²',
-          nbf: App.nbf
-        });
-        let html = _this.bindData(__('Sensor'),prop,e);
-        popup.setHTML(html);
-      }});
-    });
+    .setInteractivity(__('Sensor'),[{
+      feature: 'name',
+      label: 'Nombre',
+      units: ''
+    }, {
+      feature: 'dissolved_oxygen',
+      label: __('Oxígeno disuelto'),
+      units: 'mg/L³',
+      nbf: App.nbf
+    }, {
+      feature: 'electricConductivity',
+      label: __('Conductividad eléctrica'),
+      units: 'μS/cm',
+      nbf: App.nbf
+    }, {
+      feature: 'ph',
+      label: 'PH',
+      units: '',
+      nbf: App.nbf
+    }, {
+      feature: 'temperature',
+      label: __('Temperatura'),
+      units: '℃',
+      nbf: App.nbf
+    }]);
 
     this._tankLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
       source: {

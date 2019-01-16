@@ -26,51 +26,95 @@
 
 'use strict';
 
-App.View.Widgets.Aq_cons.DissolvedOxygen = App.View.Widgets.Base.extend({
+App.View.Widgets.Aq_cons.RankingSensor = App.View.Widgets.Base.extend({
 
   initialize: function(options) {
-    options = _.defaults(options,{
-      title:__('Oxígeno disuelto'),
-      timeMode: 'now',
-      entity: 'aq_cons.sensor'
-    });
-    App.View.Widgets.Base.prototype.initialize.call(this, options);
-
-    // Get data from server
-    var collection = new App.Collection.Post([], {
+    options = _.defaults(options, {
+      // Default filters to server request
       data: {
         filters: {
           condition: {},
           conditions: {}
         }
+      },
+      entity: 'aq_cons.sensor',
+      id_scope: null,
+      property_unit: 'unts.',
+      sensor_property: null,
+      timeMode: 'now',
+      title: null
+    });
+
+    // Return "Void"
+    if (!options.id_scope || !options.sensor_property) {
+      return;
+    }
+
+    // Init widget
+    App.View.Widgets.Base.prototype.initialize.call(this,
+      { 
+        title: options.title,
+        timeMode: options.timeMode
       }
-    })
-    collection.url = App.config.api_url + '/' + options.id_scope + '/maps/' + options.entity + '/' + options.timeMode;
+    );
+
+    // Data collection to table
+    var collection = new App.Collection.Post([], { data: options.data })
+    // Request Url
+    collection.url = 
+      App.config.api_url.concat(
+        '/', options.id_scope, '/maps/', options.entity, '/', options.timeMode
+      );
+    // Parse response data
+    collection.parse = function(response) {
+      return response.features
+        .map(function(item) {
+          return {
+            name: item.properties.name,
+            [options.sensor_property]: item.properties[options.sensor_property]
+          }
+        })
+        // Descending order 
+        .sort(function(a, b) {
+          return b[options.sensor_property]-a[options.sensor_property];
+        })
+    }
 
     // Create table
     var tableModel = new Backbone.Model({
-      css_class: 'transparent rankingWidget dissolvedOxygen',
+      css_class: 'transparent rankingWidget ' + options.sensor_property,
       csv: false,
       columns_format:{
+        // Table Fields
         name: {
+          title: __('Nombre'),
           css_class:'counter ellipsis',
         },
-        people:{
-          title: __('Población'),
+        [options.sensor_property]: {
+          title: options.property_unit,
           formatFN: function(d) {
+            var max = collection.at(0).get(options.sensor_property);
+            var width = d*100/max;
+            var template = _.template(
+              '<div class="rankingValue">\
+                <div class="rankingBar">\
+                  <div style="width:<%=width%>%"></div>\
+                </div>\
+                <span><%=App.nbf(d, {decimals: 2})%></span>\
+              </div>'
+            );
 
-            console.log(d);
-
-            var max = collection.at(0).get('people'),
-              width = d*100/max,
-              template = _.template('<div class="intensity"><div class="rankingBar"><div style="width:<%=width%>%"></div></div><span><%=App.nbf(d, {decimals: 0})%></span></div>');
-            return template({width: width, d: d});
+            return template({
+              width: width,
+              d: d + options.property_unit
+            });
           }
         }
       }
 
     });
 
+    // Add to widget content the table
     this.subviews.push(new App.View.Widgets.Table({
       model: tableModel,
       data: collection,

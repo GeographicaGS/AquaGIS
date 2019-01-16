@@ -61,11 +61,20 @@ App.View.Panels.Aq_cons.Master = App.View.Panels.Base.extend({
       titleLink: __('Previsión')
     }));
 
-    this._widgets.push(new App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages({
+    this._widgets.push(new App.View.Widgets.Aq_cons.RankingSensor({
       id_scope: this.scopeModel.get('id'),
-      timeMode:'historic',
-      link : '/' + this.scopeModel.get('id') + '/' + this.id_category + '/dashboard/consume',
-      titleLink: __('Previsión')
+      property_unit: 'mg/L',
+      sensor_property: 'dissolved_oxygen',
+      timeMode: 'now',
+      title:__('Oxígeno disuelto'),
+    }));
+
+    this._widgets.push(new App.View.Widgets.Aq_cons.RankingSensor({
+      id_scope: this.scopeModel.get('id'),
+      property_unit: 'μS/cm',
+      sensor_property: 'electric_conductivity',
+      timeMode: 'now',
+      title:__('Conductividad eléctrica'),
     }));
 
     this.subviews.push(new App.View.Widgets.Container({
