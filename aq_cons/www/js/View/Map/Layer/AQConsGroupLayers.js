@@ -587,7 +587,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       units: 'mg/L³',
       nbf: App.nbf
     }, {
-      feature: 'electricConductivity',
+      feature: 'electric_conductivity',
       label: __('Conductividad eléctrica'),
       units: 'μS/cm',
       nbf: App.nbf
