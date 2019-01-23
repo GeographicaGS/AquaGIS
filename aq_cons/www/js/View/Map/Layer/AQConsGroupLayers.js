@@ -6,7 +6,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     this._payload = payload;
 
     // Modelos
-    let sensor = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.sensor'});
+    let sensor = new App.Model.Aq_cons.Model({scope: options.scope, type: 'now', entity: 'aq_cons.sensor'});
     let sector = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.sector'});
     let tank = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.tank'});
     let connection = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.connections_point'});
@@ -18,13 +18,13 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
     let well = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.well_point'});
     let wellLine = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cata.well_line'});
     let plot = new App.Model.Aq_cons.Model({scope: options.scope, type: options.type, entity: 'aq_cons.plot'});
-    
+
     sector.parse = function(e) {
       e.features = _.map(e.features, function(feature) {
         let diffDates = App.ctx.get('finish').diff(App.ctx.get('start'), 'days') + 1;
         let sectorPayload = JSON.parse(this.payload.data).var;
 
-        feature.properties[sectorPayload + '.total'] = feature.properties[sectorPayload];          
+        feature.properties[sectorPayload + '.total'] = feature.properties[sectorPayload];
         if (feature.properties[sectorPayload] !== null) {
           feature.properties[sectorPayload] /= diffDates;
         }
@@ -40,7 +40,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         let plotPayload = payload.replace(/(.*\.).*(\..*)/,'$1plot$2');
         let diffDates = App.ctx.get('finish').diff(App.ctx.get('start'), 'days') + 1;
         feature.properties['height'] = feature.properties['floors'] * 4;
-        feature.properties[plotPayload + '.total'] = feature.properties[plotPayload];                   
+        feature.properties[plotPayload + '.total'] = feature.properties[plotPayload];
         if (feature.properties[plotPayload] !== null) {
           feature.properties[plotPayload] /= diffDates;
         }
@@ -180,7 +180,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'source': 'aqua_plots',
         'minzoom': 16,
         'layout': {
-          'visibility': 'none'          
+          'visibility': 'none'
         },
         'paint': {
           'fill-extrusion-height': {
@@ -557,7 +557,6 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'id': 'sensors_circle',
         'type': 'circle',
         'source': 'sensors_datasource',
-        'maxzoom': 16,
         'paint': {
           'circle-radius': 4,
           'circle-stroke-width': 1,
@@ -578,44 +577,31 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       map: map
     })
     .setHoverable(true)
-    .setInteractivity(__('Sensor'), function(e, popup, _this) {
-      let prop = [];
-      new App.Model.Aq_cons.SensorModel({
-        scope: options.scope,
-        entity: e.features[0].properties['id_sector']
-      }).fetch({success: function(response) {
-        let sensors = response.toJSON();
-        e.features[0].properties['aq_cons.sector.flow'] = _.find(sensors.lastdata, function(ld) {
-          return ld['var_id'] === 'aq_cons.sector.flow';
-        })['var_value'];
-        e.features[0].properties['aq_cons.sector.pressure'] = _.find(sensors.lastdata, function(ld) {
-          return ld['var_id'] === 'aq_cons.sector.pressure';
-        })['var_value'];
-        e.features[0].properties['aq_cons.sector.name'] = _.find(sensors.lastdata, function(ld) {
-          return ld['var_id'] === 'aq_cons.sector.name';
-        })['var_value'];
-
-        prop.push({
-          feature: 'aq_cons.sector.name',
-          label: 'Sector', 
-          units: '',
-        });
-        prop.push({
-          feature: 'aq_cons.sector.flow',
-          label: 'Caudal actual', 
-          units: 'm³/h',
-          nbf: App.nbf
-        });
-        prop.push({
-          feature: 'aq_cons.sector.pressure',
-          label: 'Presión actual',
-          units: 'kgf/cm²',
-          nbf: App.nbf
-        });
-        let html = _this.bindData(__('Sensor'),prop,e);
-        popup.setHTML(html);
-      }});
-    });
+    .setInteractivity(__('Sensor'),[{
+      feature: 'name',
+      label: 'Nombre',
+      units: ''
+    }, {
+      feature: 'dissolved_oxygen',
+      label: __('Oxígeno disuelto'),
+      units: 'mg/L³',
+      nbf: App.nbf
+    }, {
+      feature: 'electric_conductivity',
+      label: __('Conductividad eléctrica'),
+      units: 'μS/cm',
+      nbf: App.nbf
+    }, {
+      feature: 'ph',
+      label: 'PH',
+      units: '',
+      nbf: App.nbf
+    }, {
+      feature: 'temperature',
+      label: __('Temperatura'),
+      units: '℃',
+      nbf: App.nbf
+    }]);
 
     this._tankLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
       source: {
@@ -696,13 +682,13 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
 
     this._sectorLayer.updateData(payload);
     this._sectorLayer.updatePaintOptions(payload.var);
-    
+
     this._plotLayer.updateData(plotPayload);
-    this._plotLayer.updatePaintOptions(plotPayload.var);   
+    this._plotLayer.updatePaintOptions(plotPayload.var);
     this._plotLayer.layers[2].paint['fill-extrusion-color']['property'] = plotPayload.var;
     this._plotLayer._map._map
       .setPaintProperty('plot_buildings', 'fill-extrusion-color', this._plotLayer.layers[2].paint['fill-extrusion-color']);
-    
+
 
     this._supplyLineLayer.updateData(payload);
     this._wellLineLayer.updateData(payload);
