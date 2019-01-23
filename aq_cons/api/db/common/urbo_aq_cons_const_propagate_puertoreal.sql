@@ -1,10 +1,10 @@
 /*
- * Function to calculate AquaGIS Comsuption or Forecast in Puerto Real constructions.
+ * Function to calculate AquaGIS Hourly Comsuption in Puerto Real constructions.
  */
 
 --------------------------------------------------------------------------------
 -- HOW TO USE:
--- SELECT urbo_aq_cons_puertoreal('scope', '2018-01-10T08:00:00.000Z', 5);
+-- SELECT urbo_aq_cons_propagate_puertoreal('puertoreal', 'construction_id:P18AA700435A', '0.003940348931355402', '2019-01-18T22:00:00Z');
 --------------------------------------------------------------------------------
 
 DROP FUNCTION IF EXISTS urbo_aq_cons_propagate_puertoreal(varchar, text, text, text);
@@ -18,7 +18,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_puertoreal(
   RETURNS void AS
   $$
   DECLARE
-    id_scope_destination text := 'madrid';
+    id_scope_destination text := 'puertoreal';
     _q text;
   BEGIN
 
@@ -40,7 +40,12 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_puertoreal(
           SELECT
             id_entity, new_time_instant, flow, pressure, created_at, updated_at
           FROM
-            const_data;
+            const_data
+        ON CONFLICT (id_entity, "TimeInstant") DO NOTHING;
+        ;
+
+
+
 
         WITH const_data_lastdata AS (
           SELECT
@@ -70,6 +75,9 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_puertoreal(
           const_data_lastdata
         WHERE
           const_data_lastdata.id_entity = ''%3$s'';
+
+
+
 
         WITH const_data_lastdata AS (
           SELECT
