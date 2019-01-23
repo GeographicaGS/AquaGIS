@@ -25,6 +25,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_puertoreal(
     IF id_scope = id_scope_destination THEN
 
       _q := format('
+        -- measurand
         WITH const_data AS (
           SELECT
               *,
@@ -42,11 +43,9 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_puertoreal(
           FROM
             const_data
         ON CONFLICT (id_entity, "TimeInstant") DO NOTHING;
-        ;
 
 
-
-
+        -- lastdata
         WITH const_data_lastdata AS (
           SELECT
               *,
@@ -74,10 +73,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_puertoreal(
         FROM
           const_data_lastdata
         WHERE
-          const_data_lastdata.id_entity = ''%3$s'';
-
-
-
+          %2$s.aq_cons_const_lastdata.id_entity = ''%3$s'';
 
         WITH const_data_lastdata AS (
           SELECT
