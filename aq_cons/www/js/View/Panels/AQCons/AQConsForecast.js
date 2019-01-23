@@ -42,8 +42,11 @@ App.View.Panels.Aq_cons.Consume = App.View.Panels.Splitted.extend({
   },
 
   onAttachToDOM: function() {
+    var scopeLocation = this.scopeModel.get('location');
+
     this._mapView = new App.View.Panels.Aq_cons.CurrentMap({
       el: this.$('.top'),
+      center: [scopeLocation[1], scopeLocation[0]],
       scope: this.scopeModel.get('id'),
       type: 'historic'
     }).render();
