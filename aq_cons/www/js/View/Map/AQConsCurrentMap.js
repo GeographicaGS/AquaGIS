@@ -13,10 +13,18 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
   '</div>'),
 
   initialize: function (options) {
+
+    // Default scope is in 'location scope'
+    var scopeLocation = App.currentScope && App.mv().getScope(App.currentScope)
+      ? App.mv().getScope(App.currentScope).get('location')
+      : false;
+
     options = _.defaults(options, {
       defaultBasemap: 'positron',
       sprites: '/verticals/aquasig-theme/mapstyle/sprite',
-      center: [-6.058731999113434, 37.34176929299322],
+      center: scopeLocation
+        ? [scopeLocation[1], scopeLocation[0]]
+        : [-6.058731999113434, 37.34176929299322],
       type: 'now'
     });
 

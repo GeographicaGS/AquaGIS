@@ -1,6 +1,6 @@
 'use strict';
 
-App.View.Panels.Aq_cons.LeakMap =App.View.Panels.Aq_cons.CurrentMap.extend({
+App.View.Panels.Aq_cons.LeakMap = App.View.Panels.Aq_cons.CurrentMap.extend({
   _template_legend: _.template('<div class="tags textleft">' +
   ' <div class="btnLegend no_border inrow">' +
   '    <span class="legend-map normal">' + __('Funcionamiento normal') + '</span>' +
