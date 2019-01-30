@@ -24,29 +24,45 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_plot(
     _q text;
   BEGIN
 
-    _t_plot_ld := urbo_get_table_name(id_scope, 'aq_cons_plot', FALSE, TRUE);
+    _t_plot_ld := urbo_get_table_name(id_scope, 'aq_cons_plot', FALSE, FALSE);
     _t_plot_ms := urbo_get_table_name(id_scope, 'aq_cons_plot_measurand');
     _t_const_ld := urbo_get_table_name(id_scope, 'aq_cons_const', FALSE, TRUE);
     _t_const_ms := urbo_get_table_name(id_scope, 'aq_cons_const_measurand');
 
     _q := format('
       WITH urbo_aq_cons_const_measurand_per_plot_and_usage AS (
-        SELECT sl.id_entity, ''%s''::timestamp AS "TimeInstant",
-            SUM(COALESCE(cm.flow, 0)) AS flow,
-            AVG(COALESCE(cm.pressure, 0)) AS pressure, cl.usage
-          FROM (SELECT id_entity FROM %s) sl
-            LEFT JOIN (SELECT id_entity, usage, refplot FROM %s) cl
-              on sl.id_entity = cl.refplot
-            LEFT JOIN (
-              SELECT id_entity, MAX("TimeInstant") AS "TimeInstant",
-                  AVG(flow) AS flow, AVG(pressure) AS pressure
-                FROM %s
-              WHERE "TimeInstant" <= ''%s''
-                AND "TimeInstant" > ''%s''::timestamp - interval ''%s minutes''
-              GROUP BY id_entity
-            ) cm
-              ON cl.id_entity = cm.id_entity
-          GROUP BY sl.id_entity, cl.usage
+        SELECT
+          sl.id_entity,
+          ''%1$s''::timestamp AS "TimeInstant",
+          SUM(COALESCE(cm.flow, 0)) AS flow,
+          AVG(COALESCE(cm.pressure, 0)) AS pressure,
+          cl.usage
+        FROM  (SELECT id_entity FROM %2$s) sl
+        LEFT JOIN (
+          SELECT
+            id_entity,
+            usage,
+            refplot
+          FROM %3$s
+          ) cl
+          ON sl.id_entity = cl.refplot
+        LEFT JOIN (
+          SELECT
+            id_entity,
+            MAX("TimeInstant") AS "TimeInstant",
+            AVG(flow) AS flow,
+            AVG(pressure) AS pressure
+          FROM %4$s
+          WHERE
+            "TimeInstant" <= ''%5$s''
+            AND "TimeInstant" > ''%6$s''::timestamp - interval ''%7$s minutes''
+          GROUP BY
+            id_entity
+          ) cm
+          ON cl.id_entity = cm.id_entity
+        GROUP BY
+          sl.id_entity,
+          cl.usage
       ),
       urbo_aq_cons_plot_measurand AS (
         SELECT q0.id_entity, q1."TimeInstant", q0.flow, q0.pressure,
@@ -64,7 +80,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_plot(
               ON q0.id_entity = q1.id_entity
       ),
       urbo_update_aq_cons_plot_lastdata AS (
-        UPDATE %s sl
+        UPDATE %8$s sl
           SET "TimeInstant" = sm."TimeInstant",
             flow = sm.flow,
             pressure = sm.pressure,
@@ -72,7 +88,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_plot(
           FROM urbo_aq_cons_plot_measurand sm
           WHERE sl.id_entity = sm.id_entity
       )
-      INSERT INTO %s
+      INSERT INTO %9$s
           (id_entity, "TimeInstant", flow, pressure, usage)
         SELECT id_entity, "TimeInstant", flow, pressure, usage
           FROM urbo_aq_cons_plot_measurand
@@ -82,7 +98,13 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_propagate_to_plot(
               pressure = EXCLUDED.pressure,
               usage = EXCLUDED.usage;
       ',
-      moment, _t_plot_ld, _t_const_ld, _t_const_ms, moment, moment, minutes,
+      moment,
+      _t_plot_ld,
+      _t_const_ld,
+      _t_const_ms,
+      moment,
+      moment,
+      minutes,
       _t_plot_ld,
       _t_plot_ms
     );
