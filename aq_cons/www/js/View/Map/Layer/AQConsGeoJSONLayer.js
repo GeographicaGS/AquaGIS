@@ -24,8 +24,9 @@ App.View.Map.Layer.Aq_cons.GeoJSONLayer = App.View.Map.Layer.MapboxGLLayer.exten
     this.on('click',this.layers.map(l => l.id), function(e) {
       let mpopup = new mapboxgl.Popup()
       .setLngLat(e.lngLat);
+      const tempEntity = {features: e.features};
       mpopup.setHTML(this.popupTemplate
-        .drawTemplate(label,properties, e, mpopup)).addTo(this._map._map);
+        .drawTemplate(label,properties, tempEntity, mpopup)).addTo(this._map._map);
     }.bind(this));
     return this;
   },
