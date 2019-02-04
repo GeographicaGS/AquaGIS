@@ -46,7 +46,7 @@ App.View.Widgets.Aq_cons.AlertsVariable = Backbone.View.extend({
         });
 
         _this.$el.closest(".widget").find('div.widget_header.' + items[0].label).removeClass("hide");
-        _this.$el.html(_this._template({ items: items, activations: responseData.activations, variables: _this.variables, options: _this.options}));    
+        _this.$el.html(_this._template({ items: items, activations: responseData.activations, variables: _this.variables, options: _this.options}));          
       }
     });
     return this;

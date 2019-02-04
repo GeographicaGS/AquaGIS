@@ -46,6 +46,7 @@ App.View.Widgets.Aq_cons.AlertsWidget = App.View.Widgets.Base.extend({
       linked: options.linked,
       workOrder: options.workOrder,
       onclick: options.onclick,
+      buttonlink: options.buttonlink,
       variables: [
       {
         label: 'Caudal',
