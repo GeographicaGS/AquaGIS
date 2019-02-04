@@ -86,7 +86,7 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
       headers: {
           "User-Agent": "Request-Promise",
           "Accept": "application/json",
-          "X_API_KEY": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI0NjUwN2JlMi1hNDQ1LTQzNjItYTI2Mi00NTZkM2Q3M2I2NWQiLCJpYXQiOjE1NDYyMTQ0MDEsImV4cCI6MTU0ODgwNjQwMSwic3ViIjoiSVNPSU4gLSBQcm95ZWN0byBBcXVhU0lHIChJZ25hY2lvIERvbWluZ29zKSJ9.I9PKTZXPfFl_N4wLM6jy-V-SKF25MMOlbH0zM5sDeSMAzOnJ_pmXWb4JStL3mPGP-pyjfE1_hjoVddwuwBrOcg"
+          "X_API_KEY": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJmMjBhODc3OC0wYmM1LTQ4MGEtYjBmYy0wOTA5MzE1YWVjNzAiLCJpYXQiOjE1NDgyODgwMDAsImV4cCI6MTU1MDg4MDAwMCwic3ViIjoiSVNPSU4gLSBQcm95ZWN0byBBcXVhU0lHIChJZ25hY2lvIERvbWluZ29zKSJ9.Ad0pzSmtOheRWgR2ThaaKDyYPsCYhhLQ7PsFyE--hxFjq286dODQTluEWCIs-uPcmHjFZG2AwXsUDFZNyEpcUg"
       },
       json: true
     };
