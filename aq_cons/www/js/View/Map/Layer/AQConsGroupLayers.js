@@ -77,7 +77,8 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
             'type': 'exponential',
             'default': 'transparent',
             'stops': [
-              [0, '#64B6D9'],
+              [0, 'transparent'],
+              [0.0000001, '#64B6D9'],
               [100, '#4CA7D7'],
               [400, '#3397D5'],
               [1000, '#1A88D3'],
@@ -155,7 +156,8 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
             'type': 'interval',
             'default': 'transparent',
             'stops': [
-              [0, '#64B6D9'],
+              [0, 'transparent'],
+              [0.0000001, '#64B6D9'],
               [1, '#4CA7D7'],
               [2, '#3397D5'],
               [4, '#1A88D3'],
@@ -192,7 +194,8 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
             'type': 'interval',
             'default': 'transparent',
             'stops': [
-              [0, '#64B6D9'],
+              [0, 'transparent'],
+              [0.0000001, '#64B6D9'],
               [1, '#4CA7D7'],
               [2, '#3397D5'],
               [4, '#1A88D3'],
