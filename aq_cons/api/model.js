@@ -61,7 +61,8 @@ class AqConsModel extends PGSQLModel {
       });
 
       if (!data.length) {
-        return Promise.reject(utils.error('Plot not found', 404));
+        // BUG: if plot dont have constuctions asociated should return an empty array; Previosuly the promise was rejected.
+        return [];
       }
 
       return Promise.resolve(data);
