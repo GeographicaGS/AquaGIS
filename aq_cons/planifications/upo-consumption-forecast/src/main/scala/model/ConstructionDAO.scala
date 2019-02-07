@@ -81,7 +81,8 @@ class ConstructionDAO(url: String, username: String, password: String, schema: S
   def getHistoryUntilTonightById(id_entity: String): Seq[(Timestamp, Float, Float, Float, Float)] = {
     //@val lista de registros
     val lista = ListBuffer.empty[(Timestamp, Float, Float, Float, Float)]
-
+    var res: ListBuffer[(Timestamp, Float, Float, Float, Float)] = ListBuffer.empty[(Timestamp, Float, Float, Float, Float)]
+    try {
     val queryString: String = s"SELECT ${"\"TimeInstant\""}, consumption, forecast, pressure_forecast, pressure_agg " +
       s"FROM $schema.aq_cons_const_agg_hour " +
       s"WHERE id_entity='$id_entity' " +
@@ -100,7 +101,24 @@ class ConstructionDAO(url: String, username: String, password: String, schema: S
       val pressure_agg: Float = resultSet.getFloat("pressure_agg")
       lista.append((timeinstant, consumption, forecast, pressure_forecast, pressure_agg))
     }
-    lista.sortBy(x => Time_utils.timestampToString(x._1))
+      res = lista.sortBy(x => Time_utils.timestampToString(x._1))
+      res //return
+    } catch {
+      case e: SQLException =>
+        e.printStackTrace()
+        res
+    } finally try {
+      if (resultSet != null) resultSet.close()
+      if (ptmt != null) ptmt.close()
+      if (connection != null) connection.close()
+      res
+    } catch {
+      case e: SQLException =>
+        e.printStackTrace()
+      case e: Exception =>
+        e.printStackTrace()
+        res
+    }
   }
 
   /** Guarda una secuencia de predicciones (forecast, pressure_forecast) de cierta construcción en la tabla '''aq_cons_const_agg_hour'''

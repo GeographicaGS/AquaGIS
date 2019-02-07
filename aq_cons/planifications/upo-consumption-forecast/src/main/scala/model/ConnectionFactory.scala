@@ -15,7 +15,12 @@ case class ConnectionFactory(url: String, username: String, password: String) {
     *
     * @return conexión a la Base de Datos
     */
+
+  var connection: Connection = _
   def getConnection: Connection = {
-    DriverManager.getConnection(url, username, password)
+    if (connection==null){
+      connection = DriverManager.getConnection(url, username, password)
+      connection
+    } else connection
   }
 }

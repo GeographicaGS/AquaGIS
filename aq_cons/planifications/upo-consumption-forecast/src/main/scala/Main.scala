@@ -1,4 +1,4 @@
-import java.util.logging.Logger
+import java.util.logging.{Level, Logger}
 
 import model.{Construction, ConstructionDAO}
 import wknn.Wknn
@@ -43,7 +43,7 @@ object Main {
     // Consultamos la tabla "aq_cons_const_lastdata" para obtener las principales características de las construcciones
     // @val all_constructions: Colección que contiene todas las construcciones
     // Para preprodición, y trabajar sobre una única construcción, se puede añadir al final de la línea ".filter(_.id_entity == "construction_id:1534_0")"
-    var all_constructions: Set[Construction] = constructionDAO.findAll()//.filter(_.id_entity == "construction_id:5952_1")
+    var all_constructions: Set[Construction] = constructionDAO.findAll()//.filter(_.id_entity.contains("construction_id:3579"))
 
     // Para cada construcción de la colección de construcciones, consultamos su histórico de la tabla "aq_cons_const_agg_hour"
     // y se lo establecemos a la construcción.
@@ -59,6 +59,7 @@ object Main {
     // Para cada construcción de la colección de construcciones, realizamos las predicciones tanto de agua como de presión.
     // Las predicciones calculadas se salvan en la Base de Datos.
     all_constructions foreach { construction =>
+      try{
       Logger.getGlobal.info("PREDICCIÓN PARA " + construction.id_entity)
       // Lanzamos el wknn para consumo
       val consumption_wknn: Wknn = new Wknn(construction.consumptionSeries(), h, w, d, false)
@@ -75,6 +76,9 @@ object Main {
 
       // Persistimos la secuencia de predicciones. (La hora de las predicciones se calcula dentro de la función "save_forecastList")
       constructionDAO.saveForecastList(construction.id_entity, forecastList, h)
+      } catch {
+        case e: Exception => Logger.getGlobal.log(Level.SEVERE, s"Error. No se han completado las predicciones de construction.id_entity=${construction.id_entity}.")
+      }
     }
   }
 

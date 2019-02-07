@@ -1,5 +1,8 @@
 package wknn
 
+import java.sql.SQLException
+import java.util.logging.{Level, Logger}
+
 import scala.math.{pow, sqrt}
 
 /** Clase que representa lo que sería el modelo del algoritmo wknn
@@ -75,8 +78,19 @@ class WknnModel(series: Seq[Float], h: Int, w: Int, d: Int, matrixToUse: Option[
     // Todas las filas de la matriz deben tener exactamente w-valores y h-valores en cada columna.
     val assertRowSizes = matrix.forall { case (w_seq, h_seq) => w_seq.lengthCompare(w) == 0 && h_seq.lengthCompare(h) == 0 }
 
-    if (!assertRowSizes) {
-      throw new Exception(s"La serie temporal (size = ${series.size} truncada a size = ${series_truncated.size}) no ha sido truncada correctamente, por lo que la matriz de (w,h) no tiene todas las ventanas del mismo tamaño")
+    try {
+      if (!assertRowSizes) {
+        throw new Exception(s"La serie temporal tiene size = ${series.size} y truncada tiene size = ${series_truncated.size}).No ha sido truncada correctamente, por lo que la matriz de (w,h) no tiene todas las ventanas del mismo tamaño")
+      }
+    } catch {
+      case e: Exception =>
+        Logger.getGlobal.log(Level.SEVERE, s"La serie temporal tiene size = ${series.size} y truncada tiene size = ${series_truncated.size}).No ha sido truncada correctamente, por lo que la matriz de (w,h) no tiene todas las ventanas del mismo tamaño")
+        Logger.getGlobal.log(Level.SEVERE, s"TAMAÑOS DE LA MATRIZ:")
+        matrix.foreach { case (w_seq, h_seq) =>
+          Logger.getGlobal.log(Level.SEVERE, s"w_seq =\t${w_seq.size}\th_seq =\t${h_seq.size}")
+        }
+        // Además se eleva una nueva excepción, que será tratada en el bucle principal de de la clase Main
+        throw new Exception()
     }
 
     matrix
