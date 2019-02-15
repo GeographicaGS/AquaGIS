@@ -64,36 +64,38 @@ CREATE OR REPLACE FUNCTION urbo_createtables_maintenance(
 
     _pg_tbowner = urbo_tbowner_qry(_tb_arr);
 
-    DROP TYPE IF EXISTS order_type;
-    CREATE TYPE order_type AS ENUM (
-      'infrastructure_update',
-      'maintenance',
-      'fault',
-      'leak'
-    );
-
-    DROP TYPE IF EXISTS status_type;
-    CREATE TYPE status_type AS ENUM (
-      'registered',
-      'in_progress',
-      'incident',
-      'leak',
-      'closed'
-    );
 
     _create_tbs = format('
+
+      -- CREATE DEDICATED TYPES
+      DROP TYPE IF EXISTS order_type_%s;
+      CREATE TYPE order_type_%s AS ENUM (
+        ''infrastructure_update'',
+        ''maintenance'',
+        ''fault'',
+        ''leak''
+      );
+
+      DROP TYPE IF EXISTS status_type_%s;
+      CREATE TYPE status_type_%s AS ENUM (
+        ''registered'',
+        ''in_progress'',
+        ''incident'',
+        ''leak'',
+        ''closed''
+      );
 
       --ISSUES
       CREATE TABLE IF NOT EXISTS %s (
           position geometry(Point,4326),
           "TimeInstant" timestamp without time zone,
-          type order_type NOT NULL,
+          type order_type_%s NOT NULL,
           address text,
           description text,
           id_user text,
           budget double precision,
           estimated_time double precision,
-          current_status status_type,
+          current_status status_type_%s,
           -- status jsonb,
           -- files jsonb,
           id_entity character varying(64) NOT NULL,
@@ -124,7 +126,13 @@ CREATE OR REPLACE FUNCTION urbo_createtables_maintenance(
       );
 
     ',
+    id_scope,
+    id_scope,
+    id_scope,
+    id_scope,
     _tb_issues,
+    id_scope,
+    id_scope,
     _tb_status,
     _tb_files
     );
