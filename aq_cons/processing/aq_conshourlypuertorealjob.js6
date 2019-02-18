@@ -10,7 +10,6 @@ const BaseJob = require(ospath.join(appDir, 'jobs', 'basejob'));
 const utils = require(ospath.join(appDir, 'utils'));
 const log = utils.log();
 const PGSQLModel = require('../../../../models/pgsqlmodel');
-
 const moment = require('moment-timezone');
 const pgsqlConfig = config.getData().pgsql;
 
@@ -30,6 +29,7 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
      * - type: aqConsHourlyLastdataPuertoReal
      *   tableName: aq_cons_const_lastdata
      *   job: aq_conshourlylastdatapuertorealjob
+     *   customParam: XXXX
      *   category: aq_cons
      *   magnitudeRange: 1
      *   unitRange: hour
@@ -72,6 +72,7 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
     const weekDays = [1,2,3,4,5];
     const winterSpring = [0,1,2,3,4,5];
     const jobInfo = `job ${job.id}: type '${job.type}' - title '${job.data.title}'`;
+    const apiKey = job.data.customParam;
     const fromDate = new moment(job.data.date).subtract(3 + job.data.magnitudeRange, job.data.unitRange).format("YYYY-MM-DD");
     const toDate = new moment(job.data.date).subtract(3, job.data.unitRange).format("YYYY-MM-DD");
 
@@ -86,7 +87,7 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
       headers: {
           "User-Agent": "Request-Promise",
           "Accept": "application/json",
-          "X_API_KEY": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI0NjUwN2JlMi1hNDQ1LTQzNjItYTI2Mi00NTZkM2Q3M2I2NWQiLCJpYXQiOjE1NDYyMTQ0MDEsImV4cCI6MTU0ODgwNjQwMSwic3ViIjoiSVNPSU4gLSBQcm95ZWN0byBBcXVhU0lHIChJZ25hY2lvIERvbWluZ29zKSJ9.I9PKTZXPfFl_N4wLM6jy-V-SKF25MMOlbH0zM5sDeSMAzOnJ_pmXWb4JStL3mPGP-pyjfE1_hjoVddwuwBrOcg"
+          "X_API_KEY": apiKey
       },
       json: true
     };
