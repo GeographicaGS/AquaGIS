@@ -38,18 +38,14 @@ App.View.Widgets.Aq_cons.TotalConsumeLastWeek = App.View.Widgets.Base.extend({
       xAxisFunction: function (d) {
         return __('Todos los sectores');
       },
-      // yAxisFunction: function(d){
-      //   return App.nbf(d, {decimals:0});
-      // },
       yAxisLabel: __('Consumo (m³)'),
       legendNameFunc: function (d) {
         return __('Consumo (m³)');
       },
       legendTemplate: this._template_legend,
       formatYAxis: {
-        // numberOfValues: 4,
         tickFormat: function (d) {
-          return App.nbf(d, {decimals:0});
+          return App.nbf(d, {decimals:3});
         }
       }
     });

@@ -73,8 +73,8 @@ App.View.Widgets.Aq_cons.EnergyConsumptionForecast = App.View.Widgets.Base.exten
       },
       xAxisFunction: function(d) { return App.formatDate(d,'HH:mm'); },
       yAxisFunction: [
-        function(d) { return App.nbf(d, {decimals: 0})},
-        function(d) { return App.nbf(d, {decimals: 0})}
+        function(d) { return App.nbf(d, {decimals: 3})},
+        function(d) { return App.nbf(d, {decimals: 3})}
       ],
       yAxisLabel: [__('Capacidad (m³)')],
       yAxisDomain: [[0,100],[0,1]],

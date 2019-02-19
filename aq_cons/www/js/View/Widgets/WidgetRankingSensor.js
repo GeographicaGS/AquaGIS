@@ -100,7 +100,7 @@ App.View.Widgets.Aq_cons.RankingSensor = App.View.Widgets.Base.extend({
                 <div class="rankingBar">\
                   <div style="width:<%=width%>%"></div>\
                 </div>\
-                <span><%=App.nbf(d, {decimals: 2})%></span>\
+                <span><%=App.nbf(d, {decimals: 3})%></span>\
               </div>'
             );
 

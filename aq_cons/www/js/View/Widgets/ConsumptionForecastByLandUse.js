@@ -51,11 +51,9 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse = App.View.Widgets.Base.ex
         return type.get('name');
       },
       formatYAxis: {
-        // numberOfValues: 2,
         tickFormat: function (d) {
           var unit = 'm³';
-          // var value = App.nbf(d / 1000, {decimals:0});
-          var value = App.nbf(d, {decimals:2, compactK: true});
+          var value = App.nbf(d, {decimals:3, compactK: true});
           return value + 'm³';
         }
       }

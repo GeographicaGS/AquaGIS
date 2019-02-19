@@ -48,7 +48,7 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUseTimeserie = App.View.Widget
         return App.formatDate(d,formatDate);
       },
       yAxisFunction: [
-        function(d) { return App.nbf(d, {decimals: 0})}
+        function(d) { return App.nbf(d, {decimals: 3})}
       ],
       yAxisLabel: [__('Consumo (m³)')],
       // yAxisDomain: [[0,100000]],

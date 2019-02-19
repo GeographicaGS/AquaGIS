@@ -103,7 +103,7 @@ App.View.Widgets.Aq_cons.TankSize = App.View.Widgets.Base.extend({
         legendTemplate: this._template_legend,
         formatYAxis: {
           tickFormat: function (d) {
-            return App.nbf(d, {decimals:0});
+            return App.nbf(d, {decimals:3});
           }
         },
         divisorLines: [
