@@ -24,8 +24,9 @@ App.View.Map.Layer.Aq_simul.GeoJSONLayer = App.View.Map.Layer.MapboxGLLayer.exte
     this.on('click',this.layers.map(l => l.id), function(e) {
       let mpopup = new mapboxgl.Popup()
       .setLngLat(e.lngLat);
+      const featuresHolder = {features: e.features};
       mpopup.setHTML(this.popupTemplate
-        .drawTemplate(label,properties, e, mpopup)).addTo(this._map._map);
+        .drawTemplate(label,properties, featuresHolder, mpopup)).addTo(this._map._map);
     }.bind(this));
     return this;
   },
