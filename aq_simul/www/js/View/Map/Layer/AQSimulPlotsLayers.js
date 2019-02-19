@@ -56,8 +56,9 @@ App.View.Map.Layer.Aq_simul.PlotsLayer = Backbone.View.extend({
       }
     })
     .on('click', 'plot_transparent', (e) => {
+      const featuresHolder = {features: e.features};
       setTimeout(() => {
-        map._map.setFilter('plot_selected',['==', 'id_entity', e.features[0].properties.id_entity]);
+        map._map.setFilter('plot_selected',['==', 'id_entity', featuresHolder.features[0].properties.id_entity]);
       }, 100)
      
     })
@@ -80,10 +81,37 @@ App.View.Map.Layer.Aq_simul.PlotsLayer = Backbone.View.extend({
         contentType: "application/json",
         data: data,
         success: function(response) {
+          let templateData = {};
           if (response.attributes.codigo && response.attributes.codigo == 500) {
+            templateData = {
+              consumption: data.consumo,
+              facturaParteFija : {
+                general: 0,
+                vertido: 0,
+                depuracion: 0,
+                autonomica: 0,
+                total: 0
+              },
+              facturaParteVariable : {
+                abastecimiento: 0,
+                vertido: 0,
+                depuracion: 0,
+                canonLocal: 0,
+                canonAutonomico: 0,
+                total: 0
+              },
+              totalneto: 0,
+              iva: 0,
+              total: 0
+            };
+            
+            let html = _this.bindData(__('Tarificación'),templateData,e);
+            popup.setHTML(html);
+
           } else {
-            response.attributes.consumption = data.consumo;
-            let html = _this.bindData(__('Tarificación'),response.attributes,e);
+            templateData = response.attributes;
+            templateData.consumption = data.consumo;
+            let html = _this.bindData(__('Tarificación'),templateData,e);
             popup.setHTML(html);
           }
           
