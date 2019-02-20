@@ -77,7 +77,7 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
     const toDate = new moment(job.data.date).subtract(3, job.data.unitRange).format("YYYY-MM-DD");
 
     const datePattern = /\d{4}-\d{1,2}-\d{1,2}/;
-    log.info('apiKey ------ ', apiKey);
+    // log.info('apiKey ------ ', apiKey);
 
     var options = {
       uri: 'http://77.241.112.100:8077/gen-publicservices-web/rest/contadores/lecturas',
@@ -92,30 +92,33 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
       },
       json: true
     };
-    // log.info('options', options)
+
+    log.info('options', options)
 
     let requests = "";
 
     request(options)
     .then(function (data) {
 
-
-      // log.debug('data', data);
-
-      let bynumSerie =  _(data).groupBy(v => ([v.numSerie]))
-                        .map( v =>
-                          _.merge(
-                            _.pick( v[1], 'numSerie', 'fechaHora'),
-                            {'volumenL': _.subtract( v[1]['volumenL'], v[0]['volumenL'] ) }
-                          )
-                        )
+      let bynumSerie =  _(data)
+                        .groupBy(v => ([v.numSerie]))
+                        .map( v => {
+                          if (v.length = 2) {
+                            return _.merge(
+                              _.pick( v[1], 'numSerie', 'fechaHora'),
+                              {'volumenL': _.subtract( v[0]['volumenL'], v[1]['volumenL'] ) }
+                            )
+                          }
+                        })
                         .value();
 
-      log.debug('bynumSerie', bynumSerie);
+
+      console.log("bynumSerie", bynumSerie);
+
 
       bynumSerie.forEach(element => {
 
-        if (element.volumenL != '0') {
+        if (element.volumenL &&  element.volumenL != '0' ) {
           let secDate = new Date(element.fechaHora);
           let secWeekDay = secDate.getDay();
           let secMonth = secDate.getMonth();
@@ -162,7 +165,7 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
         return done();
       };
 
-      log.debug('requests', requests);
+      // log.debug('requests', requests);
 
       let pgModel = new PGSQLModel(pgsqlConfig);
       pgModel.query(requests, null, callback);
