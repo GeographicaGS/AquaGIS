@@ -88,12 +88,12 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
       headers: {
           "User-Agent": "Request-Promise",
           "Accept": "application/json",
-          "X_API_KEY": apiKey
+          "X_API_KEY": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJiYTExYjc1My0wZWZkLTQzMjEtOTc3My0yYzI3MGQyOGIzZGQiLCJpYXQiOjE1NTAzNjE2MDAsImV4cCI6MTU1Mjk1MzYwMCwic3ViIjoiSVNPSU4gLSBQcm95ZWN0byBBcXVhU0lHIChJZ25hY2lvIERvbWluZ29zKSJ9.EjL_XjqcjM9XBcD552Ul9UmUSY0Hzt1o9070QqUTpAuzJ4xl6oCQG0Jt3q360CM3fU9r-mpH-B6hcG4Es7WnWQ"
       },
       json: true
     };
 
-    log.info('options', options)
+    console.log('options', options);
 
     let requests = "";
 
