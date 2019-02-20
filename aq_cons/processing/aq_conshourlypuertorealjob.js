@@ -29,7 +29,7 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
      * - type: aqConsHourlyLastdataPuertoReal
      *   tableName: aq_cons_const_lastdata
      *   job: aq_conshourlylastdatapuertorealjob
-     *   customParam: XXXX
+     *   apiKey: XXXX
      *   category: aq_cons
      *   magnitudeRange: 1
      *   unitRange: hour
@@ -77,6 +77,7 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
     const toDate = new moment(job.data.date).subtract(3, job.data.unitRange).format("YYYY-MM-DD");
 
     const datePattern = /\d{4}-\d{1,2}-\d{1,2}/;
+    log.info('apiKey ------ ', apiKey);
 
     var options = {
       uri: 'http://77.241.112.100:8077/gen-publicservices-web/rest/contadores/lecturas',
@@ -91,11 +92,15 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
       },
       json: true
     };
+    // log.info('options', options)
 
     let requests = "";
 
     request(options)
     .then(function (data) {
+
+
+      // log.debug('data', data);
 
       let bynumSerie =  _(data).groupBy(v => ([v.numSerie]))
                         .map( v =>
@@ -105,6 +110,8 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
                           )
                         )
                         .value();
+
+      log.debug('bynumSerie', bynumSerie);
 
       bynumSerie.forEach(element => {
 
@@ -154,6 +161,9 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
         log.debug(`${ jobInfo } DONE`);
         return done();
       };
+
+      log.debug('requests', requests);
+
       let pgModel = new PGSQLModel(pgsqlConfig);
       pgModel.query(requests, null, callback);
 
