@@ -73,11 +73,9 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
     const winterSpring = [0,1,2,3,4,5];
     const jobInfo = `job ${job.id}: type '${job.type}' - title '${job.data.title}'`;
     const apiKey = job.data.customParam;
-    const fromDate = new moment(job.data.date).subtract(3 + job.data.magnitudeRange, job.data.unitRange).format("YYYY-MM-DD");
-    const toDate = new moment(job.data.date).subtract(3, job.data.unitRange).format("YYYY-MM-DD");
-
+    const fromDate = new moment().subtract(3 + job.data.magnitudeRange, job.data.unitRange).format("YYYY-MM-DD");
+    const toDate = new moment().subtract(3, job.data.unitRange).format("YYYY-MM-DD");
     const datePattern = /\d{4}-\d{1,2}-\d{1,2}/;
-    // log.info('apiKey ------ ', apiKey);
 
     var options = {
       uri: 'http://77.241.112.100:8077/gen-publicservices-web/rest/contadores/lecturas',
@@ -88,12 +86,10 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
       headers: {
           "User-Agent": "Request-Promise",
           "Accept": "application/json",
-          "X_API_KEY": "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJiYTExYjc1My0wZWZkLTQzMjEtOTc3My0yYzI3MGQyOGIzZGQiLCJpYXQiOjE1NTAzNjE2MDAsImV4cCI6MTU1Mjk1MzYwMCwic3ViIjoiSVNPSU4gLSBQcm95ZWN0byBBcXVhU0lHIChJZ25hY2lvIERvbWluZ29zKSJ9.EjL_XjqcjM9XBcD552Ul9UmUSY0Hzt1o9070QqUTpAuzJ4xl6oCQG0Jt3q360CM3fU9r-mpH-B6hcG4Es7WnWQ"
+          "X_API_KEY": apiKey
       },
       json: true
     };
-
-    console.log('options', options);
 
     let requests = "";
 
@@ -111,9 +107,6 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
                           }
                         })
                         .value();
-
-
-      console.log("bynumSerie", bynumSerie);
 
 
       bynumSerie.forEach(element => {
@@ -164,8 +157,6 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
         log.debug(`${ jobInfo } DONE`);
         return done();
       };
-
-      // log.debug('requests', requests);
 
       let pgModel = new PGSQLModel(pgsqlConfig);
       pgModel.query(requests, null, callback);
