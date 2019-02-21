@@ -75,6 +75,7 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
     const apiKey = job.data.customParam;
     const fromDate = new moment().subtract(3 + job.data.magnitudeRange, job.data.unitRange).format("YYYY-MM-DD");
     const toDate = new moment().subtract(3, job.data.unitRange).format("YYYY-MM-DD");
+    const todayDate = new moment().format("YYYY-MM-DD");
     const datePattern = /\d{4}-\d{1,2}-\d{1,2}/;
 
     var options = {
@@ -133,7 +134,7 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
               } else {
                 let percent = models[monthDay][totalL][currentHour] * 100 / totalL;
                 let valueL = ( percent * element.volumenL / 100 ) + ( (Math.random() * 0.007) + 0.001 ) ;
-                let date = datePattern.exec(element.fechaHora)[0] + 'T' + ("0" + currentHour).slice(-2) + ':00:00Z';
+                let date = todayDate + 'T' + ("0" + currentHour).slice(-2) + ':00:00Z';
                 let sql = `
                   SELECT urbo_aq_cons_propagate_puertoreal('${job.data.idScope}', 'construction_id:${element.numSerie}', '${valueL}', '${date}');
                 `;
