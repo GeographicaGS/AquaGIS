@@ -28,33 +28,33 @@ CREATE OR REPLACE FUNCTION urbo_createmetadata_aq_simul(
     _dml_qry = format('
       -- CATEGORIES
       INSERT INTO %s
-          (id_category, category_name, nodata, config)
+          (id_category,                   category_name,                  nodata,                 config                                    )
         VALUES
-          (''aq_simul'', ''Escenarios futuros'', FALSE, ''{"carto": {"account": "urbo-default"}}'');
+          (''aq_simul'',                  ''Escenarios futuros'',         FALSE,                  ''{"carto": {"account": "urbo-default"}}'');
 
       -- STATIC ENTITIES
       INSERT INTO %s
-          (id_entity, entity_name, id_category, table_name, mandatory, editable)
+          (id_entity,                     entity_name,                              id_category,            table_name,                         mandatory,    editable)
         VALUES
-          (''aq_cata.plot_simulation'', ''Escenarios futuros de parcelas'', ''aq_simul'', ''aq_cata_plot_simulation'', FALSE, FALSE),
-          (''aq_cata.const_simulation'', ''Escenarios futuros de construcciones'', ''aq_simul'', ''aq_cata_const_simulation'', FALSE, FALSE),
-          (''aq_cata.const_type'', ''Tipos de contrucciones'', ''aq_simul'', ''aq_cata_const_type'', FALSE, FALSE);
+          (''aq_cata.plot_simulation'',   ''Escenarios futuros de parcelas'',       ''aq_simul'',           ''aq_cata_plot_simulation'',        FALSE,        FALSE   ),
+          (''aq_cata.const_simulation'',  ''Escenarios futuros de construcciones'', ''aq_simul'',           ''aq_cata_const_simulation'',       FALSE,        FALSE   ),
+          (''aq_cata.const_type'',        ''Tipos de contrucciones'',               ''aq_simul'',           ''aq_cata_const_type'',             FALSE,        FALSE   );
 
       -- STATIC VARIABLES
       INSERT INTO %s
-          (id_variable, id_entity, entity_field, var_name, var_units, var_thresholds, var_agg, var_reverse, config, table_name, type, mandatory, editable)
+          (id_variable,                             id_entity,                      entity_field,   var_name,                 var_units,    var_thresholds,     var_agg,                            var_reverse,    config,   table_name,   type,          mandatory,   editable)
         VALUES
-          (''aq_cata.plot_simulation.tipo'', ''aq_cata.plot_simulation'', ''tipo'', ''Tipo'', NULL, NULL, ''{"NOAGG"}'', FALSE, NULL, NULL, ''catalogue'', FALSE, FALSE),
-          (''aq_cata.plot_simulation.calibre'', ''aq_cata.plot_simulation'', ''calibre'', ''Calibre'', NULL, NULL, ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, NULL, NULL, ''catalogue'', FALSE, FALSE),
-          (''aq_cata.plot_simulation.n_personas'', ''aq_cata.plot_simulation'', ''n_personas'', ''Número de personas'', NULL, NULL, ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, NULL, NULL, ''catalogue'', FALSE, FALSE),
+          (''aq_cata.plot_simulation.tipo'',        ''aq_cata.plot_simulation'',    ''tipo'',       ''Tipo'',                 NULL,         NULL,               ''{"NOAGG"}'',                      FALSE,          NULL,     NULL,         ''catalogue'', FALSE,       FALSE   ),
+          (''aq_cata.plot_simulation.calibre'',     ''aq_cata.plot_simulation'',    ''calibre'',    ''Calibre'',              NULL,         NULL,               ''{"SUM", "AVG", "MIN", "MAX"}'',   FALSE,          NULL,     NULL,         ''catalogue'', FALSE,       FALSE   ),
+          (''aq_cata.plot_simulation.n_personas'',  ''aq_cata.plot_simulation'',    ''n_personas'', ''Número de personas'',   NULL,         NULL,               ''{"SUM", "AVG", "MIN", "MAX"}'',   FALSE,          NULL,     NULL,         ''catalogue'', FALSE,       FALSE   ),
 
-          (''aq_cata.const_simulation.floor'', ''aq_cata.const_simulation'', ''floor'', ''Planta'', NULL, NULL, ''{"NOAGG"}'', FALSE, NULL, NULL, ''catalogue'', FALSE, FALSE),
-          (''aq_cata.const_simulation.usage'', ''aq_cata.const_simulation'', ''usage'', ''Uso'', NULL, NULL, ''{"NOAGG"}'', FALSE, NULL, NULL, ''catalogue'', FALSE, FALSE),
-          (''aq_cata.const_simulation.calibre'', ''aq_cata.const_simulation'', ''calibre'', ''Calibre'', NULL, NULL, ''{"SUM", "AVG", "MIN", "MAX"}'', FALSE, NULL, NULL, ''catalogue'', FALSE, FALSE);
+          (''aq_cata.const_simulation.floor'',      ''aq_cata.const_simulation'',   ''floor'',      ''Planta'',               NULL,         NULL,               ''{"NOAGG"}'',                      FALSE,          NULL,     NULL,         ''catalogue'', FALSE,       FALSE   ),
+          (''aq_cata.const_simulation.usage'',      ''aq_cata.const_simulation'',   ''usage'',      ''Uso'',                  NULL,         NULL,               ''{"NOAGG"}'',                      FALSE,          NULL,     NULL,         ''catalogue'', FALSE,       FALSE   ),
+          (''aq_cata.const_simulation.calibre'',    ''aq_cata.const_simulation'',   ''calibre'',    ''Calibre'',              NULL,         NULL,               ''{"SUM", "AVG", "MIN", "MAX"}'',   FALSE,          NULL,     NULL,         ''catalogue'', FALSE,       FALSE   );
     ',
     _tb_categories, _tb_entities, _tb_variables
     );
-         
+
     IF isdebug IS TRUE then
       RAISE NOTICE '%', _dml_qry;
     END IF;

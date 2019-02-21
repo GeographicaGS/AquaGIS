@@ -73,9 +73,9 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
     const winterSpring = [0,1,2,3,4,5];
     const jobInfo = `job ${job.id}: type '${job.type}' - title '${job.data.title}'`;
     const apiKey = job.data.customParam;
-    const fromDate = new moment(job.data.date).subtract(3 + job.data.magnitudeRange, job.data.unitRange).format("YYYY-MM-DD");
-    const toDate = new moment(job.data.date).subtract(3, job.data.unitRange).format("YYYY-MM-DD");
-
+    const fromDate = new moment().subtract(3 + job.data.magnitudeRange, job.data.unitRange).format("YYYY-MM-DD");
+    const toDate = new moment().subtract(3, job.data.unitRange).format("YYYY-MM-DD");
+    const todayDate = new moment().format("YYYY-MM-DD");
     const datePattern = /\d{4}-\d{1,2}-\d{1,2}/;
 
     var options = {
@@ -97,18 +97,22 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
     request(options)
     .then(function (data) {
 
-      let bynumSerie =  _(data).groupBy(v => ([v.numSerie]))
-                        .map( v =>
-                          _.merge(
-                            _.pick( v[1], 'numSerie', 'fechaHora'),
-                            {'volumenL': _.subtract( v[1]['volumenL'], v[0]['volumenL'] ) }
-                          )
-                        )
+      let bynumSerie =  _(data)
+                        .groupBy(v => ([v.numSerie]))
+                        .map( v => {
+                          if (v.length = 2) {
+                            return _.merge(
+                              _.pick( v[1], 'numSerie', 'fechaHora'),
+                              {'volumenL': _.subtract( v[0]['volumenL'], v[1]['volumenL'] ) }
+                            )
+                          }
+                        })
                         .value();
+
 
       bynumSerie.forEach(element => {
 
-        if (element.volumenL != '0') {
+        if (element.volumenL &&  element.volumenL != '0' ) {
           let secDate = new Date(element.fechaHora);
           let secWeekDay = secDate.getDay();
           let secMonth = secDate.getMonth();
@@ -130,7 +134,7 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
               } else {
                 let percent = models[monthDay][totalL][currentHour] * 100 / totalL;
                 let valueL = ( percent * element.volumenL / 100 ) + ( (Math.random() * 0.007) + 0.001 ) ;
-                let date = datePattern.exec(element.fechaHora)[0] + 'T' + ("0" + currentHour).slice(-2) + ':00:00Z';
+                let date = todayDate + 'T' + ("0" + currentHour).slice(-2) + ':00:00Z';
                 let sql = `
                   SELECT urbo_aq_cons_propagate_puertoreal('${job.data.idScope}', 'construction_id:${element.numSerie}', '${valueL}', '${date}');
                 `;
@@ -154,6 +158,7 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
         log.debug(`${ jobInfo } DONE`);
         return done();
       };
+
       let pgModel = new PGSQLModel(pgsqlConfig);
       pgModel.query(requests, null, callback);
 
