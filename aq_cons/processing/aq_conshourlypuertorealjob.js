@@ -29,7 +29,7 @@ class AqConsHourlyLastdataPuertoRealJob extends BaseJob {
      * - type: aqConsHourlyLastdataPuertoReal
      *   tableName: aq_cons_const_lastdata
      *   job: aq_conshourlylastdatapuertorealjob
-     *   apiKey: XXXX
+     *   customParam: XXXX
      *   category: aq_cons
      *   magnitudeRange: 1
      *   unitRange: hour
