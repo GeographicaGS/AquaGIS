@@ -18,7 +18,7 @@ App.View.Widgets.Aq_cons.PressureEvolution = App.View.Widgets.Base.extend({
     // Getting sectors names
     this.sectorsNames = {};
     let sectorNamesCollection = new App.Collection.Base();
-    sectorNamesCollection.url = App.config.api_url + '/aljarafe/entities/aq_cons.sector/elements';
+    sectorNamesCollection.url = App.config.api_url + '/' + this.options.id_scope + '/entities/aq_cons.sector/elements';
     sectorNamesCollection.fetch({ async: false, success: function(e) {
       let tmp = e.toJSON();
       _.each(tmp, function(element) {
