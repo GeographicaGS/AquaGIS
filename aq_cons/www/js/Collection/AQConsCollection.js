@@ -21,14 +21,17 @@ App.Collection.Aq_cons.PanelList = Backbone.Collection.extend({
         id : 'leak',
         title: __('Fugas en tiempo real'),
         url:base + '/dashboard/leak',
-      },
-      {
-        id : 'saving',
-        title: __('Previsión de ahorro'),
-        url:base + '/dashboard/saving',
       }
 
     ];
+
+    App.mv().validateInMetadata({'entities':['aq_cons.tank']})
+    && _verticalOptions.push({
+      id : 'saving',
+      title: __('Previsión de ahorro'),
+      url:base + '/dashboard/saving',
+    });
+
     this.set(_verticalOptions);
   }
 });
