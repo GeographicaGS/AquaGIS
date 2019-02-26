@@ -149,10 +149,11 @@ router.post('/issues', function(req, res, next) {
 
         request(notification_options)
         .then(function (parsedBody) {
-          res.json(response)
+          res.json(response);
         })
         .catch(function (err) {
-          next(err)
+          log.error('Error sending notification to ISOIN notification service',err);
+          res.json(response);
         });
 
       })
