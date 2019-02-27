@@ -22,7 +22,7 @@ App.View.Panels.Aq_simul.Master = App.View.Panels.Base.extend({
     this._widgets = [];
 
     var m = new App.Model.Widgets.Base({
-      entities : ['aq_simul.sector'],
+      entities : ['aq_cons.sector'],
       location : this.scopeModel.get('location'),
       zoom: this.scopeModel.get('zoom'),
       scope: this.scopeModel.get('id'),
