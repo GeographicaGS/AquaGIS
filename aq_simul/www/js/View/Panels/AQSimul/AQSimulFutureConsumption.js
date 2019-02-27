@@ -137,13 +137,14 @@ App.View.Panels.Aq_simul.Futureconsumption =  App.View.Panels.Base.extend({
   
   getParamsDataForFutureScenarioModel: function (data)  {
     
+    this.fixSimulationCountParams(data, "Vivienda", 6, "Personas");
     this.fixSimulationCountParams(data, "Edificio", 6, "Habitantes");
     this.fixSimulationCountParams(data, "Hospedaje", 3, "Camas");
     this.fixSimulationCountParams(data, "Industria", 6, "m3/día");
     this.fixSimulationCountParams(data, "Instalación deportiva", 3, "Usuarios");
     this.fixSimulationCountParams(data, "Piscina", 1, "Piscina");
     this.fixSimulationCountParams(data, "Uso terciario", 3, "m2");
-    this.fixSimulationCountParams(data, "Vivienda", 6, "Personas");
+    
       
     let paramsData = {
       tipo: 1
