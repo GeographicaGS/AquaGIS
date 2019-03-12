@@ -162,8 +162,8 @@ class ConstructionDAO(url: String, username: String, password: String, schema: S
       toSave foreach { values =>
         ptmt.setString(1, id_entity)
         ptmt.setTimestamp(2, Time_utils.localDateTimeToTimestamp(values._1))
-        ptmt.setFloat(3, values._2._1)
-        ptmt.setFloat(4, values._2._2)
+        ptmt.setFloat(3, if (values._2 != null && values._2._1 != null) values._2._1 else 0)
+        ptmt.setFloat(4, if (values._2 != null && values._2._2 != null) values._2._2 else 0)
         ptmt.addBatch()
       }
       ptmt.executeBatch()
