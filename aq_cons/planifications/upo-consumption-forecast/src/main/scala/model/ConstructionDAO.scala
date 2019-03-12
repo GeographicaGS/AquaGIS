@@ -37,7 +37,7 @@ class ConstructionDAO(url: String, username: String, password: String, schema: S
     var res = Set.empty[Construction]
     try {
       val offset = page * pageSize
-      val queryString = s"SELECT id_entity, refsector, refplot, usage FROM $schema.aq_cons_const_lastdata limit "+ pageSize + " offset " + offset
+      val queryString = s"SELECT id_entity, refsector, refplot, usage FROM $schema.aq_cons_const_lastdata limit "+ pageSize + " offset " + offset + " order by id_entity desc"
       Logger.getGlobal.info(queryString)
 
       connection = getConnection
