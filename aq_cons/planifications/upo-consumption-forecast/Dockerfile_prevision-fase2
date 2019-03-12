@@ -1,11 +1,11 @@
 FROM aquasig_base:latest
 
 # Variables de entorno con los datos de conexión a la BD:
-ENV URL 'jdbc:postgresql://1.1.1.1:5432/urbo'
-ENV USERNAME 'user'
-ENV PASSWORD 'pass'
-ENV SCHEMA 'schema'
-ENV PREDECIRSEMANAS '2'
+# ENV URL 'jdbc:postgresql://1.1.1.1:5432/urbo'
+# ENV USERNAME 'user'
+# ENV PASSWORD 'pass'
+# ENV SCHEMA 'schema'
+# ENV PREDECIRSEMANAS '2'
 
 
 RUN env > /root/environmentVariables.txt
