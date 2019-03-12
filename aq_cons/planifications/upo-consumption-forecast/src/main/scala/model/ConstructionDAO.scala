@@ -33,10 +33,11 @@ class ConstructionDAO(url: String, username: String, password: String, schema: S
     *
     * @return devuelve una colección de construcciones
     */
-  def findAll(): Set[Construction] = {
+  def findAll(page: Int, pageSize: Int): Set[Construction] = {
     var res = Set.empty[Construction]
     try {
-      val queryString = s"SELECT id_entity, refsector, refplot, usage FROM $schema.aq_cons_const_lastdata"
+      val offset = page * pageSize
+      val queryString = s"SELECT id_entity, refsector, refplot, usage FROM $schema.aq_cons_const_lastdata limit "+ pageSize + " offset " + offset
       Logger.getGlobal.info(queryString)
 
       connection = getConnection
@@ -86,7 +87,7 @@ class ConstructionDAO(url: String, username: String, password: String, schema: S
     val queryString: String = s"SELECT ${"\"TimeInstant\""}, consumption, forecast, pressure_forecast, pressure_agg " +
       s"FROM $schema.aq_cons_const_agg_hour " +
       s"WHERE id_entity='$id_entity' " +
-      s"AND ${"\"TimeInstant\""}<'${Time_utils.tomorrowStartString}' " //+ s"ORDER BY ${"\"TimeInstant\""}"
+      s"AND ${"\"TimeInstant\""}<'${Time_utils.tomorrowStartString}' " + s"ORDER BY ${"\"TimeInstant\""} DESC LIMIT 1000"
 
     Logger.getGlobal.info(queryString)
     connection = getConnection

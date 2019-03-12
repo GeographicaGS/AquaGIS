@@ -40,10 +40,15 @@ object Main {
     // Creamos el Objeto de Acceso a Datos con los parámetros de conexión
     val constructionDAO = new ConstructionDAO(url, username, password, schema)
 
-    // Consultamos la tabla "aq_cons_const_lastdata" para obtener las principales características de las construcciones
+    var page = 0
+    val page_size = 50
+    var all_constructions: Set[Construction] = null
+
+    do {
+      // Consultamos la tabla "aq_cons_const_lastdata" para obtener las principales características de las construcciones
     // @val all_constructions: Colección que contiene todas las construcciones
     // Para preprodición, y trabajar sobre una única construcción, se puede añadir al final de la línea ".filter(_.id_entity == "construction_id:1534_0")"
-    var all_constructions: Set[Construction] = constructionDAO.findAll()//.filter(_.id_entity.contains("construction_id:3579"))
+    all_constructions = constructionDAO.findAll(page, page_size)//.filter(_.id_entity.contains("construction_id:3579"))
 
     // Para cada construcción de la colección de construcciones, consultamos su histórico de la tabla "aq_cons_const_agg_hour"
     // y se lo establecemos a la construcción.
@@ -52,7 +57,6 @@ object Main {
       val history = constructionDAO.getHistoryUntilTonightById(construction.id_entity)
       construction.history(history)
     }
-
 
 
     /** FASE DE PREDICCIÓN **/
@@ -80,6 +84,11 @@ object Main {
         case e: Exception => Logger.getGlobal.log(Level.SEVERE, s"Error. No se han completado las predicciones de construction.id_entity=${construction.id_entity}.")
       }
     }
+    page = page + 1
+
+    } while (!all_constructions.isEmpty)
+
+    
   }
 
   /**
