@@ -21,8 +21,8 @@ App.View.Widgets.Aq_cons.CurrentLeakStatusAllSectors = App.View.Widgets.Base.ext
         "agg": ["SUM", "AVG"],
         "vars": ["aq_cons.sector.flow", "aq_cons.sector.pressure"],
         "time": {
-        "start": moment().startOf('hour').subtract(1,'hour').toDate(),
-        "finish": moment().startOf('hour').subtract(0,'hour').toDate(),
+        "start": moment().startOf('hour').subtract(2,'hour').toDate(),
+        "finish": moment().startOf('hour').subtract(1,'hour').toDate(),
         "step": "1d"
         }
       };
