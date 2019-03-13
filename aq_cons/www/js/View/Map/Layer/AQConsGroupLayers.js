@@ -70,7 +70,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'type': 'fill',
         'source': 'aqua_sectors',
         'layout': {},
-        'maxzoom': 16,
+        'maxzoom': 14,
         'paint': {
           'fill-color': {
             'property': 'aq_cons.sector.forecast',
@@ -149,7 +149,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'type': 'fill',
         'source': 'aqua_plots',
         'layout': {},
-        'minzoom': 16,
+        'minzoom': 14,
         'paint': {
           'fill-color': {
             'property': 'aq_cons.plot.forecast',
@@ -171,7 +171,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'type': 'line',
         'source': 'aqua_plots',
         'layout': {},
-        'minzoom': 16,
+        'minzoom': 14,
         'paint': {
           'line-color': '#165288',
           'line-width': 1
@@ -180,7 +180,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'id': 'plot_buildings',
         'type': 'fill-extrusion',
         'source': 'aqua_plots',
-        'minzoom': 16,
+        'minzoom': 14,
         'layout': {
           'visibility': 'none'
         },
