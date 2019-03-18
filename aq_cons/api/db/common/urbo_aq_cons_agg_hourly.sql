@@ -40,7 +40,6 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_hourly(
       ',
       id_scope,
       id_scope,
-      id_scope,
       id_scope, moment, _on_conflict,
       id_scope, moment, _on_conflict,
       id_scope, moment
