@@ -32,7 +32,6 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_hourly(
     END IF;
 
     _q := format('
-      DELETE from %s.aq_cons_const_agg_hour where forecast = ''Nan'';
       DELETE from %s.aq_cons_plot_agg_hour where forecast = ''Nan'';
       DELETE from %s.aq_cons_sector_agg_hour where forecast = ''Nan'';
       SELECT urbo_aq_cons_agg_realtime_hourly(''%s'', ''%s'', %s);
