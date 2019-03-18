@@ -76,6 +76,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_forecast_hourly(
             FROM %s
             WHERE "TimeInstant" >= ''%s''::timestamp + interval ''14 days''
               AND "TimeInstant" < ''%s''::timestamp + interval ''14 days'' + interval ''1 hour''
+              AND forecast != ''Nan''
         ) q0
           INNER JOIN (
             SELECT id_entity, refplot
@@ -95,6 +96,7 @@ CREATE OR REPLACE FUNCTION urbo_aq_cons_agg_forecast_hourly(
             FROM %s
             WHERE "TimeInstant" >= ''%s''::timestamp + interval ''14 days''
               AND "TimeInstant" < ''%s''::timestamp + interval ''14 days'' + interval ''1 hour''
+              AND forecast != ''Nan''
         ) q0
           INNER JOIN (
             SELECT id_entity, refsector
