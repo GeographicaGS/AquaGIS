@@ -17,6 +17,8 @@ ENV PASSWORD 'pass'
 ENV SCHEMA 'schema'
 ENV PREDECIRSEMANAS '2'
 
+Estas variables de entorno se cargan al arrancar la imagen, de tal forma que se puedan tener varias instancias de la imagen sin tener que modificar el Dockerfile
+
 También se pasa el script de ejecucion "entrypoint.sh". La ejecución del programa se hace con el siguiente comando:
 $ java -jar /usr/local/app/target/scala-2.12/prevision_fase2-assembly-0.1.jar
 
@@ -33,4 +35,10 @@ Por tanto, pasos para ejecutar:
 
 2) $ docker build . -f Dockerfile_prevision-fase2 -t aquasig_prevision-fase2
 
-3) $ docker run -dit aquasig_prevision-fase2
+3) $ docker run -dit --name='aljarafe_prevision' \
+ -e 'USERNAME=user' \
+ -e 'PREDECIRSEMANAS=3' \
+ -e 'PASSWORD=pass' \
+ -e 'URL=jdbc:postgresql://1.1.1.1:5432/urbo' \
+ -e 'SCHEMA=schema' \
+ --restart='always' -v $(pwd)/../urbo-logs:/logs aquasig_prevision-fase2

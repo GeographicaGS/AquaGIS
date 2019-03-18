@@ -8,7 +8,7 @@ FROM aquasig_base:latest
 # ENV PREDECIRSEMANAS '2'
 
 
-RUN env > /root/environmentVariables.txt
+# RUN env > /root/environmentVariables.txt
 
 # Cargamos los ficheros del proyecto
 COPY ./project/ /usr/local/app/project/
@@ -29,4 +29,4 @@ RUN touch /var/log/prevision-fase2-cron.log && chmod +rw /var/log/prevision-fase
 ADD prevision-fase2-cron /etc/cron.d/prevision-fase2-cron
 RUN chmod +x /etc/cron.d/prevision-fase2-cron && crontab -u root /etc/cron.d/prevision-fase2-cron
 
-ENTRYPOINT service cron start && /bin/bash
+ENTRYPOINT service cron start && env > /root/environmentVariables.txt && /bin/bash
