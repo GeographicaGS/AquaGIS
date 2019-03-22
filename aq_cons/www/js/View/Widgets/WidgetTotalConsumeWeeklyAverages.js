@@ -46,7 +46,7 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
       '</div>'
     );
     options = _.defaults(options,{
-      title:__('Previsión de consumo semanal'),
+      title:__('Consumo semanal'),
       timeMode: 'now',
       id_category: 'aq_cons',
       classname: 'App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages',
