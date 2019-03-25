@@ -63,6 +63,11 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
     xRrange[__('Noche')] = 4;
 
     let consumeRangeNumeric = new App.Static.Collection.Aq_cons.ConsumeRangeNumeric();
+
+    if (options.id_scope = 'puertoreal') {
+      consumeRangeNumeric = new App.Static.Collection.Aq_cons.ConsumeRangeNumericPuertoReal();
+    }
+
     this._chartModel = new App.Model.BaseChartConfigModel({
       colors: consumeRangeNumeric.findColor,
       legendTemplate: this._template_legend,

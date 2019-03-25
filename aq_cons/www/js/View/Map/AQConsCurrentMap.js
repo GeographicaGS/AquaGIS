@@ -19,23 +19,27 @@ App.View.Panels.Aq_cons.CurrentMap = App.View.Map.MapboxView.extend({
       ? App.mv().getScope(App.currentScope).get('location')
       : false;
 
+    var nextWeek = App.Utils.getNextWeek();   
+
     options = _.defaults(options, {
       defaultBasemap: 'positron',
       sprites: '/verticals/aquasig-theme/mapstyle/sprite',
       center: scopeLocation
         ? [scopeLocation[1], scopeLocation[0]]
         : [-6.058731999113434, 37.34176929299322],
-      type: 'now'
-    });
+      type: 'now',
+      var: 'aq_cons.sector.forecast',
+      start: nextWeek[0],
+      finish: nextWeek[1]
 
-    var nextWeek = App.Utils.getNextWeek();   
+    });
 
     this._payload = {
       agg: 'SUM',
-      var: 'aq_cons.sector.forecast',
+      var: options.var,
       time: {
-          start: nextWeek[0],
-          finish: nextWeek[1]
+          start: options.start,
+          finish: options.finish
       },
       filters: {
         condition: {}

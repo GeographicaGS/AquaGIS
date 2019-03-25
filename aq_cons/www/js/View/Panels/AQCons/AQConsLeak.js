@@ -68,6 +68,8 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
       widgets: this._widgets,
       el: this.$('.bottom .widgetContainer')
     }));
+
+    this.$('#dateSelector').addClass('disabled');
   },
   
   onAttachToDOM: function() {

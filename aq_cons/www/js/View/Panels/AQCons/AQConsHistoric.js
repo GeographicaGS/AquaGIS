@@ -13,7 +13,9 @@ App.View.Panels.Aq_cons.Historic = App.View.Panels.Splitted.extend({
       id_panel: 'historic',
       filteView: false,
     });
+    
     this.variableSelector = new App.View.Aq_cons.VariableSelector();
+    
     this.listenTo(this.variableSelector.variable,'change',function(e) {
       if (this._mapView !== undefined) {
         this._mapView.updatePayloadVariable(e.get('variable'));
@@ -35,6 +37,7 @@ App.View.Panels.Aq_cons.Historic = App.View.Panels.Splitted.extend({
       }
     });
     App.View.Panels.Splitted.prototype.initialize.call(this, options);
+
     this.widgetTimeSeries = new App.View.Widgets.Aq_cons.ConsumptionForecastByLandUseTimeserie({
       id_scope: this.scopeModel.get('id'),
       dimension: 'allWidth',
