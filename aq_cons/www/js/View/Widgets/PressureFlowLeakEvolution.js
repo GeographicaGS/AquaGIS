@@ -14,15 +14,15 @@ App.View.Widgets.Aq_cons.PressureFlowLeakEvolution = App.View.Widgets.Base.exten
     });
 
     App.View.Widgets.Base.prototype.initialize.call(this,options);
-
+    var timeToShow = '2018-06-06';
 
     this.collection = new App.Collection.Post([],{
       data: {
         agg: ["AVG","AVG","MAX"],
         vars: ["aq_cons.sector.pressure","aq_cons.sector.flow","aq_cons.sector.leak_status"],
         time: {
-          start: moment().startOf('hour').subtract(1,'day').toDate(),
-          finish: moment().startOf('hour').toDate(),
+          start: moment(timeToShow).startOf('hour').subtract(1,'day').toDate(),
+          finish: moment(timeToShow).startOf('hour').toDate(),
           step: '1h'
         },
         filters: {
