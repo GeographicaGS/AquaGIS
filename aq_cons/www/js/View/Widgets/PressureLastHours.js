@@ -22,7 +22,9 @@ App.View.Widgets.Aq_cons.PressureLastHours = App.View.Widgets.Base.extend({
           "step": "1d"
         },
         "filters": {
-          "id_entity__eq": options.id_entity 
+          "condition": {
+          "id_entity__eq": options.id_entity
+          }
         }
       };
     }

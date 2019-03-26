@@ -26,7 +26,9 @@ App.View.Widgets.Aq_cons.PressureFlowLeakEvolution = App.View.Widgets.Base.exten
           step: '1h'
         },
         filters: {
+          condition: {
           id_entity__eq: this.options.id_entity
+          }
         }
       },
     });
