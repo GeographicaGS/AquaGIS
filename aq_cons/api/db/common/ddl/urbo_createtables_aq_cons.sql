@@ -376,7 +376,7 @@ CREATE OR REPLACE FUNCTION urbo_createtables_aq_cons(
         id_entity character varying(64) NOT NULL,
         "TimeInstant" timestamp without time zone,
         status character varying,
-        electricity_consumption double precision,
+        electricity_consumption_agg double precision,
         electricity_consumption_forecast double precision,
         created_at timestamp without time zone DEFAULT timezone(''utc''::text, now()),
         updated_at timestamp without time zone DEFAULT timezone(''utc''::text, now())
