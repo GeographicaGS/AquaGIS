@@ -14,7 +14,7 @@ App.View.Widgets.Aq_cons.PressureFlowLeakEvolution = App.View.Widgets.Base.exten
     });
 
     App.View.Widgets.Base.prototype.initialize.call(this,options);
-    var timeToShow = '2018-06-06';
+    var timeToShow = '2018-08-23 23:00';
 
     this.collection = new App.Collection.Post([],{
       data: {
@@ -23,7 +23,7 @@ App.View.Widgets.Aq_cons.PressureFlowLeakEvolution = App.View.Widgets.Base.exten
         time: {
           start: moment(timeToShow).startOf('hour').subtract(1,'day').toDate(),
           finish: moment(timeToShow).startOf('hour').toDate(),
-          step: '1h'
+          step: '4h'
         },
         filters: {
           condition: {
@@ -65,7 +65,7 @@ App.View.Widgets.Aq_cons.PressureFlowLeakEvolution = App.View.Widgets.Base.exten
         }
         return 'Fuga';
       },        
-      currentStep: '1h',
+      currentStep: '4h',
       originalTooltip: true,
       keysConfig: {
         'aq_cons.sector.pressure': {axis: 1, type: 'line'},
