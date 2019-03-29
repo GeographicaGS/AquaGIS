@@ -42,7 +42,7 @@ App.Static.Collection.Aq_cons.LandUses = new Backbone.Collection([
   {id: 'industrial', name: __('Industrial'), color: '#4ED8D8'},
   {id: 'comercial', name: __('Comercial'), color: '#9AC74A'},
   {id: 'public', name: __('Público'), color: '#E8BA4C'},
-  {id: 'null', name: __('Público'), color: '#E8BA4C'}
+  {id: 'null', name: __('Industrial'), color: '#4ED8D8'}
 ]);
 
 App.Static.Collection.Aq_cons.ConsumeRangeNumeric =  Backbone.Collection.extend({
