@@ -64,7 +64,7 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
 
     let consumeRangeNumeric = new App.Static.Collection.Aq_cons.ConsumeRangeNumeric();
 
-    if (options.id_scope == 'puertoreal') {
+    if (options.id_scope == 'puertoreal' || options.id_scope == 'ecija') {
       consumeRangeNumeric = new App.Static.Collection.Aq_cons.ConsumeRangeNumericPuertoReal();
     }
 
