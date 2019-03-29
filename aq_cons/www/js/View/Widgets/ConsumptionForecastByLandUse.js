@@ -39,7 +39,10 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse = App.View.Widgets.Base.ex
       stacked: true,
       colors: function(d,index){
         var type = App.Static.Collection.Aq_cons.LandUses.get(d.realKey);
-        return type.get('color');
+        if (!type) {
+          type = App.Static.Collection.Aq_cons.LandUses.get('null');
+        }
+        return type.get('color'); 
       },
       xAxisFunction: function (d) {
         return __('Todos los sectores');
@@ -48,6 +51,9 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse = App.View.Widgets.Base.ex
       legendTemplate: this._template_legend,
       legendNameFunc: function(d){
         var type = App.Static.Collection.Aq_cons.LandUses.get(d);
+        if (!type) {
+          type = App.Static.Collection.Aq_cons.LandUses.get('null');
+        }
         return type.get('name');
       },
       formatYAxis: {

@@ -32,10 +32,16 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUseTimeserie = App.View.Widget
     this._chartModel = new App.Model.BaseChartConfigModel({
       colors: function(d,index){
         var type = App.Static.Collection.Aq_cons.LandUses.get(d.realKey);
+        if (!type) {
+          type = App.Static.Collection.Aq_cons.LandUses.get('null');
+        }
         return type.get('color');
       },
       legendNameFunc: function(d){
         var type = App.Static.Collection.Aq_cons.LandUses.get(d);
+        if (!type) {
+          type = App.Static.Collection.Aq_cons.LandUses.get('null');
+        }
         return type.get('name');
       },
       xAxisFunction: function(d) {
@@ -57,6 +63,7 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUseTimeserie = App.View.Widget
         'industrial': {type: 'bar', axis: 1},
         'domestic': {type: 'bar', axis: 1},
         'comercial': {type: 'bar', axis: 1},
+        '*': {type: 'bar', axis: 1},
       },
       hideYAxis2: true,      
       stacked: true
