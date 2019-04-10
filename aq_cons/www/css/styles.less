@@ -1,5 +1,7 @@
 @import 'widgets/energy-saving-info.less';
 
+@categoryAqCons: #5476BB;
+
 *[data-vertical='aq_cons'] {
 
   #printButton {
@@ -297,6 +299,24 @@
       &.out {
         stroke-width: 0.5px;
         stroke-opacity: 0.5;
+      }
+    }
+  }
+}
+
+// Left navigation
+#menuPanel {
+  .vertical_list {
+    .element.aq_cons {
+      &.selected {
+        background-color: @categoryAqCons;
+      }
+      .aq_consColor {
+        background-color: @categoryAqCons;
+        &.aq_consIcon {
+          background-image:url('/verticals/aq_cons/img/menuPanel/SC_ic_vertical_AQCons_M.svg');
+          background-size: 38px !important;
+        }
       }
     }
   }

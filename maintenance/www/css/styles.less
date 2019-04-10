@@ -1,1 +1,21 @@
+@categoryMaintenance: #83ce44;
+
 *[data-vertical='maintenance'] {}
+
+// Left navigation
+#menuPanel {
+  .vertical_list {
+    .element.maintenance {
+      &.selected {
+        background-color: @categoryMaintenance;
+      }
+      .maintenanceColor {
+        background-color: @categoryMaintenance;
+        &.maintenanceIcon {
+          background-image:url('/verticals/maintenance/img/menuPanel/SC_ic_vertical_Maintenance_M.svg');
+          background-size: 38px !important;
+        }
+      }
+    }
+  }
+}
