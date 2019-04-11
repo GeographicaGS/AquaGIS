@@ -42,7 +42,8 @@ App.View.Widgets.Aq_cons.RankingSensor = App.View.Widgets.Base.extend({
       property_unit: 'unts.',
       sensor_property: null,
       timeMode: 'now',
-      title: null
+      title: null,
+      permissions: {'entities': ['aq_cons.sensor']},
     });
 
     // Return "Void"
@@ -57,6 +58,8 @@ App.View.Widgets.Aq_cons.RankingSensor = App.View.Widgets.Base.extend({
         timeMode: options.timeMode
       }
     );
+
+    if(!this.hasPermissions()) return;
 
     // Data collection to table
     var collection = new App.Collection.Post([], { data: options.data })
