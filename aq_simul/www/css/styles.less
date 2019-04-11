@@ -1,3 +1,23 @@
 @import 'panels/scenarios-container.less';
 @import 'panels/future-consumption.less';
 @import 'widgets/water-use-types.less';
+
+@categoryAqSimul: #E15757;
+
+// Left navigation
+#menuPanel {
+  .vertical_list {
+    .element.aq_simul {
+      &.selected {
+        background-color: @categoryAqSimul;
+      }
+      .aq_simulColor {
+        background-color: @categoryAqSimul;
+        &.aq_simulIcon {
+          background-image:url('/verticals/aq_simul/img/menuPanel/SC_ic_vertical_AQSimul_M.svg');
+          background-size: 38px !important;
+        }
+      }
+    }
+  }
+}
