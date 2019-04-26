@@ -11,9 +11,16 @@
     <h4><%= __(property.label) %></h4>
     <span><%= property.value + ' ' + (property.units) %></span>
   </div>
-  <% } %>  
+  <% } %>
 </div>
-<% } %>  
+<% } %>
+<% if (deviceViewLink) {%>
+  <div class="device-information">
+    <div class="view-button">
+      <a jslink href='<%= deviceViewLink %>'>Ver ficha</a>
+    </div>
+  </div>
+<% } %>
 <% if (loading) {%>  
 <div class="loader loader--style3" title="2">
   <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
