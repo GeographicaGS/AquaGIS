@@ -30,7 +30,7 @@ routing_rules:
   - condition:
       http_error_code_returned_equals: "404"
     redirect:
-      #protocol: https
+      protocol: https
       host_name: aquagis.geographica.io
       replace_key_prefix_with: "#"
       http_redirect_code: "301"
