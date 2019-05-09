@@ -52,12 +52,7 @@ App.View.Widgets.Aq_cons.RankingSensor = App.View.Widgets.Base.extend({
     }
 
     // Init widget
-    App.View.Widgets.Base.prototype.initialize.call(this,
-      { 
-        title: options.title,
-        timeMode: options.timeMode
-      }
-    );
+    App.View.Widgets.Base.prototype.initialize.call(this, options);
 
     if(!this.hasPermissions()) return;
 
