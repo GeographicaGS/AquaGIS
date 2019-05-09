@@ -604,7 +604,8 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       label: __('Temperatura'),
       units: '℃',
       nbf: App.nbf
-    }]);
+    }],
+    '/' + App.currentScope + '/aq_cons.sensor/{{device}}/lastdata');
 
     this._tankLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
       source: {
