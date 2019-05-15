@@ -32,6 +32,13 @@ App.View.Panels.Aq_cons.Historic = App.View.Panels.Splitted.extend({
         this._mapView.updatePayloadTime(App.ctx.getDateRange());
       }
       if (this.widgetWeekly) {
+
+        // Fix the changes in models and collections (BaseModel & BaseCollections)
+        if (this.widgetWeekly.filterables[0].options &&
+          typeof this.widgetWeekly.filterables[0].options.data === 'string') {
+          this.widgetWeekly.filterables[0].options.data = JSON.parse(this.widgetWeekly.filterables[0].options.data);
+        }
+
         this.widgetWeekly.filterables[0].options.data.time.start = App.ctx.getDateRange().start;
         this.widgetWeekly.filterables[0].options.data.time.finish = App.ctx.getDateRange().finish;      
       }
