@@ -636,7 +636,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         'source': 'tanks_datasource',
         'minzoom': 16,
         'layout': {
-          'icon-image': 'deposito',
+          'icon-image': 'deposito-saving',
           'icon-allow-overlap': true
         }
       }],

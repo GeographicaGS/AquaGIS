@@ -24,11 +24,12 @@ App.View.Map.Layer.Aq_cons.GeoJSONLayer = App.View.Map.Layer.MapboxGLLayer.exten
     this.on('click', this.layers.map(l => l.id), function (e) {
       let mpopup = new mapboxgl.Popup()
         .setLngLat(e.lngLat);
+      const featuresHolder = {features: e.features};
       if (deviceViewLink) {
         deviceViewLink = deviceViewLink.replace('{{device}}', e.features[0].properties.id_entity);
       }
       mpopup.setHTML(this.popupTemplate
-        .drawTemplate(label, properties, e, mpopup, deviceViewLink)).addTo(this._map._map);
+        .drawTemplate(label, properties, featuresHolder, mpopup, deviceViewLink)).addTo(this._map._map);
     }.bind(this));
     return this;
   },
