@@ -2,18 +2,18 @@
 
 App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse = App.View.Widgets.Base.extend({
 
-  initialize: function(options) {
-    options = _.defaults(options,{
+  initialize: function (options) {
+    options = _.defaults(options, {
       title: __('Previsión de consumo por usos de suelo'),
       timeMode: 'now',
       id_category: 'aq_cons',
-      permissions: {'variables': ['aq_cons.sector.forecast']},
+      permissions: { 'variables': ['aq_cons.sector.forecast'] },
       publishable: true,
       classname: 'App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse'
     });
-    App.View.Widgets.Base.prototype.initialize.call(this,options);
+    App.View.Widgets.Base.prototype.initialize.call(this, options);
 
-    if(!this.hasPermissions()) return;
+    if (!this.hasPermissions()) return;
     let nextWeek = App.Utils.getNextWeek();
 
     this.collection = new App.Collection.Variables.Historic([], {
@@ -27,29 +27,32 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse = App.View.Widgets.Base.ex
         group: "aq_cons.sector.usage"
       }
     });
-    this.collection.parse = function(response) {
+    this.collection.parse = function (response) {
       const elements = {};
       for (const e of response) {
         elements[e.group] = e.value;
       }
-      return [{step: null,elements: elements}];
+      return [{ step: null, elements: elements }];
     };
 
     this._chartModel = new App.Model.BaseChartConfigModel({
       stacked: true,
-      colors: function(d,index){
+      colors: function (d, index) {
         var type = App.Static.Collection.Aq_cons.LandUses.get(d.realKey);
         if (!type) {
           type = App.Static.Collection.Aq_cons.LandUses.get('null');
         }
-        return type.get('color'); 
+        return type.get('color');
       },
       xAxisFunction: function (d) {
         return __('Todos los sectores');
       },
-      yAxisLabel: __('Consumo (m³)'),
+      yAxisLabel: {
+        axisLabel: __('Consumo (m³)'),
+        axisLabelDistance: -300
+      },      
       legendTemplate: this._template_legend,
-      legendNameFunc: function(d){
+      legendNameFunc: function (d) {
         var type = App.Static.Collection.Aq_cons.LandUses.get(d);
         if (!type) {
           type = App.Static.Collection.Aq_cons.LandUses.get('null');
@@ -58,15 +61,14 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUse = App.View.Widgets.Base.ex
       },
       formatYAxis: {
         tickFormat: function (d) {
-          var unit = 'm³';
-          var value = App.nbf(d, {decimals:3, compactK: true});
-          return value + 'm³';
+          var value = App.nbf(d, { decimals: 2, compactK: true });
+          return value + ' m³';
         }
       }
     });
-    this._chartModel.set({yAxisDomain: [0,100]});
+    this._chartModel.set({ yAxisDomain: [0, 100] });
 
-    this.subviews.push( new App.View.Widgets.Charts.FillBarStacked({
+    this.subviews.push(new App.View.Widgets.Charts.FillBarStacked({
       'opts': this._chartModel,
       'data': this.collection
     }));

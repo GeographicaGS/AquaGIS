@@ -4,17 +4,17 @@ App.View.Widgets.Aq_cons.TotalConsumeLastWeek = App.View.Widgets.Base.extend({
   initialize: function (options) {
     this._template_legend = _.template("<div class='legendWidget'><span class='icon circle' style='background-color:<%= colors[0] %>'></span><span class='text' style='color:<%= colors[0] %>;font-weight:600'>" + __('Situación actual') + ": </span><span class='value'><%=App.nbf(data[0].values[0].y)%> m³</span></div>");
 
-    options = _.defaults(options,{
+    options = _.defaults(options, {
       title: __('Consumo total semana anterior'),
       timeMode: 'now',
       id_category: 'aq_cons',
-      permissions: {'variables': ['aq_cons.sector.consumption']},
+      permissions: { 'variables': ['aq_cons.sector.consumption'] },
       publishable: true,
       classname: 'App.View.Widgets.Aq_cons.TotalConsumeLastWeek'
     });
-    App.View.Widgets.Base.prototype.initialize.call(this,options);
+    App.View.Widgets.Base.prototype.initialize.call(this, options);
     let prevWeek = App.Utils.getPrevWeek();
-    if(!this.hasPermissions()) return;
+    if (!this.hasPermissions()) return;
     this.dataModel = new App.Model.Variables({
       scope: this.options.id_scope,
       variable: 'aq_cons.sector.consumption',
@@ -38,20 +38,23 @@ App.View.Widgets.Aq_cons.TotalConsumeLastWeek = App.View.Widgets.Base.extend({
       xAxisFunction: function (d) {
         return __('Todos los sectores');
       },
-      yAxisLabel: __('Consumo (m³)'),
+      yAxisLabel: {
+        axisLabel: __('Consumo (m³)'),
+        axisLabelDistance: -300
+      },
       legendNameFunc: function (d) {
         return __('Consumo (m³)');
       },
       legendTemplate: this._template_legend,
       formatYAxis: {
         tickFormat: function (d) {
-          return App.nbf(d, {decimals:3});
+          return App.nbf(d, { decimals: 2, compactK: true });
         }
       }
     });
 
     // this._chartModel.set({yAxisDomain: [0,100]});
-    this._chartModel.set({yAxisDomain: [0,100]});
+    this._chartModel.set({ yAxisDomain: [0, 100] });
 
     this.subviews.push(new App.View.Widgets.Charts.FillBar({
       opts: this._chartModel,
@@ -61,7 +64,7 @@ App.View.Widgets.Aq_cons.TotalConsumeLastWeek = App.View.Widgets.Base.extend({
     this.filterables = [this.dataModel];
   },
 
-  render: function(){
+  render: function () {
     const prevWeek = App.Utils.getPrevWeek();
     App.View.Widgets.Base.prototype.render.call(this);
     $(this.$el.find('.date_tooltip .date span')[0]).text(App.formatDate(prevWeek[0]));
