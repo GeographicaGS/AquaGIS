@@ -107,7 +107,7 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUseTimeserie = App.View.Widget
           var currentDay = Number.parseInt(curentDate[2], 10);
     
           aux[d.agg].push({
-            x: new Date(currentYear, currentMonth, currentDay),
+            x: new Date(currentYear, currentMonth - 1, currentDay),
             y: d.value
           });
         });
