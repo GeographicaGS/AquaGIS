@@ -15,30 +15,14 @@ App.View.Panels.Aq_cons.Saving = App.View.Panels.Splitted.extend({
     });
     
     App.View.Panels.Splitted.prototype.initialize.call(this, options);
+    var nextWeek = App.Utils.getNextWeek();
+    
+    this.dateViewModel.set('start', moment.utc(nextWeek[0]));
+    this.dateViewModel.set('finish', moment.utc(nextWeek[1]));
     this.render();
   },
 
   customRender: function() {
-
-    // eslint-disable-next-line no-warning-comments
-    // TODO - DELETE AFTER PRESENTATION (Presentation --> JULY 2019)
-
-    // Search into the "subviews" the view
-    // "DateView.js"
-    var dateView = _.find(this.subviews, function (view) {
-      return view.options && view.options.dateFormat;
-    });
-    var minDate = this.scopeModel.get('id') === 'ecija'
-      ? new Date(2018, 10, 6)
-      : new Date(2018, 0, 15); // Puerto real y Aljarafe
-    var maxDate = this.scopeModel.get('id') === 'ecija'
-      ? new Date(2018, 10, 13)
-      : new Date(2018, 9, 31); // Puerto real y Aljarafe
-    // Set options "minDate" and "maxDate"
-    dateView._setOptions('minDate', minDate);
-    dateView._setOptions('maxDate', maxDate);
-    // END TODO - DELETE UP HERE
-
     this._widgets = [];
     this.subviews.push(new App.View.Widgets.Container({
       widgets: this._widgets,
@@ -54,6 +38,7 @@ App.View.Panels.Aq_cons.Saving = App.View.Panels.Splitted.extend({
     }).render();
     
     this.listenTo(this._mapView.mapChanges,'change:clickedSector', this._openDetails);
+    this.$('#dateSelector').addClass('disabled');
     
     this.subviews.push(this._mapView);
   },
@@ -123,6 +108,12 @@ App.View.Panels.Aq_cons.Saving = App.View.Panels.Splitted.extend({
       widgets: this._widgets,
       el: this.$('.bottom .widgetContainer')
     }));
+  },
+
+  onClose: function() {
+    this._mapView.close();
+    this.$('#dateSelector').removeClass('disabled');
+    App.View.Panels.Splitted.prototype.onClose.call(this);    
   }
 
 });
