@@ -71,13 +71,18 @@ App.View.Panels.Aq_cons.Historic = App.View.Panels.Splitted.extend({
     });
     var minDate = this.scopeModel.get('id') === 'ecija'
       ? new Date(2018, 10, 6)
-      : new Date(2018, 0, 15); // Puerto real y Aljarafe
+      : new Date(2018, 4, 1); // Puerto real y Aljarafe
     var maxDate = this.scopeModel.get('id') === 'ecija'
       ? new Date(2018, 10, 13)
       : new Date(2018, 9, 31); // Puerto real y Aljarafe
     // Set options "minDate" and "maxDate"
     dateView._setOptions('minDate', minDate);
     dateView._setOptions('maxDate', maxDate);
+    // Set 2 weeks octuber to "Puerto real" y "Aljarafe"
+    if (this.scopeModel.get('id') !== 'ecija') {
+      App.ctx.set('start', moment(new Date(2018, 9, 17)));
+      App.ctx.set('finish', moment(new Date(2018, 9, 31)));
+    }
     // END TODO - DELETE UP HERE
 
     this._widgets = [];

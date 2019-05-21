@@ -24,6 +24,8 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
     
     App.View.Panels.Splitted.prototype.initialize.call(this, options);
 
+    this.dateViewModel.set('start', moment.utc());
+    this.dateViewModel.set('finish', moment.utc());
     
     this.render();
   },
@@ -68,8 +70,6 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
       widgets: this._widgets,
       el: this.$('.bottom .widgetContainer')
     }));
-
-    this.$('#dateSelector').addClass('disabled');
   },
   
   onAttachToDOM: function() {
@@ -80,6 +80,7 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
     }).render();
 
     this.listenTo(this._mapView.mapChanges,'change:clickedSector', this._openDetails);
+    this.$('#dateSelector').addClass('disabled');
 
     this.subviews.push(this._mapView);
   },
@@ -189,6 +190,12 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
       el: this.$('.bottom .widgetContainer')
     }));
 
+  },
+
+  onClose: function() {
+    this._mapView.close();
+    this.$('#dateSelector').removeClass('disabled');
+    App.View.Panels.Splitted.prototype.onClose.call(this);    
   }
 
 });
