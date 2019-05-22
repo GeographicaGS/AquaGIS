@@ -10,8 +10,10 @@ deps.templateFolder = [
 deps.JS = [
   srcJS + 'Namespace.js',
   srcJS + 'Metadata.js',
+  srcJS + 'CustomUtils.js',  
   srcJS + 'Collection/AQConsCollection.js',
   srcJS + 'Model/AQConsModel.js',
+  srcJS + 'Model/CustomContext.js',
   srcJS + 'View/AQConsVariableSelector.js',
   srcJS + 'View/Map/AQConsCurrentMap.js',
   srcJS + 'View/Map/AQConsLeakMap.js',
