@@ -29,9 +29,6 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUseTimeserie = App.View.Widget
       }
     });
 
-    // Parse response server
-    this.collection.parse = this.parseDataCollection;
-
     this._chartModel = new App.Model.BaseChartConfigModel({
       colors: function (d, index) {
         var type = App.Static.Collection.Aq_cons.LandUses.get(d.realKey);
@@ -86,36 +83,4 @@ App.View.Widgets.Aq_cons.ConsumptionForecastByLandUseTimeserie = App.View.Widget
     this.filterables = [this.collection];
   },
 
-  /**
-   * Parse the server response
-   * 
-   * @param {Array} response - server response
-   * @return {Array} - parsed response
-   */
-  parseDataCollection: function (response) {
-    var aux = {};
-    _.each(response, function (r) {
-      _.each(r.data, function (data) {
-        _.each(data, function (d) {
-          if (!aux[d.agg]) {
-            aux[d.agg] = [];
-          }
-
-          var curentDate = r.time.split('T').shift().split('-');
-          var currentYear = Number.parseInt(curentDate[0], 10);
-          var currentMonth = Number.parseInt(curentDate[1], 10);
-          var currentDay = Number.parseInt(curentDate[2], 10);
-    
-          aux[d.agg].push({
-            x: new Date(currentYear, currentMonth - 1, currentDay),
-            y: d.value
-          });
-        });
-      });
-    });
-    response = _.map(aux, function (values, key) {
-      return { 'key': key, 'values': values, 'disabled': false }
-    });
-    return response;
-  }
 });
