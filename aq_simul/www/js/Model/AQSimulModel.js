@@ -30,7 +30,7 @@ App.Model.Aq_simul.RatesModel = App.Model.Post.extend({
   },
 
   url: function(options) {
-    return "http://iatdev.isoin.es/aquasig-web/api/tarificacion/json";
+    return "https://urbo-aquagis-backend.geographica.gs/isoin/api/tarificacion/json";
   },
 
   fetch: function(options = {}) {
@@ -61,7 +61,7 @@ App.Collection.Aq_simul.FutureScenario = App.Collection.Post.extend({
   },
 
   url: function(options) {
-    return "http://iatdev.isoin.es/aquasig-web/api/escenariosfuturos/json";
+    return "https://urbo-aquagis-backend.geographica.gs/isoin/api/escenariosfuturos/json";
   },
 
   fetch: function(options = {}) {
