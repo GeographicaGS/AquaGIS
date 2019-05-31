@@ -25,8 +25,8 @@ App.Collection.Aq_cons.PanelList = Backbone.Collection.extend({
 
     ];
 
-    App.mv().validateInMetadata({'entities':['aq_cons.tank']})
-    && _verticalOptions.push({
+    App.mv().validateInMetadata({'entities':['aq_cons.tank']}) &&
+    _verticalOptions.push({
       id : 'saving',
       title: __('Previsión de ahorro'),
       url:base + '/dashboard/saving',
@@ -91,12 +91,12 @@ App.Static.Collection.Aq_cons.ConsumeRangeNumericPuertoReal =  Backbone.Collecti
 App.Static.Collection.Aq_cons.ConsumeRangeNumericEcija =  Backbone.Collection.extend({
   initialize: function() {
     _.bindAll(this,'findColor');
-    this.add([{min: 0, max: 1, color: '#64B6D9'},
-    {min: 1, max: 2, color: '#4CA7D7'},
-    {min: 2, max: 3, color: '#3397D5'},
-    {min: 3, max: 4, color: '#1A88D3'},
-    {min: 4, max: 5, color: '#0278D1'},
-    {min: 5, max: null, color: '#D56780'}])
+    this.add([{min: 0, max: 0.1, color: '#64B6D9'},
+    {min: 0.1, max: 0.2, color: '#4CA7D7'},
+    {min: 0.2, max: 0.3, color: '#3397D5'},
+    {min: 0.3, max: 0.4, color: '#1A88D3'},
+    {min: 0.4, max: 0.5, color: '#0278D1'},
+    {min: 0.5, max: null, color: '#D56780'}])
   },
   findColor: function(d) {
     let color = undefined;
