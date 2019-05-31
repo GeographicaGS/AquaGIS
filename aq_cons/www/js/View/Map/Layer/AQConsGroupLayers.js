@@ -50,7 +50,6 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       return e;
     };
 
-
     // Layers
     // SECTOR
     this._sectorLayer = new App.View.Map.Layer.Aq_cons.GeoJSONLayer({
@@ -611,7 +610,11 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       source: {
         id: 'tanks_datasource',
         model: tank,
-        payload: this._payload
+        payload: this._payload,
+        data: App.ctx.getMapSourceData({
+          id: 'tanks_datasource',
+          scope: options.scope
+        })
       },
       legend: {
         sectionId: 'tanks',

@@ -88,6 +88,27 @@ App.Static.Collection.Aq_cons.ConsumeRangeNumericPuertoReal =  Backbone.Collecti
   }
 });
 
+App.Static.Collection.Aq_cons.ConsumeRangeNumericEcija =  Backbone.Collection.extend({
+  initialize: function() {
+    _.bindAll(this,'findColor');
+    this.add([{min: 0, max: 1, color: '#64B6D9'},
+    {min: 1, max: 2, color: '#4CA7D7'},
+    {min: 2, max: 3, color: '#3397D5'},
+    {min: 3, max: 4, color: '#1A88D3'},
+    {min: 4, max: 5, color: '#0278D1'},
+    {min: 5, max: null, color: '#D56780'}])
+  },
+  findColor: function(d) {
+    let color = undefined;
+    if(d !== null) {
+      color = _.find(this.models, function(e) {
+        return e.get('min') <= d && (e.get('max') > d || e.get('max') === null)
+      }).get('color');
+    }
+    return color || 'rgba(255, 255, 255, 0.05)';
+  }
+});
+
 App.Static.Collection.Aq_cons.Weekdays =  new Backbone.Collection([
   {id:'Monday', name: 'L', fullName:__('Lunes')},
   {id:'Tuesday', name: 'M', fullName:__('Martes')},
