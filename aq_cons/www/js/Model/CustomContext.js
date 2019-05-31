@@ -21,7 +21,7 @@
 'use strict';
 
 App.Model.Context = Backbone.Model.extend({
-  
+
   // Defaults data in model
   defaults: {
     start: false,
@@ -35,31 +35,22 @@ App.Model.Context = Backbone.Model.extend({
 
     Backbone.Model.prototype.initialize.call(this, [attributes, options]);
 
+    var dataToLocalStorage = JSON.parse(localStorage.getItem('context')) || {};
+
     // Check if is local (not global) to avoid loading default dates and check if start or finish dates are set
     if (!(attributes && attributes.local || attributes && attributes.start && attributes.finish)) {
-      var data;
-      try {
-        data = JSON.parse(localStorage.getItem('context')) || {};
+      // Set "time" attributes
+      dataToLocalStorage.start = dataToLocalStorage.start
+        ? moment.utc(dataToLocalStorage.start)
+        : moment().subtract(7, 'days').utc();
 
-        if (data.start) {
-          data.start = moment.utc(data.start);
-        } else {
-          data.start = moment().subtract(7, 'days').utc();
-        }
-
-        if (data.finish) {
-          data.finish = moment.utc(data.finish);
-        } else {
-          data.finish = moment().utc();
-        }
-      } catch (err) {
-        data = {};
-      }
-
-      if (data) {
-        this.set(data);
-      }
+      dataToLocalStorage.finish = dataToLocalStorage.finish
+        ? moment.utc(dataToLocalStorage.finish)
+        : moment().utc();
     }
+
+    // Save initial data in model
+    this.set(dataToLocalStorage);
 
     // Check if is local (not global) to avoid saving changes as default dates
     if (!(attributes && attributes.local)) {
@@ -97,6 +88,6 @@ App.Model.Context = Backbone.Model.extend({
     } catch (err) {
       return false;
     }
-  }
+  },
 
 });
