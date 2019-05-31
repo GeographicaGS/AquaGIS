@@ -30,6 +30,22 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
 
   initialize: function(options) {
     let nextWeek = App.Utils.getNextWeek();
+    let consumeRangeNumeric = {};
+    switch (options.id_scope) {
+      case 'ecija':
+        consumeRangeNumeric = 
+          new App.Static.Collection.Aq_cons.ConsumeRangeNumericEcija();
+        break;
+      case 'puertoreal':
+        consumeRangeNumeric =
+          new App.Static.Collection.Aq_cons.ConsumeRangeNumericPuertoReal();
+        break;
+      default:
+        consumeRangeNumeric =
+          new App.Static.Collection.Aq_cons.ConsumeRangeNumeric();
+    }
+    let MaxValue = consumeRangeNumeric.toJSON().pop();
+
     this._template_legend = _.template(
       '<div class="tags textleft">' +
       ' <div class="btnLegend no_border">' +
@@ -38,9 +54,9 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
       ' <div class="btnLegend no_border inrow">' +
       '    <span class="text height12">0</span>' +
       '    <div class="ramp consume"></div>' +
-      '    <span class="text height12">2600</span>' +
+      '    <span class="text height12">' + MaxValue.min + '</span>' +
       '    <div class="max-value">' +
-      '     <div class="maxcolor"></div> <span>&gt; 2600</span>' +
+      '     <div class="maxcolor"></div> <span>&gt; ' + MaxValue.min + '</span>' +
       '    </div>' +
       ' </div>' +
       '</div>'
@@ -61,12 +77,6 @@ App.View.Widgets.Aq_cons.TotalConsumeWeeklyAverages = App.View.Widgets.Base.exte
     xRrange[__('Día')] = 9;
     xRrange[__('Tarde')] = 5;
     xRrange[__('Noche')] = 4;
-
-    let consumeRangeNumeric = new App.Static.Collection.Aq_cons.ConsumeRangeNumeric();
-
-    if (options.id_scope == 'puertoreal' || options.id_scope == 'ecija') {
-      consumeRangeNumeric = new App.Static.Collection.Aq_cons.ConsumeRangeNumericPuertoReal();
-    }
 
     this._chartModel = new App.Model.BaseChartConfigModel({
       colors: consumeRangeNumeric.findColor,

@@ -14,7 +14,6 @@ deps.JS = [
   srcJS + 'Collection/AQConsCollection.js',
   srcJS + 'Model/AQConsModel.js',
   srcJS + 'Model/CustomContext.js',
-  srcJS + 'Model/CachedVariables.js',
   srcJS + 'View/AQConsVariableSelector.js',
   srcJS + 'View/Map/AQConsCurrentMap.js',
   srcJS + 'View/Map/AQConsLeakMap.js',
