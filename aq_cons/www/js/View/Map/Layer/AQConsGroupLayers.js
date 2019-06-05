@@ -610,11 +610,7 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
       source: {
         id: 'tanks_datasource',
         model: tank,
-        payload: this._payload,
-        data: App.ctx.getMapSourceData({
-          id: 'tanks_datasource',
-          scope: options.scope
-        })
+        payload: this._payload
       },
       legend: {
         sectionId: 'tanks',
