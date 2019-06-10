@@ -34,7 +34,7 @@ pipeline {
           }
         }
 
-        sh "docker build --build-arg ENV=${DEPLOY_TO} --build-arg VERSION=a7ef0fe -f deploy/www/Dockerfile -t geographica/aquagis_www:${DEPLOY_TO} ."
+        sh "docker build --build-arg ENV=${DEPLOY_TO} --build-arg VERSION=8e8eb9f -f deploy/www/Dockerfile -t geographica/aquagis_www:${DEPLOY_TO} ."
         sh "docker run --rm --name aquagis_www_${DEPLOY_TO} -e \"S3_WEBSITE_ID=${CRED_USR}\" -e \"S3_WEBSITE_SECRET=${CRED_PSW}\" geographica/aquagis_www:${DEPLOY_TO} npm run-script deploy"
       }
       post {
