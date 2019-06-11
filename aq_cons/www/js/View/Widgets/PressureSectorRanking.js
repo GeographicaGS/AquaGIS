@@ -134,8 +134,8 @@ App.View.Widgets.Aq_cons.PressureSectorRanking = App.View.Widgets.Base.extend({
         order: 'desc',
         limit: 5,
         time: {
-          start: moment().startOf('hour').subtract(2, 'hour').toDate(),
-          finish: moment().startOf('hour').subtract(1, 'hour').toDate()
+          start: moment().startOf('hour').subtract(1, 'hour').toDate(),
+          finish: moment().startOf('hour').toDate()
         }
       },
       mode: 'historic'
