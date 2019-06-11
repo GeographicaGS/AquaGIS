@@ -71,11 +71,11 @@ App.Static.Collection.Aq_cons.ConsumeRangeNumericPuertoReal =  Backbone.Collecti
   initialize: function() {
     _.bindAll(this,'findColor');
     this.add([{min: 0, max: 10, color: '#64B6D9'},
-    {min: 10, max: 20, color: '#4CA7D7'},
-    {min: 20, max: 50, color: '#3397D5'},
-    {min: 50, max: 100, color: '#1A88D3'},
-    {min: 100, max: 2600, color: '#0278D1'},
-    {min: 2600, max: null, color: '#D56780'}])
+    {min: 1, max: 2, color: '#4CA7D7'},
+    {min: 2, max: 5, color: '#3397D5'},
+    {min: 5, max: 10, color: '#1A88D3'},
+    {min: 10, max: 260, color: '#0278D1'},
+    {min: 260, max: null, color: '#D56780'}])
   },
   findColor: function(d) {
     let color = undefined;
