@@ -12,30 +12,64 @@ App.View.Widgets.Aq_cons.CurrentLeakStatus = App.View.Widgets.Base.extend({
     });
     App.View.Widgets.Base.prototype.initialize.call(this,options);
 
-    this._model = new App.Model.Base();
-    // /aljarafe/devices/aq_cons.sector/sector_id:19/lastdata
-    this._model.url = App.config.api_url + '/' + options.id_scope + '/devices/aq_cons.sector/' + options.id_entity + '/lastdata';
-    this._model.parse = function(data) {
-      var _result = {};
-       _.each(data.lastdata, function(ld) {
-        _result[ld['var_id']] = ld['var_value'];
-      });
-      return _result;
+
+    var collection = new App.Collection.Variables.Ranking(null, {
+      id_scope: this.options.id_scope,
+      data: {
+        agg: ['SUM'],
+        vars: [
+          'aq_cons.sector.pressure',
+          'aq_cons.sector.flow'
+        ],
+        var_order: 'aq_cons.sector.pressure',
+        order: 'desc',
+        limit: 5,
+        time: {
+          start: moment().startOf('hour').subtract(1, 'hour').toDate(),
+          finish: moment().startOf('hour').toDate()
+        }
+      },
+      mode: 'historic'
+    });
+
+    collection.parse = function(data) {
+      return data[0];
     }
+
+    this._model = collection;
     
     this.subviews.push(new App.View.Widgets.MultipleVariable({
-      collection: this._model, 
+      collection: this._model,
+      searchParams: {
+        agg: ['SUM', 'SUM'],
+        vars: [
+          'aq_cons.sector.pressure',
+          'aq_cons.sector.flow'
+        ],
+        var_order: 'aq_cons.sector.pressure',
+        order: 'desc',
+        limit: 5,
+        time: {
+          start: moment().startOf('hour').subtract(1, 'hour').toDate(),
+          finish: moment().startOf('hour').toDate()
+        },
+        filters: {
+          condition: {
+            id_entity__eq: options.id_entity
+          }
+        }
+      },
       variables: [
         {
           label: 'Caudal',
-          param: 'aq_cons.sector.flow',
+          param: 'flow',
           class: 'flow',
           nbf: App.nbf,
           units: App.mv().getVariable('aq_cons.sector.flow').get('units')
         },
         {
           label: 'Presión',
-          param: 'aq_cons.sector.pressure',
+          param: 'pressure',
           class: 'pressure',
           nbf: App.nbf,        
           units: App.mv().getVariable('aq_cons.sector.pressure').get('units')
