@@ -187,7 +187,7 @@ App.View.Widgets.Aq_cons.FlowSectorRanking = App.View.Widgets.Base.extend({
 
             return template({
               width: width,
-              value: Number.parseInt(value, 10)
+              value: App.nbf(value)
             });
           }.bind(this)
         },
