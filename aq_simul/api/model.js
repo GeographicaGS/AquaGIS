@@ -117,7 +117,7 @@ class AqSimulModel extends PGSQLModel {
     SELECT Q2.id_entity, geometry, consumption, calibre, tipo, n_personas FROM
     ( SELECT id_entity, ST_AsGeoJSON(position) AS geometry
       FROM ${opts.scope}.aq_cons_plot) Q1
-    LEFT JOIN
+    INNER JOIN
     ( SELECT id_entity,
              sum(consumption) as consumption
      FROM ${opts.scope}.aq_cons_plot_agg_hour
