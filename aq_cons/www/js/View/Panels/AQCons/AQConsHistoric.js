@@ -27,7 +27,7 @@ App.View.Panels.Aq_cons.Historic = App.View.Panels.Splitted.extend({
         this.widgetTimeSeries.refresh();
       }
     });
-    this.listenTo(App.ctx, 'change:start change:finish', function(e) {
+    this.listenTo(App.ctx, 'change:start change:finish', _.debounce(function(e) {
       if (this._mapView !== undefined) {
         this._mapView.updatePayloadTime(App.ctx.getDateRange());
       }
@@ -42,7 +42,7 @@ App.View.Panels.Aq_cons.Historic = App.View.Panels.Splitted.extend({
         this.widgetWeekly.filterables[0].options.data.time.start = App.ctx.getDateRange().start;
         this.widgetWeekly.filterables[0].options.data.time.finish = App.ctx.getDateRange().finish;      
       }
-    });
+    }), 600);
     App.View.Panels.Splitted.prototype.initialize.call(this, options);
 
     this.widgetTimeSeries = new App.View.Widgets.Aq_cons.ConsumptionForecastByLandUseTimeserie({
