@@ -54,7 +54,8 @@ class AqSimulModel extends PGSQLModel {
       ON a.type_id=b.type_id
       AND a.type_name=b.type_name
       WHERE TRUE ${bbox_filter}
-      GROUP BY b.type_name;
+      GROUP BY b.type_name
+      ORDER BY b.type_name;
     `;
 
     let sql_2 = `
@@ -71,7 +72,8 @@ class AqSimulModel extends PGSQLModel {
       GROUP BY b.type_id,
                b.type_value,
                b.type_parameter,
-               b.type_name;
+               b.type_name
+      ORDER BY b.type_name;
     `;
 
     var promises = [this.promise_query(sql_1), this.promise_query(sql_2)];
