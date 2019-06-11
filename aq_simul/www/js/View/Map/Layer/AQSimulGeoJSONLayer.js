@@ -21,7 +21,7 @@ App.View.Map.Layer.Aq_simul.GeoJSONLayer = App.View.Map.Layer.MapboxGLLayer.exte
   },
 
   setInteractivity: function(label, properties = []) {
-    this.on('click',this.layers.map(l => l.id), function(e) {
+    this.on('click',this.layers.map(l => l.id)[0], function(e) {
       let mpopup = new mapboxgl.Popup()
       .setLngLat(e.lngLat);
       const featuresHolder = {features: e.features};
