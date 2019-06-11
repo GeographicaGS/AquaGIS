@@ -217,7 +217,11 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         feature: 'aq_cons.plot.forecast.total?',
         label: 'Consumo total',
         units: 'm³',
-        nbf: App.nbf
+        nbf: (a) => {
+          if (a === 'null')
+            a = 0; 
+          return App.nbf(a)
+        }
       }, {
         feature: 'aq_cons.plot.consumption.total?',
         label: 'Consumo total',
@@ -227,7 +231,11 @@ App.View.Map.Layer.Aq_cons.GroupLayer = Backbone.View.extend({
         feature: 'aq_cons.plot.forecast?',
         label: 'Consumo diario',
         units: 'm³',
-        nbf: App.nbf
+        nbf: (a) => {
+          if (a === 'null')
+            a = 0; 
+          return App.nbf(a)
+        }
       }, {
         feature: 'aq_cons.plot.consumption?',
         label: 'Consumo diario',
