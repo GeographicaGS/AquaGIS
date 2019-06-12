@@ -22,8 +22,8 @@ App.View.Widgets.Aq_cons.AlertsWidget = App.View.Widgets.Base.extend({
       filter: 'all',
     });
     App.View.Widgets.Base.prototype.initialize.call(this,options);
-    this._collection = new App.Collection.Base();
-    this._collection.url = App.config.api_url + '/' + options.id_scope + '/entities/aq_cons.sector/elements';
+    this._collection = new App.Collection.Post([],{});
+    this._collection.url = App.config.api_url + '/' + options.id_scope + '/aq_cons/entities/aq_cons.sector/elements';
     this._collection.parse = function(data) {
       data = _.map(data, function(d) {
         d.warning_level = d.leak_status;
@@ -65,7 +65,10 @@ App.View.Widgets.Aq_cons.AlertsWidget = App.View.Widgets.Base.extend({
         units: App.mv().getVariable('aq_cons.sector.pressure').get('units')
       }],
       searchParams: {
-        variables: 'aq_cons.sector.leak_status,aq_cons.sector.leak_rule,aq_cons.sector.flow,aq_cons.sector.pressure'
+        time: {
+          start: moment().startOf('hour').toDate(),
+          finish: moment().endOf('hour').toDate()
+        }
       }
     }));
 
