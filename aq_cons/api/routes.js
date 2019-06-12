@@ -82,4 +82,23 @@ router.post('/tank/:tank_id/plans', check.tankPlansValidator, function(req, res,
   });
 });
 
+router.post('/entities/aq_cons.sector/elements', function(req, res, next) {
+  var opts = {
+    scope: req.scope,
+    id_entity: req.params.tank_id,
+    time: req.body.time
+  };
+
+  var aqConsModel = new AqConsModel();
+
+  aqConsModel.getEntitiesElements(opts)
+  .then(function(data) {
+      res.json(data)
+  })
+  .catch(function(err) {
+    next(err);
+  });
+});
+
+
 module.exports = router;

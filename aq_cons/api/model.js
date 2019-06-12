@@ -41,6 +41,53 @@ class AqConsModel extends PGSQLModel {
     return this;  // Because parent is not a strict class
   }
 
+  getEntitiesElements(opts) {
+    let sql = `
+    SELECT
+      measurand.id_entity as id,
+      measurand.flow,
+      measurand.pressure,
+      CASE WHEN
+      (
+        SELECT leak_status FROM  ${opts.scope}.aq_cons_sector_leak_historic
+        WHERE true
+          AND "TimeInstant" BETWEEN '${opts.time.start}' AND '${opts.time.finish}'
+          AND measurand.id_entity = id_entity
+      ) is null then 0
+      ELSE (
+        SELECT leak_status FROM  ${opts.scope}.aq_cons_sector_leak_historic
+        WHERE true
+          AND "TimeInstant" BETWEEN '${opts.time.start}' AND '${opts.time.finish}'
+          AND measurand.id_entity = id_entity
+      )
+      END as leak_status,
+      (
+        SELECT leak_rule FROM  ${opts.scope}.aq_cons_sector_leak_historic
+        WHERE true
+          AND "TimeInstant" BETWEEN '${opts.time.start}' AND '${opts.time.finish}'
+          AND measurand.id_entity = id_entity
+      ),
+      (
+        SELECT name FROM  ${opts.scope}.aq_cons_sector
+        WHERE true
+          AND measurand.id_entity = id_entity
+      )
+    FROM ${opts.scope}.aq_cons_sector_measurAND as measurand
+    WHERE true
+    AND measurand."TimeInstant" BETWEEN '${opts.time.start}' AND '${opts.time.finish}'
+    `;
+
+    return this.promise_query(sql)
+    .then(function(data) {
+      return Promise.resolve(data.rows);
+    })
+
+    .catch(function(err) {
+      return Promise.reject(err);
+    });
+  }
+
+
   getPlotConstructions(opts) {
     let sql = `
       SELECT
