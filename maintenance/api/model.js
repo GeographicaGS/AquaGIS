@@ -251,15 +251,8 @@ class AqMaintenanceModel extends PGSQLModel {
       UPDATE
         ${opts.scope}.maintenance_issues
       SET
-        (
-          current_status,
-          updated_at
-        )
-      =
-        (
-          '${opts.current_status}'
-          timezone('utc'::text, now())
-        )
+          current_status = '${opts.current_status}',
+          updated_at = timezone('utc'::text, now())
 
       WHERE id = ${opts.id}
       ;
