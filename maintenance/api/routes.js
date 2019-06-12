@@ -279,8 +279,6 @@ router.post('/status', function(req, res, next) {
   new AqMaintenanceModel().createStatus(opts)
   .then(function(data) {
 
-    res.json(data);
-
     var issue_opts = {
       scope: req.scope,
       id: data[0].id_issue,
