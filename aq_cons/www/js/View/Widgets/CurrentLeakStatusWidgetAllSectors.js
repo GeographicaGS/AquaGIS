@@ -4,7 +4,7 @@ App.View.Widgets.Aq_cons.CurrentLeakStatusAllSectors = App.View.Widgets.Base.ext
 
   initialize: function(options) {
     options = _.defaults(options,{
-      title: 'Estado actual',
+      title: 'Estado: media del día',
       timeMode:'now',
       id_category: 'aq_cons',
       publishable: true,
