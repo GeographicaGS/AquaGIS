@@ -22,7 +22,7 @@ App.View.Widgets.Aq_cons.PressureFlowLeakEvolution = App.View.Widgets.Base.exten
         vars: ["aq_cons.sector.pressure","aq_cons.sector.flow","aq_cons.sector.leak_status"],
         time: {
           start: moment().startOf('hour').subtract(1,'day').toDate(),
-          finish: moment().startOf('hour').toDate(),
+          finish: moment().startOf('hour').subtract(1,'hour').toDate(),
           step: '1h'
         },
         filters: {

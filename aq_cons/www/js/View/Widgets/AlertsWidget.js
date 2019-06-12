@@ -66,8 +66,8 @@ App.View.Widgets.Aq_cons.AlertsWidget = App.View.Widgets.Base.extend({
       }],
       searchParams: {
         time: {
-          start: moment().startOf('hour').toDate(),
-          finish: moment().endOf('hour').toDate()
+          start: moment().startOf('hour').subtract(1, 'hour').toDate(),
+          finish: moment().endOf('hour').subtract(1, 'hour').toDate()
         }
       }
     }));
