@@ -18,7 +18,7 @@ App.View.Widgets.Aq_cons.CurrentLeakStatusAllSectors = App.View.Widgets.Base.ext
     this._model.fetch = function(options) {
       options.type = 'POST';
       options.data = {
-        "agg": ["SUM", "AVG"],
+        "agg": ["AVG", "AVG"],
         "vars": ["aq_cons.sector.flow", "aq_cons.sector.pressure"],
         "time": {
         "start": moment().startOf('hour').subtract(2,'hour').toDate(),
