@@ -165,7 +165,7 @@ App.View.Panels.Aq_cons.Leak = App.View.Panels.Splitted.extend({
       workOrder: true,
       publishable: false,
       filter: clickedSector.features[0].properties['id_entity'],
-      buttonlink: 'https://aquasig-app.geographica.gs/#/' + App.currentScope
+      buttonlink: 'https://aquasig-app.geographica.gs/#/login/' + App.currentScope
     }));
     
     this._widgets.push(new App.View.Widgets.Aq_cons.CurrentLeakStatus({
